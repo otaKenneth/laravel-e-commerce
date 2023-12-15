@@ -32,6 +32,21 @@
 
             
             <li class="nav-item">
+                <a @if (Session::get('page') == 'reports') style="background: #052CA3 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-reports" aria-expanded="false" aria-controls="ui-reports">
+                    <i class="icon-layout menu-icon"></i>
+                    <span class="menu-title">Reports</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="ui-reports">
+                    <ul class="nav flex-column sub-menu" style="background: #fff !important; color: #052CA3 !important">
+                        <li class="nav-item"> <a @if (Session::get('page') == 'finance')   style="background: #052CA3 !important; color: #FFF !important" @else style="background: #fff !important; color: #052CA3 !important" @endif class="nav-link" href="{{ url('admin/finance') }}">Finance</a></li>
+                        <li class="nav-item"> <a @if (Session::get('page') == 'inventory')    style="background: #052CA3 !important; color: #FFF !important" @else style="background: #fff !important; color: #052CA3 !important" @endif class="nav-link" href="{{ url('admin/inventory') }}">Inventory</a></li> 
+                        <li class="nav-item"> <a @if (Session::get('page') == 'traffic')    style="background: #052CA3 !important; color: #FFF !important" @else style="background: #fff !important; color: #052CA3 !important" @endif class="nav-link" href="{{ url('admin/traffic') }}">Traffic</a></li> 
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
                 <a @if (Session::get('page') == 'sections' || Session::get('page') == 'categories' || Session::get('page') == 'products' || Session::get('page') == 'brands' || Session::get('page') == 'filters' || Session::get('page') == 'coupons') style="background: #052CA3 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-catalogue" aria-expanded="false" aria-controls="ui-catalogue">
                     <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Catalogue Management</span>
@@ -86,7 +101,7 @@
                     <ul class="nav flex-column sub-menu" style="background: #fff !important; color: #052CA3 !important">
                         
                         {{-- The Route Parameter {type} is the `type` column in the `admins` table, which can only be: admin, subadmin or vendor. And if there's no parameter passed at all, show ALL of the admins, subadmins and vendors at the same page --}}
-                        <li class="nav-item"> <a @if (Session::get('page') == 'view_admins')    style="background: #052CA3 !important; color: #FFF !important" @else style="background: #fff !important; color: #052CA3 !important" @endif class="nav-link" href="{{ url('admin/admins/admin') }}">Admins</a></li>
+                        <li class="nav-item"> <a @if (Session::get('page') == 'view_admins')    style="background: #052CA3 !important; color: #FFF !important" @else style="background: #fff !important; color: #052CA3 !important" @endif class="nav-link" href="{{ url('admin/admins/admin') }}">Superadmins</a></li>
                         <li class="nav-item"> <a @if (Session::get('page') == 'view_subadmins') style="background: #052CA3 !important; color: #FFF !important" @else style="background: #fff !important; color: #052CA3 !important" @endif class="nav-link" href="{{ url('admin/admins/subadmin') }}">Subadmins</a></li>
                         <li class="nav-item"> <a @if (Session::get('page') == 'view_vendors')   style="background: #052CA3 !important; color: #FFF !important" @else style="background: #fff !important; color: #052CA3 !important" @endif class="nav-link" href="{{ url('admin/admins/vendor') }}">Vendors</a></li>
                         <li class="nav-item"> <a @if (Session::get('page') == 'view_all')       style="background: #052CA3 !important; color: #FFF !important" @else style="background: #fff !important; color: #052CA3 !important" @endif class="nav-link" href="{{ url('admin/admins') }}">All</a></li>

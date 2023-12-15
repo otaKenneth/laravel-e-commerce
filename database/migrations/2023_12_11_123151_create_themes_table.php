@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('tertiary', 30);
             $table->string('navigation', 30);
             $table->string('navigation_bar', 30);
+            $table->string('background', 30);
             $table->string('success', 30);
             $table->string('warning', 30);
             $table->string('error', 30);
