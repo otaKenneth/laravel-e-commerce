@@ -1074,7 +1074,7 @@
                                     >
                                         @for ($x = 0; $x < 5; $x++)
                                         @php
-                                            $marked = $product['product_ratings'];
+                                            $marked = 0;
                                         @endphp
                                         <div class="e-icon">
                                             <div class="e-icon-wrapper e-icon-marked" style="{{ ($x <= $marked && $marked > 0) ? '':'--e-rating-icon-marked-width: 0%;' }}">
