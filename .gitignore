@@ -14,3 +14,6 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+
+/Database - multivendor_ecommerce
+/Postman Collection of API Endpoints
