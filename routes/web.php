@@ -189,16 +189,11 @@ Route::get('orders/invoice/download/{id}', 'App\Http\Controllers\Admin\OrderCont
 Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::get('/', ['as' => 'home', 'uses' => 'IndexController@index']);
 
-
-    // Dynamic Routes for the `url` column in the `categories` table using a foreach loop    // Listing/Categories Routes
-    // Important Note: When you run this Laravel project for the first time and if you're running  the "php artisan migrate" command for the first time, before that you must comment out the $catUrls variable and the following foreach loop in web.php file (routes file), because when we run that artisan command, by then the `categories` table has not been created yet, and this causes an error, so make sure to comment out this code in web.php file before running the "php artisan migrate" command for the first time.
-    $catUrls = \App\Models\Category::select('url')->where('status', 1)->get()->pluck('url')->toArray(); // Routes like: /men, /women, /shirts, ...
-    // dd($catUrls);
-    foreach ($catUrls as $key => $url) {
-        // Important Note: When you run this Laravel project for the first time and if you're running  the "php artisan migrate" command for the first time, before that you must comment out the $catUrls variable and the following foreach loop in web.php file (routes file), because when we run that artisan command, by then the `categories` table has not been created yet, and this causes an error, so make sure to comment out this code in web.php file before running the "php artisan migrate" command for the first time.
-        Route::match(['get', 'post'], '/' . $url, 'ProductsController@listing')->name('listing'); // used match() for the HTTP 'GET' requests to render listing.blade.php page and the HTTP 'POST' method for the AJAX request of the Sorting Filter or the HTML Form submission and jQuery for the Sorting Filter WITHOUT AJAX, AND ALSO for submitting the Search Form in listing.blade.php    // e.g.    /men    or    /computers    // Important Note: When you run this Laravel project for the first time and if you're running  the "php artisan migrate" command for the first time, before that you must comment out the $catUrls variable and the following foreach loop in web.php file (routes file), because when we run that artisan command, by then the `categories` table has not been created yet, and this causes an error, so make sure to comment out this code in web.php file before running the "php artisan migrate" command for the first time.
-    }
-
+    /**
+     * type = collection/category/vendor/search
+     * name = {type}_name
+     */
+    Route::get('products/{type}/{name?}', 'ProductsController@listing')->name('listing');
 
     // Vendor Login/Register
     Route::get('vendor/login-register', 'VendorController@loginRegister'); // render vendor login_register.blade.php page
@@ -214,9 +209,6 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
     // The AJAX call from front/js/custom.js file, to show the the correct related `price` and `stock` depending on the selected `size` (from the `products_attributes` table)) by clicking the size <select> box in front/products/detail.blade.php
     Route::post('get-product-price', 'ProductsController@getProductPrice');
-
-    // Show all Vendor products in front/products/vendor_listing.blade.php    // This route is accessed from the <a> HTML element in front/products/vendor_listing.blade.php
-    Route::get('/products/{vendorid}', 'ProductsController@vendorListing');
 
     // Add to Cart <form> submission in front/products/detail.blade.php
     Route::post('cart/add', 'ProductsController@cartAdd');
@@ -251,7 +243,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::get('user/confirm/{code}', 'UserController@confirmAccount'); // {code} is the base64 encoded user's 'Activation Code' sent to the user in the Confirmation E-mail with which they have registered, which is received as a Route Parameters/URL Paramters in the 'Activation Link'    // this route is requested (accessed/opened) from inside the mail sent to user (in resources/views/emails/confirmation.blade.php)
 
     // Website Search Form (to search for all website products). Check the HTML Form in front/layout/header.blade.php
-    Route::get('search-products', 'ProductsController@listing');
+    Route::get('search-products', 'ProductsController@listing')->name('search.listing');
 
     // PIN code Availability Check: check if the PIN code of the user's Delivery Address exists in our database (in both `cod_pincodes` and `prepaid_pincodes`) or not in front/products/detail.blade.php via AJAX. Check front/js/custom.js
     Route::post('check-pincode', 'ProductsController@checkPincode');
@@ -264,11 +256,6 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
     // Add Rating & Review on a product in front/products/detail.blade.php
     Route::post('add-rating', 'RatingController@addRating');
-
-    // Collections
-    Route::get('collection/{collectionname}', ['as' => 'shop_category', 'uses' => 'SectionsController@index']);
-
-
 
 
     // Protecting the routes of user (user must be authenticated/logged in) (to prevent access to these links while being unauthenticated/not being logged in (logged out))

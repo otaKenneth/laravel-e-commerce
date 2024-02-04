@@ -4,12 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ProductsFilter extends Model
 {
     use HasFactory;
 
-
+    public function categories() {
+        return $this->select([
+            'products_filters.id',
+            DB::raw('SUBSTRING_INDEX(SUBSTRING_INDEX(products_filters.cat_ids, ",", categories.id), ",", -1) as `category_id`'),
+            'products_filters.filter_name'
+        ])
+            ->join('categories', function ($join) {
+                $join->whereRaw('CHAR_LENGTH(products_filters.cat_ids) - CHAR_LENGTH(REPLACE(products_filters.cat_ids, ",", "")) >= categories.id - 1');
+            })
+            ->where('products_filters.status', 1)
+            ->orderBy('products_filters.id')
+            ->orderBy('categories.id');
+    }
 
     // this method is called in admin\filters\filters_values.blade.php to be able to translate the `filter_id` column to filter names to show them in the table in filters_values.blade.php in the Admin Panel    
     public static function getFilterName($filter_id) {
@@ -46,8 +59,8 @@ class ProductsFilter extends Model
 
         $catIdsArray = explode(',', $filterAvailable['cat_ids']); // convert the string `cat_ids` column of the `products_filters` database table to an array
 
-
-        if (in_array($category_id, $catIdsArray)) {
+        // dd(array_intersect($catIdsArray, $category_id));
+        if (array_intersect($category_id, $catIdsArray)) {
             $available = 'Yes';
         } else {
             $available = 'No';
@@ -56,8 +69,6 @@ class ProductsFilter extends Model
 
         return $available;
     }
-
-
 
     // Get the sizes of a product from a URL (URL of the category)    
     public static function getSizes($url) { // this method is used in filters.blade.php
