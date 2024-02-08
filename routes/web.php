@@ -180,10 +180,22 @@ Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Ad
 // User download order PDF invoice (We'll use the same viewPDFInvoice() function (but with different routes/URLs!) to render the PDF invoice for 'admin'-s in the Admin Panel and for the user to download it!) (we created this route outside outside the Admin Panel routes so that the user could use it!)
 Route::get('orders/invoice/download/{id}', 'App\Http\Controllers\Admin\OrderController@viewPDFInvoice');
 
+Route::get('storage/{filename}', function ($filename)
+{
+    $path = storage_path($filename);
 
+    if (!File::exists($path)) {
+        abort(404);
+    }
 
+    $file = File::get($path);
+    $type = File::mimeType($path);
 
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
 
+    return $response;
+});
 
 // Second: FRONT section routes:
 Route::namespace('App\Http\Controllers\Front')->group(function() {
