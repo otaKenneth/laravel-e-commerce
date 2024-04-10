@@ -1,5 +1,27 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home1/hryftate/repositories/kapiton-uat/
-    - /bin/cp -R images $DEPLOYPATH
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to cPanel
+        run: |
+          export DEPLOYPATH=/home1/hryftate/repositories/kapiton-uat/
+          /bin/cp -R . $DEPLOYPATH
+
+      - name: Copy files to UAT directory
+        run: |
+          /bin/cp -R /home1/hryftate/repositories/kapiton-uat/public /home1/hryftate/UAT
+
+      - name: Copy files to seller.kapiton.store directory
+        run: |
+          /bin/cp -R /home1/hryftate/repositories/kapiton-uat/public /home1/hryftate/seller.kapiton.store
