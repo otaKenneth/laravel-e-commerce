@@ -60,6 +60,7 @@
                             </div>
                         </div>
                         <!-- LIST OF PERSON/MERCHANT HERE chat-list-of-merchant.blade.php -->
+                        <div id="container-chat-list">@include('front.chats.chat-list-of-merchant')</div>
                     </div>
                     <div
                         class="elementor-element elementor-element-1c203fa e-flex e-con-boxed e-con e-child"
@@ -125,6 +126,7 @@
                                 </div>
                             </div>
                             <!-- CHATS CONVERSATION HERE conversation-div.blade.php -->
+                            <div id="container-chat-convo">@include('front.chats.conversation-div')</div>
                             <div
                                 class="elementor-element elementor-element-b183ae1 elementor-widget__width-initial elementor-button-align-stretch elementor-widget elementor-widget-form"
                                 data-id="b183ae1"
