@@ -15,6 +15,14 @@ class OrdersProduct extends Model
         return $this->hasOneThrough('\App\Models\Category', '\App\Models\Product', 'id', 'id');
     }
 
+    public function vendor() {
+        return $this->hasOne(Vendor::class, 'id', 'vendor_id');
+    }
+
+    public function product() {
+        return $this->hasOne('\App\Models\Product', 'id', 'product_id')->with('category');
+    }
+
     public static function hasUserOrderedThisProduct($user_id, $product_id) {
         return OrdersProduct::select('id')
             ->where('user_id', $user_id)

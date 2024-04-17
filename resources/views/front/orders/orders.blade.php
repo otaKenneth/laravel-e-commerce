@@ -160,7 +160,7 @@
                                             >
                                                 <div class="elementor-widget-container">
                                                     <h6 class="elementor-heading-title elementor-size-default">ORDER ID:  &nbsp;
-                                                        <span style="font-size: 26px; color: black;">001​</span>
+                                                        <span style="font-size: 26px; color: black;">{{$order->id}}​</span>
                                                     </h6>
                                                 </div>
                                             </div>
@@ -172,10 +172,17 @@
                                             >
                                                 <div class="elementor-widget-container">
                                                     <h6 class="elementor-heading-title elementor-size-default">STATUS:  &nbsp;
-                                                        <span style="font-size: 15px; color: black;">COMPLETED</span>
+                                                        <span style="font-size: 15px; color: black;">{{$order->order_status}}</span>
                                                     </h6>
                                                 </div>
                                             </div>
+                                            @php
+                                                $orders_subtotal = 0;
+                                            @endphp
+                                            @foreach ($order->orders_products as $product)
+                                            @php
+                                                $product_image_path = 'front/images/product_images/small/' . $product->product->product_image;
+                                            @endphp
                                             <div
                                                 class="elementor-element elementor-element-958a31e e-con-full e-flex e-con e-child"
                                                 data-id="958a31e"
@@ -195,17 +202,33 @@
                                                         data-widget_type="image.default"
                                                     >
                                                         <div class="elementor-widget-container">
-                                                            <img
-                                                                fetchpriority="high"
-                                                                decoding="async"
-                                                                width="800"
-                                                                height="968"
-                                                                src="./images/2023-12-features-for-Accounting-Software-1-846x1024.png"
-                                                                class="attachment-large size-large wp-image-422"
-                                                                alt=""
-                                                                srcset="./images/2023-12-features-for-Accounting-Software-1-846x1024.png 846w, ./images/2023-12-features-for-Accounting-Software-1-248x300.png 248w, ./images/2023-12-features-for-Accounting-Software-1-768x930.png 768w, ./images/2023-12-features-for-Accounting-Software-1.png 879w"
-                                                                sizes="(max-width: 800px) 100vw, 800px"
-                                                            >
+                                                        @if (!empty($product->product->product_image) && file_exists($product_image_path))
+                                                        {{-- if the product image exists in BOTH database table AND filesystem (on server) --}}
+                                                        <img
+                                                            loading="lazy"
+                                                            decoding="async"
+                                                            width="800"
+                                                            height="968"
+                                                            src="{{ asset($product_image_path) }}"
+                                                            class="attachment-large size-large wp-image-422"
+                                                            alt=""
+                                                            srcset="{{ asset($product_image_path) }} 846w, {{ asset($product_image_path) }} 248w, {{ asset($product_image_path) }} 768w, {{ asset($product_image_path) }} 879w"
+                                                            sizes="(max-width: 800px) 100vw, 800px"
+                                                        >
+                                                        @else
+                                                        {{-- show the dummy image --}}
+                                                        <img
+                                                            loading="lazy"
+                                                            decoding="async"
+                                                            width="800"
+                                                            height="968"
+                                                            src="{{ asset('front/images/product/no-available-image.jpg')}}"
+                                                            class="attachment-large size-large wp-image-422"
+                                                            alt=""
+                                                            srcset="{{ asset('front/images/product/no-available-image.jpg') }} 846w, {{ asset('front/images/product/no-available-image.jpg.png') }} 248w, {{ asset('front/images/product/no-available-image.jpg') }} 768w, {{ asset('front/images/product/no-available-image.jpg') }} 879w"
+                                                            sizes="(max-width: 800px) 100vw, 800px"
+                                                        >
+                                                        @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -228,7 +251,7 @@
                                                             data-widget_type="heading.default"
                                                         >
                                                             <div class="elementor-widget-container">
-                                                                <h6 class="elementor-heading-title elementor-size-default">ELECTRONICS</h6>
+                                                                <h6 class="elementor-heading-title elementor-size-default">{{$product->product->category->category_name}}</h6>
                                                             </div>
                                                         </div>
                                                         <div
@@ -238,7 +261,7 @@
                                                             data-widget_type="heading.default"
                                                         >
                                                             <div class="elementor-widget-container">
-                                                                <h2 class="elementor-heading-title elementor-size-default">Kreyon SOFTWARE</h2>
+                                                                <h2 class="elementor-heading-title elementor-size-default">{{$product->product_name}}</h2>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -255,14 +278,18 @@
                                                             data-widget_type="heading.default"
                                                         >
                                                             <div class="elementor-widget-container">
-                                                                <h2 class="elementor-heading-title elementor-size-default">1 x
-                                                                    <b>₱599.99</b>
+                                                                <h2 class="elementor-heading-title elementor-size-default">{{$product->product_qty}} x
+                                                                    <b>₱{{$product->product_price}}</b>
                                                                 </h2>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            @php
+                                                $orders_subtotal += ($product->product_price * $product->product_qty);
+                                            @endphp
+                                            @endforeach
                                             <div
                                                 class="elementor-element elementor-element-f0891eb e-flex e-con-boxed e-con e-child"
                                                 data-id="f0891eb"
@@ -278,12 +305,12 @@
                                                     >
                                                         <div class="elementor-widget-container">
                                                             <p>Placed on
-                                                                <strong>January 4, 2024 at 9:04</strong>
+                                                                <strong>{{date_format(date_create($order->created_at), 'M d, Y h:i a')}}</strong>
                                                                 <br>Payment Method
-                                                                <strong>Debit via Paymongo
+                                                                <strong>{{$order->payment_method}}
                                                                     <br>
-                                                                </strong>Shipping Method
-                                                                <strong>Outside Metro Manila 5-9 business days</strong>
+                                                                </strong>Tracking Number
+                                                                <strong>{{$order->tracking_number}}</strong>
                                                             </p>
                                                         </div>
                                                     </div>
@@ -311,7 +338,7 @@
                                                                 data-widget_type="text-editor.default"
                                                             >
                                                                 <div class="elementor-widget-container">
-                                                                    <p>₱ 1,199.99</p>
+                                                                    <p>₱ {{$orders_subtotal}}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -330,7 +357,7 @@
                                                                 data-widget_type="text-editor.default"
                                                             >
                                                                 <div class="elementor-widget-container">
-                                                                    <p>Tax (8.0%)</p>
+                                                                    <p>Shipping Fee</p>
                                                                 </div>
                                                             </div>
                                                             <div
@@ -340,7 +367,7 @@
                                                                 data-widget_type="text-editor.default"
                                                             >
                                                                 <div class="elementor-widget-container">
-                                                                    <p>₱ 123.00</p>
+                                                                    <p>₱ {{$order->shipping_charges}}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -369,7 +396,7 @@
                                                                 data-widget_type="text-editor.default"
                                                             >
                                                                 <div class="elementor-widget-container">
-                                                                    <p>₱2,232.00</p>
+                                                                    <p>₱{{number_format($order->grand_total)}}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
