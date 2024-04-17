@@ -49,7 +49,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
     Route::get('merchants', 'VendorController@vendorList')->name('front.user.merchants');
 
-    Route::get('become-merchant', 'VendorController@becomeMerchant')->name('front.vendor.become-merchant');
+    Route::get('become-merchant', 'VendorController@becomeMerchant')->name('front.become-merchant');
 
 
     // Render User Login/Register page (front/users/login_register.blade.php)
