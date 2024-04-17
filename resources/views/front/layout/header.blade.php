@@ -192,7 +192,7 @@ $sections = \App\Models\Section::sections();
                                     gap: 20px;
                                 }
                             </style>
-                            <h6 class="elementor-heading-title elementor-size-default"><a href="{{ url('/vendor/register') }}">Become a Seller</a></h6>
+                            <h6 class="elementor-heading-title elementor-size-default"><a href="{{ url('become-merchant') }}">Become a Seller</a></h6>
                             <h6 class="elementor-heading-title elementor-size-default">
                                 {{-- If the user is authenticated/logged in, show 'My Account', if not, show 'Login/Register' --}} 
                                 @if (\Illuminate\Support\Facades\Auth::check()) {{-- Determining If The Current User Is Authenticated: https://laravel.com/docs/9.x/authentication#determining-if-the-current-user-is-authenticated --}}
