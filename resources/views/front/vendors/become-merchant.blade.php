@@ -369,7 +369,8 @@
                                         content: "" !important
                                     }
                                 </style>
-                                <form class="elementor-form" method="post" name="VENDOR INITIAL REGISTER">
+                                <form id="form-vendor_registration" method="post" action="{{ url('vendor/registration') }}" name="vendor_registration_form">
+                                    @csrf
                                     <input type="hidden" name="post_id" value="1761" /> <input type="hidden"
                                         name="form_id" value="999e272" /> <input type="hidden"
                                         name="referer_title" value="Become a Merchant" /> <input
@@ -385,7 +386,7 @@
                                             <label for="form-field-field_f4dd461"
                                                 class="elementor-field-label elementor-screen-only"> First
                                                 Name </label> <input size="1" type="text"
-                                                name="form_fields[field_f4dd461]"
+                                                name="firstname"
                                                 id="form-field-field_f4dd461"
                                                 class="elementor-field elementor-size-sm  elementor-field-textual"
                                                 placeholder="First Name" required="required"
@@ -395,7 +396,7 @@
                                             <label for="form-field-field_6c586bc"
                                                 class="elementor-field-label elementor-screen-only"> Last
                                                 Name </label> <input size="1" type="text"
-                                                name="form_fields[field_6c586bc]"
+                                                name="lastname"
                                                 id="form-field-field_6c586bc"
                                                 class="elementor-field elementor-size-sm  elementor-field-textual"
                                                 placeholder="Last Name" required="required"
@@ -409,7 +410,7 @@
                                             <label for="form-field-email"
                                                 class="elementor-field-label elementor-screen-only">
                                                 Personal Email </label> <input size="1" type="email"
-                                                name="form_fields[email]" id="form-field-email"
+                                                name="email" id="form-field-email"
                                                 class="elementor-field elementor-size-sm  elementor-field-textual"
                                                 placeholder="Email" required="required"
                                                 aria-required="true"> </div>
@@ -418,7 +419,7 @@
                                             <label for="form-field-field_7a61936"
                                                 class="elementor-field-label elementor-screen-only"> Contact
                                                 No. </label> <input size="1" type="text"
-                                                name="form_fields[field_7a61936]"
+                                                name="mobile"
                                                 id="form-field-field_7a61936"
                                                 class="elementor-field elementor-size-sm  elementor-field-textual"
                                                 placeholder="Contact No." required="required"
@@ -432,7 +433,7 @@
                                             <label for="form-field-field_64c2190"
                                                 class="elementor-field-label elementor-screen-only">
                                                 Business Name </label> <input size="1" type="text"
-                                                name="form_fields[field_64c2190]"
+                                                name="business[shop_name]"
                                                 id="form-field-field_64c2190"
                                                 class="elementor-field elementor-size-sm  elementor-field-textual"
                                                 placeholder="Business Name" required="required"
@@ -457,11 +458,11 @@
                                                         <path
                                                             d="M571 393Q571 407 561 418L311 668Q300 679 286 679T261 668L11 418Q0 407 0 393T11 368 36 357H536Q550 357 561 368T571 393Z">
                                                         </path>
-                                                    </svg> </div> <select name="form_fields[field_40e18b7]"
+                                                    </svg> </div> <select name="business[wdyfu]"
                                                     id="form-field-field_40e18b7"
                                                     class="elementor-field-textual elementor-size-sm"
                                                     required="required" aria-required="true">
-                                                    <option value="Facebook">Facebook</option>
+                                                    <option value="Facebook" selected>Facebook</option>
                                                     <option value="Instagram">Instagram</option>
                                                     <option value="LinkedIn">LinkedIn</option>
                                                     <option value="Referral">Referral</option>
@@ -469,6 +470,15 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger">
+                                                <ul>
+                                                    @foreach ($errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
                                         <div
                                             class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100 e-form__buttons">
                                             <button type="submit"
