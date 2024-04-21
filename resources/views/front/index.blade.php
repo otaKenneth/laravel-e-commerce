@@ -819,7 +819,7 @@
                                 role="img"
                                 aria-label="Rated 4 out of 5"
                             >
-                              <label>4.5</label>
+                              <label>{{ \App\Models\Rating::productRating($product['id']) }}</label>
                                 <div class="e-icon">
                                     <div class="e-icon-wrapper e-icon-marked" style="">
                                         <svg
