@@ -38,6 +38,7 @@
                     </div>
                 </div>
                 <div
+                    id="ks-become-a-merchant"
                     class="elementor-element elementor-element-eb6c994 elementor-widget__width-inherit elementor-invisible elementor-widget elementor-widget-text-editor"
                     data-id="eb6c994"
                     data-element_type="widget"

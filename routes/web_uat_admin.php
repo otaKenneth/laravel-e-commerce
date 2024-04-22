@@ -151,5 +151,7 @@ Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Ad
     
         // Delete a Rating via AJAX in admin/ratings/ratings.blade.php, check admin/js/custom.js
         Route::get('delete-rating/{id}', 'RatingController@deleteRating'); 
+
+        Route::get('platform-management', 'PlatformContentController@index');
     });
 });
