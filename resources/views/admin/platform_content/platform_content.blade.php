@@ -25,10 +25,11 @@
                         <div class="elementor-element elementor-element-d3b7a2e elementor-widget elementor-widget-html"
                             data-id="d3b7a2e" data-element_type="widget" data-widget_type="html.default">
                             <div class="elementor-widget-container">
-                                <form> <select style="border-radius: 10px;">
+                                <form> <select id="pcontents-select" style="border-radius: 10px;">
                                         <option value="select">Select</option>
-                                        <option value="Who we are">Who we are</option>
-                                        <option value="Who we are">Become a merchant</option>
+                                        @foreach ($pcontents as $content)
+                                            <option value="{{$content->id}}">{{$content->page}} - {{$content->container}}</option>
+                                        @endforeach
                                     </select> </form>
                             </div>
                         </div>

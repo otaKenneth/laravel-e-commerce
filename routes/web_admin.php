@@ -153,5 +153,6 @@ Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Ad
         Route::get('delete-rating/{id}', 'RatingController@deleteRating'); 
 
         Route::get('platform-management', 'PlatformContentController@index');
+        Route::get('platform-management/{pcontent}', 'PlatformContentController@show');
     });
 });

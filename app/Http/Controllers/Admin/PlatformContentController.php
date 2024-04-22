@@ -11,7 +11,11 @@ class PlatformContentController extends Controller
     //
 
     public function index() {
-        $pcontents = PlatformContent::all();
+        $pcontents = PlatformContent::select('id', 'page', 'container')->get();
         return view('admin.platform_content.platform_content')->with(compact('pcontents'));
+    }
+
+    public function show(PlatformContent $pcontent) {
+        return response()->json(['content' => $pcontent->content]);
     }
 }

@@ -562,4 +562,29 @@ $(document).ready(function() {
         })
     })
 
+    $('#pcontents-select').change(function (ev) {
+        let pcontent_id = $(ev.currentTarget).val();
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type   : 'get',
+            url    : 'platform-management/' + pcontent_id, // check this route in web.php
+            success: function(resp) {
+                if (resp && resp.content) {
+                    // Get the TinyMCE editor instance
+                    var editor = tinymce.get('tinymce');
+
+                    // Check if the editor instance exists
+                    if (editor) {
+                        // Update the content of the editor
+                        let content = resp.content == null ? '':resp.content;
+                        editor.setContent(content);
+                    } else {
+                        console.error('TinyMCE editor instance not found.');
+                    }
+                }
+            }
+        });
+    })
+
 }); // End of $(document).ready()
