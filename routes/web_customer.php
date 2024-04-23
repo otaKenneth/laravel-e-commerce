@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::get('/', ['as' => 'home', 'uses' => 'IndexController@index']);
 
+    Route::get('/getKSContainerContent', 'IndexController@getKSContainerContent');
     /**
      * type = collection/category/vendor/search
      * name = {type}_name

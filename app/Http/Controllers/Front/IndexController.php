@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\PlatformContent;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -38,5 +39,9 @@ class IndexController extends Controller
     }
     public function aboutUsManagement() {
         return view('front.pages.management');
+    }
+
+    public function getKSContainerContent(Request $request) {
+        return PlatformContent::where('page', $request->page)->orWhere('page', '')->orWhere('page', '/')->get();
     }
 }
