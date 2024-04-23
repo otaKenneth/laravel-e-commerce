@@ -36,7 +36,7 @@
                         <div class="elementor-element elementor-element-719c1ba elementor-widget elementor-widget-html"
                             data-id="719c1ba" data-element_type="widget" data-widget_type="html.default">
                             <div class="elementor-widget-container">
-                                <div> <textarea id="tinymce"></textarea> </div>
+                                <div> <textarea id="tinymce">Aaaa...</textarea> </div>
                                 <script>
                                     $('textarea#tinymce').tinymce({
                                         height: 300,
@@ -49,10 +49,10 @@
                         <div class="elementor-element elementor-element-4d9c8a1 elementor-widget__width-inherit elementor-align-justify elementor-widget elementor-widget-button"
                             data-id="4d9c8a1" data-element_type="widget" data-widget_type="button.default">
                             <div class="elementor-widget-container">
-                                <div class="elementor-button-wrapper"> <a
+                                <div class="elementor-button-wrapper"> <button id="pcontents-save-btn"
                                         class="elementor-button elementor-button-link elementor-size-sm"
                                         href="#"> <span class="elementor-button-content-wrapper"> <span
-                                                class="elementor-button-text">SAVE</span> </span> </a>
+                                                class="elementor-button-text">SAVE</span> </span> </button>
                                 </div>
                             </div>
                         </div>

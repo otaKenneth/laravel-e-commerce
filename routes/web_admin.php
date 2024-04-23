@@ -154,5 +154,6 @@ Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Ad
 
         Route::get('platform-management', 'PlatformContentController@index');
         Route::get('platform-management/{pcontent}', 'PlatformContentController@show');
+        Route::post('platform-management/{pcontent}/update', 'PlatformContentController@edit');
     });
 });

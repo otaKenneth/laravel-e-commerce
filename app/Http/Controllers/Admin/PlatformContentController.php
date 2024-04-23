@@ -18,4 +18,20 @@ class PlatformContentController extends Controller
     public function show(PlatformContent $pcontent) {
         return response()->json(['content' => $pcontent->content]);
     }
+
+    public function edit(Request $request, PlatformContent $pcontent) {
+        $this->validate($request, [
+            'content' => 'required|string'
+        ]);
+
+        // Get the content from the request
+        $content = $request->input('content');
+
+        // Update or save the content in the database
+        $pcontent->content = $content;
+        $pcontent->save();
+
+        // Return a response if needed
+        return response()->json(['message' => 'Content saved successfully']);
+    }
 }

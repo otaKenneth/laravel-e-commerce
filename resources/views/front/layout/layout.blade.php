@@ -420,6 +420,21 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14
                 <script type="text/javascript" src="{{ url($css_header['javascript_src']) . '?date=' . date('m-d-Y h:m:s') }}"></script>
             @endif
         @endforeach
+        <script>   
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                url: "/getKSContainerContent",
+                method: "get",
+                data: {
+                    'page': "{{$currentRoute}}"
+                },
+                success: (resp) => {
+                    resp.forEach(content => {
+                        $(`#${content.container} > div`).html(content.content);
+                    });
+                }
+            })
+        </script>
 
 
 

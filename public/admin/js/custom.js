@@ -562,9 +562,11 @@ $(document).ready(function() {
         })
     })
 
+    console.log('shiftttt');
+
     $('#pcontents-select').change(function (ev) {
         let pcontent_id = $(ev.currentTarget).val();
-
+        console.log(ev);
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type   : 'get',
@@ -583,6 +585,22 @@ $(document).ready(function() {
                         console.error('TinyMCE editor instance not found.');
                     }
                 }
+            }
+        });
+    })
+
+    $('#pcontents-save-btn').click(function (ev) {
+        let pcontent_id = $('#pcontents-select').val();
+        var editor = tinymce.get('tinymce');
+        var htmlContent = editor.getContent();
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type   : 'post',
+            url    : 'platform-management/' + pcontent_id + '/update', // check this route in web.php
+            data   : {'content': htmlContent},
+            success: function(resp) {
+                console.log(resp)
             }
         });
     })
