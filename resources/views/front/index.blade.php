@@ -484,16 +484,14 @@
                     </div>
                 </div>
                 <div
+                    id="ks-who-are-we"
                     class="elementor-element elementor-element-174cf2a elementor-widget__width-inherit elementor-invisible elementor-widget elementor-widget-text-editor"
                     data-id="174cf2a"
                     data-element_type="widget"
                     data-settings="{&quot;_animation&quot;:&quot;fadeInLeft&quot;}"
                     data-widget_type="text-editor.default"
                 >
-                    <div class="elementor-widget-container">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut quam iaculis, mattis elit nec, consectetur mi. Duis libero massa, dignissim sed eros et, tincidunt cursus lorem. Morbi non dolor quis libero sollicitudin volutpat non a massa. Nunc tellus lectus, pulvinar dapibus vehicula vel, feugiat sodales nunc. Curabitur quis velit ac turpis egestas ultricies.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut quam iaculis, mattis elit nec, consectetur mi.</p>
-                    </div>
+                    <div class="elementor-widget-container"></div>
                 </div>
                 <div
                     class="elementor-element elementor-element-d7501db elementor-widget__width-auto elementor-invisible elementor-widget elementor-widget-button"
@@ -819,7 +817,7 @@
                                 role="img"
                                 aria-label="Rated 4 out of 5"
                             >
-                              <label>4.5</label>
+                              <label>{{ \App\Models\Rating::productRating($product['id']) }}</label>
                                 <div class="e-icon">
                                     <div class="e-icon-wrapper e-icon-marked" style="">
                                         <svg

@@ -250,6 +250,13 @@
                     </ul>
                 </div>
             </li>
+
+            <li class="nav-item">
+                <a @if (in_array(Session::get('page'), ['platform_management'])) style="background: #052CA3 !important; color: #FFF !important" @endif class="nav-link" href="{{ url('admin/platform-management') }}">
+                    <i class="icon-layout menu-icon"></i>
+                    <span class="menu-title">Platform Management</span>
+                </a>
+            </li>
         @endif
 
 
