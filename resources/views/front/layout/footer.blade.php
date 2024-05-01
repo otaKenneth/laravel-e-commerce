@@ -38,6 +38,7 @@
                     </div>
                 </div>
                 <div
+                    id="ks-become-a-merchant"
                     class="elementor-element elementor-element-eb6c994 elementor-widget__width-inherit elementor-invisible elementor-widget elementor-widget-text-editor"
                     data-id="eb6c994"
                     data-element_type="widget"
@@ -58,7 +59,7 @@
                 >
                     <div class="elementor-widget-container">
                         <div class="elementor-button-wrapper">
-                            <a class="elementor-button elementor-button-link elementor-size-sm" href="{{ url('/vendor/register') }}">
+                            <a class="elementor-button elementor-button-link elementor-size-sm" href="{{ url('/become-merchant') }}">
                                 <span class="elementor-button-content-wrapper">
                                     <span class="elementor-button-text">LEARN MORE</span>
                                 </span>

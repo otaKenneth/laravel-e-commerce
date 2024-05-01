@@ -131,6 +131,7 @@
                     </div>
                 </div>
                 <div
+                    id="ks-about-us"
                     class="elementor-element elementor-element-b6714eb elementor-widget elementor-widget-text-editor"
                     data-id="b6714eb"
                     data-element_type="widget"
@@ -153,6 +154,7 @@
                     </div>
                 </div>
                 <div
+                    id="ks-about-us-our-vision"
                     class="elementor-element elementor-element-4b9ac2a elementor-widget elementor-widget-text-editor"
                     data-id="4b9ac2a"
                     data-element_type="widget"
@@ -173,6 +175,7 @@
                     </div>
                 </div>
                 <div
+                    id="ks-about-us-our-mission"
                     class="elementor-element elementor-element-c35a06c elementor-widget elementor-widget-text-editor"
                     data-id="c35a06c"
                     data-element_type="widget"

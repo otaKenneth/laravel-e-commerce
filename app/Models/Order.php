@@ -16,7 +16,8 @@ class Order extends Model
 
     // Relationship of an Order `orders` table with Order_Products `orders_products` table (every Order has many Order_Products)    
     public function orders_products() {    
-        return $this->hasMany('App\Models\OrdersProduct', 'order_id'); // 'order_id' (column of `orders_products` table) is the Foreign Key of the Relationship
+        return $this->hasMany('App\Models\OrdersProduct', 'order_id')
+            ->with('product', 'vendor'); // 'order_id' (column of `orders_products` table) is the Foreign Key of the Relationship
     }
 
     public function orders_products_categories() {

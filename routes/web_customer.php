@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::get('/', ['as' => 'home', 'uses' => 'IndexController@index']);
 
+    Route::get('/getKSContainerContent', 'IndexController@getKSContainerContent');
     /**
      * type = collection/category/vendor/search
      * name = {type}_name
@@ -22,6 +23,8 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     // Confirm Vendor Account (from 'vendor_confirmation.blade.php) from the mail by Mailtrap
     Route::get('vendor/confirm/{code}', 'VendorController@confirmVendor'); // {code} is the base64 encoded vendor e-mail with which they have registered which is a Route Parameters/URL Paramters: https://laravel.com/docs/9.x/routing#required-parameters    // this route is requested (accessed/opened) from inside the mail sent to vendor (vendor_confirmation.blade.php)
 
+    Route::get('vendor/email-confirmed', 'VendorController@vendorEmailConfirmed')->name('vendor.email_confirmed');
+    
     // Render Single Product Detail Page in front/products/detail.blade.php
     Route::get('/product/{id}', ['as' => 'product_detail.show', 'uses' => 'ProductsController@detail']);
 
@@ -48,6 +51,8 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::get('management', 'IndexController@aboutUsManagement')->name('front.user.management');
 
     Route::get('merchants', 'VendorController@vendorList')->name('front.user.merchants');
+
+    Route::get('become-merchant', 'VendorController@becomeMerchant')->name('front.become-merchant');
 
 
     // Render User Login/Register page (front/users/login_register.blade.php)
