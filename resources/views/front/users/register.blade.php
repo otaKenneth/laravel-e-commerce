@@ -165,6 +165,14 @@
                                                     <span class="elementor-button-text">Create</span>
                                                 </span>
                                             </button>
+                                            <a href="{{url('auth/google')}}" class="btn bth-lg-primaty btn-block">
+                                                <button type="button" class="elementor-button elementor-size-sm">
+                                                    <span>
+                                                        <span class="elementor-button-icon"></span>
+                                                        <span class="elementor-button-text">Sign up with Google</span>
+                                                    </span>
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </form>

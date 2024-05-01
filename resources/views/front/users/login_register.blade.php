@@ -104,6 +104,14 @@
                                                     <span class="elementor-button-text">Sign in</span>
                                                 </span>
                                             </button>
+                                            <a href="{{url('auth/google')}}" class="btn bth-lg-primaty btn-block">
+                                                <button type="button" class="elementor-button elementor-size-sm">
+                                                    <span>
+                                                        <span class="elementor-button-icon"></span>
+                                                        <span class="elementor-button-text">Sign in with Google</span>
+                                                    </span>
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </form>
@@ -122,6 +130,9 @@
                                 </p>
                             </div>
                         </div>
+                        @if(isset(session('errors')->messages->error_message))
+                            <span>{{ session('errors')->messages->error_message[0] }}</span>
+                        @endif
                     </div>
                 </div>
             </div>
