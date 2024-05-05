@@ -10,7 +10,7 @@ class Chats extends Model
     use HasFactory;
 
     protected $table = 'chats';
-    protected $with = ['messages', 'vendor'];
+    protected $with = ['messages'];
     
     public function messages ()
     {
@@ -19,6 +19,11 @@ class Chats extends Model
 
     public function vendor()
     {
-        return $this->hasOneThrough(Vendor::class, ChatMessages::class, 'chat_id', 'id', 'id', 'vendor_id');
+        return $this->hasOneThrough(Admin::class, ChatMessages::class, 'chat_id', 'id', 'id', 'admin_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOneThrough(User::class, ChatMessages::class, 'chat_id', 'id', 'id', 'user_id');
     }
 }
