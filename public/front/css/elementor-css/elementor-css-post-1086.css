@@ -91,3 +91,10 @@
 	src: url(./../../fonts/Lexend-Medium.ttf) format('truetype');
 }
 /* End Custom Fonts CSS */
+
+
+/* CUSTOM CSS NINO FELICIANO */
+#container-chat-list,
+#container-chat-convo{
+	overflow: auto;
+}
