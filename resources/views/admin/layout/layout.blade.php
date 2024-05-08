@@ -144,6 +144,17 @@
             <script src="https://cdn.jsdelivr.net/npm/@tinymce/tinymce-jquery@1/dist/tinymce-jquery.min.js"></script>
             
 
+            <!-- SHOW  THIS ONLY FOR CHAT ADMIN PAGE -->
+            <link
+                rel="stylesheet"
+                href="{{ url('front/css/elementor-css/elementor-css-post-1086.css') }}"
+                media="all">
+            <link
+                rel="stylesheet"
+                href="{{ url('front/css/elementor-css/elementor-assets-css-frontend-lite.min.css') }}"
+                media="all">
+            <!-- SHOW  THIS ONLY FOR CHAT ADMIN PAGE -->
+
 
     </head>
     <body>

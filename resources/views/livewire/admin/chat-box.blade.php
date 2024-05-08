@@ -1,7 +1,7 @@
 <div
     data-elementor-type="wp-page"
     data-elementor-id="1086"
-    class="elementor elementor-1086"
+    class="elementor elementor-1086 admin-chat"
     data-elementor-post-type="page"
 >
     <div
@@ -11,7 +11,7 @@
         data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
         data-core-v316-plus="true"
     >
-        <div class="e-con-inner">
+        <div class="e-con-inner outer-e-con-custom">
             <div
                 class="elementor-element elementor-element-aca939b login-container e-flex e-con-boxed e-con e-child"
                 data-id="aca939b"

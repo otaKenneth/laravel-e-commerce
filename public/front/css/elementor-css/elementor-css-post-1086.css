@@ -98,3 +98,18 @@
 #container-chat-convo{
 	overflow: auto;
 }
+.admin-chat{
+	width: 100%;
+}
+.admin-chat .outer-e-con-custom{
+	max-width: 900px !important;
+}
+.admin-chat .elementor-element-be0fba5{
+	min-height: 100vh;
+}
+.admin-chat .elementor-button{
+	background: #5F7A61 !important;
+}
+.admin-chat #container-chat-list p{
+	color: #1f1f22 !important;
+}
