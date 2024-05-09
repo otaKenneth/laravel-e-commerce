@@ -5,7 +5,7 @@
     data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}">
     <div class="e-con-inner">
         @foreach ($activeChat->messages as $message)
-            @if (strpos(strtolower($message->from), 'vendor') > -1)
+            @if (strpos(strtolower($message->from), 'admin') > -1)
             <div
                 class="elementor-element elementor-element-419ad9e e-flex e-con-boxed e-con e-child"
                 data-id="419ad9e"
