@@ -32,4 +32,25 @@ class ChatBox extends Component
         $chatRecord = Auth::guard('admin')->user()->chats()->with(['user'])->where('chats.id', $chat_id)->first(); 
         $this->activeChat = $chatRecord;
     }
+
+    public function sendMessage()
+    {
+        if ($this->message !== "") {
+            $this->activeChat->messages()->create([
+                'message' => $this->message,
+                'admin_id' => Auth::guard('admin')->user()->id,
+                'user_id' => $this->activeChat->user->id,
+                'from' => "\App\Models\Admin"
+            ]);
+    
+            $this->message = "";
+        }
+        $this->activeChat->refresh();
+    }
+
+    public function refreshMessages()
+    {
+        $this->activeChat->refresh();
+        $this->chats = Auth::user()->chats;
+    }
 }

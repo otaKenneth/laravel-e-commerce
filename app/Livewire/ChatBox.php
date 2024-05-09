@@ -48,4 +48,10 @@ class ChatBox extends Component
         }
         $this->activeChat->refresh();
     }
+
+    public function refreshMessages()
+    {
+        $this->activeChat->refresh();
+        $this->chats = Auth::user()->chats;
+    }
 }
