@@ -17,7 +17,7 @@ class Chats extends Model
         return $this->hasMany(ChatMessages::class, 'chat_id');
     }
 
-    public function vendor()
+    public function admin()
     {
         return $this->hasOneThrough(Admin::class, ChatMessages::class, 'chat_id', 'id', 'id', 'admin_id');
     }

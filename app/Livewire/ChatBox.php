@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Chats;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -15,7 +16,12 @@ class ChatBox extends Component
     {
         $this->chats = Auth::user()->chats;
 
-        $this->activeChat = Auth::user()->chats()->with(['vendor'])->latest()->first();
+        $this->activeChat = Auth::user()->chats()->with(['admin'])->latest()->first();
+
+        if (is_null($this->activeChat)) {
+            $this->activeChat = new Chats;
+            $this->activeChat->setAttribute('messages', []);
+        }
     }
     public function render()
     {
@@ -24,7 +30,7 @@ class ChatBox extends Component
 
     public function navigationChatClicked($chat_id)
     {
-        $chatRecord = Auth::user()->chats()->where('chats.id', $chat_id)->first(); 
+        $chatRecord = Auth::user()->chats()->with(['admin'])->where('chats.id', $chat_id)->first(); 
         $this->activeChat = $chatRecord;
     }
 
@@ -33,8 +39,8 @@ class ChatBox extends Component
         if ($this->message !== "") {
             $this->activeChat->messages()->create([
                 'message' => $this->message,
+                'admin_id' => $this->activeChat->admin->id,
                 'user_id' => Auth::user()->id,
-                'vendor_id' => $this->activeChat->vendor->id,
                 'from' => "\App\Models\User"
             ]);
     

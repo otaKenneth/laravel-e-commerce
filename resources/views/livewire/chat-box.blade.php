@@ -121,7 +121,11 @@
                                 </div>
                             </div>
                             <!-- CHATS CONVERSATION HERE conversation-div.blade.php -->
-                            <div id="container-chat-convo">@include('front.chats.conversation-div')</div>
+                            <div id="container-chat-convo">
+                                @isset($activeChat)
+                                    @include('front.chats.conversation-div')
+                                @endisset
+                            </div>
                             <div
                                 class="elementor-element elementor-element-b183ae1 elementor-widget__width-initial elementor-button-align-stretch elementor-widget elementor-widget-form"
                                 data-id="b183ae1"

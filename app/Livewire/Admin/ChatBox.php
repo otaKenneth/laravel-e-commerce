@@ -29,7 +29,7 @@ class ChatBox extends Component
 
     public function navigationChatClicked($chat_id)
     {
-        $chatRecord = Auth::guard('admin')->user()->chats()->where('chats.id', $chat_id)->first(); 
+        $chatRecord = Auth::guard('admin')->user()->chats()->with(['user'])->where('chats.id', $chat_id)->first(); 
         $this->activeChat = $chatRecord;
     }
 }
