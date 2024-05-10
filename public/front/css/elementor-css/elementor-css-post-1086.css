@@ -106,10 +106,14 @@
     padding-top: 10px !important;
     padding-bottom: 10px !important;
 }
+.admin-chat .outer-e-con-custom .elementor-element-aca939b{
+	max-height: 98vh;
+    height: 98vh;
+}
 .admin-chat .elementor-element-be0fba5{
 	min-height: 100vh;
 }
-.admin-chat .elementor-button{
+.admin-chat .elementor-button {
 	background: #5F7A61 !important;
 }
 .admin-chat #container-chat-list p{
