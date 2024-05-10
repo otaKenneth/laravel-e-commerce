@@ -102,7 +102,9 @@
 	width: 100%;
 }
 .admin-chat .outer-e-con-custom{
-	max-width: 900px !important;
+	max-width: 100% !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
 }
 .admin-chat .elementor-element-be0fba5{
 	min-height: 100vh;
