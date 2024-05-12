@@ -5,8 +5,12 @@
 .elementor-611 .elementor-element.elementor-element-23dcbc3 .e-form__buttons{
     margin-left: auto;
     margin-right: auto;
+    width: 100%;
+    max-width: 240px;
 }/* End custom CSS */
-
+.elementor-611 .bth-lg-primaty{
+    padding: 10px 0;
+}
 
 .elementor-611 .icon-eye-view-pass{
     position: absolute;

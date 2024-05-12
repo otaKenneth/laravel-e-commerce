@@ -40,4 +40,8 @@ class Admin extends Authenticatable
     public function admins() {
         return $this->whereIn('type', ['superadmin', 'admin'])->get();
     }
+
+    public function chats() {
+        return $this->belongsToMany(Chats::class, 'chat_admins', 'admin_id', 'chat_id');
+    }
 }

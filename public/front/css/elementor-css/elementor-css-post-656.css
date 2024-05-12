@@ -5,4 +5,9 @@
 .elementor-656 .elementor-element.elementor-element-b9ac8ae .e-form__buttons{
     margin-left: auto;
     margin-right: auto;
+    width: 100%;
+    max-width: 240px;
 }/* End custom CSS */
+.elementor-656 .bth-lg-primaty{
+    padding: 10px 0;
+}

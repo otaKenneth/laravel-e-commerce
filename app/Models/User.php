@@ -19,9 +19,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'google_id',
+        'first_name',
+        'last_name',
         'email',
+        'email_verified_at',
         'password',
+        'status'
     ];
 
     protected $with = ['deliveryAddress'];
@@ -51,5 +55,9 @@ class User extends Authenticatable
 
     public function deliveryAddress() {
         return $this->userDeliveryAddresses()->take(1);
+    }
+
+    public function chats() {
+        return $this->belongsToMany(Chats::class, 'chat_users', 'user_id', 'chat_id');
     }
 }
