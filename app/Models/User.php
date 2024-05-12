@@ -56,4 +56,8 @@ class User extends Authenticatable
     public function deliveryAddress() {
         return $this->userDeliveryAddresses()->take(1);
     }
+
+    public function chats() {
+        return $this->belongsToMany(Chats::class, 'chat_users', 'user_id', 'chat_id');
+    }
 }

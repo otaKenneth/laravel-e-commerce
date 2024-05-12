@@ -40,4 +40,7 @@ class Vendor extends Model
         return $getVendorCommission['commission'];
     }
 
+    public function chats() {
+        return $this->belongsToMany(Chats::class, 'chat_messages', 'vendor_id', 'chat_id');
+    }
 }
