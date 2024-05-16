@@ -299,9 +299,11 @@
     height: calc(100vh - 126px);
     display: none;
 }
-.elementor-491 .popup_review_container.active,
-.elementor-491 .chat_vendor_window.active{
+.elementor-491 .popup_review_container.active{
     display: block;
+}
+.elementor-491 .chat_vendor_window.active{
+    display: flex;
 }
 .elementor-491 .popup_review_container img{
     width: 100%;
@@ -351,9 +353,6 @@
     margin: auto;
     max-width: 90vw !important;
 
-}
-.chat_vendor_window.active {
-    display: flex !important;
 }
 .chat_vendor_window .h2{
     text-align: center;
