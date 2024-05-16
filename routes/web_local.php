@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-require __DIR__.'/auth.php';
+Route::get('/better-pay', [App\Http\Controllers\BetterPayController::class, 'index']);
+Route::post('/better-pay', [App\Http\Controllers\BetterPayController::class, 'store'])->name('better-pay.store');
+
+require __DIR__ . '/auth.php';
 
 
 
