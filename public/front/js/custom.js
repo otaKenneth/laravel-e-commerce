@@ -891,6 +891,17 @@ $(document).ready(function() {
     });
 
 
+    $(".chat_vendor_btn").click(function(event) {
+        event.preventDefault();
+        $(".chat_vendor_window").addClass("active");
+    });
+
+    $(".chat_vendor_window .close_image_review_popup").click(function(event) {
+        event.preventDefault();
+        $(".chat_vendor_window").removeClass("active");
+    });
+
+
     $("#add-address-btn").click(function(event) {
         event.preventDefault();
         $(".form-address").toggleClass("active");

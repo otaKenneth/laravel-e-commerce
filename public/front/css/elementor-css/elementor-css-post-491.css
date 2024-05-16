@@ -287,7 +287,8 @@
 .elementor-491.reviews_images a img{
     width: 100%;
 }
-.elementor-491 .popup_review_container{
+.elementor-491 .popup_review_container,
+.elementor-491 .chat_vendor_window{
     position: fixed;
     z-index: 9;
     left: 0;
@@ -298,7 +299,8 @@
     height: calc(100vh - 126px);
     display: none;
 }
-.elementor-491 .popup_review_container.active{
+.elementor-491 .popup_review_container.active,
+.elementor-491 .chat_vendor_window.active{
     display: block;
 }
 .elementor-491 .popup_review_container img{
@@ -315,7 +317,8 @@
     left: 0;
     bottom: 0;
 }
-.elementor-491 .popup_review_container .close_image_review_popup{
+.elementor-491 .popup_review_container .close_image_review_popup,
+.elementor-491 .chat_vendor_window .close_image_review_popup{
     background: white;
     color: black;
     padding: 5px;
@@ -336,9 +339,37 @@
     box-shadow: 0 0 0px white;
     
 }
-.elementor-491 .popup_review_container .close_image_review_popup:hover{
+.elementor-491 .popup_review_container .close_image_review_popup:hover,
+.elementor-491 .chat_vendor_window .close_image_review_popup:hover{
     box-shadow: 0 0 20px -5px white;
 }
+.product_page_chat_container{
+    background: white;
+    padding: 30px;
+    width: 470px !important;
+    border-radius: 20px;
+    margin: auto;
+    max-width: 90vw !important;
+
+}
+.chat_vendor_window.active {
+    display: flex !important;
+}
+.chat_vendor_window .h2{
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 0 !important;
+}
+.chat_vendor_window textarea{
+    margin-bottom: 10px;
+}
+.chat_vendor_window button{
+    background: #5f7a61 !important;
+    width: 100%;
+}
+
+
+
 @media (max-width: 1024px){
     .elementor-491 .popup_review_container{
         height: calc(100vh - 117px);
@@ -405,6 +436,11 @@
     line-height: 210%;
     text-align: center;
 }
+.chat_vendor_btn:hover{
+    cursor: pointer;
+}
+
+
 
 @media (max-width: 767px){
     #form-productReview .alert ul{
