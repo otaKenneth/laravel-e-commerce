@@ -15,6 +15,5 @@ return [
 
     'merchant_id' => env('BETTER_PAY_MERCHANT_ID', null),
     'api_key' => env('BETTER_PAY_API_KEY', null),
-    'sandbox_url' => env('BETTER_PAY_SANDBOX', null),
 
 ];
