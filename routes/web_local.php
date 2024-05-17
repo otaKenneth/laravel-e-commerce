@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/better-pay', [App\Http\Controllers\BetterPayController::class, 'index'])->name('better-pay.index');
-Route::get('/better-pay/process-payment', [App\Http\Controllers\BetterPayController::class, 'processPayment'])->name('better-pay.process-payment');
+Route::get('/better-pay/send-payment-request', [App\Http\Controllers\BetterPayController::class, 'sendPaymentRequest'])->name('better-pay.process-payment');
 Route::get('/better-pay/create-collection-payment', [App\Http\Controllers\BetterPayController::class, 'createCollectionPayment'])->name('better-pay.create-collection-payment');
 Route::get('/better-pay/success', function () {
     return 'Better Pay Success!';
@@ -22,7 +23,8 @@ Route::get('/better-pay/success', function () {
 Route::get('/better-pay/failed', function () {
     return 'Better Pay Failed!';
 });
-Route::get('/better-pay/result', function () {
+Route::get('/better-pay/result', function (Request $request) {
+    dd($request);
     return 'Better Pay Result!';
 });
 
