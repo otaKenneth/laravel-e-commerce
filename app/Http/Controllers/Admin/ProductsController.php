@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -135,6 +136,7 @@ class ProductsController extends Controller
                 if ($image_tmp->isValid()) { // Validating Successful Uploads: https://laravel.com/docs/9.x/requests#validating-successful-uploads
                     // Get image extension
                     $extension = $image_tmp->getClientOriginalExtension();
+                    $fileStorageService = new FileStorageService;
 
                     // Generate a new random name for the uploaded image (to avoid that the image might get overwritten if its name is repeated)
                     $imageName = rand(111, 99999) . '.' . $extension; // e.g. 5954.png
@@ -144,6 +146,11 @@ class ProductsController extends Controller
                     $largeImagePath  = 'front/images/product_images/large/'  . $imageName; // 'large'  images folder
                     $mediumImagePath = 'front/images/product_images/medium/' . $imageName; // 'medium' images folder
                     $smallImagePath  = 'front/images/product_images/small/'  . $imageName; // 'small'  images folder
+
+                    $fileStorageService->storeFile($image_tmp, $largeImagePath, [
+                        'width' => 1000,
+                        'height' => 1000
+                    ]);
 
                     // Upload the image using the 'Intervention' package and save it in our THREE paths (folders) inside the 'public' folder
                     Image::make($image_tmp)->resize(1000, 1000)->save($largeImagePath);  // resize the 'large'  image size then store it in the 'large'  folder

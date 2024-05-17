@@ -685,7 +685,7 @@
             <!-- Product list -->
             @foreach ($newProducts as $product)
             @php
-                $product_image_path = 'front/images/product_images/small/' . $product['product_image'];
+                $product_image_path = $getImage("front/images/product_images/small/", $product['product_image']);
             @endphp
             <div
                 class="elementor-element elementor-element-977d0d9 e-con-full e-flex elementor-invisible e-con e-child"
@@ -701,31 +701,17 @@
                 >
                     <div class="elementor-widget-container">
                         <a href="{{ url('product/' . $product['id']) }}">
-                            @if (!empty($product['product_image']) && file_exists($product_image_path)) {{-- if the product image exists in BOTH database table AND filesystem (on server) --}}
                             <img
                                 loading="lazy"
                                 decoding="async"
                                 width="800"
                                 height="968"
-                                src="{{ asset($product_image_path) }}"
+                                src="{{ $product_image_path }}"
                                 class="attachment-large size-large wp-image-422"
                                 alt=""
-                                srcset="{{ asset($product_image_path) }} 846w, {{ asset($product_image_path) }} 248w, {{ asset($product_image_path) }} 768w, {{ asset($product_image_path) }} 879w"
+                                srcset="{{ $product_image_path }} 846w, {{ $product_image_path }} 248w, {{ $product_image_path }} 768w, {{ $product_image_path }} 879w"
                                 sizes="(max-width: 800px) 100vw, 800px"
                             >
-                            @else {{-- show the dummy image --}}
-                            <img
-                                loading="lazy"
-                                decoding="async"
-                                width="800"
-                                height="968"
-                                src="{{ asset('front/images/product/no-available-image.jpg')}}"
-                                class="attachment-large size-large wp-image-422"
-                                alt=""
-                                srcset="{{ asset('front/images/product/no-available-image.jpg') }} 846w, {{ asset('front/images/product/no-available-image.jpg') }} 248w, {{ asset('front/images/product/no-available-image.jpg') }} 768w, {{ asset('front/images/product/no-available-image.jpg') }} 879w"
-                                sizes="(max-width: 800px) 100vw, 800px"
-                            >
-                            @endif
                         </a>
                     </div>
                 </div>
