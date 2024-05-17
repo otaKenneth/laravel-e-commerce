@@ -14,6 +14,7 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+gcp-key.json
 
 /Database - multivendor_ecommerce
 /Postman Collection of API Endpoints
