@@ -15,6 +15,7 @@ yarn-error.log
 /.idea
 /.vscode
 gcp-key.json
+gcp-key_admin.json
 
 /Database - multivendor_ecommerce
 /Postman Collection of API Endpoints
