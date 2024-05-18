@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -135,20 +136,40 @@ class ProductsController extends Controller
                 if ($image_tmp->isValid()) { // Validating Successful Uploads: https://laravel.com/docs/9.x/requests#validating-successful-uploads
                     // Get image extension
                     $extension = $image_tmp->getClientOriginalExtension();
+                    $fileStorageService = new FileStorageService;
 
                     // Generate a new random name for the uploaded image (to avoid that the image might get overwritten if its name is repeated)
                     $imageName = rand(111, 99999) . '.' . $extension; // e.g. 5954.png
 
                     // Assigning the uploaded images path inside the 'public' folder
                     // We will have three folders: small, medium and large, depending on the images sizes
-                    $largeImagePath  = 'front/images/product_images/large/'  . $imageName; // 'large'  images folder
-                    $mediumImagePath = 'front/images/product_images/medium/' . $imageName; // 'medium' images folder
-                    $smallImagePath  = 'front/images/product_images/small/'  . $imageName; // 'small'  images folder
+                    $arr_filePaths = [
+                        [
+                            'path' => 'front/images/product_images/large/'  . $imageName,
+                            'size' => [
+                                'width' => 1000,
+                                'height' => 1000,
+                            ]
+                        ], // 'large'  images folder 
+                        [
+                            'path' => 'front/images/product_images/medium/' . $imageName,
+                            'size' => [
+                                'width' => 500,
+                                'height' => 500,
+                            ]
+                        ], // 'medium' images folder
+                        [
+                            'path' => 'front/images/product_images/small/'  . $imageName,
+                            'size' => [
+                                'width' => 250,
+                                'height' => 250,
+                            ]
+                        ] // 'small'  images folder
+                    ];
 
-                    // Upload the image using the 'Intervention' package and save it in our THREE paths (folders) inside the 'public' folder
-                    Image::make($image_tmp)->resize(1000, 1000)->save($largeImagePath);  // resize the 'large'  image size then store it in the 'large'  folder
-                    Image::make($image_tmp)->resize(500,   500)->save($mediumImagePath); // resize the 'medium' image size then store it in the 'medium' folder
-                    Image::make($image_tmp)->resize(250,   250)->save($smallImagePath);  // resize the 'small'  image size then store it in the 'small'  folder
+                    foreach ($arr_filePaths as $key => $path) {
+                        $fileStorageService->storeFile($image_tmp, $path['path'], $path['size']);
+                    }
                 
                     // Insert the image name in the database table
                     $product->product_image = $imageName;
@@ -484,7 +505,7 @@ class ProductsController extends Controller
                 foreach ($images as $key => $image) {
                     // Uploading the images:
                     // Generate Temp Image
-                    $image_tmp = Image::make($image);
+                    $fileStorageService = new FileStorageService;
 
                     // Get image name
                     $image_name = $image->getClientOriginalName();
@@ -498,14 +519,34 @@ class ProductsController extends Controller
 
                     // Assigning the uploaded images path inside the 'public' folder
                     // We will have three folders: small, medium and large, depending on the images sizes
-                    $largeImagePath  = 'front/images/product_images/large/'  . $imageName; // 'large'  images folder
-                    $mediumImagePath = 'front/images/product_images/medium/' . $imageName; // 'medium' images folder
-                    $smallImagePath  = 'front/images/product_images/small/'  . $imageName; // 'small'  images folder
+                    $arr_filePaths = [
+                        [
+                            'path' => 'front/images/product_images/large/'  . $imageName,
+                            'size' => [
+                                'width' => 1000,
+                                'height' => 1000,
+                            ]
+                        ], // 'large'  images folder 
+                        [
+                            'path' => 'front/images/product_images/medium/' . $imageName,
+                            'size' => [
+                                'width' => 500,
+                                'height' => 500,
+                            ]
+                        ], // 'medium' images folder
+                        [
+                            'path' => 'front/images/product_images/small/'  . $imageName,
+                            'size' => [
+                                'width' => 250,
+                                'height' => 250,
+                            ]
+                        ] // 'small'  images folder
+                    ];
 
                     // Upload the image using the 'Intervention' package and save it in our THREE paths (folders) inside the 'public' folder
-                    Image::make($image_tmp)->resize(1000, 1000)->save($largeImagePath);  // resize the 'large'  image size then store it in the 'large'  folder
-                    Image::make($image_tmp)->resize(500,   500)->save($mediumImagePath); // resize the 'medium' image size then store it in the 'medium' folder
-                    Image::make($image_tmp)->resize(250,   250)->save($smallImagePath);  // resize the 'small'  image size then store it in the 'small'  folder
+                    foreach ($arr_filePaths as $key => $path) {
+                        $fileStorageService->storeFile($image, $path['path'], $path['size']);
+                    }
                 
                     // Insert the image name in the database table `products_images`
                     $image = new \App\Models\ProductsImage;

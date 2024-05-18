@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 // Auth without a namespace here works fine because the Admin.php model extends Authenticatable
 use Illuminate\Support\FacadesAuth;
@@ -168,7 +169,9 @@ class AdminController extends Controller
                     $imagePath = 'admin/images/photos/' . $imageName;
 
                     // Upload the image using the Intervention package and save it in our path inside the 'public' folder
-                    Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                    // Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                    $fileStorageService = new FileStorageService;
+                    $fileStorageService->storeFile($image_tmp, $imagePath);
                 }
 
             } else if (!empty($data['current_admin_image'])) { // In case the admins updates other fields but doesn't update the image itself (doesn't upload a new image), but there's an already existing old image
@@ -239,7 +242,9 @@ class AdminController extends Controller
                         $imagePath = 'admin/images/photos/' . $imageName;
 
                         // Upload the image using the Intervention package and save it in our path inside the 'public' folder
-                        Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                        // Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                        $fileStorageService = new FileStorageService;
+                        $fileStorageService->storeFile($image_tmp, $imagePath);
                     }
 
                 } else if (!empty($data['current_vendor_image'])) { // In case the admins updates other fields but doesn't update the image itself (doesn't upload a new image), but there's an already existing old image
@@ -319,7 +324,9 @@ class AdminController extends Controller
                         $imagePath = 'admin/images/proofs/' . $imageName;
 
                         // Upload the image using the Intervention package and save it in our path inside the 'public' folder
-                        Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                        // Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                        $fileStorageService = new FileStorageService;
+                        $fileStorageService->storeFile($image_tmp, $imagePath);
                     }
 
                 } else if (!empty($data['current_address_proof'])) { // In case the admins updates other fields but doesn't update the image itself (doesn't upload a new image), but there's an already existing old image
