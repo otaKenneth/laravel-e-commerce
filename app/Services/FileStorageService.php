@@ -15,7 +15,7 @@ class FileStorageService
      * @param  string  $path
      * @return string|false
      */
-    public function storeFile(UploadedFile $file, $path, $size)
+    public function storeFile(UploadedFile $file, $path, $size = false)
     {
         if (config('app.env') === 'development') {
             // Store the file locally
@@ -58,6 +58,6 @@ class FileStorageService
         }
         $file = $file->encode();
 
-        return Storage::disk('gcs')->put($path, $file);
+        return Storage::disk('gcs_admin')->put($path, $file);
     }
 }
