@@ -890,6 +890,40 @@ $(document).ready(function() {
         $(".popup_review_container").removeClass("active");
     });
 
+    $("#form-product-details-vendor-chat").on('submit', function (e) {
+        e.preventDefault();
+
+        var formdata = $(e.currentTarget).serialize();
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "/chats/send-message",
+            type: "POST",
+            data: formdata,
+            success: function (resp) {
+                if (resp.success) {
+                    if (resp.redirect) {
+                        window.location.href = resp.redirect;
+                    } else {
+                        $(".popup_review_container .close_image_review_popup").click();
+                    }
+                }
+            }, error: function (err) {
+                console.log(err)
+            }
+        });
+    });
+
+    $(".chat_vendor_btn").click(function(event) {
+        event.preventDefault();
+        $(".chat_vendor_window").addClass("active");
+    });
+
+    $(".chat_vendor_window .close_image_review_popup").click(function(event) {
+        event.preventDefault();
+        $(".chat_vendor_window").removeClass("active");
+    });
+
 
     $("#add-address-btn").click(function(event) {
         event.preventDefault();
