@@ -193,7 +193,8 @@ class ProductsController extends Controller
                     $videoPath = 'front/videos/product_videos/';
 
                     // Move the video from the temporary path (which is assigned by the web server) to our assigned path inside the 'public' folder    // Copying & Moving Files: https://laravel.com/docs/9.x/filesystem#copying-moving-files
-                    $video_tmp->move($videoPath, $videoName);
+                    // $video_tmp->move($videoPath, $videoName);
+                    $fileStorageService->storeVideo($video_tmp, $videoPath, $videoName);
 
                     // Insert the video name in the database table
                     $product->product_video = $videoName;
@@ -292,6 +293,7 @@ class ProductsController extends Controller
 
             $product->save(); // Save all data in the database
 
+            // If new product, add to admin product review
             if (is_null($id)) {
                 $adminModel = new \App\Models\Admin;
                 $admins_emails = $adminModel->pluck('email')->toArray();
@@ -310,7 +312,18 @@ class ProductsController extends Controller
                     $message->to($admins_emails)->subject('Product for Review');
                 });
             }
-
+            
+            if ($request->hasFile('product_image') && !is_null($product->product_image)) {
+                // Insert the image name in the database table `products_images`
+                $image = new \App\Models\ProductsImage;
+    
+                $image->image      = $product->product_image;
+                $image->product_id = $product->id;
+                $image->status     = 1;
+    
+                $image->save();
+            }
+            
             return redirect('admin/products')->with('success_message', $message);
         }
 
