@@ -43,6 +43,26 @@
                     </button>
                 </div>
             </div>
+
+            @csrf
+            @if (session('success_message'))
+                <div class="alert success" style="margin-top: 20px;">
+                    <p style="margin-bottom: 0; text-align: center;">{{ session('success_message') }}</p>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger" style="margin-top: 20px;">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+
+
         </form>
     </div>
     <a href="#" class="close_image_review_popup">X</a>
