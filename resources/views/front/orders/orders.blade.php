@@ -181,7 +181,7 @@
                                             @endphp
                                             @foreach ($order->orders_products as $product)
                                             @php
-                                                $product_image_path = 'front/images/product_images/small/' . $product->product->product_image;
+                                                $product_image_path = $getImage("front/images/product_images/small/", $product['product_image']);
                                             @endphp
                                             <div
                                                 class="elementor-element elementor-element-958a31e e-con-full e-flex e-con e-child"
@@ -209,10 +209,10 @@
                                                             decoding="async"
                                                             width="800"
                                                             height="968"
-                                                            src="{{ asset($product_image_path) }}"
+                                                            src="{{ $product_image_path }}"
                                                             class="attachment-large size-large wp-image-422"
                                                             alt=""
-                                                            srcset="{{ asset($product_image_path) }} 846w, {{ asset($product_image_path) }} 248w, {{ asset($product_image_path) }} 768w, {{ asset($product_image_path) }} 879w"
+                                                            srcset="{{ $product_image_path }} 846w, {{ $product_image_path }} 248w, {{ $product_image_path }} 768w, {{ $product_image_path }} 879w"
                                                             sizes="(max-width: 800px) 100vw, 800px"
                                                         >
                                                         @else
@@ -222,10 +222,10 @@
                                                             decoding="async"
                                                             width="800"
                                                             height="968"
-                                                            src="{{ asset('front/images/product/no-available-image.jpg')}}"
+                                                            src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}"
                                                             class="attachment-large size-large wp-image-422"
                                                             alt=""
-                                                            srcset="{{ asset('front/images/product/no-available-image.jpg') }} 846w, {{ asset('front/images/product/no-available-image.jpg.png') }} 248w, {{ asset('front/images/product/no-available-image.jpg') }} 768w, {{ asset('front/images/product/no-available-image.jpg') }} 879w"
+                                                            srcset="{{ $getImage('front/images/product/', 'no-available-image.jpg') }} 846w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 248w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 768w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 879w"
                                                             sizes="(max-width: 800px) 100vw, 800px"
                                                         >
                                                         @endif
