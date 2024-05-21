@@ -86,10 +86,10 @@
                             loading="lazy"
                             width="692"
                             height="1024"
-                            src="{{ asset('front/images/banner_images/Kapiton - Markus Box.png') }}"
+                            src="{{ $getImage('front/images/banner_images/', 'Kapiton - Markus Box.png') }}"
                             class="attachment-large size-large wp-image-431"
                             alt=""
-                            srcset="{{ asset('front/images/banner_images/Kapiton - Markus Box.png') }} 692w, {{ asset('front/images/banner_images/Kapiton - Markus Box.png') }} 203w, {{ asset('front/images/banner_images/Kapiton - Markus Box.png') }} 716w"
+                            srcset="{{ $getImage('front/images/banner_images/', 'Kapiton - Markus Box.png') }} 692w, {{ $getImage('front/images/banner_images/', 'Kapiton - Markus Box.png') }} 203w, {{ $getImage('front/images/banner_images/', 'Kapiton - Markus Box.png') }} 716w"
                             sizes="(max-width: 692px) 100vw, 692px"
                         >
                     </div>
@@ -122,7 +122,7 @@
                             loading="lazy"
                             width="138"
                             height="151"
-                            src="{{ asset('front/images/main-logo/2023-12-Green-DS-NB-2-1.png') }}"
+                            src="{{ $getImage('front/images/main-logo/', '2023-12-Green-DS-NB-2-1.png') }}"
                             class="attachment-large size-large wp-image-445"
                             alt=""
                         >

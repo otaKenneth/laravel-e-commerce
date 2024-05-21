@@ -131,10 +131,10 @@
                                 decoding="async"
                                 width="182"
                                 height="181"
-                                src="{{ asset('front/images/about/2024-03-Mask-group-2.png') }}"
+                                src="{{ $getImage('front/images/about/', '2024-03-Mask-group-2.png') }}"
                                 class="attachment-large size-large wp-image-1713"
                                 alt=""
-                                srcset="{{ asset('front/images/about/2024-03-Mask-group-2.png') }} 182w, {{ asset('front/images/about/2024-03-Mask-group-2.png') }} 150w"
+                                srcset="{{ $getImage('front/images/about/', '2024-03-Mask-group-2.png') }} 182w, {{ $getImage('front/images/about/', '2024-03-Mask-group-2.png') }} 150w"
                                 sizes="(max-width: 182px) 100vw, 182px"
                             >
                         </a>
@@ -182,10 +182,10 @@
                                 decoding="async"
                                 width="182"
                                 height="182"
-                                src="{{ asset('front/images/about/2024-03-Mask-group.png') }}"
+                                src="{{ $getImage('front/images/about/', '2024-03-Mask-group.png') }}"
                                 class="attachment-large size-large wp-image-1715"
                                 alt=""
-                                srcset="{{ asset('front/images/about/2024-03-Mask-group.png') }} 182w, {{ asset('front/images/about/2024-03-Mask-group.png') }} 150w"
+                                srcset="{{ $getImage('front/images/about/', '2024-03-Mask-group.png') }} 182w, {{ $getImage('front/images/about/', '2024-03-Mask-group.png') }} 150w"
                                 sizes="(max-width: 182px) 100vw, 182px"
                             >
                         </a>
@@ -233,10 +233,10 @@
                                 decoding="async"
                                 width="182"
                                 height="181"
-                                src="{{ asset('front/images/about/2024-03-Mask-group-1.png') }}"
+                                src="{{ $getImage('front/images/about/', '2024-03-Mask-group-1.png') }}"
                                 class="attachment-large size-large wp-image-1714"
                                 alt=""
-                                srcset="{{ asset('front/images/about/2024-03-Mask-group-1.png') }} 182w, {{ asset('front/images/about/2024-03-Mask-group-1.png') }} 150w"
+                                srcset="{{ $getImage('front/images/about/', '2024-03-Mask-group-1.png') }} 182w, {{ $getImage('front/images/about/', '2024-03-Mask-group-1.png') }} 150w"
                                 sizes="(max-width: 182px) 100vw, 182px"
                             >
                         </a>
@@ -284,10 +284,10 @@
                                 decoding="async"
                                 width="176"
                                 height="176"
-                                src="{{ asset('front/images/about/2024-03-Mask-group-3.png') }}"
+                                src="{{ $getImage('front/images/about/', '2024-03-Mask-group-3.png') }}"
                                 class="attachment-large size-large wp-image-1712"
                                 alt=""
-                                srcset="{{ asset('front/images/about/2024-03-Mask-group-3.png') }} 176w, {{ asset('front/images/about/2024-03-Mask-group-3.png') }} 150w"
+                                srcset="{{ $getImage('front/images/about/', '2024-03-Mask-group-3.png') }} 176w, {{ $getImage('front/images/about/', '2024-03-Mask-group-3.png') }} 150w"
                                 sizes="(max-width: 176px) 100vw, 176px"
                             >
                         </a>
@@ -335,10 +335,10 @@
                                 decoding="async"
                                 width="182"
                                 height="181"
-                                src="{{ asset('front/images/about/2024-03-Mask-group-4.png') }}"
+                                src="{{ $getImage('front/images/about/', '2024-03-Mask-group-4.png') }}"
                                 class="attachment-large size-large wp-image-1711"
                                 alt=""
-                                srcset="{{ asset('front/images/about/2024-03-Mask-group-4.png') }} 182w, {{ asset('front/images/about/2024-03-Mask-group-4.png') }} 150w"
+                                srcset="{{ $getImage('front/images/about/', '2024-03-Mask-group-4.png') }} 182w, {{ $getImage('front/images/about/', '2024-03-Mask-group-4.png') }} 150w"
                                 sizes="(max-width: 182px) 100vw, 182px"
                             >
                         </a>
@@ -396,10 +396,10 @@
                         loading="lazy"
                         width="182"
                         height="181"
-                        src="{{ asset('front/images/about/2024-03-Mask-group-2.png') }}"
+                        src="{{ $getImage('front/images/about/', '2024-03-Mask-group-2.png') }}"
                         class="attachment-large size-large wp-image-1713"
                         alt=""
-                        srcset="{{ asset('front/images/about/2024-03-Mask-group-2.png') }} 182w, {{ asset('front/images/about/2024-03-Mask-group-2.png') }} 150w"
+                        srcset="{{ $getImage('front/images/about/', '2024-03-Mask-group-2.png') }} 182w, {{ $getImage('front/images/about/', '2024-03-Mask-group-2.png') }} 150w"
                         sizes="(max-width: 182px) 100vw, 182px"
                     >
                 </div>
@@ -499,10 +499,10 @@
                         loading="lazy"
                         width="182"
                         height="182"
-                        src="{{ asset('front/images/about/2024-03-Mask-group.png') }}"
+                        src="{{ $getImage('front/images/about/', '2024-03-Mask-group.png') }}"
                         class="attachment-large size-large wp-image-1715"
                         alt=""
-                        srcset="{{ asset('front/images/about/2024-03-Mask-group.png') }} 182w, {{ asset('front/images/about/2024-03-Mask-group.png') }} 150w"
+                        srcset="{{ $getImage('front/images/about/', '2024-03-Mask-group.png') }} 182w, {{ $getImage('front/images/about/', '2024-03-Mask-group.png') }} 150w"
                         sizes="(max-width: 182px) 100vw, 182px"
                     >
                 </div>
@@ -602,10 +602,10 @@
                         loading="lazy"
                         width="182"
                         height="181"
-                        src="{{ asset('front/images/about/2024-03-Mask-group-1.png') }}"
+                        src="{{ $getImage('front/images/about/', '2024-03-Mask-group-1.png') }}"
                         class="attachment-large size-large wp-image-1714"
                         alt=""
-                        srcset="{{ asset('front/images/about/2024-03-Mask-group-1.png') }} 182w, {{ asset('front/images/about/2024-03-Mask-group-1.png') }} 150w"
+                        srcset="{{ $getImage('front/images/about/', '2024-03-Mask-group-1.png') }} 182w, {{ $getImage('front/images/about/', '2024-03-Mask-group-1.png') }} 150w"
                         sizes="(max-width: 182px) 100vw, 182px"
                     >
                 </div>
@@ -705,10 +705,10 @@
                         loading="lazy"
                         width="176"
                         height="176"
-                        src="{{ asset('front/images/about/2024-03-Mask-group-3.png') }}"
+                        src="{{ $getImage('front/images/about/', '2024-03-Mask-group-3.png') }}"
                         class="attachment-large size-large wp-image-1712"
                         alt=""
-                        srcset="{{ asset('front/images/about/2024-03-Mask-group-3.png') }} 176w, {{ asset('front/images/about/2024-03-Mask-group-3.png') }} 150w"
+                        srcset="{{ $getImage('front/images/about/', '2024-03-Mask-group-3.png') }} 176w, {{ $getImage('front/images/about/', '2024-03-Mask-group-3.png') }} 150w"
                         sizes="(max-width: 176px) 100vw, 176px"
                     >
                 </div>
@@ -808,10 +808,10 @@
                         loading="lazy"
                         width="182"
                         height="181"
-                        src="{{ asset('front/images/about/2024-03-Mask-group-4.png') }}"
+                        src="{{ $getImage('front/images/about/', '2024-03-Mask-group-4.png') }}"
                         class="attachment-large size-large wp-image-1711"
                         alt=""
-                        srcset="{{ asset('front/images/about/2024-03-Mask-group-4.png') }} 182w, {{ asset('front/images/about/2024-03-Mask-group-4.png') }} 150w"
+                        srcset="{{ $getImage('front/images/about/', '2024-03-Mask-group-4.png') }} 182w, {{ $getImage('front/images/about/', '2024-03-Mask-group-4.png') }} 150w"
                         sizes="(max-width: 182px) 100vw, 182px"
                     >
                 </div>

@@ -66,7 +66,7 @@
                                                     decoding="async"
                                                     width="138"
                                                     height="151"
-                                                    src="{{ asset('front/images/vendor/owl-carousel/dist/vendor-image-test.png') }}"
+                                                    src="{{ $getImage('front/images/vendor/owl-carousel/dist/', 'vendor-image-test.png') }}"
                                                     class="attachment-large size-large wp-image-445"
                                                     alt=""
                                                 >
