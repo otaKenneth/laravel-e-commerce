@@ -259,10 +259,10 @@
                                                         decoding="async"
                                                         width="800"
                                                         height="968"
-                                                        src="{{ asset('front/images/product_images/small/' .$item['product']['product_image']) }}"
+                                                        src="{{ $getImage('front/images/product_images/small/', .$item['product']['product_image']) }}"
                                                         class="attachment-large size-large wp-image-422"
                                                         alt=""
-                                                        srcset="{{ asset('front/images/product_images/small/'.$item['product']['product_image']) }} 846w, {{asset('front/images/product_images/small/'.$item['product']['product_image'])}} 248w, {{asset('front/images/product_images/small/'.$item['product']['product_image'])}} 768w, {{asset('front/images/product_images/small/'.$item['product']['product_image'])}} 879w"
+                                                        srcset="{{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }} 846w, {{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }} 248w, {{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }} 768w, {{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }} 879w"
                                                         sizes="(max-width: 800px) 100vw, 800px"
                                                     >
                                                 </div>

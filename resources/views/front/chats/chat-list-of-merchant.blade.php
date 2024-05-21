@@ -32,10 +32,10 @@
                                 decoding="async"
                                 width="300"
                                 height="300"
-                                src="./images/2023-12-user.png"
+                                src="{{ $getImage('./images/', '2023-12-user.png') }}"
                                 class="attachment-large size-large wp-image-423"
                                 alt=""
-                                srcset="./images/2023-12-user.png 300w, ./images/2023-12-user-150x150.png 150w"
+                                srcset="{{ $getImage('./images/', '2023-12-user.png') }}300w, {{ $getImage('./images/', '2023-12-user.png') }} 150w"
                                 sizes="(max-width: 300px) 100vw, 300px"
                             >
                         </div>

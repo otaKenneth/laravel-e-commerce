@@ -9,7 +9,7 @@
     data-elementor-post-type="page"
 >
 <div class="popup_review_container">
-    <img src="{{ asset('front/images/product/no-available-image.jpg')}}">
+    <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
     <a href="#" class="close_image_review_popup">X</a>
 </div>
 
@@ -134,10 +134,10 @@
                                                                         decoding="async"
                                                                         width="522"
                                                                         height="522"
-                                                                        src="{{ asset('front/images/product/no-available-image.jpg')}}"
+                                                                        src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}"
                                                                         class="attachment-large size-large wp-image-503"
                                                                         alt=""
-                                                                        srcset="{{ asset('front/images/product/no-available-image.jpg')}} 522w, {{ asset('front/images/product/no-available-image.jpg')}} 300w, {{ asset('front/images/product/no-available-image.jpg')}} 150w"
+                                                                        srcset="{{ $getImage('front/images/product/', 'no-available-image.jpg') }} 522w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 300w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 150w"
                                                                         sizes="(max-width: 522px) 100vw, 522px"
                                                                     >
                                                                 </div>
@@ -182,10 +182,10 @@
                                                                         decoding="async"
                                                                         width="522"
                                                                         height="522"
-                                                                        src="{{ asset('front/images/product_images/small/' . $product_image['image'])}}"
+                                                                        src="{{ $getImage('front/images/product_images/small/', $product_image['image']) }}"
                                                                         class="attachment-large size-large wp-image-503"
                                                                         alt=""
-                                                                        srcset="{{ asset('front/images/product_images/small/' . $product_image['image'])}} 522w, {{ asset('front/images/product_images/small/' . $product_image['image'])}} 300w, {{ asset('front/images/product_images/small/' . $product_image['image'])}} 150w"
+                                                                        srcset="{{ $getImage('front/images/product_images/small/', $product_image['image']) }} 522w, {{ $getImage('front/images/product_images/small/', $product_image['image']) }} 300w, {{ $getImage('front/images/product_images/small/', $product_image['image']) }} 150w"
                                                                         sizes="(max-width: 522px) 100vw, 522px"
                                                                     >
                                                                 </div>
@@ -283,10 +283,10 @@
                                     decoding="async"
                                     width="300"
                                     height="300"
-                                    src="{{ asset('front/images/brand-logos/chatpng2.png') }}"
+                                    src="{{ $getImage('front/images/brand-logos/', 'chatpng2.png') }}"
                                     class="attachment-large size-large wp-image-423 chat_vendor_btn"
                                     alt=""
-                                    srcset="{{ asset('front/images/brand-logos/chatpng2.png') }} 300w, {{ asset('front/images/brand-logos/chatpng2.png') }} 150w"
+                                    srcset="{{ $getImage('front/images/brand-logos/', 'chatpng2.png') }} 300w, {{ $getImage('front/images/brand-logos/', 'chatpng2.png') }} 150w"
                                     sizes="(max-width: 300px) 100vw, 300px"
                                 >
                             </div>
@@ -304,10 +304,10 @@
                                     decoding="async"
                                     width="300"
                                     height="300"
-                                    src="{{ asset('front/images/brand-logos/2023-12-user.png') }}"
+                                    src="{{ $getImage('front/images/brand-logos/', '2023-12-user.png') }}"
                                     class="attachment-large size-large wp-image-423"
                                     alt=""
-                                    srcset="{{ asset('front/images/brand-logos/2023-12-user.png') }} 300w, {{ asset('front/images/brand-logos/2023-12-user-150x150.png') }} 150w"
+                                    srcset="{{ $getImage('front/images/brand-logos/', '2023-12-user.png') }} 300w, {{ $getImage('front/images/brand-logos/', '2023-12-user.png') }} 150w"
                                     sizes="(max-width: 300px) 100vw, 300px"
                                 >
                             </div>
