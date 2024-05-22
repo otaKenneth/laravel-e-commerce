@@ -259,7 +259,7 @@
                                                         decoding="async"
                                                         width="800"
                                                         height="968"
-                                                        src="{{ $getImage('front/images/product_images/small/', .$item['product']['product_image']) }}"
+                                                        src="{{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }}"
                                                         class="attachment-large size-large wp-image-422"
                                                         alt=""
                                                         srcset="{{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }} 846w, {{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }} 248w, {{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }} 768w, {{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }} 879w"

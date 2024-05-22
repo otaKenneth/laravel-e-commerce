@@ -906,6 +906,8 @@ $(document).ready(function() {
                         window.location.href = resp.redirect;
                     } else {
                         $(".popup_review_container .close_image_review_popup").click();
+                        $(".alert.alert-dialog").show();
+                        $(".alert.alert-dialog > p").text("Message sent successfully.");
                     }
                 }
             }, error: function (err) {
