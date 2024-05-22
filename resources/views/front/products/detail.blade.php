@@ -46,13 +46,16 @@
             
             
         </form>
+
+        <div class="alert alert-dialog success" style="margin-top: 20px; background: #0080001a; display: none;">
+            <p style="margin-bottom: 0; text-align: center;"></p>
+        </div>
+        
     </div>
     <a href="#" class="close_image_review_popup">X</a>
 </div>
 
-<div class="alert alert-dialog success" style="margin-top: 20px;">
-    <p style="margin-bottom: 0; text-align: center;"></p>
-</div>
+
 
 
     <div
