@@ -19,9 +19,9 @@
                         data-widget_type="image.default">
                         <div class="elementor-widget-container"> <img fetchpriority="high" decoding="async"
                                 width="394" height="481"
-                                src="{{ asset('front/images/vendor/owl-carousel/dist/2024-04-Phone-Shop-Now-Transparent-1_NEW.png') }}"
+                                src="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2024-04-Phone-Shop-Now-Transparent-1_NEW.png') }}"
                                 class="attachment-large size-large wp-image-1780" alt=""
-                                srcset="{{ asset('front/images/vendor/owl-carousel/dist/2024-04-Phone-Shop-Now-Transparent-1_NEW.png') }}"
+                                srcset="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2024-04-Phone-Shop-Now-Transparent-1_NEW.png') }}"
                                 sizes="(max-width: 394px) 100vw, 394px" /> </div>
                     </div>
                     <div class="elementor-element elementor-element-ab8286e e-con-full e-flex e-con e-child"
@@ -32,9 +32,9 @@
                             data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}"
                             data-widget_type="image.default">
                             <div class="elementor-widget-container"> <img decoding="async" width="451"
-                                    height="441" src="{{ asset('front/images/vendor/owl-carousel/dist/2024-04-become-next-merchant2.png') }}"
+                                    height="441" src="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2024-04-become-next-merchant2.png') }}"
                                     class="attachment-large size-large wp-image-1767" alt=""
-                                    srcset="{{ asset('front/images/vendor/owl-carousel/dist/2024-04-become-next-merchant2.png') }}"
+                                    srcset="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2024-04-become-next-merchant2.png') }}"
                                     sizes="(max-width: 451px) 100vw, 451px" /> </div>
                         </div>
                         <div class="elementor-element elementor-element-e362254 elementor-invisible elementor-widget elementor-widget-heading"
@@ -517,7 +517,7 @@
                             data-id="6b77611" data-element_type="widget" data-widget_type="image.default">
                             <div class="elementor-widget-container"> <img loading="lazy" decoding="async"
                                     width="196" height="102"
-                                    src="{{ asset('front/images/vendor/owl-carousel/dist/2024-04-noun-delivery-4728403.png') }}"
+                                    src="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2024-04-noun-delivery-4728403.png') }}"
                                     class="attachment-large size-large wp-image-1817" alt="" /> </div>
                         </div>
                         <div class="elementor-element elementor-element-173e254 elementor-widget__width-inherit elementor-widget elementor-widget-text-editor"
@@ -537,7 +537,7 @@
                         <div class="elementor-element elementor-element-b1af41e elementor-widget elementor-widget-image"
                             data-id="b1af41e" data-element_type="widget" data-widget_type="image.default">
                             <div class="elementor-widget-container"> <img loading="lazy" decoding="async"
-                                    width="183" height="157" src="{{ asset('front/images/vendor/owl-carousel/dist/2024-04-Mask-group.png') }}"
+                                    width="183" height="157" src="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2024-04-Mask-group.png') }}"
                                     class="attachment-large size-large wp-image-1816" alt="" /> </div>
                         </div>
                         <div class="elementor-element elementor-element-6d59a45 elementor-widget__width-inherit elementor-widget elementor-widget-text-editor"
@@ -558,7 +558,7 @@
                             data-id="871f1e0" data-element_type="widget" data-widget_type="image.default">
                             <div class="elementor-widget-container"> <img loading="lazy" decoding="async"
                                     width="183" height="156"
-                                    src="{{ asset('front/images/vendor/owl-carousel/dist/2024-04-noun-dashboard-6281250.png') }}"
+                                    src="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2024-04-noun-dashboard-6281250.png') }}"
                                     class="attachment-large size-large wp-image-1815" alt="" /> </div>
                         </div>
                         <div class="elementor-element elementor-element-0bbc93f elementor-widget__width-inherit elementor-widget elementor-widget-text-editor"
@@ -577,7 +577,7 @@
                         <div class="elementor-element elementor-element-f0712f2 elementor-widget elementor-widget-image"
                             data-id="f0712f2" data-element_type="widget" data-widget_type="image.default">
                             <div class="elementor-widget-container"> <img loading="lazy" decoding="async"
-                                    width="183" height="154" src="{{ asset('front/images/vendor/owl-carousel/dist/2024-04-Mask-group-1.png') }}"
+                                    width="183" height="154" src="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2024-04-Mask-group-1.png') }}"
                                     class="attachment-large size-large wp-image-1814" alt="" /> </div>
                         </div>
                         <div class="elementor-element elementor-element-05b0e2a elementor-widget__width-inherit elementor-widget elementor-widget-text-editor"
@@ -597,7 +597,7 @@
                             data-id="6df0151" data-element_type="widget" data-widget_type="image.default">
                             <div class="elementor-widget-container"> <img loading="lazy" decoding="async"
                                     width="183" height="99"
-                                    src="{{ asset('front/images/vendor/owl-carousel/dist/2024-04-noun-community-5208824-1.png') }}"
+                                    src="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2024-04-noun-community-5208824-1.png') }}"
                                     class="attachment-large size-large wp-image-1812" alt="" /> </div>
                         </div>
                         <div class="elementor-element elementor-element-737b360 elementor-widget__width-inherit elementor-widget elementor-widget-text-editor"
@@ -616,7 +616,7 @@
                         <div class="elementor-element elementor-element-a2ca02f elementor-widget elementor-widget-image"
                             data-id="a2ca02f" data-element_type="widget" data-widget_type="image.default">
                             <div class="elementor-widget-container"> <img loading="lazy" decoding="async"
-                                    width="138" height="174" src="{{ asset('front/images/vendor/owl-carousel/dist/2024-04-Mask-group-2.png') }}"
+                                    width="138" height="174" src="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2024-04-Mask-group-2.png') }}"
                                     class="attachment-large size-large wp-image-1813" alt="" /> </div>
                         </div>
                         <div class="elementor-element elementor-element-429892d elementor-widget__width-inherit elementor-widget elementor-widget-text-editor"
@@ -661,9 +661,9 @@
                                         data-widget_type="image.default">
                                         <div class="elementor-widget-container"> <img loading="lazy"
                                                 decoding="async" width="154" height="34"
-                                                src="{{ asset('front/images/vendor/owl-carousel/dist/2023-12-logo-white-text.png') }}"
+                                                src="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2023-12-logo-white-text.png') }}"
                                                 class="attachment-large size-large wp-image-21" alt=""
-                                                srcset="{{ asset('front/images/vendor/owl-carousel/dist/2023-12-logo-white-text.png') }}"
+                                                srcset="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2023-12-logo-white-text.png') }}"
                                                 sizes="(max-width: 154px) 100vw, 154px" /> </div>
                                     </div>
                                     <div class="elementor-element elementor-element-04b2440 elementor-widget__width-inherit elementor-widget elementor-widget-text-editor"
@@ -776,9 +776,9 @@
                                         data-widget_type="image.default">
                                         <div class="elementor-widget-container"> <img loading="lazy"
                                                 decoding="async" width="614" height="100"
-                                                src="{{ asset('front/images/vendor/owl-carousel/dist/2024-04-image-3.png') }}"
+                                                src="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2024-04-image-3.png') }}"
                                                 class="attachment-large size-large wp-image-1835" alt=""
-                                                srcset="{{ asset('front/images/vendor/owl-carousel/dist/2024-04-image-3.png') }}"
+                                                srcset="{{ $getImage('front/images/vendor/owl-carousel/dist/', '2024-04-image-3.png') }}"
                                                 sizes="(max-width: 614px) 100vw, 614px" /> </div>
                                     </div>
                                     <div class="elementor-element elementor-element-d9d7ee9 elementor-widget__width-inherit elementor-widget elementor-widget-text-editor"

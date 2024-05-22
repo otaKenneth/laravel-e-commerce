@@ -205,10 +205,10 @@
                                 decoding="async"
                                 width="528"
                                 height="682"
-                                src="{{ asset('front/images/about/2024-03-team2.jpg') }}"
+                                src="{{ $getImage('front/images/about/', '2024-03-team2.jpg') }}"
                                 class="attachment-large size-large wp-image-1664"
                                 alt=""
-                                srcset="{{ asset('front/images/about/2024-03-team2.jpg') }} 528w, {{ asset('front/images/about/2024-03-team2.jpg') }} 232w"
+                                srcset="{{ $getImage('front/images/about/', '2024-03-team2.jpg') }} 528w, {{ $getImage('front/images/about/', '2024-03-team2.jpg') }} 232w"
                                 sizes="(max-width: 528px) 100vw, 528px"
                             >
                         </div>
@@ -256,7 +256,7 @@
                                     <img
                                         decoding="async"
                                         class="swiper-slide-image"
-                                        src="{{ asset('front/images/about/2024-03-z8.png') }}"
+                                        src="{{ $getImage('front/images/about/', '2024-03-z8.png') }}"
                                         alt="z8"
                                     >
                                 </figure>
@@ -271,7 +271,7 @@
                                     <img
                                         decoding="async"
                                         class="swiper-slide-image"
-                                        src="{{ asset('front/images/about/2024-03-z7.png') }}"
+                                        src="{{ $getImage('front/images/about/', '2024-03-z7.png') }}"
                                         alt="z7"
                                     >
                                 </figure>
@@ -286,7 +286,7 @@
                                     <img
                                         decoding="async"
                                         class="swiper-slide-image"
-                                        src="{{ asset('front/images/about/2024-03-z6.png') }}"
+                                        src="{{ $getImage('front/images/about/', '2024-03-z6.png')}}"
                                         alt="z6"
                                     >
                                 </figure>
@@ -301,7 +301,7 @@
                                     <img
                                         decoding="async"
                                         class="swiper-slide-image"
-                                        src="{{ asset('front/images/about/2024-03-z5.png') }}"
+                                        src="{{ $getImage('front/images/about/', '2024-03-z5.png') }}"
                                         alt="z5"
                                     >
                                 </figure>
@@ -316,7 +316,7 @@
                                     <img
                                         decoding="async"
                                         class="swiper-slide-image"
-                                        src="{{ asset('front/images/about/2024-03-z4.png') }}"
+                                        src="{{ $getImage('front/images/about/', '2024-03-z4.png') }}"
                                         alt="z4"
                                     >
                                 </figure>
@@ -331,7 +331,7 @@
                                     <img
                                         decoding="async"
                                         class="swiper-slide-image"
-                                        src="{{ asset('front/images/about/2024-03-z3.png') }}"
+                                        src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}"
                                         alt="z3"
                                     >
                                 </figure>
@@ -346,7 +346,7 @@
                                     <img
                                         decoding="async"
                                         class="swiper-slide-image"
-                                        src="{{ asset('front/images/about/2024-03-z2.png') }}"
+                                        src="{{ $getImage('front/images/about/', '2024-03-z2.png') }}"
                                         alt="z2"
                                     >
                                 </figure>
@@ -361,7 +361,7 @@
                                     <img
                                         decoding="async"
                                         class="swiper-slide-image"
-                                        src="{{ asset('front/images/about/2024-03-z1.png') }}"
+                                        src="{{ $getImage('front/images/about/', '2024-03-z1.png') }}"
                                         alt="z1"
                                     >
                                 </figure>

@@ -115,10 +115,10 @@
                                                     decoding="async"
                                                     width="620"
                                                     height="620"
-                                                    src="{{ asset('front/images/banners/2023-12-21312312-4.png') }}"
-                                                    class="attachment-large size-large wp-image-258"
+                                                    src="{{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }}"
+                                                    class="aaaaaaaaaa attachment-large size-large wp-image-258"
                                                     alt=""
-                                                    srcset="{{ asset('front/images/banners/2023-12-21312312-4.png') }} 620w, {{ asset('front/images/banners/2023-12-21312312-4-300x300.png') }} 300w, {{ asset('front/images/banners/2023-12-21312312-4-150x150.png') }} 150w"
+                                                    srcset="{{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }} 620w, {{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }} 300w, {{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }} 150w"
                                                     sizes="(max-width: 620px) 100vw, 620px"
                                                 >
                                             </div>
@@ -216,10 +216,10 @@
                                                     decoding="async"
                                                     width="620"
                                                     height="620"
-                                                    src="{{ asset('front/images/banners/2023-12-21312312-4.png') }}"
+                                                    src="{{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }}"
                                                     class="attachment-large size-large wp-image-258"
                                                     alt=""
-                                                    srcset="{{ asset('front/images/banners/2023-12-21312312-4.png') }} 620w, {{ asset('front/images/banners/2023-12-21312312-4-300x300.png') }} 300w, {{ asset('front/images/banners/2023-12-21312312-4-150x150.png') }} 150w"
+                                                    srcset="{{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }} 620w, {{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }} 300w, {{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }} 150w"
                                                     sizes="(max-width: 620px) 100vw, 620px"
                                                 >
                                             </div>
@@ -317,10 +317,10 @@
                                                     decoding="async"
                                                     width="620"
                                                     height="620"
-                                                    src="{{ asset('front/images/banners/2023-12-21312312-4-150x150.png') }}"
+                                                    src="{{ $getImage('front/images/banners/', '2023-12-21312312-4-150x150.png') }}"
                                                     class="attachment-large size-large wp-image-258"
                                                     alt=""
-                                                    srcset="{{ asset('front/images/banners/2023-12-21312312-4-150x150.png') }} 620w, {{ asset('front/images/banners/2023-12-21312312-4-300x300.png') }} 300w, {{ asset('front/images/banners/2023-12-21312312-4-150x150.png') }} 150w"
+                                                    srcset="{{ $getImage('front/images/banners/', '2023-12-21312312-4-150x150.png') }} 620w, {{ $getImage('front/images/banners/', '2023-12-21312312-4-150x150.png') }} 300w, {{ $getImage('front/images/banners/', '2023-12-21312312-4-150x150.png') }} 150w"
                                                     sizes="(max-width: 620px) 100vw, 620px"
                                                 >
                                             </div>
@@ -595,10 +595,10 @@
                                 decoding="async"
                                 width="329"
                                 height="329"
-                                src="./images/2023-12-Frame-31-2.png"
+                                src="{{ $getImage('./images/', '2023-12-Frame-31-2.png') }}"
                                 class="attachment-large size-large wp-image-386"
                                 alt=""
-                                srcset="./images/2023-12-Frame-31-2.png 329w, ./images/2023-12-Frame-31-2-300x300.png 300w, ./images/2023-12-Frame-31-2-150x150.png 150w"
+                                srcset="{{ $getImage('./images/', '2023-12-Frame-31-2.png') }} 329w, {{ $getImage('./images/', '2023-12-Frame-31-2.png') }} 300w, {{ $getImage('./images/', '2023-12-Frame-31-2.png') }} 150w"
                                 sizes="(max-width: 329px) 100vw, 329px"
                             >
                         </a>
@@ -739,7 +739,7 @@
                     data-widget_type="text-editor.default"
                 >
                     <div class="elementor-widget-container">
-                        <p> ₱{{$getDiscountPrice}}</p>
+                        <p> ₱{{$getDiscountPrice}}</p>
                     </div>
                 </div>
                 <div

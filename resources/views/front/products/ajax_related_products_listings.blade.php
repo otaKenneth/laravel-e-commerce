@@ -20,7 +20,7 @@
 
         @foreach ($similarProducts as $product)
         @php
-            $product_image_path = 'front/images/product_images/small/' . $product['product_image'];
+            $product_image_path = $getImage("front/images/product_images/small/", $product['product_image']);
         @endphp
         <div
             class="elementor-element elementor-element-34808d4 e-con-full e-flex elementor-invisible e-con e-child"
@@ -41,10 +41,10 @@
                             decoding="async"
                             width="800"
                             height="968"
-                            src="{{ asset($product_image_path) }}"
+                            src="{{ $product_image_path }}"
                             class="attachment-large size-large wp-image-422"
                             alt=""
-                            srcset="{{ asset($product_image_path) }} 846w, {{ asset($product_image_path) }} 248w, {{ asset($product_image_path) }} 768w, {{ asset($product_image_path) }} 879w"
+                            srcset="{{ $product_image_path }} 846w, {{ $product_image_path }} 248w, {{ $product_image_path }} 768w, {{ $product_image_path }} 879w"
                             sizes="(max-width: 800px) 100vw, 800px"
                         >
                     @else {{-- show the dummy image --}}
@@ -53,10 +53,10 @@
                             decoding="async"
                             width="800"
                             height="968"
-                            src="{{ asset('front/images/product/no-available-image.jpg')}}"
+                            src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}"
                             class="attachment-large size-large wp-image-422"
                             alt=""
-                            srcset="{{ asset('front/images/product/no-available-image.jpg')}} 846w, {{ asset('front/images/product/no-available-image.jpg')}} 248w, {{ asset('front/images/product/no-available-image.jpg')}} 768w, {{ asset('front/images/product/no-available-image.jpg')}} 879w"
+                            srcset="{{ $getImage('front/images/product/', 'no-available-image.jpg') }} 846w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 248w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 768w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 879w"
                             sizes="(max-width: 800px) 100vw, 800px"
                         >
                     @endif
@@ -136,10 +136,10 @@
                                     decoding="async"
                                     width="300"
                                     height="300"
-                                    src="./images/2023-12-user.png"
+                                    src="{{ $getImage('./images/', '2023-12-user.png') }}"
                                     class="attachment-large size-large wp-image-423"
                                     alt=""
-                                    srcset="./images/2023-12-user.png 300w, ./images/2023-12-user-150x150.png 150w"
+                                    srcset="{{ $getImage('./images/', '2023-12-user.png') }} 300w, {{ $getImage('./images/', '2023-12-user.png') }} 150w"
                                     sizes="(max-width: 300px) 100vw, 300px"
                                 >
                             </div>

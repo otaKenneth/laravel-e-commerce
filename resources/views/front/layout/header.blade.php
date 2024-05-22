@@ -41,9 +41,9 @@ $sections = \App\Models\Section::sections();
                                 }
                             </style>
                             <a href="/">
-                                <img width="154" height="34" src="{{ asset('front/images/main-logo/2023-12-logo-white-text.png') }}"
+                                <img width="154" height="34" src="{{ $getImage('front/images/main-logo/', '2023-12-logo-white-text.png') }}"
                                     class="attachment-full size-full wp-image-21" alt=""
-                                    srcset="{{ asset('front/images/main-logo/2023-12-logo-white-text.png') }} 154w, {{ asset('front/images/main-logo/2023-12-logo-white-text-150x34.png') }} 150w"
+                                    srcset="{{ $getImage('front/images/main-logo/', '2023-12-logo-white-text.png') }} 154w, {{ $getImage('front/images/main-logo/', '2023-12-logo-white-text.png') }} 150w"
                                     sizes="(max-width: 154px) 100vw, 154px">
                             </a>
                         </div>
