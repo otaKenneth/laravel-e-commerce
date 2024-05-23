@@ -24,6 +24,13 @@
                 data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}"
                 data-widget_type="heading.default"
             >
+
+
+                <div class="collection-wide-banner-image">
+                    <img style="display: block; border-radius: 10px; width: 100%;" src="{{ asset('front/images/vendor/owl-carousel/dist/vendor-banner-1.webp') }}">
+                </div>
+
+
                 <div class="elementor-widget-container">
                     <h2 class="elementor-heading-title elementor-size-default">{{ $pageTitle }}</h2>
                 </div>
