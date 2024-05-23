@@ -28,8 +28,7 @@ class BetterPayController extends Controller
         $callback_url_be = "http://localhost:8000/better-pay/result";
         $url = "https://www.demo.betterpay.me/merchant/api/v2/receiver";
 
-        $data = $this->formatWithPipes([
-            'api' => $api,
+        $values = $this->formatWithPipes([
             'merchant_id' => $merchant_id,
             'invoice' => $invoice,
             'amount' => $amount,
@@ -42,9 +41,16 @@ class BetterPayController extends Controller
         ]);
 
         $response = Http::asForm()->post($url, [
-            ...$data['items'],
-            'hash' => $data['hashed_string'],
+            ...$values['items'],
+            'hash' => $values['hashed_string'],
         ]);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            dd($data);
+        } else {
+            dd('Error: ' . $response->status());
+        }
 
         dd($response);
     }
@@ -52,16 +58,14 @@ class BetterPayController extends Controller
     public function createCollectionPayment()
     {
         $merchant_id = '10417';
-        $api = 'X0zaxqVmp0Op';
-        $purpose = 'Invoice for Juan Tamad';
+        $purpose = 'Invoice for Sheila';
         $amount_option = 'Fixed';
-        $amount = '1400.50';
+        $amount = '150.50';
         $delivery_option = 0;
-        $currency = 'SGD';
+        $currency = 'PHP';
         $url = 'https://www.demo.betterpay.me/merchant/api/v2/lite/link/create';
 
-        $data = $this->formatWithPipes([
-            'api' => $api,
+        $values = $this->formatWithPipes([
             'merchant_id' => $merchant_id,
             'purpose' => $purpose,
             'amount_option' => $amount_option,
@@ -71,11 +75,41 @@ class BetterPayController extends Controller
         ]);
 
         $response = Http::asForm()->post($url, [
-            ...$data['items'],
-            'hash' => $data['hashed_string'],
+            ...$values['items'],
+            'hash' => $values['hashed_string'],
         ]);
 
-        dd($response);
+        if ($response->successful()) {
+            $data = $response->json();
+            dd($data);
+        } else {
+            dd('Error: ' . $response->status());
+        }
+
+        return redirect()->route('better-pay.index');
+    }
+
+    public function listCollectionPayments()
+    {
+        $merchant_id = '10417';
+        $url = 'https://www.demo.betterpay.me/merchant/api/v2/lite/link/list';
+
+        $values = $this->formatWithPipes([
+            'merchant_id' => $merchant_id,
+        ]);
+
+        $response = Http::post($url, [
+            ...$values['items'],
+            'hash' => $values['hashed_string'],
+        ]);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            dd($data);
+        } else {
+            dd('Error: ' . $response->status());
+        }
+
         return redirect()->route('better-pay.index');
     }
 

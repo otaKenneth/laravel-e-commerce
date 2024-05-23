@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/better-pay', [App\Http\Controllers\BetterPayController::class, 'index'])->name('better-pay.index');
 Route::get('/better-pay/send-payment-request', [App\Http\Controllers\BetterPayController::class, 'sendPaymentRequest'])->name('better-pay.process-payment');
 Route::get('/better-pay/create-collection-payment', [App\Http\Controllers\BetterPayController::class, 'createCollectionPayment'])->name('better-pay.create-collection-payment');
+Route::get('/better-pay/list-collection-payments', [App\Http\Controllers\BetterPayController::class, 'listCollectionPayments'])->name('better-pay.list-collection-payments');
 Route::get('/better-pay/success', function () {
     return 'Better Pay Success!';
 });
