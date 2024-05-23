@@ -114,8 +114,6 @@
                     >
                         <div class="elementor-widget-container">
                             <a href="{{ url('product/' . $product['id']) }}">
-                                @if (!empty($product['product_image']) && file_exists($product_image_path))
-                                {{-- if the product image exists in BOTH database table AND filesystem (on server) --}}
                                 <img
                                     loading="lazy"
                                     decoding="async"
@@ -127,20 +125,6 @@
                                     srcset="{{ $product_image_path }} 846w, {{ $product_image_path }} 248w, {{ $product_image_path }} 768w, {{ $product_image_path }} 879w"
                                     sizes="(max-width: 800px) 100vw, 800px"
                                 >
-                                @else
-                                {{-- show the dummy image --}}
-                                <img
-                                    loading="lazy"
-                                    decoding="async"
-                                    width="800"
-                                    height="968"
-                                    src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}"
-                                    class="attachment-large size-large wp-image-422"
-                                    alt=""
-                                    srcset="{{ $getImage('front/images/product/', 'no-available-image.jpg') }} 846w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 248w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 768w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 879w"
-                                    sizes="(max-width: 800px) 100vw, 800px"
-                                >
-                                @endif
                             </a>
                         </div>
                     </div>
@@ -259,19 +243,19 @@
                                         itemscope=""
                                         itemprop="reviewRating"
                                     >
+                                        @php
+                                            $marked = \App\Models\Product::product_computed_ratings($product['id']);
+                                        @endphp
                                         <meta itemprop="worstRating" content="0">
                                         <meta itemprop="bestRating" content="5">
                                         <div
                                             class="e-rating-wrapper"
                                             itemprop="ratingValue"
-                                            content="4"
+                                            content="{{$marked}}"
                                             role="img"
-                                            aria-label="Rated 4 out of 5"
+                                            aria-label="Rated {{$marked}} out of 5"
                                         >
                                             @for ($x = 0; $x < 5; $x++)
-                                            @php
-                                                $marked = \App\Models\Product::product_computed_ratings($product['id']);
-                                            @endphp
                                             <div class="e-icon">
                                                 <div class="e-icon-wrapper e-icon-marked" style="{{ ($x < $marked && $marked > 0) ? '':'--e-rating-icon-marked-width: 0%;' }}">
                                                     <svg
