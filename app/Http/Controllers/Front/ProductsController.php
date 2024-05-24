@@ -168,7 +168,7 @@ class ProductsController extends Controller
         $ratings = \App\Models\Rating::with('user')->where([ // Eager Loading: https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'user' is the relationship method name in Rating.php model
             'product_id' => $id,
             'status'     => 1
-        ])->get()->toArray();
+        ])->paginate(9);
 
         // Calculate Average Rating (for a product):
         $ratingSum = \App\Models\Rating::where([
