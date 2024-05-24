@@ -507,7 +507,7 @@
                     @endphp
                         
                         <div
-                            class="elementor-element elementor-element-f97c986 e-con-full e-flex elementor-invisible e-con e-child"
+                            class="navigation-button elementor-element elementor-element-f97c986 e-con-full e-flex elementor-invisible e-con e-child"
                             data-id="f97c986"
                             data-element_type="container"
                             data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;container_type&quot;:&quot;flex&quot;}"
