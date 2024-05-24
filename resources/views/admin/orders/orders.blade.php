@@ -6,7 +6,10 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-lg-12 grid-margin stretch-card">
+                <div class="col-lg-12 grid-margin stretch-card mobile-space-top">
+                    <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                        <span class="icon-menu"></span>
+                    </button>
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Orders</h4>
