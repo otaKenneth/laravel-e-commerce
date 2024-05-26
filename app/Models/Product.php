@@ -45,6 +45,10 @@ class Product extends Model
         return $this->belongsTo('App\Models\Vendor', 'vendor_id')->with('vendorbusinessdetails'); // 'vendor_id' is the Foreign Key of the Relationship    
     }
 
+    public function ratings() {
+        return $this->hasMany(Rating::class, 'product_id', 'id');
+    }
+
     public static function product_computed_ratings ($product_id) {
         $product_ratings = \App\Models\Rating::select('rating')->where('product_id', $product_id)->get()->toArray();
         $cnt = count($product_ratings);
