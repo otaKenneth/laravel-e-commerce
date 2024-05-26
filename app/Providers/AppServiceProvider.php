@@ -81,7 +81,7 @@ class AppServiceProvider extends ServiceProvider
             return $signedUrl;
         } catch (\Exception $e) {
             \Log::error('Error generating signed URL for ' . $objectName . ': ' . $e->getMessage());
-            return null;
+            return $bucket->object('front/images/product/no-available-image.jpg')->signedUrl(new \DateTime('+1 hour'));;
         }
     }
 }
