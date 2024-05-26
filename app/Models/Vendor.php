@@ -43,4 +43,22 @@ class Vendor extends Model
     public function chats() {
         return $this->belongsToMany(Chats::class, 'chat_messages', 'vendor_id', 'chat_id');
     }
+
+    public function ratings() {
+        return $this->products()
+            ->with('ratings') // Eager load ratings to avoid N+1 problem
+            ->get();
+    }
+
+    public function vendorProductRatings() {
+        $avg_ratings = $this->products()
+            ->with('ratings') // Eager load ratings to avoid N+1 problem
+            ->get()
+            ->flatMap(function ($product) {
+                return $product->ratings;
+            })
+            ->avg('rating'); // Assuming the column in the ratings table is 'rating'
+        
+        return number_format($avg_ratings, 1);
+    }
 }
