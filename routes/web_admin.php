@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Admin')->group(function() {
     
     Route::match(['get', 'post'], 'login', 'AdminController@login'); // match() method is used to use more than one HTTP request method for the same route, so GET for rendering the login.php page, and POST for the login.php page <form> submission (e.g. GET and POST)    // Matches the '/admin/dashboard' URL (i.e. http://127.0.0.1:8000/admin/dashboard)
+    Route::match(['get', 'post'], 'forgot-password', 'AdminController@forgotPassword'); // match() method is used to use more than one HTTP request method for the same route, so GET for rendering the login.php page, and POST for the login.php page <form> submission (e.g. GET and POST)    // Matches the '/admin/dashboard' URL (i.e. http://127.0.0.1:8000/admin/dashboard)
     
     // This a Route Group for routes that ALL start with 'admin/-something' and utilizes the 'admin' Authentication Guard    // Note: You must remove the '/admin'/ part from the routes that are written inside this Route Group (e.g.    Route::get('logout');    , NOT    Route::get('admin/logout');    )
     Route::group(['middleware' => ['admin']], function() { // using our 'admin' guard (which we created in auth.php)
