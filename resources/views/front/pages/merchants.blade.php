@@ -66,7 +66,7 @@
                                                     decoding="async"
                                                     width="138"
                                                     height="151"
-                                                    src="{{ $getImage('front/images/vendor/owl-carousel/dist/', 'vendor-image-test.png') }}"
+                                                    src="{{ $getImage('front/images/vendor/owl-carousel/dist/', $vendor->vendorbusinessdetails->license_image) }}"
                                                     class="attachment-large size-large wp-image-445"
                                                     alt=""
                                                 >
@@ -79,7 +79,7 @@
                                             data-widget_type="heading.default"
                                         >
                                             <div class="elementor-widget-container">
-                                                <h5 class="elementor-heading-title elementor-size-default">Michael Jordan</h5>
+                                                <h5 class="elementor-heading-title elementor-size-default">{{$vendor->vendorbusinessdetails->shop_name}}</h5>
                                             </div>
                                         </div>
                                         <div
@@ -90,7 +90,11 @@
                                         >
                                             <div class="elementor-widget-container">
                                                 <style>/*! elementor - v3.18.0 - 08-12-2023 */ .elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#69727d;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#69727d;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}</style>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                                <p>{{$vendor->name}}<br>
+                                                {{$vendor->vendorbusinessdetails->shop_address}}, {{$vendor->vendorbusinessdetails->shop_city}},
+                                                {{$vendor->vendorbusinessdetails->shop_state}}, {{$vendor->vendorbusinessdetails->shop_country}}<br>
+                                                {{$vendor->vendorbusinessdetails->shop_mobile}}
+                                                </p>
                                             </div>
                                         </div>
                                         <div
@@ -99,6 +103,9 @@
                                             data-element_type="container"
                                             data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
                                         >
+                                            @php
+                                                $avg_rating = $vendor->vendorProductRatings();
+                                            @endphp
                                             <div class="e-con-inner">
                                                 <div
                                                     class="elementor-element elementor-element-70dd1ff elementor-widget elementor-widget-text-editor"
@@ -108,7 +115,7 @@
                                                 >
                                                     <div class="elementor-widget-container">
                                                         <p>
-                                                            <strong>4.5</strong>based on 321 reviews
+                                                            <strong>{{$avg_rating}}</strong>based on {{$vendor->ratings()->count()}} reviews
                                                         </p>
                                                     </div>
                                                 </div>
@@ -131,11 +138,13 @@
                                                             <div
                                                                 class="e-rating-wrapper"
                                                                 itemprop="ratingValue"
-                                                                content="4.5"
+                                                                content="{{$avg_rating}}"
                                                                 role="img"
-                                                                aria-label="Rated 4.5 out of 5"
+                                                                aria-label="Rated {{$avg_rating}} out of 5"
                                                             >
+                                                                @for ($stars = 0; $stars < 5; $stars++)
                                                                 <div class="e-icon">
+                                                                    @if ($stars+1 < $avg_rating)
                                                                     <div class="e-icon-wrapper e-icon-marked">
                                                                         <svg
                                                                             aria-hidden="true"
@@ -145,7 +154,8 @@
                                                                         >
                                                                             <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
                                                                         </svg>
-                                                                    </div>
+                                                                    </div>    
+                                                                    @endif
                                                                     <div class="e-icon-wrapper e-icon-unmarked">
                                                                         <svg
                                                                             aria-hidden="true"
@@ -157,112 +167,14 @@
                                                                         </svg>
                                                                     </div>
                                                                 </div>
-                                                                <div class="e-icon">
-                                                                    <div class="e-icon-wrapper e-icon-marked">
-                                                                        <svg
-                                                                            aria-hidden="true"
-                                                                            class="e-font-icon-svg e-eicon-star"
-                                                                            viewbox="0 0 1000 1000"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                        >
-                                                                            <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="e-icon-wrapper e-icon-unmarked">
-                                                                        <svg
-                                                                            aria-hidden="true"
-                                                                            class="e-font-icon-svg e-eicon-star"
-                                                                            viewbox="0 0 1000 1000"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                        >
-                                                                            <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-icon">
-                                                                    <div class="e-icon-wrapper e-icon-marked">
-                                                                        <svg
-                                                                            aria-hidden="true"
-                                                                            class="e-font-icon-svg e-eicon-star"
-                                                                            viewbox="0 0 1000 1000"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                        >
-                                                                            <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="e-icon-wrapper e-icon-unmarked">
-                                                                        <svg
-                                                                            aria-hidden="true"
-                                                                            class="e-font-icon-svg e-eicon-star"
-                                                                            viewbox="0 0 1000 1000"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                        >
-                                                                            <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-icon">
-                                                                    <div class="e-icon-wrapper e-icon-marked">
-                                                                        <svg
-                                                                            aria-hidden="true"
-                                                                            class="e-font-icon-svg e-eicon-star"
-                                                                            viewbox="0 0 1000 1000"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                        >
-                                                                            <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="e-icon-wrapper e-icon-unmarked">
-                                                                        <svg
-                                                                            aria-hidden="true"
-                                                                            class="e-font-icon-svg e-eicon-star"
-                                                                            viewbox="0 0 1000 1000"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                        >
-                                                                            <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="e-icon">
-                                                                    <div class="e-icon-wrapper e-icon-marked" style="--e-rating-icon-marked-width: 50%;">
-                                                                        <svg
-                                                                            aria-hidden="true"
-                                                                            class="e-font-icon-svg e-eicon-star"
-                                                                            viewbox="0 0 1000 1000"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                        >
-                                                                            <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="e-icon-wrapper e-icon-unmarked">
-                                                                        <svg
-                                                                            aria-hidden="true"
-                                                                            class="e-font-icon-svg e-eicon-star"
-                                                                            viewbox="0 0 1000 1000"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                        >
-                                                                            <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                </div>
+                                                                @endfor
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div
-                                            class="elementor-element elementor-element-ac041c4 elementor-widget elementor-widget-text-editor"
-                                            data-id="ac041c4"
-                                            data-element_type="widget"
-                                            data-widget_type="text-editor.default"
-                                        >
-                                            <div class="elementor-widget-container">
-                                                <p>
-                                                    <strong>2.1k</strong> products sold
-                                                </p>
-                                            </div>
-                                        </div>
+                                        
                                         <div
                                             class="elementor-element elementor-element-58fa36b elementor-widget__width-auto elementor-align-center elementor-widget elementor-widget-button"
                                             data-id="58fa36b"

@@ -23,7 +23,8 @@ class VendorController extends Controller
     }
 
     public function vendorList() {
-        $vendors = Vendor::where('status', 1)->paginate(9);
+        $vendors = Vendor::where('status', 1)->with('vendorbusinessdetails')->paginate(9);
+        // dd($vendors);
         return view('front.pages.merchants')->with(compact('vendors'));
     }
 
