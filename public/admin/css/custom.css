@@ -35,16 +35,25 @@
     }
     .custom_btn_for_navbar_mobile.dashboard_nav_btn{
         position: absolute;
-        top: -40px;
-        right: -20px;
+        top: 0px;
+        right: 0px;
+        margin-top: 0;
+        z-index: 1;
+    }
+    .mobile-space-top{
+        padding-top: 70px !important;
     }
 }
 @media (max-width: 767px){
     .custom_btn_for_navbar_mobile.dashboard_nav_btn{
-        top: -25px;
-        right: -60px;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        margin-top: 0;
+        z-index: 1;
     }
     .space-right-mobile{
-        padding-right: 50px;
+        padding-right: 0px;
     }
+    
 }
