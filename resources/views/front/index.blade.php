@@ -24,6 +24,8 @@
                     <link rel="stylesheet" href="{{ url('front/css/elementor-css/elementor-pro-assets-css-widget-nested-carousel.min.css') }}">
                     <div class="e-n-carousel swiper" dir="ltr">
                         <div class="swiper-wrapper" aria-live="off">
+                            <!-- slider -->
+                            @foreach ($sliderBanners as $banner)
                             <div
                                 class="swiper-slide"
                                 data-slide="1"
@@ -115,10 +117,10 @@
                                                     decoding="async"
                                                     width="620"
                                                     height="620"
-                                                    src="{{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }}"
+                                                    src="{{ $getImage('front/images/banner_images/', $banner['image']) }}"
                                                     class="aaaaaaaaaa attachment-large size-large wp-image-258"
                                                     alt=""
-                                                    srcset="{{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }} 620w, {{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }} 300w, {{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }} 150w"
+                                                    srcset="{{ $getImage('front/images/banner_images/', $banner['image']) }} 620w, {{ $getImage('front/images/banners/', $banner['image']) }} 300w, {{ $getImage('front/images/banners/', $banner['image']) }} 150w"
                                                     sizes="(max-width: 620px) 100vw, 620px"
                                                 >
                                             </div>
@@ -126,208 +128,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="swiper-slide"
-                                data-slide="2"
-                                role="group"
-                                aria-roledescription="slide"
-                                aria-label="2 of 3"
-                            >
-                                <div
-                                    class="elementor-element elementor-element-6d235ec e-grid e-con-boxed e-con e-child"
-                                    data-id="6d235ec"
-                                    data-element_type="container"
-                                    data-settings="{&quot;container_type&quot;:&quot;grid&quot;,&quot;grid_columns_grid&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:2,&quot;sizes&quot;:[]},&quot;grid_columns_grid_tablet&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:1,&quot;sizes&quot;:[]},&quot;grid_rows_grid&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:1,&quot;sizes&quot;:[]},&quot;grid_rows_grid_tablet&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:2,&quot;sizes&quot;:[]},&quot;content_width&quot;:&quot;boxed&quot;,&quot;grid_outline&quot;:&quot;yes&quot;,&quot;grid_columns_grid_mobile&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:1,&quot;sizes&quot;:[]},&quot;grid_rows_grid_mobile&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;grid_auto_flow&quot;:&quot;row&quot;,&quot;grid_auto_flow_tablet&quot;:&quot;row&quot;,&quot;grid_auto_flow_mobile&quot;:&quot;row&quot;}"
-                                >
-                                    <div class="e-con-inner">
-                                        <div
-                                            class="elementor-element elementor-element-99655b5 e-flex e-con-boxed elementor-invisible e-con e-child"
-                                            data-id="99655b5"
-                                            data-element_type="container"
-                                            data-settings="{&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;animation_delay&quot;:200,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
-                                        >
-                                            <div class="e-con-inner">
-                                                <div
-                                                    class="elementor-element elementor-element-148fc9c elementor-widget__width-inherit elementor-widget elementor-widget-heading"
-                                                    data-id="148fc9c"
-                                                    data-element_type="widget"
-                                                    data-widget_type="heading.default"
-                                                >
-                                                    <div class="elementor-widget-container">
-                                                        <h1 class="elementor-heading-title elementor-size-default">EXCLUSIVE
-                                                            <br>DEALS
-                                                        </h1>
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    class="elementor-element elementor-element-2b3ced4 elementor-widget__width-inherit elementor-widget elementor-widget-text-editor"
-                                                    data-id="2b3ced4"
-                                                    data-element_type="widget"
-                                                    data-widget_type="text-editor.default"
-                                                >
-                                                    <div class="elementor-widget-container">
-                                                        <p>Lorem ipsum dolor sit amet. Ut consequatur omnis qui voluptatem consequatur eum provident neque!</p>
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    class="elementor-element elementor-element-1223be5 elementor-widget__width-auto elementor-widget elementor-widget-button"
-                                                    data-id="1223be5"
-                                                    data-element_type="widget"
-                                                    data-widget_type="button.default"
-                                                >
-                                                    <div class="elementor-widget-container">
-                                                        <div class="elementor-button-wrapper">
-                                                            <a class="elementor-button elementor-button-link elementor-size-sm" href="#">
-                                                                <span class="elementor-button-content-wrapper">
-                                                                    <span class="elementor-button-text">DISCOVER</span>
-                                                                </span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    class="elementor-element elementor-element-b20fa31 elementor-widget__width-auto elementor-widget elementor-widget-button"
-                                                    data-id="b20fa31"
-                                                    data-element_type="widget"
-                                                    data-widget_type="button.default"
-                                                >
-                                                    <div class="elementor-widget-container">
-                                                        <div class="elementor-button-wrapper">
-                                                            <a class="elementor-button elementor-button-link elementor-size-sm" href="#">
-                                                                <span class="elementor-button-content-wrapper">
-                                                                    <span class="elementor-button-text">BROWSE PRODUCTS</span>
-                                                                </span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div
-                                            class="elementor-element elementor-element-19cb0d7 elementor-invisible elementor-widget elementor-widget-image"
-                                            data-id="19cb0d7"
-                                            data-element_type="widget"
-                                            data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}"
-                                            data-widget_type="image.default"
-                                        >
-                                            <div class="elementor-widget-container">
-                                                <img
-                                                    fetchpriority="high"
-                                                    decoding="async"
-                                                    width="620"
-                                                    height="620"
-                                                    src="{{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }}"
-                                                    class="attachment-large size-large wp-image-258"
-                                                    alt=""
-                                                    srcset="{{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }} 620w, {{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }} 300w, {{ $getImage('front/images/banners/', '2023-12-21312312-4.png') }} 150w"
-                                                    sizes="(max-width: 620px) 100vw, 620px"
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                class="swiper-slide"
-                                data-slide="3"
-                                role="group"
-                                aria-roledescription="slide"
-                                aria-label="3 of 3"
-                            >
-                                <div
-                                    class="elementor-element elementor-element-bf17015 e-grid e-con-boxed e-con e-child"
-                                    data-id="bf17015"
-                                    data-element_type="container"
-                                    data-settings="{&quot;container_type&quot;:&quot;grid&quot;,&quot;grid_columns_grid&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:2,&quot;sizes&quot;:[]},&quot;grid_columns_grid_tablet&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:1,&quot;sizes&quot;:[]},&quot;grid_rows_grid&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:1,&quot;sizes&quot;:[]},&quot;grid_rows_grid_tablet&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:2,&quot;sizes&quot;:[]},&quot;content_width&quot;:&quot;boxed&quot;,&quot;grid_outline&quot;:&quot;yes&quot;,&quot;grid_columns_grid_mobile&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:1,&quot;sizes&quot;:[]},&quot;grid_rows_grid_mobile&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;grid_auto_flow&quot;:&quot;row&quot;,&quot;grid_auto_flow_tablet&quot;:&quot;row&quot;,&quot;grid_auto_flow_mobile&quot;:&quot;row&quot;}"
-                                >
-                                    <div class="e-con-inner">
-                                        <div
-                                            class="elementor-element elementor-element-5aa20a6 e-flex e-con-boxed elementor-invisible e-con e-child"
-                                            data-id="5aa20a6"
-                                            data-element_type="container"
-                                            data-settings="{&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;animation_delay&quot;:200,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
-                                        >
-                                            <div class="e-con-inner">
-                                                <div
-                                                    class="elementor-element elementor-element-0155a5c elementor-widget__width-inherit elementor-widget elementor-widget-heading"
-                                                    data-id="0155a5c"
-                                                    data-element_type="widget"
-                                                    data-widget_type="heading.default"
-                                                >
-                                                    <div class="elementor-widget-container">
-                                                        <h1 class="elementor-heading-title elementor-size-default">EXCLUSIVE
-                                                            <br>DEALS
-                                                        </h1>
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    class="elementor-element elementor-element-52fd5a1 elementor-widget__width-inherit elementor-widget elementor-widget-text-editor"
-                                                    data-id="52fd5a1"
-                                                    data-element_type="widget"
-                                                    data-widget_type="text-editor.default"
-                                                >
-                                                    <div class="elementor-widget-container">
-                                                        <p>Lorem ipsum dolor sit amet. Ut consequatur omnis qui voluptatem consequatur eum provident neque!</p>
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    class="elementor-element elementor-element-a789bfe elementor-widget__width-auto elementor-widget elementor-widget-button"
-                                                    data-id="a789bfe"
-                                                    data-element_type="widget"
-                                                    data-widget_type="button.default"
-                                                >
-                                                    <div class="elementor-widget-container">
-                                                        <div class="elementor-button-wrapper">
-                                                            <a class="elementor-button elementor-button-link elementor-size-sm" href="#">
-                                                                <span class="elementor-button-content-wrapper">
-                                                                    <span class="elementor-button-text">DISCOVER</span>
-                                                                </span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    class="elementor-element elementor-element-5ece035 elementor-widget__width-auto elementor-widget elementor-widget-button"
-                                                    data-id="5ece035"
-                                                    data-element_type="widget"
-                                                    data-widget_type="button.default"
-                                                >
-                                                    <div class="elementor-widget-container">
-                                                        <div class="elementor-button-wrapper">
-                                                            <a class="elementor-button elementor-button-link elementor-size-sm" href="#">
-                                                                <span class="elementor-button-content-wrapper">
-                                                                    <span class="elementor-button-text">BROWSE PRODUCTS</span>
-                                                                </span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div
-                                            class="elementor-element elementor-element-43e9f77 elementor-invisible elementor-widget elementor-widget-image"
-                                            data-id="43e9f77"
-                                            data-element_type="widget"
-                                            data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}"
-                                            data-widget_type="image.default"
-                                        >
-                                            <div class="elementor-widget-container">
-                                                <img
-                                                    fetchpriority="high"
-                                                    decoding="async"
-                                                    width="620"
-                                                    height="620"
-                                                    src="{{ $getImage('front/images/banners/', '2023-12-21312312-4-150x150.png') }}"
-                                                    class="attachment-large size-large wp-image-258"
-                                                    alt=""
-                                                    srcset="{{ $getImage('front/images/banners/', '2023-12-21312312-4-150x150.png') }} 620w, {{ $getImage('front/images/banners/', '2023-12-21312312-4-150x150.png') }} 300w, {{ $getImage('front/images/banners/', '2023-12-21312312-4-150x150.png') }} 150w"
-                                                    sizes="(max-width: 620px) 100vw, 620px"
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
+                            <!-- slider -->
                         </div>
                     </div>
                     <div class="elementor-swiper-button elementor-swiper-button-prev" role="button" tabindex="0">
