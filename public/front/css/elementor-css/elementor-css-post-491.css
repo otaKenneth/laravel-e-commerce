@@ -385,6 +385,12 @@
     background: #b2dcc7 !important;
     border: 1px solid #b2dcc7 !important;
 }
+.wishlist-btn button{
+    background: #87cdbf !important;
+}
+
+
+
 @media (max-width: 1024px){
     .elementor-491 .popup_review_container{
         height: calc(100vh - 117px);
