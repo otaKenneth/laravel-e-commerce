@@ -93,7 +93,7 @@
                                             <span id="login-accept"></span>
                                         </div>
                                         <div class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_954499e elementor-col-100">
-                                            <p>
+                                            <p style="text-align: center;">
                                                 <a style="color:#1f1f22; text-decoration: underline;" href="{{ url('user/forgot-password') }}">Forgot your password?</a>
                                             </p>
                                         </div>

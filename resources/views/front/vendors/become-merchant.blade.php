@@ -9,7 +9,7 @@
         data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
         data-core-v316-plus="true">
         <div class="e-con-inner">
-            <div class="elementor-element elementor-element-e0cba95 e-flex e-con-boxed e-con e-child"
+            <div id="lets-talk-merchant-register" class="elementor-element elementor-element-e0cba95 e-flex e-con-boxed e-con e-child"
                 data-id="e0cba95" data-element_type="container"
                 data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}">
                 <div class="e-con-inner">
@@ -756,7 +756,7 @@
                                 <div class="elementor-widget-container">
                                     <div class="elementor-button-wrapper"> <a
                                             class="elementor-button elementor-button-link elementor-size-sm"
-                                            href="{{ url('vendor/register') }}"> <span class="elementor-button-content-wrapper"> <span
+                                            href="#lets-talk-merchant-register"> <span class="elementor-button-content-wrapper"> <span
                                                     class="elementor-button-text">SIGN UP FOR FREE</span>
                                             </span> </a> </div>
                                 </div>
