@@ -4,14 +4,20 @@
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
+            
             <div class="row">
                 <div class="col-md-12 grid-margin">
+
+                <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                    <span class="icon-menu"></span>
+                </button>
+
                     <div class="row">
                         <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                             <h3 class="font-weight-bold">Update Vendor Details</h3>
 
                         </div>
-                        <div class="col-12 col-xl-4">
+                        <div class="col-12 col-xl-12">
                             <div class="justify-content-end d-flex">
                                 <div class="dropdown flex-md-grow-1 flex-xl-grow-0">
                                     <button class="btn btn-sm btn-light bg-white dropdown-toggle" type="button" id="dropdownMenuDate2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -34,7 +40,7 @@
             
             @if ($slug == 'personal') {{-- $slug was passed from AdminController to view (using compact() method) --}}
                 <div class="row">
-                    <div class="col-md-12 col-lg-10 col-xl-6 grid-margin stretch-card">
+                    <div class="col-md-12 col-lg-12 col-xl-12 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Update Personal Information</h4>
