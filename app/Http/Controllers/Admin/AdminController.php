@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Vendor;
 use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 // Auth without a namespace here works fine because the Admin.php model extends Authenticatable
@@ -70,6 +71,43 @@ class AdminController extends Controller
 
 
         return view('admin/login');
+    }
+
+    public function forgotPassword(Request $request) {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            // dd($data);
+
+            // Validation
+            $rules = [
+                'email'    => 'required|email|max:255|exists:vendors,email',
+            ];
+
+            $customMessages = [ // Specifying A Custom Message For A Given Attribute: https://laravel.com/docs/9.x/validation#specifying-a-custom-message-for-a-given-attribute
+                'email.required'    => 'Email Address is required!',
+                'email.email'       => 'Valid Email Address is required',
+            ];
+
+            $this->validate($request, $rules, $customMessages);
+
+            $userDetails = Vendor::where('email', $data['email'])->first();
+            $email = $data['email'];
+            $new_password = \Illuminate\Support\Str::random(16);
+
+            // The email message data/variables that will be passed in to the email view
+            $messageData = [
+                'name'     => $userDetails['name'], // the user's name that they entered while submitting the registration form
+                'email'    => $email, // the user's email that they entered while submitting the registration form
+                'password' => $new_password // the user's email that they entered while submitting the registration form
+                // 'code'  => base64_encode($data['email']) // We base64 code the user's $email and send it as a Route Parameter from user_confirmation.blade.php to the 'user/confirm/{code}' route in web.php, then it gets base64 decoded again in confirmUser() method in Front/UserController.php    // we will use the opposite: base64_decode() in the confirmUser() method (encode X decode)
+            ];
+
+            \Illuminate\Support\Facades\Mail::send('emails.user_forgot_password', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_status' is the order_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                $message->to($email)->subject('New Password - ' . env('APP_URL'));
+            });
+        }
+
+        return view('admin.forgotpassword');
     }
 
     public function logout() {
