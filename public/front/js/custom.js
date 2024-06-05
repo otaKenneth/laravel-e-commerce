@@ -122,6 +122,25 @@ $(document).ready(function() {
         });
     })
 
+    $('#product-detail-add-to-cart-form #add-to-wishlist').click(function (v) {
+        let form = new FormData($('#product-detail-add-to-cart-form')[0]);
+        
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            data   : form, // Sending name/value pairs to server with the AJAX request (AJAX call)
+            url    : '/wishlist/add', // check this route in web.php
+            type   : 'post',
+            processData: false,
+            contentType: false,
+            success: function(resp) {
+                alert(resp.message);
+            },
+            error  : function() {
+                alert('Error');
+            }
+        });
+    })
+
     $(document).on('click', '.item-addCart', function(v) {
         // cart/add
         // console.log(v);

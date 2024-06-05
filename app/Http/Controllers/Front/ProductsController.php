@@ -15,6 +15,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Vendor;
 use App\Models\Brand;
+use App\Models\Wishlist;
 use App\Helpers\LalamoveAPIBodyHelper;
 
 
@@ -1282,5 +1283,36 @@ class ProductsController extends Controller
         }
 
         return $collection;
+    }
+
+    public function wishlistAdd(Request $request) {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            
+            $request->validate([
+                'product_id' => 'required|exists:products,id',
+            ]);
+
+            if (Auth::check()) {
+                $wishlist = Wishlist::where([
+                    'user_id' => Auth::id(),
+                    'product_id' => $request->product_id
+                ])->count();
+
+                if ($wishlist == 0) {
+                    $wishlist = Wishlist::create([
+                        'user_id' => Auth::id(),
+                        'product_id' => $request->product_id,
+                    ]);
+                }
+
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Product has been added to Wishlist! <a href="/wishlist" style="text-decoration: underline !important">View Wishlist</a>',
+            ]);
+    
+        }
     }
 }

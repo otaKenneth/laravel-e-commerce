@@ -741,10 +741,10 @@
                                                 </span>
                                             </button>
                                         </div>
-
+                                        @if (Auth::check())
                                         <div class="wishlist-btn">
                                             <div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-25 e-form__buttons elementor-md-60">
-                                                <button type="submit" class="elementor-button elementor-size-sm">
+                                                <button id="add-to-wishlist" type="button" class="elementor-button elementor-size-sm">
                                                     <span>
                                                         <span class="elementor-button-icon"></span>
                                                         <span class="elementor-button-text">ADD TO WISHLIST</span>
@@ -752,6 +752,7 @@
                                                 </button>
                                             </div>
                                         </div>
+                                        @endif
 
 
 
@@ -761,16 +762,6 @@
                         </div>
 
     
-                    </div>
-                </div>
-                <div
-                    class="elementor-element elementor-element-b451558 elementor-widget elementor-widget-heading"
-                    data-id="b451558"
-                    data-element_type="widget"
-                    data-widget_type="heading.default"
-                >
-                    <div class="elementor-widget-container">
-                        <h6 class="elementor-heading-title elementor-size-default">SKU: KAPITON0001</h6>
                     </div>
                 </div>
             </div>

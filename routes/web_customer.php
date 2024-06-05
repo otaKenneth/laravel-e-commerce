@@ -42,6 +42,8 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
     // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
     Route::post('cart/delete', 'ProductsController@cartDelete');
+    
+    Route::post('wishlist/add', 'ProductsController@wishlistAdd');
 
 
     // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
