@@ -247,7 +247,7 @@
         <div class="alert alert-dialog success" style="margin-top: 20px; background: #0080001a; display: none;">
             <p style="margin-bottom: 0; text-align: center;"></p>
         </div>
-        <div class="alert alert-dialog error" style="margin-top: 20px; background: #80000033 display: none;">
+        <div class="alert alert-dialog error" style="margin-top: 20px; background: #80000033; display: none;">
             <p style="margin-bottom: 0; text-align: center;"></p>
         </div>
         
