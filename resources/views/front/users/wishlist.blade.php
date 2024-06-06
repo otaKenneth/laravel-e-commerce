@@ -54,96 +54,26 @@
                                             <th>PRICE</th>
                                             <th class="align-right"></th>
                                         </tr>
+                                        @foreach ($wishlist as $product)
                                         <tr>
                                             <td>
                                                 <div class="prod-wishlist">
                                                     <div class="wishlist-img">
-                                                        <img decoding="async" class="prod-img" src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
+                                                        <img decoding="async" class="prod-img" src="{{ $getImage('front/images/product/', $product['product']['product_image']) }}">
                                                     </div>
                                                     <div class="wishlist-prod-desc">
-                                                        <h4>ADOBE CC</h4>
-                                                        <p class="other-info">12-Month subscription with Auto-Renewal for PC/MAC</p>
+                                                        <h4>{{$product['product']['product_name']}}</h4>
+                                                        <p class="other-info">{{$product['product']['description']}}</p>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>                 ₱450.00</td>
+                                            <td>                 ₱{{$product['product']['product_price']}}</td>
                                             <td style="text-align: right;">
-                                                <a href="#" class="button btn">Add to cart</a>
+                                                <a href="#" class="item-addCart button btn" data-product="{{$product['product_id']}}">Add to cart</a>
                                                 <a href="#" class="button btn button--secondary">remove</a>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="prod-wishlist">
-                                                    <div class="wishlist-img">
-                                                        <img decoding="async" class="prod-img" src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
-                                                    </div>
-                                                    <div class="wishlist-prod-desc">
-                                                        <h4>ADOBE CC</h4>
-                                                        <p class="other-info">12-Month subscription with Auto-Renewal for PC/MAC</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>                 ₱450.00</td>
-                                            <td style="text-align: right;">
-                                                <a href="#" class="button btn">Add to cart</a>
-                                                <a href="#" class="button btn button--secondary">remove</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="prod-wishlist">
-                                                    <div class="wishlist-img">
-                                                        <img decoding="async" class="prod-img" src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
-                                                    </div>
-                                                    <div class="wishlist-prod-desc">
-                                                        <h4>ADOBE CC</h4>
-                                                        <p class="other-info">12-Month subscription with Auto-Renewal for PC/MAC</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>                 ₱450.00</td>
-                                            <td style="text-align: right;">
-                                                <a href="#" class="button btn">Add to cart</a>
-                                                <a href="#" class="button btn button--secondary">remove</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="prod-wishlist">
-                                                    <div class="wishlist-img">
-                                                        <img decoding="async" class="prod-img" src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
-                                                    </div>
-                                                    <div class="wishlist-prod-desc">
-                                                        <h4>ADOBE CC</h4>
-                                                        <p class="other-info">12-Month subscription with Auto-Renewal for PC/MAC</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>                 ₱450.00</td>
-                                            <td style="text-align: right;">
-                                                <a href="#" class="button btn">Add to cart</a>
-                                                <a href="#" class="button btn button--secondary">remove</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="prod-wishlist">
-                                                    <div class="wishlist-img">
-                                                        <img decoding="async" class="prod-img" src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
-                                                    </div>
-                                                    <div class="wishlist-prod-desc">
-                                                        <h4>ADOBE CC</h4>
-                                                        <p class="other-info">12-Month subscription with Auto-Renewal for PC/MAC</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>                 ₱450.00</td>
-                                            <td style="text-align: right;">
-                                                <a href="#" class="button btn">Add to cart</a>
-                                                <a href="#" class="button btn button--secondary">remove</a>
-                                            </td>
-                                        </tr>
+                                        @endforeach
                                     </table>
                                 </div>
                                 <style></style>
