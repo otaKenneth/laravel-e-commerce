@@ -40,6 +40,9 @@ class IndexController extends Controller
     public function aboutUsManagement() {
         return view('front.pages.management');
     }
+    public function wishlist() {
+        return view('front.users.wishlist');
+    }
 
     public function getKSContainerContent(Request $request) {
         return PlatformContent::where('page', $request->page)->orWhere('page', '')->orWhere('page', '/')->get();
