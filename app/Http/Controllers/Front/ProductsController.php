@@ -307,9 +307,16 @@ class ProductsController extends Controller
                 $data['quantity'] = 1;
             }
 
-
-            // Check if the selected product `product_id` with that selected `size` have available `stock` in `products_attributes` table
-            $getProductStock = \App\Models\ProductsAttribute::getProductStock($data['product_id'], $data['size']);
+            if (!isset($data['color']) || !isset($data['size'])) {
+                $prod_attribute = \App\Models\ProductsAttribute::where('product_id', $data['product_id'])->first();
+                $getProductStock = $prod_attribute->stock;
+                
+                $data['color'] = $prod_attribute->color;
+                $data['size'] = $prod_attribute->size;
+            } else {
+                // Check if the selected product `product_id` with that selected `size` have available `stock` in `products_attributes` table
+                $getProductStock = \App\Models\ProductsAttribute::getProductStock($data['product_id'], $data['color'], $data['size']);
+            }
 
             if ($getProductStock < $data['quantity']) { // if the `stock` available (in `products_attributes` table) is less than the ordered quantity by user (the quantity that the user desires)
                 return redirect()->back()->with('error_message', 'Required Quantity is not available!');
@@ -335,6 +342,7 @@ class ProductsController extends Controller
                 $countProducts = \App\Models\Cart::where([
                     'user_id'    => $user_id, // THAT EXACT authenticated/logged in user (using their `user_id` because they're authenticated/logged in)
                     'product_id' => $data['product_id'],
+                    'color'      => $data['color'],
                     'size'       => $data['size']
                 ])->count();
 
@@ -344,6 +352,7 @@ class ProductsController extends Controller
                 $countProducts = \App\Models\Cart::where([ // We get the count (number) of that specific product `product_id` with that specific `size` to prevent repetition in the `carts` table 
                     'session_id' => $session_id, // THAT EXACT NON-authenticated/NOT logged or Guest user (using their `session_id` because they're NOT authenticated/NOT logged in or Guest)
                     'product_id' => $data['product_id'],
+                    'color'       => $data['color'],
                     'size'       => $data['size']
                 ])->count();
             }
@@ -356,6 +365,7 @@ class ProductsController extends Controller
                     'session_id' => $session_id, // THAT EXACT NON-authenticated/NOT logged or Guest user (using their `session_id` because they're NOT authenticated/NOT logged in or Guest)
                     'user_id'    => $user_id ?? 0, // if the user is authenticated/logged in, take its $user_id. If not, make it zero 0    // When user logins, their `user_id` gets updated (check userLogin() method in UserController.php)
                     'product_id' => $data['product_id'],
+                    'color'       => $data['color'],
                     'size'       => $data['size']
                 ])->increment('quantity', $data['quantity']); // Add the new added quantity (    $data['quantity']    ) to the already existing `quantity` in the `carts` table    // Update Statements: Increment & Decrement: https://laravel.com/docs/9.x/queries#increment-and-decrement
             } else { // if that `product_id` with that `size` was never ordered by that user `session_id` or `user_id` (i.e. that product with that size for that user doesn't exist in the `carts` table), INSERT it into the `carts` table for the first time
@@ -365,6 +375,7 @@ class ProductsController extends Controller
                 $item->session_id = $session_id; // $session_id will be stored whether the user is authenticated/logged in or NOT
                 $item->user_id    = $user_id; // depending on the last if statement (whether user is authenticated/logged in or NOT (guest))    // $user_id will be always zero 0 if the user is NOT authenticated/logged in    // When user logins, their `user_id` gets updated (check userLogin() method in UserController.php)
                 $item->product_id = $data['product_id'];
+                $item->color      = $data['color'];
                 $item->size       = $data['size'];
                 $item->quantity   = $data['quantity'];
 
@@ -760,7 +771,7 @@ class ProductsController extends Controller
             }
 
             // Preventing out of stock / sold out products from being ordered (by checking the `products_attributes` database table)
-            $getProductStock = \App\Models\ProductsAttribute::getProductStock($item['product_id'], $item['size']); // A product (`product_id`) with a certain `size`
+            $getProductStock = \App\Models\ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']); // A product (`product_id`) with a certain `size`
             if ($getProductStock == 0) { // if the product's `stock` is 0 zero
                 $message = $item['product']['product_name'] . ' with ' . $item['size'] . ' size is not available. Please remove it from the Cart and choose another product.';
                 return redirect('/cart')->with('error_message', $message); // Redirect to the Cart page with an error message
@@ -916,7 +927,7 @@ class ProductsController extends Controller
 
 
                 
-                $getProductStock = \App\Models\ProductsAttribute::getProductStock($item['product_id'], $item['size']);
+                $getProductStock = \App\Models\ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']);
                 if ($item['quantity'] > $getProductStock) { // if the ordered quantity is greater than the existing stock, cancel the order/opertation
                     $message = $getProductDetails['product_name'] . ' with ' . $item['size'] . ' size stock is not available/enough for your order. Please reduce its quantity and try again!';
 
@@ -931,7 +942,7 @@ class ProductsController extends Controller
 
                 // Inventory Management - Reduce inventory/stock when an order gets placed
                 // We wrote the Inventory/Stock Management script in TWO places: in the checkout() method in Front/ProductsController.php and in the success() method in Front/PaypalController.php
-                $getProductStock = \App\Models\ProductsAttribute::getProductStock($item['product_id'], $item['size']); // Get the `stock` of that product `product_id` with that specific `size` from `products_attributes` table
+                $getProductStock = \App\Models\ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']); // Get the `stock` of that product `product_id` with that specific `size` from `products_attributes` table
                 $newStock = $getProductStock - $item['quantity']; // The new product `stock` is the original stock reduced by the order `quantity`
                 \App\Models\ProductsAttribute::where([ // Update the new `quantity` in the `products_attributes` table
                     'product_id' => $item['product_id'],
