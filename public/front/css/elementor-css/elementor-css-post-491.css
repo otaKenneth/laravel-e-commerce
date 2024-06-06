@@ -288,7 +288,8 @@
     width: 100%;
 }
 .elementor-491 .popup_review_container,
-.elementor-491 .chat_vendor_window{
+.elementor-491 .chat_vendor_window,
+.elementor-491 .wishlist-container{
     position: fixed;
     z-index: 9;
     left: 0;
@@ -302,6 +303,39 @@
 .elementor-491 .popup_review_container.active{
     display: block;
 }
+.elementor-491 .wishlist-container.active{
+    display: flex;
+}
+.elementor-491 .wishlist-container{
+    align-items: center;
+    justify-content: center;
+}
+.elementor-491 .wishlist-container div{
+    min-height: 250px;
+    width: 90%;
+    max-width: 300px;
+    text-align: center;
+    background: white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    padding: 20px;
+    flex-direction: column;
+}
+.elementor-491 .wishlist-container div .btn{
+    font-family: "Lexend", Sans-serif;
+    font-weight: 500;
+    border-radius: 100px 100px 100px 100px;
+    text-transform: uppercase;
+    background-color: #87CDBF;
+    padding: 12px 24px;
+    margin-top: 20px;
+    color: white;
+    margin-bottom: 30px;
+}
+
 .elementor-491 .chat_vendor_window.active{
     display: flex;
 }
@@ -320,7 +354,8 @@
     bottom: 0;
 }
 .elementor-491 .popup_review_container .close_image_review_popup,
-.elementor-491 .chat_vendor_window .close_image_review_popup{
+.elementor-491 .chat_vendor_window .close_image_review_popup,
+.elementor-491 .wishlist-container .close_image_review_popup{
     background: white;
     color: black;
     padding: 5px;
@@ -342,7 +377,8 @@
     
 }
 .elementor-491 .popup_review_container .close_image_review_popup:hover,
-.elementor-491 .chat_vendor_window .close_image_review_popup:hover{
+.elementor-491 .chat_vendor_window .close_image_review_popup:hover,
+.elementor-491 .wishlist-container .close_image_review_popup:hover{
     box-shadow: 0 0 20px -5px white;
 }
 .product_page_chat_container{
@@ -403,7 +439,8 @@
     .elementor-491 .popup_review_container img{
         max-width: 90vw;
     }
-    .elementor-491 .popup_review_container .close_image_review_popup{
+    .elementor-491 .popup_review_container .close_image_review_popup,
+    .elementor-491 .wishlist-container .close_image_review_popup{
         top: 10px;
         right: 5px;
     }

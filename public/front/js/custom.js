@@ -133,10 +133,13 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function(resp) {
-                alert(resp.message);
+                
+                if (resp.success){
+                    $('#wishlist-container').addClass('active');
+                }
             },
             error  : function() {
-                alert('Error');
+                $('#wishlist-container.error').addClass('active');
             }
         });
     })
@@ -943,6 +946,16 @@ $(document).ready(function() {
     $(".chat_vendor_window .close_image_review_popup").click(function(event) {
         event.preventDefault();
         $(".chat_vendor_window").removeClass("active");
+    });
+
+    $(".chat_vendor_window.error .close_image_review_popup").click(function(event) {
+        event.preventDefault();
+        $(".chat_vendor_window.error").removeClass("active");
+    });
+
+    $(".wishlist-container .close_image_review_popup").click(function(event) {
+        event.preventDefault();
+        $(".wishlist-container").removeClass("active");
     });
 
 

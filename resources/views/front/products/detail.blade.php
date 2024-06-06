@@ -13,6 +13,23 @@
     <a href="#" class="close_image_review_popup">X</a>
 </div>
 
+<div class="wishlist-container" id="wishlist-container">
+    <div>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
+<dotlottie-player src="https://lottie.host/c80730db-e87e-4f4c-aa13-a7850d40f604/1geJ53SjpY.json" background="transparent" speed="1" style="width: 300px; height: 200px;" loop autoplay></dotlottie-player>
+    <p>{{$productDetails['product_name']}} added to your wishlist.</p>
+    <a class="button btn" href="/wishlist">View my wishlist</a>
+    </div>
+    <a href="#" class="close_image_review_popup">X</a>
+</div>
+<div class="wishlist-container error" id="wishlist-container">
+    <div>
+    <p>Error occured while adding {{$productDetails['product_name']}} to wishlist.</p>
+    </div>
+    <a href="#" class="close_image_review_popup">X</a>
+</div>
+
 <div class="chat_vendor_window">
     <div class="elementor-widget-container product_page_chat_container">
         <h3 class="h2">Send a message to Vendor {{ isset($productDetails['vendor']['name']) ? $productDetails['vendor']['name']:"" }}</h2>
