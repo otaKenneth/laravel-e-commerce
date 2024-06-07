@@ -13,6 +13,23 @@
     <a href="#" class="close_image_review_popup">X</a>
 </div>
 
+<div class="wishlist-container" id="wishlist-container">
+    <div>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
+<dotlottie-player src="https://lottie.host/c80730db-e87e-4f4c-aa13-a7850d40f604/1geJ53SjpY.json" background="transparent" speed="1" style="width: 300px; height: 200px;" loop autoplay></dotlottie-player>
+    <p>{{$productDetails['product_name']}} added to your wishlist.</p>
+    <a class="button btn" href="/wishlist">View my wishlist</a>
+    </div>
+    <a href="#" class="close_image_review_popup">X</a>
+</div>
+<div class="wishlist-container error" id="wishlist-container">
+    <div>
+    <p>Error occured while adding {{$productDetails['product_name']}} to wishlist.</p>
+    </div>
+    <a href="#" class="close_image_review_popup">X</a>
+</div>
+
 <div class="chat_vendor_window">
     <div class="elementor-widget-container product_page_chat_container">
         <h3 class="h2">Send a message to Vendor {{ isset($productDetails['vendor']['name']) ? $productDetails['vendor']['name']:"" }}</h2>
@@ -748,10 +765,10 @@
                                                 </span>
                                             </button>
                                         </div>
-
+                                        @if (Auth::check())
                                         <div class="wishlist-btn">
                                             <div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-25 e-form__buttons elementor-md-60">
-                                                <button type="submit" class="elementor-button elementor-size-sm">
+                                                <button id="add-to-wishlist" type="button" class="elementor-button elementor-size-sm">
                                                     <span>
                                                         <span class="elementor-button-icon"></span>
                                                         <span class="elementor-button-text">ADD TO WISHLIST</span>
@@ -759,6 +776,7 @@
                                                 </button>
                                             </div>
                                         </div>
+                                        @endif
 
 
 
@@ -768,16 +786,6 @@
                         </div>
 
     
-                    </div>
-                </div>
-                <div
-                    class="elementor-element elementor-element-b451558 elementor-widget elementor-widget-heading"
-                    data-id="b451558"
-                    data-element_type="widget"
-                    data-widget_type="heading.default"
-                >
-                    <div class="elementor-widget-container">
-                        <h6 class="elementor-heading-title elementor-size-default">SKU: KAPITON0001</h6>
                     </div>
                 </div>
             </div>
