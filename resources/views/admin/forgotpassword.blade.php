@@ -57,7 +57,7 @@
 
 
                                 {{-- My code --}}
-                                <form class="pt-3" action="{{ url('admin/login') }}" method="post">
+                                <form class="pt-3" action="{{ url('admin/forgot-password') }}" method="post">
                                     @csrf {{-- https://laravel.com/docs/9.x/csrf#preventing-csrf-requests --}}
 
 
