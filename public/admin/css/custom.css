@@ -19,6 +19,7 @@
     color: white;
     padding: 7px 10px 10px;
 }
+
 @media (max-width: 991px){
     .wrapper_outer_admin{
         padding-left: 0;
@@ -55,5 +56,7 @@
     .space-right-mobile{
         padding-right: 0px;
     }
-    
+    .no-mobile-margin-bottom{
+        margin-bottom: 0 !important;
+    }
 }
