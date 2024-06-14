@@ -436,7 +436,11 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14
                 },
                 success: (resp) => {
                     resp.forEach(content => {
-                        $(`#${content.container} > div`).html(content.content);
+                        if ($(`#${content.container} > div`).text().toLowerCase().match("lorem ipsum")) {
+                            $(`#${content.container} > div`).html(content.content);
+                        } else {
+                            $(`#${content.container} > div`).html("");
+                        }
                     });
                 }
             })
