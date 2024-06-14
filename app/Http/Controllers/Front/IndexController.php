@@ -42,6 +42,10 @@ class IndexController extends Controller
     }
 
     public function getKSContainerContent(Request $request) {
-        return PlatformContent::where('page', $request->page)->orWhere('page', '')->orWhere('page', '/')->get();
+        if (isset($request->page)) {
+            return PlatformContent::where('page', $request->page)->orWhere('page', '')->orWhere('page', '/')->get();
+        } else if ($request->container) {
+            return PlatformContent::where('container', $request->container)->get();
+        }
     }
 }

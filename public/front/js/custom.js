@@ -1027,7 +1027,22 @@ $(document).ready(function() {
     });
 
 
-
-
+    $('.management-popup-info a').click((ev) => {
+        let popupid = $(ev.currentTarget).data('popup-id');
+        
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "/getKSContainerContent",
+            method: "get",
+            data: {
+                'container': popupid
+            },
+            success: (resp) => {
+                resp.forEach(content => {
+                    $(`#${content.container} > div`).html(content.content);
+                });
+            }
+        })
+    });
 
 });
