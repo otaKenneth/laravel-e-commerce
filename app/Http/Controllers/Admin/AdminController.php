@@ -28,9 +28,13 @@ class AdminController extends Controller
         $couponsCount    = \App\Models\Coupon::count();
         $brandsCount     = \App\Models\Brand::count();
         $usersCount      = \App\Models\User::count();
+        $wdyfu_fb        = Vendor::where('wdyfu', 'Facebook')->count();
+        $wdyfu_ig        = Vendor::where('wdyfu', 'Instagram')->count();
+        $wdyfu_li        = Vendor::where('wdyfu', 'LinkedIn')->count();
+        $wdyfu_re        = Vendor::where('wdyfu', 'Referral')->count();
+        $wdyfu_wm        = Vendor::where('wdyfu', 'Word-of-Mouth')->count();
 
-
-        return view('admin/dashboard')->with(compact('sectionsCount', 'categoriesCount', 'productsCount', 'ordersCount', 'couponsCount', 'brandsCount', 'usersCount')); // is the same as:    return view('admin.dashboard');
+        return view('admin/dashboard')->with(compact('sectionsCount', 'categoriesCount', 'productsCount', 'ordersCount', 'couponsCount', 'brandsCount', 'usersCount', 'wdyfu_fb', 'wdyfu_ig', 'wdyfu_li', 'wdyfu_re', 'wdyfu_wm')); // is the same as:    return view('admin.dashboard');
     }
 
     public function login(Request $request) { // Logging in using our 'admin' guard (whether 'vendor' or 'admin' (depending on the `type` and `vendor_id` columns in `admins` table)) we created in auth.php

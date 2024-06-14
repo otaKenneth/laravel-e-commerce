@@ -20,7 +20,7 @@
             <div class="row">
 
                 
-                <div class="col-md-6 grid-margin transparent">
+                <div class="col-md-6 grid-margin transparent no-mobile-margin-bottom">
 
 
                     <div class="row">
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+                        <div class="col-md-6 mb-4 stretch-card transparent">
                             <div class="card card-light-blue">
                                 <div class="card-body">
                                     <p class="mb-4">Total Products</p>
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 stretch-card transparent">
+                        <div class="col-md-6 mb-4 stretch-card transparent">
                             <div class="card card-light-danger">
                                 <div class="card-body">
                                     <p class="mb-4">Total Brands</p>
@@ -60,8 +60,39 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-6 mb-4 stretch-card transparent">
+                            <div class="card card-light-blue">
+                                <div class="card-body">
+                                    <p class="mb-4">Vendors found us on Instagram</p>
+                                    <p class="fs-30 mb-2">{{ $wdyfu_ig }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4 stretch-card transparent">
+                            <div class="card card-light-blue">
+                                <div class="card-body">
+                                    <p class="mb-4">Vendors found us on Referral</p>
+                                    <p class="fs-30 mb-2">{{ $wdyfu_re }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="row">
+                        <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent mobile-no-margin">
+                            <div class="card card-light-blue">
+                                <div class="card-body">
+                                    <p class="mb-4">Vendors found us on Referral</p>
+                                    <p class="fs-30 mb-2">{{ $wdyfu_re }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+
+                
                 <div class="col-md-6 grid-margin transparent">
                     <div class="row">
                         <div class="col-md-6 mb-4 stretch-card transparent">
@@ -82,7 +113,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+                        <div class="col-md-6 mb-4 stretch-card transparent mobile-no-margin">
                             <div class="card card-light-blue">
                                 <div class="card-body">
                                     <p class="mb-4">Total Users</p>
@@ -90,16 +121,46 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 stretch-card transparent">
-                            <div class="card card-light-danger">
+                        <div class="col-md-6 mb-4 stretch-card transparent">
+                            <div class="card card-light-blue">
                                 <div class="card-body">
-                                    <p class="mb-4">Total Subscribers</p>
-                                    <p class="fs-30 mb-2">0</p>
+                                    <p class="mb-4">Vendors found us on Facebook</p>
+                                    <p class="fs-30 mb-2">{{ $wdyfu_fb }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4 stretch-card transparent">
+                            <div class="card card-light-blue">
+                                <div class="card-body">
+                                    <p class="mb-4">Vendors found us on LinkedIn</p>
+                                    <p class="fs-30 mb-2">{{ $wdyfu_li }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4 stretch-card transparent">
+                            <div class="card card-light-blue">
+                                <div class="card-body">
+                                    <p class="mb-4">Vendors found us by Word-of-Mouth</p>
+                                    <p class="fs-30 mb-2">{{ $wdyfu_wm }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+
+
+          
+
+             
+
+
+
+
+                
             </div>
         </div>
         <!-- content-wrapper ends -->
