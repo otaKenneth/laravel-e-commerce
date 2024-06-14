@@ -109,3 +109,19 @@
         gap: 10px;
     }
 }/* End custom CSS */
+
+
+
+/* CUSTOM CSS NINO FELICIANO */
+.elementor-1956 .item-addCart.btn{
+    width: unset;
+    height: unset;
+    transform: unset;
+    font-size: 14px;
+    min-width: unset;
+    width: fit-content;
+    display: unset !important;
+}
+.elementor-1956 .item-addCart.btn:before{
+    content: none !important;
+}
