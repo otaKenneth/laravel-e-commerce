@@ -201,7 +201,7 @@ class UserController extends Controller
         // dd($email);
 
         // For Security Reasons, check if that decoded user's $email exists in the `users` database table
-        $userCount = \App\models\User::where('email', $email)->count();
+        $userCount = \App\Models\User::where('email', $email)->count();
         if ($userCount > 0) { // if the user's email exists in `users` table
             // Check if the user is alreay active
             $userDetails = \App\Models\User::where('email', $email)->first();
