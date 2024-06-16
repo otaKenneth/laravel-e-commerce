@@ -109,5 +109,18 @@
 
 
 
-
-
+/* NINO FELICIANO CUSTOM CSS */
+#elementor-popup-modal-1720 .dialog-message{
+	max-height: 90vh !important;
+	overflow: hidden !important;
+}
+#elementor-popup-modal-1720 #ks-about-us-management-kat,
+#elementor-popup-modal-1720 #ks-about-us-management-ejl,
+#elementor-popup-modal-1720 #ks-about-us-management-vmg,
+#elementor-popup-modal-1720 #ks-about-us-management-mfm,
+#elementor-popup-modal-1720 #ks-about-us-management-rridb{
+	max-height: 230px !important;
+    overflow: hidden scroll !important;
+	scrollbar-color: #87cbb9 #5f7a61;
+	scrollbar-width: thin;
+}
