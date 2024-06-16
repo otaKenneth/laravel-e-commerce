@@ -992,15 +992,11 @@ class ProductsController extends Controller
 
 
                 // PayPal payment gateway integration in Laravel
-            } elseif ($data['payment_gateway'] == 'Paypal') {
+            } elseif ($data['payment_gateway'] == 'paymongo') {
                 // redirect the user to the PayPalController.php (after saving the order details in `orders` and `orders_products` tables)
                 return redirect('/paypal');
 
                 // iyzico Payment Gateway integration in/with Laravel    
-            } elseif ($data['payment_gateway'] == 'iyzipay') {
-                // redirect the user to the IyzipayController.php (after saving the order details in `orders` and `orders_products` tables)
-                return redirect('/iyzipay');
-
             } else { // if the `payment_gateway` selected by the user is not 'COD', meaning it's like PayPal, Prepaid, ... (in front/products/checkout.blade.php), we send the placing the order confirmation email and SMS after the user makes the payment
                 echo 'Other Prepaid payment methods coming soon';
             }

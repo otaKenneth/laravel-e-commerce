@@ -139,7 +139,7 @@
                                                 checked
                                                 type="radio"
                                                 id="COD"
-                                                name="paymentgateway"
+                                                name="payment_gateway"
                                                 value="COD"
                                             >
                                             <label for="html">
@@ -150,39 +150,12 @@
                                             <input
                                                 type="radio"
                                                 id="paymongo"
-                                                name="paymentgateway"
+                                                name="payment_gateway"
                                                 value="paymongo"
                                             >
                                             <label for="html">
                                                 <b>Secure Payment via PayMongo</b>
                                             </label>
-                                        </div>
-                                        <div class="payment-gateway">
-                                            <input
-                                                type="radio"
-                                                id=""
-                                                name="paymentgateway"
-                                                value="xendit"
-                                            >
-                                            <label for="html">  Payments By Xendit</label>
-                                        </div>
-                                        <div class="payment-gateway">
-                                            <input
-                                                type="radio"
-                                                id=""
-                                                name="paymentgateway"
-                                                value="atomepaylater"
-                                            >
-                                            <label for="html">Atome PayLater - 3 easy payments, 0% interest</label>
-                                        </div>
-                                        <div class="payment-gateway">
-                                            <input
-                                                type="radio"
-                                                id=""
-                                                name="paymentgateway"
-                                                value="bankdeposit"
-                                            >
-                                            <label for="html">Bank Deposit</label>
                                         </div>
                                     </div>
                                 </div>
