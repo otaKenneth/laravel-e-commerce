@@ -212,6 +212,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        @foreach ($errors->all() as $error)
+                                            <div>{{ $error }}</div>
+                                        @endforeach
+                                    </div>
+                                    @endif
                                     <div
                                         class="elementor-element elementor-element-6d78141 elementor-button-align-start address-page-form elementor-widget elementor-widget-form"
                                         data-id="6d78141"

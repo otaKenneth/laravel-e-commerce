@@ -738,6 +738,10 @@ class ProductsController extends Controller
 
         $deliveryAddresses = \App\Models\DeliveryAddress::deliveryAddresses(); // the delivery addresses of the currently authenticated/logged in user
 
+        if (count($deliveryAddresses) == 0) {
+            return redirect('/user/delivery-addresses')->withErrors("Please add your first address.");
+        }
+
         // Calculating the Shipping Charges of every one of the user's Delivery Addresses (depending on the 'country' of the Delivery Address)    
         foreach ($deliveryAddresses as $key => $value) {
             $shippingCharges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $value['country']);
