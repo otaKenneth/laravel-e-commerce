@@ -1045,4 +1045,16 @@ $(document).ready(function() {
         })
     });
 
+
+
+    $('input[type="radio"][name="paymentgateway"]').change(function() {
+        if ($('#paymongo').is(':checked')) {
+            $('.paymongo-options').addClass('active');
+        } else {
+            $('.paymongo-options').removeClass('active');
+            $('input[type="radio"][name="payment_gateway_type"]').prop('checked', false);
+        }
+    });
+
+
 });

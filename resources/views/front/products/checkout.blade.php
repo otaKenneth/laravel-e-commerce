@@ -142,7 +142,7 @@
                                                 name="paymentgateway"
                                                 value="COD"
                                             >
-                                            <label for="html">
+                                            <label for="COD" style="cursor:pointer;">
                                                 <b>COD</b>
                                             </label>
                                         </div>
@@ -153,37 +153,55 @@
                                                 name="paymentgateway"
                                                 value="paymongo"
                                             >
-                                            <label for="html">
+                                            <label for="paymongo" style="cursor:pointer;">
                                                 <b>Secure Payment via PayMongo</b>
                                             </label>
                                         </div>
-                                        <div class="payment-gateway">
+                                        <div class="payment-gateway paymongo-options">
                                             <input
                                                 type="radio"
-                                                id=""
-                                                name="paymentgateway"
-                                                value="xendit"
+                                                id="paymongo_card"
+                                                name="payment_gateway_type"
+                                                value="paymongo_card"
                                             >
-                                            <label for="html">  Payments By Xendit</label>
+                                            <label for="paymongo_card" style="cursor:pointer;">
+                                                <b>Card</b>
+                                            </label>
                                         </div>
-                                        <div class="payment-gateway">
+                                        <div class="payment-gateway paymongo-options">
                                             <input
                                                 type="radio"
-                                                id=""
-                                                name="paymentgateway"
-                                                value="atomepaylater"
+                                                id="paymongo_bdo"
+                                                name="payment_gateway_type"
+                                                value="paymongo_bdo"
                                             >
-                                            <label for="html">Atome PayLater - 3 easy payments, 0% interest</label>
+                                            <label for="paymongo_bdo" style="cursor:pointer;">
+                                                <b>BDO</b>
+                                            </label>
                                         </div>
-                                        <div class="payment-gateway">
+                                        <div class="payment-gateway paymongo-options">
                                             <input
                                                 type="radio"
-                                                id=""
-                                                name="paymentgateway"
-                                                value="bankdeposit"
+                                                id="paymongo_gcash"
+                                                name="payment_gateway_type"
+                                                value="paymongo_gcash"
                                             >
-                                            <label for="html">Bank Deposit</label>
+                                            <label for="paymongo_gcash" style="cursor:pointer;">
+                                                <b>GCash</b>
+                                            </label>
                                         </div>
+                                        <div class="payment-gateway paymongo-options">
+                                            <input
+                                                type="radio"
+                                                id="paymongo_grabpay"
+                                                name="payment_gateway_type"
+                                                value="paymongo_grabpay"
+                                            >
+                                            <label for="paymongo_grabpay" style="cursor:pointer;">
+                                                <b>Grab Pay</b>
+                                            </label>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div
