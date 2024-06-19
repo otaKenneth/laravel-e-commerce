@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Helpers\PaymongoAPIHelper;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -698,6 +699,8 @@ class ProductsController extends Controller
     // Checkout page (using match() method for the 'GET' request for rendering the front/products/checkout.blade.php page or the 'POST' request for the HTML Form submission in the same page) (for submitting the user's Delivery Address and Payment Method))    
     public function checkout(Request $request) {
         $this->lalamoveAPI_Helper = new LalamoveAPIBodyHelper;
+        $paymongo = new PaymongoAPIHelper;
+
         // Fetch all of the world countries from the database table `countries`
         $countries = \App\Models\Country::where('status', 1)->get()->toArray(); // get the countries which have status = 1 (to ignore the blacklisted countries, in case)
         
@@ -758,6 +761,7 @@ class ProductsController extends Controller
         }
 
         $selectedDeliveryAddress = $deliveryAddresses[0];
+
         $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
         
         if ($request->isMethod('post')) { // if the <form> in front/products/checkout.blade.php is submitted (the HTML Form that the user submits to submit their Delivery Address and Payment Method)
@@ -770,7 +774,14 @@ class ProductsController extends Controller
                 $product_status = \App\Models\Product::getProductStatus($item['product_id']);
                 if ($product_status == 0) { // if the product is disabled (`status` = 0)
                     $message = $item['product']['product_name'] . ' with ' . $item['size'] . ' size is not available. Please remove it from the Cart and choose another product.';
-                    return redirect('/cart')->with('error_message', $message); // Redirect to the Cart page with an error message
+                    return response()->json([
+                        'success' => false,
+                        'message' => $message,
+                        'data' => [
+                            'redirect' => true,
+                            'url' => url('/cart')
+                        ]
+                    ]); // Redirect to the Cart page with an error message
                 }
             }
 
@@ -778,46 +789,77 @@ class ProductsController extends Controller
             $getProductStock = \App\Models\ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']); // A product (`product_id`) with a certain `size`
             if ($getProductStock == 0) { // if the product's `stock` is 0 zero
                 $message = $item['product']['product_name'] . ' with ' . $item['size'] . ' size is not available. Please remove it from the Cart and choose another product.';
-                return redirect('/cart')->with('error_message', $message); // Redirect to the Cart page with an error message
+                return response()->json([
+                        'success' => false,
+                        'message' => $message,
+                        'data' => [
+                            'redirect' => true,
+                            'url' => url('/cart')
+                        ]
+                    ]); // Redirect to the Cart page with an error message
             }
 
             // Preventing the products with 'disabled' Product Attributes (in admin/attributes/add_edit_attributes.blade.php) from being ordered (by checking the `products_attributes` database table)
             $getAttributeStatus = \App\Models\ProductsAttribute::getAttributeStatus($item['product_id'], $item['size']); // A product (`product_id`) with a certain `size`
             if ($getAttributeStatus == 0) { // if the product's `stock` is 0 zero
                 $message = $item['product']['product_name'] . ' with ' . $item['size'] . ' size is not available. Please remove it from the Cart and choose another product.';
-                return redirect('/cart')->with('error_message', $message); // Redirect to the Cart page with an error message
+                return response()->json([
+                        'success' => false,
+                        'message' => $message,
+                        'data' => [
+                            'redirect' => true,
+                            'url' => url('/cart')
+                        ]
+                    ]); // Redirect to the Cart page with an error message
             }
 
             // Note: We also prevent making orders of the products of the Categories that are disabled (`status` = 0) (whether the Category is a Child Category or a Parent Category (Root Category) is disabled) in admin/categories/categories.blade.php
             $getCategoryStatus = \App\Models\Category::getCategoryStatus($item['product']['category_id']);
             if ($getCategoryStatus == 0) { // if the Category is disabled (`status` = 0)
                 $message = $item['product']['product_name'] . ' with ' . $item['size'] . ' size is not available. Please remove it from the Cart and choose another product.';
-                return redirect('/cart')->with('error_message', $message); // Redirect to the Cart page with an error message
+                return response()->json([
+                        'success' => false,
+                        'message' => $message,
+                        'data' => [
+                            'redirect' => true,
+                            'url' => url('/cart')
+                        ]
+                    ]); // Redirect to the Cart page with an error message
             }
-
 
             // Validation:
             // Delivery Address Validation
             if (empty($data['address_id'])) { // if the user doesn't select a Delivery Address
                 $message = 'Please select Delivery Address!';
 
-                return redirect()->back()->with('error_message', $message);
+                // return redirect()->back()->with('error_message', $message);
+                return response()->json([
+                    'success' => false,
+                    'message' => $message
+                ]);
             }
 
             // Payment Method Validation
             if (empty($data['payment_gateway'])) { // if the user doesn't select a Delivery Address
                 $message = 'Please select Payment Method!';
 
-                return redirect()->back()->with('error_message', $message);
+                // return redirect()->back()->with('error_message', $message);
+                return response()->json([
+                    'success' => false,
+                    'message' => $message
+                ]);
             }
 
             // Agree to T&C (Accept Terms and Conditions) Validation
             if (empty($data['accept'])) { // if the user doesn't select a Delivery Address
                 $message = 'Please agree to T&C!';
 
-                return redirect()->back()->with('error_message', $message);
+                // return redirect()->back()->with('error_message', $message);
+                return response()->json([
+                    'success' => false,
+                    'message' => $message
+                ]);
             }
-
 
 
             // If user passes Validation, we start Placing Order:
@@ -964,7 +1006,7 @@ class ProductsController extends Controller
             // Send placing an order confirmation email to the user    
             // Note: We send placing an order confirmation email and SMS to the user right away (immediately) if the order is "COD", but if the order payment method is like PayPal or any other payment gateway, we send the order confirmation email and SMS after the user makes the payment
             $orderDetails = \App\Models\Order::with('orders_products')->where('id', $order_id)->first()->toArray(); // Eager Loading: https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'orders_products' is the relationship method name in Order.php model
-
+            
             if ($data['payment_gateway'] == 'COD') { // if the `payment_gateway` selected by the user is 'COD' (in front/products/checkout.blade.php), we send the placing the order confirmation email and SMS immediately
                 // Sending the Order confirmation email
                 $email = Auth::user()->email; // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
@@ -993,8 +1035,52 @@ class ProductsController extends Controller
 
                 // PayPal payment gateway integration in Laravel
             } elseif ($data['payment_gateway'] == 'paymongo') {
-                // redirect the user to the PayPalController.php (after saving the order details in `orders` and `orders_products` tables)
-                return redirect('/paypal');
+                $resp = $paymongo->setItems($getCartItems)
+                    ->set("description", "Kapiton Store - " . Auth::user()->email . " bought items with a total of {$grand_total}.")
+                    ->set("payment_method_types", ["card", "brankas_bdo", "gcash", "grab_pay", "paymaya"])
+                    ->set("billing", [
+                        'address' => [
+                            'line 1' => $deliveryAddress['address'],
+                            'line 2' => "",
+                            "city" => $deliveryAddress['city'],
+                            "state" => $deliveryAddress['state'],
+                            "postal_code" => $deliveryAddress['country'],
+                            "country" => "PH",
+                        ],
+                        'name' => $deliveryAddress['name'],
+                        "email" => Auth::user()->email,
+                        "phone" => $deliveryAddress['mobile']
+                    ])
+                    ->createSession();
+                
+                // create response for frontend
+                $return_respose = [
+                    'success' => false,
+                    'message' => $resp['message']
+                ];
+
+                if ($resp['success'] === true) {
+                    // Process the payment status here
+                    $payment = new \App\Models\Payment;
+
+                    $payment->order_id       = $order->id; // 'user_id' was stored in Session inside checkout() method in Front/ProductsController.php    // Interacting With The Session: Retrieving Data: https://laravel.com/docs/9.x/session#retrieving-data    // Comes from our website
+                    $payment->user_id        = $order->user_id; // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user    // Comes from our website
+                    $payment->payment_id     = $resp['data']['reference_number']; // Comes from Paymongo Checkout Session API (i.e. API / backend)    // Comes from PayPal website (i.e. API / backend)
+                    $payment->payer_email    = $order->email;  
+                    $payment->amount         = $order->grand_total; 
+                    $payment->currency       = "PHP";
+                    $payment->payment_status = "chargeable";
+
+                    $payment->save();
+                    // ...
+                    
+                    $return_respose['status'] = "success";
+                    $return_respose['data'] = $resp['data'];
+                } else {
+                    $return_respose['status'] = "failed";
+                }
+
+                return response()->json($return_respose);
 
                 // iyzico Payment Gateway integration in/with Laravel    
             } else { // if the `payment_gateway` selected by the user is not 'COD', meaning it's like PayPal, Prepaid, ... (in front/products/checkout.blade.php), we send the placing the order confirmation email and SMS after the user makes the payment
