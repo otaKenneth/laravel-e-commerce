@@ -66,7 +66,11 @@ class AppServiceProvider extends ServiceProvider
                         return asset('front/images/product/no-available-image.jpg');
                     }
                 } else {
-                    return $this->getSignedUrl($bucket, $filepath . $imageName, '+1 hour');
+                    if (empty($imageName)) {
+                        return $bucket->object('front/images/product/no-available-image.jpg')->signedUrl(new \DateTime('+1 hour'));
+                    } else {
+                        return $this->getSignedUrl($bucket, $filepath . $imageName, '+1 hour');
+                    }
                 }
             }
         ]);
@@ -81,7 +85,7 @@ class AppServiceProvider extends ServiceProvider
             return $signedUrl;
         } catch (\Exception $e) {
             \Log::error('Error generating signed URL for ' . $objectName . ': ' . $e->getMessage());
-            return $bucket->object('front/images/product/no-available-image.jpg')->signedUrl(new \DateTime('+1 hour'));;
+            return $bucket->object('front/images/product/no-available-image.jpg')->signedUrl(new \DateTime('+1 hour'));
         }
     }
 }
