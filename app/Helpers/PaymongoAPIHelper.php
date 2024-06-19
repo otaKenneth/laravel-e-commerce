@@ -69,9 +69,9 @@ class PaymongoAPIHelper
             $item_description = "Kapiton Store: ";
             $item_description .= $cart_item['product']['product_name'] . ", " . $cart_item['color'] . ", " . $cart_item['size'] . ".";
 
-            $formatted_amount = number_format($cart_item['product']['product_price'], 2);
-            $amount = floatval($formatted_amount);
-            $amount = round($amount * 100);
+            $amount = round($cart_item['product']['product_price'], 2);
+            $amount = $amount * 100;
+            Log::info("Paymongo: setItems - " . $amount);
             
             $line_item = [
                 'amount' => (int) $amount,
@@ -97,6 +97,7 @@ class PaymongoAPIHelper
 
         try {
             // dd($data);
+            Log::info("Paymongo: Create Session - " . $data);
             $response = $client->request('POST', 'https://api.paymongo.com/v1/checkout_sessions', [
                 'body' => $data,
                 'headers' => [

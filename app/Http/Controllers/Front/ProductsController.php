@@ -1077,6 +1077,7 @@ class ProductsController extends Controller
                     $return_respose['status'] = "success";
                     $return_respose['data'] = $resp['data'];
                 } else {
+                    $order->delete();
                     $return_respose['status'] = "failed";
                 }
 
