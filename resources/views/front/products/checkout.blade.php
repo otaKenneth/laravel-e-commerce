@@ -142,7 +142,7 @@
                                                 name="payment_gateway"
                                                 value="COD"
                                             >
-                                            <label for="html">
+                                            <label for="COD" style="cursor:pointer;">
                                                 <b>COD</b>
                                             </label>
                                         </div>
@@ -153,7 +153,7 @@
                                                 name="payment_gateway"
                                                 value="paymongo"
                                             >
-                                            <label for="html">
+                                            <label for="paymongo" style="cursor:pointer;">
                                                 <b>Secure Payment via PayMongo</b>
                                             </label>
                                         </div>

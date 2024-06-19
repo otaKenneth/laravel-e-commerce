@@ -129,4 +129,28 @@
 .iframe-map{
 	padding: 0 5px;
 }
+.payment-gateway.paymongo-options input{
+	display: none;
+}
+.payment-gateway.paymongo-options{
+	display: none !important;
+}
+.payment-gateway.paymongo-options.active{
+	display: inline-flex !important;
+}
+.payment-gateway.paymongo-options label{
+    cursor: pointer;
+    background: #87cbb9;
+    color: white;
+    padding: 8px 15px;
+    margin-right: 10px;
+    border-radius: 100px;
+	transition: all 0.3s ease;;
+}
+.payment-gateway.paymongo-options label:hover{
+	background: #5f7a61;
+}
+.payment-gateway.paymongo-options input:checked + label{
+	background: #5f7a61 !important;
+}
 /* CUSTOM CSS NINO FELICIANO */
