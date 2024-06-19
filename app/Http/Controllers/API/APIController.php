@@ -844,7 +844,7 @@ class APIController extends Controller
         $signatures = $paymongo->parseSignatureHeader($paymongoSignature);
 
         // Choose the correct signature based on the environment
-        $expectedSignature = app()->environment(['development', 'uat']) ? $signatures['te'] : $signatures['li'];
+        $expectedSignature = app()->environment(['development', 'testing']) ? $signatures['te'] : $signatures['li'];
 
         // Verify the signature
         if ($paymongo->verifySignature($expectedSignature, $request->getContent(), $signatures['t'])) {
