@@ -69,7 +69,8 @@ class PaymongoAPIHelper
             $item_description = "Kapiton Store: ";
             $item_description .= $cart_item['product']['product_name'] . ", " . $cart_item['color'] . ", " . $cart_item['size'] . ".";
 
-            $amount = number_format($cart_item['product']['product_price'], 2);
+            $formatted_amount = number_format($cart_item['product']['product_price'], 2);
+            $amount = floatval($formatted_amount);
             $amount = round($amount * 100);
             
             $line_item = [
