@@ -212,6 +212,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        @foreach ($errors->all() as $error)
+                                            <div>{{ $error }}</div>
+                                        @endforeach
+                                    </div>
+                                    @endif
                                     <div
                                         class="elementor-element elementor-element-6d78141 elementor-button-align-start address-page-form elementor-widget elementor-widget-form"
                                         data-id="6d78141"
@@ -240,6 +247,25 @@
                                                             required="required"
                                                             aria-required="true"
                                                         >
+                                                    </div>
+                                                    <div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-field_81b413f elementor-col-100 elementor-field-required">
+                                                        <label for="form-field-field_81b413f" class="elementor-field-label elementor-screen-only"> 								Phone</label>
+                                                        <div class="elementor-field elementor-select-wrapper remove-before">
+                                                            <label for="form-field-field_212z2x2" class="elementor-field-label elementor-screen-only"> 								Phone</label>
+                                                            <select name="mobile-dialing-code" class="mobile-dialing-codes"></select>
+                                                            <input
+                                                                size="1"
+                                                                type="text"
+                                                                name="delivery_mobile"
+                                                                id="form-field-field_212z2x2"
+                                                                class="elementor-field elementor-size-sm  elementor-field-textual"
+                                                                placeholder="9----------"
+                                                                required="required"
+                                                                aria-required="true"
+                                                                pattern="^+63\d{10}$"
+                                                            >
+                                                            
+                                                        </div>
                                                     </div>
                                                     <div class="elementor-field-type-textarea elementor-field-group elementor-column elementor-field-group-field_db46221 elementor-col-100 elementor-field-required">
                                                         <label for="form-field-field_db46221" class="elementor-field-label elementor-screen-only"> 								Address 1</label>
@@ -337,8 +363,8 @@
                                                         >
                                                     </div>
                                                     <div class="hidden">
-                                                        <input type="hidden" id="shipping_address_lat" name="shipping[lat]" value="">
-                                                        <input type="hidden" id="shipping_address_lng" name="shipping[lng]" value="">
+                                                        <input type="hidden" id="shipping_address_lat" name="delivery_lat" value="">
+                                                        <input type="hidden" id="shipping_address_lng" name="delivery_lng" value="">
                                                     </div>
                                                    
                                                     <div class="elementor-field-type-html elementor-col-100 elementor-column iframe-map" style="border-radius: 15px !important; overflow: hidden;">

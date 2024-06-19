@@ -139,10 +139,10 @@
                                                 checked
                                                 type="radio"
                                                 id="COD"
-                                                name="paymentgateway"
+                                                name="payment_gateway"
                                                 value="COD"
                                             >
-                                            <label for="html">
+                                            <label for="COD" style="cursor:pointer;">
                                                 <b>COD</b>
                                             </label>
                                         </div>
@@ -150,39 +150,12 @@
                                             <input
                                                 type="radio"
                                                 id="paymongo"
-                                                name="paymentgateway"
+                                                name="payment_gateway"
                                                 value="paymongo"
                                             >
-                                            <label for="html">
+                                            <label for="paymongo" style="cursor:pointer;">
                                                 <b>Secure Payment via PayMongo</b>
                                             </label>
-                                        </div>
-                                        <div class="payment-gateway">
-                                            <input
-                                                type="radio"
-                                                id=""
-                                                name="paymentgateway"
-                                                value="xendit"
-                                            >
-                                            <label for="html">  Payments By Xendit</label>
-                                        </div>
-                                        <div class="payment-gateway">
-                                            <input
-                                                type="radio"
-                                                id=""
-                                                name="paymentgateway"
-                                                value="atomepaylater"
-                                            >
-                                            <label for="html">Atome PayLater - 3 easy payments, 0% interest</label>
-                                        </div>
-                                        <div class="payment-gateway">
-                                            <input
-                                                type="radio"
-                                                id=""
-                                                name="paymentgateway"
-                                                value="bankdeposit"
-                                            >
-                                            <label for="html">Bank Deposit</label>
                                         </div>
                                     </div>
                                 </div>

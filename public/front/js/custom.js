@@ -731,7 +731,7 @@ $(document).ready(function() {
     $('button#checkout-submit-btn').on('click', function () {
         let data = {
             'address_id': $('.checkout-form input[name^="preferred_address"]:checked').val(),
-            'payment_gateway': $('.checkout-form input[name^="paymentgateway"]').val(),
+            'payment_gateway': $('.checkout-form input[name^="payment_gateway"]:checked').val(),
             'accept': true
         };
 
@@ -744,6 +744,13 @@ $(document).ready(function() {
             success: function(resp) { // if the AJAX request / AJAX call is successful
                 if (resp.success) {
                     window.location.href = "/thanks";
+                } else {
+                    console.log(resp.message);
+
+                    if (resp?.data?.url) {
+                        window.location.href = resp.data.url;
+                    }
+
                 }
             },
             error  : function() { // if the AJAX request is unsuccessful
@@ -1044,5 +1051,17 @@ $(document).ready(function() {
             }
         })
     });
+
+
+
+    $('input[type="radio"][name="paymentgateway"]').change(function() {
+        if ($('#paymongo').is(':checked')) {
+            $('.paymongo-options').addClass('active');
+        } else {
+            $('.paymongo-options').removeClass('active');
+            $('input[type="radio"][name="payment_gateway_type"]').prop('checked', false);
+        }
+    });
+
 
 });
