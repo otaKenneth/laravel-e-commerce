@@ -139,7 +139,7 @@
                                                 checked
                                                 type="radio"
                                                 id="COD"
-                                                name="paymentgateway"
+                                                name="payment_gateway"
                                                 value="COD"
                                             >
                                             <label for="COD" style="cursor:pointer;">
@@ -150,58 +150,13 @@
                                             <input
                                                 type="radio"
                                                 id="paymongo"
-                                                name="paymentgateway"
+                                                name="payment_gateway"
                                                 value="paymongo"
                                             >
                                             <label for="paymongo" style="cursor:pointer;">
                                                 <b>Secure Payment via PayMongo</b>
                                             </label>
                                         </div>
-                                        <div class="payment-gateway paymongo-options">
-                                            <input
-                                                type="radio"
-                                                id="paymongo_card"
-                                                name="payment_gateway_type"
-                                                value="paymongo_card"
-                                            >
-                                            <label for="paymongo_card" style="cursor:pointer;">
-                                                <b>Card</b>
-                                            </label>
-                                        </div>
-                                        <div class="payment-gateway paymongo-options">
-                                            <input
-                                                type="radio"
-                                                id="paymongo_bdo"
-                                                name="payment_gateway_type"
-                                                value="paymongo_bdo"
-                                            >
-                                            <label for="paymongo_bdo" style="cursor:pointer;">
-                                                <b>BDO</b>
-                                            </label>
-                                        </div>
-                                        <div class="payment-gateway paymongo-options">
-                                            <input
-                                                type="radio"
-                                                id="paymongo_gcash"
-                                                name="payment_gateway_type"
-                                                value="paymongo_gcash"
-                                            >
-                                            <label for="paymongo_gcash" style="cursor:pointer;">
-                                                <b>GCash</b>
-                                            </label>
-                                        </div>
-                                        <div class="payment-gateway paymongo-options">
-                                            <input
-                                                type="radio"
-                                                id="paymongo_grabpay"
-                                                name="payment_gateway_type"
-                                                value="paymongo_grabpay"
-                                            >
-                                            <label for="paymongo_grabpay" style="cursor:pointer;">
-                                                <b>Grab Pay</b>
-                                            </label>
-                                        </div>
-                                        
                                     </div>
                                 </div>
                                 <div

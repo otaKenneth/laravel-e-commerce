@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\PaymongoAPIHelper;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class APIController extends Controller
@@ -829,6 +831,37 @@ class APIController extends Controller
                 'status'  => false,
                 'message' => $message
             ], 422); // 422 HTTP Status Code: Unprocessable Content        
+        }
+    }
+
+    public function paymongoPaymentStatus(Request $request) {
+        \Log::info('PayMongo webhook received' . json_encode($request->all()));
+        $paymongo = new PaymongoAPIHelper;
+        // Get the signature headers
+        $paymongoSignature = $request->header('paymongo-signature');
+        
+        // Parse the signature headers
+        $signatures = $paymongo->parseSignatureHeader($paymongoSignature);
+
+        // Choose the correct signature based on the environment
+        $expectedSignature = app()->environment(['development', 'uat']) ? $signatures['te'] : $signatures['li'];
+
+        // Verify the signature
+        if ($paymongo->verifySignature($expectedSignature, $request->getContent(), $signatures['t'])) {
+            // Handle the webhook payload
+            $payload = $request->json()->all()['data']['attributes']['data'];
+            \Log::info('PayMongo webhook received', $payload);
+
+            // Process the payment status here
+            $payment = \App\Models\Payment::find($payload['attributes']['payment_intent']['id']);
+            $payment->payment_status = $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
+            $payment->update();
+            // ...
+
+            return response()->json(['status' => 'success'], 200);
+        } else {
+            \Log::warning('PayMongo webhook signature verification failed');
+            return response()->json(['status' => 'error', 'message' => 'Invalid signature'], 400);
         }
     }
 
