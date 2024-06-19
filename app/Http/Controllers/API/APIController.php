@@ -853,7 +853,7 @@ class APIController extends Controller
             \Log::info('PayMongo webhook received', $payload);
 
             // Process the payment status here
-            $payment = \App\Models\Payment::find($payload['attributes']['payment_intent']['id']);
+            $payment = \App\Models\Payment::find($payload['attributes']['payment_intent_id']);
             $payment->payment_status = $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
             $payment->update();
             // ...
