@@ -69,18 +69,38 @@ class FileStorageService
      */
     protected function storeInGCS(UploadedFile $file, $path, $size = false)
     {
-        $file = Image::make($file);
-        if ($size) {
-            $file = $file->resize($size['width'], $size['height']);
+        try {
+            $file = Image::make($file);
+            if ($size) {
+                $file = $file->resize($size['width'], $size['height']);
+            }
+            $file = $file->encode();
+            $success = Storage::disk('gcs_admin')->put($path, $file);
+            
+            if (!$success) return false;
+            
+            return true;
+        } catch (\Exception $e) {
+            // Log any exceptions that occur during the process
+            \Log::error("Exception occurred while uploading file to GCS. Path: {$path}, Error: {$e->getMessage()}");
+            return false;
         }
-        $file = $file->encode();
-
-        return Storage::disk('gcs_admin')->put($path, $file);
     }
 
     protected function storeVideoInGCS(UploadedFile $file, $path)
     {
-        $file = $file->encode();
-        return Storage::disk('gcs_admin')->put($path, $file);
+        try {
+            $file = $file->encode();
+
+            $success = Storage::disk('gcs_admin')->put($path, $file);
+
+            if (!$success) return false;
+            
+            return true;
+        } catch (\Exception $e) {
+            // Log any exceptions that occur during the process
+            \Log::error("Exception occurred while uploading file to GCS. Path: {$path}, Error: {$e->getMessage()}");
+            return false;
+        }
     }
 }
