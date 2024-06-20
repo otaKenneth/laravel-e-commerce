@@ -205,7 +205,7 @@
                                 </div>
                                 @foreach ($getCartItems as $item)
                                 @php
-                                    $getDiscountAttributePrice = \App\Models\Product::getDiscountAttributePrice($item['product_id'], $item['size']);
+                                    $getDiscountAttributePrice = \App\Models\Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']);
                                 @endphp
                                 <div
                                     class="elementor-element elementor-element-35df199 e-flex e-con-boxed e-con e-child"
@@ -265,7 +265,7 @@
                                             >
                                                 <div class="elementor-widget-container">
                                                     <p>
-                                                        <strong>₱{{ $getDiscountAttributePrice['final_price'] }} x {{ $item['quantity'] }}
+                                                        <strong>₱{{ number_format($getDiscountAttributePrice['final_price'], 2) }} x {{ $item['quantity'] }}
                                                             <br>
                                                         </strong>{{ $item['product']['meta_keywords'] }}
                                                     </p>
@@ -287,7 +287,7 @@
                                                 >
                                                     <div class="elementor-widget-container">
                                                         <p>
-                                                            <strong>₱{{ $getDiscountAttributePrice['final_price'] * $item['quantity'] }}</strong>
+                                                            <strong>₱{{ number_format($getDiscountAttributePrice['final_price'] * $item['quantity'], 2) }}</strong>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -305,8 +305,8 @@
                                     <div class="elementor-widget-container">
                                         <table>
                                             <tr>
-                                                <td>Shipping Fee</td>
-                                                <td class="align-right">₱499.00</td>
+                                                <td>Delivery Fee</td>
+                                                <td class="align-right">₱ {{number_format($delivery_fee, 2)}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Sub total</td>
@@ -316,10 +316,6 @@
                                                 <td>Coupon discount</td>
                                                 <td class="align-right">₱150.00</td>
                                             </tr> -->
-                                            <tr>
-                                                <td>Delivery Fee</td>
-                                                <td class="align-right">₱ {{number_format($delivery_fee, 2)}}</td>
-                                            </tr>
                                             <tr>
                                                 <td style="padding-top: 40px">
                                                     <b>GRAND TOTAL</b>
