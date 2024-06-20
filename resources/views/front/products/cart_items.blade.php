@@ -29,7 +29,7 @@
                     @else
                     @foreach ($getCartItems as $item)
                     @php
-                        $getDiscountAttributePrice = \App\Models\Product::getDiscountAttributePrice($item['product_id'], $item['size']); // from the `products_attributes` table, not the `products` table
+                        $getDiscountAttributePrice = \App\Models\Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']); // from the `products_attributes` table, not the `products` table
                         // dd($getDiscountAttributePrice);
                     @endphp
                     <tr>
