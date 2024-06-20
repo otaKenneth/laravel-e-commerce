@@ -21,14 +21,14 @@
             @foreach ($getCartItems as $item)
                 {{-- $getCartItems is passed in from cart() method in Front/ProductsController.php --}}
                 @php
-                    $getDiscountAttributePrice = \App\Models\Product::getDiscountAttributePrice($item['product_id'], $item['size']); // from the `products_attributes` table, not the `products` table
+                    $getDiscountAttributePrice = \App\Models\Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']); // from the `products_attributes` table, not the `products` table
                     // dd($getDiscountAttributePrice);
                 @endphp
                 <li class="clearfix">
                     <a href="{{ url('product/' . $item['product_id']) }}">
-                    <img src="{{ asset('front/images/product_images/small/' . $item['product']['product_image']) }}" alt="Product">
+                    <img src="{{ $getImage('front/images/product_images/small/', $item['product']['product_image'])}}" alt="Product">
                     <span class="mini-item-name">{{ $item['product']['product_name'] }}</span>
-                    <span class="mini-item-price">₱{{ $getDiscountAttributePrice['final_price'] }}</span>
+                    <span class="mini-item-price">₱{{ number_format($getDiscountAttributePrice['final_price'], 2) }}</span>
                     <span class="mini-item-quantity"> x {{ $item['quantity'] }} </span>
                     </a>
                 </li>

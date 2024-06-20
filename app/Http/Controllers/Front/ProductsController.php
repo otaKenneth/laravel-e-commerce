@@ -241,7 +241,7 @@ class ProductsController extends Controller
         if ($request->ajax()) { // if the request is coming via an AJAX call
             $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call)
             
-            $getDiscountAttributePrice = \App\Models\Product::getDiscountAttributePrice($data['product_id'], $data['size']); // $data['product_id'] and $data['size'] come from the 'data' object inside the $.ajax() method in front/js/custom.js file
+            $getDiscountAttributePrice = Product::getDiscountAttributePrice($data['product_id'], $data['color'], $data['size']); // $data['product_id'] and $data['size'] come from the 'data' object inside the $.ajax() method in front/js/custom.js file
 
 
             return $getDiscountAttributePrice;
@@ -606,7 +606,7 @@ class ProductsController extends Controller
                     }
 
                     
-                    $attrPrice = \App\Models\Product::getDiscountAttributePrice($item['product_id'], $item['size']);
+                    $attrPrice = Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']);
                     $total_amount = $total_amount + ($attrPrice['final_price'] * $item['quantity']);
                 }
 
@@ -723,8 +723,8 @@ class ProductsController extends Controller
         $total_qty = 0;
 
         foreach ($getCartItems as $item) {
-            array_push($categories, \App\Models\Category::find($item['product']['id'])->category_name);
-            $attrPrice = \App\Models\Product::getDiscountAttributePrice($item['product_id'], $item['size']);
+            array_push($categories, Category::find($item['product']['category_id'])->category_name);
+            $attrPrice = Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']);
             $total_price = $total_price + ($attrPrice['final_price'] * $item['quantity']);
             $total_qty += $item['quantity'];
 
@@ -771,7 +771,7 @@ class ProductsController extends Controller
             // Note: We need to prevent orders (upon checkout and payment) of the 'disabled' products (`status` = 0), where the product ITSELF can be disabled in admin/products/products.blade.php (by checking the `products` database table) or a product's attribute (`stock`) can be disabled in 'admin/attributes/add_edit_attributes.blade.php' (by checking the `products_attributes` database table). We also prevent orders of the out of stock / sold-out products (by checking the `products_attributes` database table)
             foreach ($getCartItems as $item) {
                 // Prevent 'disabled' (`status` = 0) products from being ordered (if it's disabled in admin/products/products.blade.php) by checking the `products` database table
-                $product_status = \App\Models\Product::getProductStatus($item['product_id']);
+                $product_status = Product::getProductStatus($item['product_id']);
                 if ($product_status == 0) { // if the product is disabled (`status` = 0)
                     $message = $item['product']['product_name'] . ' with ' . $item['size'] . ' size is not available. Please remove it from the Cart and choose another product.';
                     return response()->json([
@@ -786,7 +786,7 @@ class ProductsController extends Controller
             }
 
             // Preventing out of stock / sold out products from being ordered (by checking the `products_attributes` database table)
-            $getProductStock = \App\Models\ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']); // A product (`product_id`) with a certain `size`
+            $getProductStock = ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']); // A product (`product_id`) with a certain `size`
             if ($getProductStock == 0) { // if the product's `stock` is 0 zero
                 $message = $item['product']['product_name'] . ' with ' . $item['size'] . ' size is not available. Please remove it from the Cart and choose another product.';
                 return response()->json([
@@ -800,7 +800,7 @@ class ProductsController extends Controller
             }
 
             // Preventing the products with 'disabled' Product Attributes (in admin/attributes/add_edit_attributes.blade.php) from being ordered (by checking the `products_attributes` database table)
-            $getAttributeStatus = \App\Models\ProductsAttribute::getAttributeStatus($item['product_id'], $item['size']); // A product (`product_id`) with a certain `size`
+            $getAttributeStatus = ProductsAttribute::getAttributeStatus($item['product_id'], $item['size']); // A product (`product_id`) with a certain `size`
             if ($getAttributeStatus == 0) { // if the product's `stock` is 0 zero
                 $message = $item['product']['product_name'] . ' with ' . $item['size'] . ' size is not available. Please remove it from the Cart and choose another product.';
                 return response()->json([
@@ -814,7 +814,7 @@ class ProductsController extends Controller
             }
 
             // Note: We also prevent making orders of the products of the Categories that are disabled (`status` = 0) (whether the Category is a Child Category or a Parent Category (Root Category) is disabled) in admin/categories/categories.blade.php
-            $getCategoryStatus = \App\Models\Category::getCategoryStatus($item['product']['category_id']);
+            $getCategoryStatus = Category::getCategoryStatus($item['product']['category_id']);
             if ($getCategoryStatus == 0) { // if the Category is disabled (`status` = 0)
                 $message = $item['product']['product_name'] . ' with ' . $item['size'] . ' size is not available. Please remove it from the Cart and choose another product.';
                 return response()->json([
@@ -895,7 +895,7 @@ class ProductsController extends Controller
             // Get the Total Price (the 'Subtotal')
             $total_price = 0;
             foreach ($getCartItems as $item) {
-                $getDiscountAttributePrice = \App\Models\Product::getDiscountAttributePrice($item['product_id'], $item['size']); // from the `products_attributes` table, not the `products` table
+                $getDiscountAttributePrice = Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']); // from the `products_attributes` table, not the `products` table
                 $total_price = $total_price + ($getDiscountAttributePrice['final_price'] * $item['quantity']);
             }
 
@@ -941,7 +941,7 @@ class ProductsController extends Controller
 
 
             // INSERT/Fill in the data of the order in the `orders_products` table (after filling in the `orders` table)
-            foreach ($getCartItems as $item) {
+            foreach ($getCartItems as $cartKey => $item) {
                 $cartItem = new \App\Models\OrdersProduct; // Create a new OrdersProduct.php model object (represents the `orders_products` table)
 
                 // Assign the order product/item data to be INSERT-ed INTO the `orders_products` table
@@ -949,7 +949,7 @@ class ProductsController extends Controller
                 $cartItem->user_id  = Auth::user()->id; // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
 
                 // Get some product details of the Cart Items from the `products` table (to be able to fill in data in the `orders_products` table)
-                $getProductDetails = \App\Models\Product::select('product_code', 'product_name', 'product_color', 'admin_id', 'vendor_id')->where('id', $item['product_id'])->first()->toArray();
+                $getProductDetails = Product::select('product_code', 'product_name', 'product_color', 'admin_id', 'vendor_id')->where('id', $item['product_id'])->first()->toArray();
 
                 // Continue filling in data into the `orders_products` table
                 $cartItem->admin_id        = $getProductDetails['admin_id'];
@@ -957,7 +957,7 @@ class ProductsController extends Controller
 
                 
                 if ($getProductDetails['vendor_id'] > 0) { // if the order product's seller is a 'vendor'
-                    $vendorCommission = \App\Models\Vendor::getVendorCommission($getProductDetails['vendor_id']);
+                    $vendorCommission = Vendor::getVendorCommission($getProductDetails['vendor_id']);
                     $cartItem->commission  = $vendorCommission;
                 }
 
@@ -968,12 +968,13 @@ class ProductsController extends Controller
                 $cartItem->product_size    = $item['size'];
                 $cartItem->item_status     = 1;
 
-                $getDiscountAttributePrice = \App\Models\Product::getDiscountAttributePrice($item['product_id'], $item['size']); // from the `products_attributes` table, not the `products` table
+                $getDiscountAttributePrice = Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']); // from the `products_attributes` table, not the `products` table
                 $cartItem->product_price   = $getDiscountAttributePrice['final_price'];
+                $item['product']['product_price'] = $getDiscountAttributePrice['final_price'];
 
 
                 
-                $getProductStock = \App\Models\ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']);
+                $getProductStock = ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']);
                 if ($item['quantity'] > $getProductStock) { // if the ordered quantity is greater than the existing stock, cancel the order/opertation
                     $message = $getProductDetails['product_name'] . ' with ' . $item['size'] . ' size stock is not available/enough for your order. Please reduce its quantity and try again!';
 
@@ -988,12 +989,13 @@ class ProductsController extends Controller
 
                 // Inventory Management - Reduce inventory/stock when an order gets placed
                 // We wrote the Inventory/Stock Management script in TWO places: in the checkout() method in Front/ProductsController.php and in the success() method in Front/PaypalController.php
-                $getProductStock = \App\Models\ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']); // Get the `stock` of that product `product_id` with that specific `size` from `products_attributes` table
+                $getProductStock = ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']); // Get the `stock` of that product `product_id` with that specific `size` from `products_attributes` table
                 $newStock = $getProductStock - $item['quantity']; // The new product `stock` is the original stock reduced by the order `quantity`
-                \App\Models\ProductsAttribute::where([ // Update the new `quantity` in the `products_attributes` table
+                ProductsAttribute::where([ // Update the new `quantity` in the `products_attributes` table
                     'product_id' => $item['product_id'],
                     'size'       => $item['size']
                 ])->update(['stock' => $newStock]);
+                $getCartItems[$cartKey] = $item;
             }
 
 
