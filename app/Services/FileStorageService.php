@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Storage;
+use Google\Cloud\Storage\StorageClient;
 use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;
 
@@ -69,13 +69,27 @@ class FileStorageService
      */
     protected function storeInGCS(UploadedFile $file, $path, $size = false)
     {
+        $gcsConfig = config('filesystems.disks.gcs_admin');
+
+        // Create a StorageClient instance using the configuration
+        $storage = new StorageClient([
+            'projectId' => $gcsConfig['project_id'],
+            'keyFilePath' => $gcsConfig['key_file']
+        ]);
+
+        // Specify your bucket name from the configuration
+        $bucketName = $gcsConfig['bucket'];
+        $bucket = $storage->bucket($bucketName);
+
         try {
             $file = Image::make($file);
             if ($size) {
                 $file = $file->resize($size['width'], $size['height']);
             }
-            $file = $file->encode();
-            $success = Storage::disk('gcs_admin')->put($path, $file);
+            $file_content = $file->encode()->__tostring();
+            $success = $bucket->upload($file_content, [
+                'name' => $path
+            ]);
             
             if (!$success) return false;
             
@@ -89,10 +103,23 @@ class FileStorageService
 
     protected function storeVideoInGCS(UploadedFile $file, $path)
     {
-        try {
-            $file = $file->encode();
+        $gcsConfig = config('filesystems.disks.gcs_admin');
 
-            $success = Storage::disk('gcs_admin')->put($path, $file);
+        // Create a StorageClient instance using the configuration
+        $storage = new StorageClient([
+            'projectId' => $gcsConfig['project_id'],
+            'keyFilePath' => $gcsConfig['key_file']
+        ]);
+
+        // Specify your bucket name from the configuration
+        $bucketName = $gcsConfig['bucket'];
+        $bucket = $storage->bucket($bucketName);
+
+        try {
+            $file_content = $file->encode()->__toString();
+            $success = $bucket->upload($file_content, [
+                'name' => $path
+            ]);
 
             if (!$success) return false;
             
