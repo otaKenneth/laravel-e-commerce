@@ -39,7 +39,6 @@
                                             <th>ID</th>
                                             <th>Product Name</th>
                                             <th>Product Code</th>
-                                            <th>Product Color</th>
                                             <th>Product Image</th>
                                             <th>Category</th> {{-- Through the relationship --}}
                                             <th>Section</th>  {{-- Through the relationship --}}
@@ -54,7 +53,6 @@
                                                 <td>{{ $product['id'] }}</td>
                                                 <td>{{ $product['product_name'] }}</td>
                                                 <td>{{ $product['product_code'] }}</td>
-                                                <td>{{ $product['product_color'] }}</td>
                                                 <td>
                                                     <img style="width:120px; height:100px" src="{{ $getImage('front/images/product_images/small/', $product['product_image']) }}"> {{-- Show the 'small' image size from the 'small' folder --}}
                                                 </td>
