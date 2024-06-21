@@ -605,4 +605,20 @@ $(document).ready(function() {
         });
     })
 
+
+    $('#found_us_select').on('change', function() {
+        var selectedValue = $(this).val();
+        
+        $('.card-body p[class^="fu_"]').each(function() {
+            if ($(this).hasClass(selectedValue)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+
+    // Trigger the change event on page load to set the initial state
+    $('#found_us_select').trigger('change');
+
 }); // End of $(document).ready()
