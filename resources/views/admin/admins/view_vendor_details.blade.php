@@ -70,7 +70,7 @@
                                 <div class="form-group">
                                     <label for="vendor_image">Vendor Photo</label>
                                     <br>
-                                    <img style="width: 200px" src="{{ url('admin/images/photos/' . $vendorDetails['image']) }}">
+                                    <img style="width: 200px" src="{{ $getImage('admin/images/photos/', $vendorDetails['image']) }}">
                                 </div>
                             @endif
                         </div>

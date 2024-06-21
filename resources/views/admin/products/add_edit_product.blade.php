@@ -125,10 +125,17 @@
 
                                 <div class="form-group">
                                     <label for="brand_id">Select Brand</label>
-                                    <select name="brand_id" id="brand_id" class="form-control text-dark">
+                                    <select name="brand_id" id="brand_id" class="form-control text-dark" disabled>
                                         <option value="">Select Brand</option>
                                         @foreach ($brands as $brand)
-                                            <option value="{{ $brand['id'] }}" @if (!empty($product['brand_id'] == $brand['id'])) selected @endif>{{ $brand['name'] }}</option>
+                                            <option value="{{ $brand['id'] }}" 
+                                                @if (!empty($product['brand_id'] == $brand['id'])) 
+                                                    selected 
+                                                @endif 
+                                                @if (strtolower($brand['name']) == "own")
+                                                    selected
+                                                @endif
+                                            >{{ $brand['name'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -139,10 +146,6 @@
                                 <div class="form-group">
                                     <label for="product_code">Product Code</label>
                                     <input type="text" class="form-control" id="product_code" placeholder="Enter Code" name="product_code" @if (!empty($product['product_code'])) value="{{ $product['product_code'] }}" @else value="{{ old('product_code') }}" @endif>  {{-- Repopulating Forms (using old() method): https://laravel.com/docs/9.x/validation#repopulating-forms --}}
-                                </div>
-                                <div class="form-group">
-                                    <label for="product_color">Product Color</label>
-                                    <input type="text" class="form-control" id="product_color" placeholder="Enter Product Color" name="product_color" @if (!empty($product['product_color'])) value="{{ $product['product_color'] }}" @else value="{{ old('product_color') }}" @endif>  {{-- Repopulating Forms (using old() method): https://laravel.com/docs/9.x/validation#repopulating-forms --}}
                                 </div>
                                 <div class="form-group">
                                     <label for="product_price">Product Price</label>
