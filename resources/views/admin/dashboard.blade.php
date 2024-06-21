@@ -60,35 +60,8 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-4 stretch-card transparent">
-                            <div class="card card-light-blue">
-                                <div class="card-body">
-                                    <p class="mb-4">Vendors found us on Instagram</p>
-                                    <p class="fs-30 mb-2">{{ $wdyfu_ig }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-4 stretch-card transparent">
-                            <div class="card card-light-blue">
-                                <div class="card-body">
-                                    <p class="mb-4">Vendors found us on Referral</p>
-                                    <p class="fs-30 mb-2">{{ $wdyfu_re }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent mobile-no-margin">
-                            <div class="card card-light-blue">
-                                <div class="card-body">
-                                    <p class="mb-4">Vendors found us on Referral</p>
-                                    <p class="fs-30 mb-2">{{ $wdyfu_re }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                
+                    
                 </div>
 
 
@@ -124,30 +97,25 @@
                         <div class="col-md-6 mb-4 stretch-card transparent">
                             <div class="card card-light-blue">
                                 <div class="card-body">
-                                    <p class="mb-4">Vendors found us on Facebook</p>
-                                    <p class="fs-30 mb-2">{{ $wdyfu_fb }}</p>
+                                <p class="mb-4">Vendors found us on</p>
+                                    <select id="found_us_select" style="padding: 4px 20px; border: none; background: #ededed; margin-top: -10px; margin-bottom: 15px;">
+                                        <option value="fu_fb">Facebook</option>
+                                        <option value="fu_ig">Instagram</option>
+                                        <option value="fu_re">Referral</option>
+                                        <option value="fu_li">LinkedIn</option>
+                                        <option value="fu_wm">Word-of-Mouth</option>
+                                    </select>
+                                    
+                                    <p class="fu_fb fs-30 mb-2">{{ $wdyfu_fb }}</p>
+                                    <p class="fu_ig fs-30 mb-2" style="display: none">{{ $wdyfu_ig }}</p>
+                                    <p class="fu_re fs-30 mb-2" style="display: none">{{ $wdyfu_re }}</p>
+                                    <p class="fu_li fs-30 mb-2" style="display: none">{{ $wdyfu_li }}</p>
+                                    <p class="fu_wm fs-30 mb-2" style="display: none">{{ $wdyfu_wm }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-4 stretch-card transparent">
-                            <div class="card card-light-blue">
-                                <div class="card-body">
-                                    <p class="mb-4">Vendors found us on LinkedIn</p>
-                                    <p class="fs-30 mb-2">{{ $wdyfu_li }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-4 stretch-card transparent">
-                            <div class="card card-light-blue">
-                                <div class="card-body">
-                                    <p class="mb-4">Vendors found us by Word-of-Mouth</p>
-                                    <p class="fs-30 mb-2">{{ $wdyfu_wm }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                
                 </div>
 
 
