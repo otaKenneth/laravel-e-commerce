@@ -86,6 +86,24 @@ class PaymongoAPIHelper
         return $this;
     }
 
+    public function setDeliveryFee($delivery_fee) {
+        $amount = round($delivery_fee, 2);
+        $amount = $amount * 100;
+        Log::info("Paymongo: setItems - " . $amount);
+
+        $delivery = [
+            'amount' => (int) $amount,
+            'currency' => "PHP",
+            'description' => "Kapiton Store x Lalamove - Delivery Fee",
+            'name' => "Delivery Fee",
+            'quantity' => 1
+        ];
+
+        array_push($this->line_items, $delivery);
+
+        return $this;
+    }
+
     public function createSession() {
         $client = new Client();
 
