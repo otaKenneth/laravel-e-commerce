@@ -139,18 +139,23 @@ class OrderController extends Controller
                 // echo 'Inside Automatic Shipping Process if statement in updateOrderStatus() method in Admin/OrderController.php<br>';
                 // exit;
                 $all_lalamove_data = $this->lalamoveAPI_Helper->getQuotation($data['order_id'], Auth::guard('admin')->user()->vendor_id);
-                $getResults = \App\Models\Order::pushOrder_to_Lalamove($all_lalamove_data, $data['order_id']);
-                // dd(collect($getResults->errors)->pluck('message')->toArray());
-                if (isset($getResults->errors)) {
-                    Session::put('error_message', collect($getResults->errors)->pluck('message')->toArray()); // The message is coming from the Shiprocket API    // Storing Data: https://laravel.com/docs/9.x/session#storing-data
-    
-                    return redirect()->back(); // Redirecting With Flashed Session Data: https://laravel.com/docs/10.x/responses#redirecting-with-flashed-session-data
+
+                if (!isset($all_lalamove_data['errors'])) {
+                    $getResults = \App\Models\Order::pushOrder_to_Lalamove($all_lalamove_data, $data['order_id']);
+                    // dd(collect($getResults->errors)->pluck('message')->toArray());
+                    if (isset($getResults->errors)) {
+                        Session::put('error_message', collect($getResults->errors)->pluck('message')->toArray()); // The message is coming from the Shiprocket API    // Storing Data: https://laravel.com/docs/9.x/session#storing-data
+        
+                        return redirect()->back(); // Redirecting With Flashed Session Data: https://laravel.com/docs/10.x/responses#redirecting-with-flashed-session-data
+                    } else {
+                        \App\Models\Order::where('id', $data['order_id'])->update([
+                            'is_pushed' => 1,
+                            'courier_name'    => $getResults->data->shareLink,
+                            'tracking_number' => "{$getResults->data->orderId}-{$getResults->data->quotationId}-{$getResults->data->driverId}"
+                        ]);
+                    }
                 } else {
-                    \App\Models\Order::where('id', $data['order_id'])->update([
-                        'is_pushed' => 1,
-                        'courier_name'    => $getResults->data->shareLink,
-                        'tracking_number' => "{$getResults->data->orderId}-{$getResults->data->quotationId}-{$getResults->data->driverId}"
-                    ]);
+                    return redirect()->back()->withErrors($all_lalamove_data['errors']);
                 }
             }
 
@@ -678,7 +683,6 @@ class OrderController extends Controller
                                     <tr>
                                         <td class="desc">' . $product['product_code'] . '</td>
                                         <td class="qty">' . $product['product_size'] . '</td>
-                                        <td class="qty">' . $product['product_color'] . '</td>
                                         <td class="qty">' . $product['product_qty'] . '</td>
                                         <td class="unit">INR ' . $product['product_price'] . '</td>
                                         <td class="total">INR ' . $product['product_price'] * $product['product_qty'] . '</td>

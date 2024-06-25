@@ -132,6 +132,14 @@ class LalamoveAPIBodyHelper
         $this->sender = $vendor;
         $vendor_address = "{$vendor->vendorbusinessdetails->shop_name}, {$vendor->vendorbusinessdetails->shop_address}, {$vendor->vendorbusinessdetails->shop_city}, {$vendor->vendorbusinessdetails->shop_state}, {$vendor->vendorbusinessdetails->country}, {$vendor->vendorbusinessdetails->shop_pincode}";
 
+        if (empty($vendor->vendorbusinessdetails['lat']) || $vendor->vendorbusinessdetails['long']) {
+            return [
+                'errors' => [
+                    'message' => "Latitude and Longitude for Vendor Business Detail is required."
+                ],
+            ];
+        }
+
         $body['stops'] = [
             [ // vendor stop
                 'coordinates' => [
@@ -194,6 +202,7 @@ class LalamoveAPIBodyHelper
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
+        \Log::info($response);
         $json_decoded_response = json_decode($response);
 
         return $json_decoded_response;
