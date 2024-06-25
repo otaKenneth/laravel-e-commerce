@@ -98,19 +98,23 @@
                             <div class="card card-light-blue">
                                 <div class="card-body">
                                 <p class="mb-4">Vendors found us on</p>
-                                    <select id="found_us_select" style="padding: 4px 20px; border: none; background: #ededed; margin-top: -10px; margin-bottom: 15px;">
-                                        <option value="fu_fb">Facebook</option>
-                                        <option value="fu_ig">Instagram</option>
-                                        <option value="fu_re">Referral</option>
-                                        <option value="fu_li">LinkedIn</option>
-                                        <option value="fu_wm">Word-of-Mouth</option>
-                                    </select>
-                                    
-                                    <p class="fu_fb fs-30 mb-2">{{ $wdyfu_fb }}</p>
-                                    <p class="fu_ig fs-30 mb-2" style="display: none">{{ $wdyfu_ig }}</p>
-                                    <p class="fu_re fs-30 mb-2" style="display: none">{{ $wdyfu_re }}</p>
-                                    <p class="fu_li fs-30 mb-2" style="display: none">{{ $wdyfu_li }}</p>
-                                    <p class="fu_wm fs-30 mb-2" style="display: none">{{ $wdyfu_wm }}</p>
+
+                                    <div style="display: flex; gap: 20px;">
+                                        <select id="found_us_select" style="padding: 4px 20px 0 0; border: none; width: 180px; margin-top: -10px;">
+                                            <option value="fu_fb">Facebook</option>
+                                            <option value="fu_ig">Instagram</option>
+                                            <option value="fu_re">Referral</option>
+                                            <option value="fu_li">LinkedIn</option>
+                                            <option value="fu_wm">Word-of-Mouth</option>
+                                        </select>
+                                        
+                                        <p class="fu_fb fs-30 mb-2 value_short_found_us" style="display: none">{{ $wdyfu_fb }}</p>
+                                        <p class="fu_ig fs-30 mb-2 value_short_found_us" style="display: none">{{ $wdyfu_ig }}</p>
+                                        <p class="fu_re fs-30 mb-2 value_short_found_us" style="display: none">{{ $wdyfu_re }}</p>
+                                        <p class="fu_li fs-30 mb-2 value_short_found_us" style="display: none">{{ $wdyfu_li }}</p>
+                                        <p class="fu_wm fs-30 mb-2 value_short_found_us" style="display: none">{{ $wdyfu_wm }}</p>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
