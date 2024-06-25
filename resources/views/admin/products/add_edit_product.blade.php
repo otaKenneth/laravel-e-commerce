@@ -127,16 +127,20 @@
                                     <label for="brand_id">Select Brand</label>
                                     <select name="brand_id" id="brand_id" class="form-control text-dark" disabled>
                                         <option value="">Select Brand</option>
+                                        {{ $selected_brand_id = "" }}
                                         @foreach ($brands as $brand)
                                             <option value="{{ $brand['id'] }}" 
                                                 @if (!empty($product['brand_id'] == $brand['id'])) 
+                                                    {{$selected_brand_id = $brand['id']}}
                                                     selected 
                                                 @endif 
                                                 @if (strtolower($brand['name']) == "own")
+                                                    {{$selected_brand_id = $brand['id']}}
                                                     selected
                                                 @endif
                                             >{{ $brand['name'] }}</option>
                                         @endforeach
+                                        <input type="hidden" name="brand_id" value="{{ $selected_brand_id }}">
                                     </select>
                                 </div>
                                 <div class="form-group">
