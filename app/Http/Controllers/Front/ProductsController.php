@@ -949,7 +949,7 @@ class ProductsController extends Controller
                 $cartItem->user_id  = Auth::user()->id; // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
 
                 // Get some product details of the Cart Items from the `products` table (to be able to fill in data in the `orders_products` table)
-                $getProductDetails = Product::select('product_code', 'product_name', 'product_color', 'admin_id', 'vendor_id')->where('id', $item['product_id'])->first()->toArray();
+                $getProductDetails = Product::select('product_code', 'product_name', 'admin_id', 'vendor_id')->where('id', $item['product_id'])->first()->toArray();
 
                 // Continue filling in data into the `orders_products` table
                 $cartItem->admin_id        = $getProductDetails['admin_id'];
@@ -964,7 +964,7 @@ class ProductsController extends Controller
                 $cartItem->product_id      = $item['product_id'];
                 $cartItem->product_code    = $getProductDetails['product_code'];
                 $cartItem->product_name    = $getProductDetails['product_name'];
-                $cartItem->product_color   = $getProductDetails['product_color'];
+                $cartItem->product_color   = $item['color'];
                 $cartItem->product_size    = $item['size'];
                 $cartItem->item_status     = 1;
 
