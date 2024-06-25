@@ -110,7 +110,7 @@ class ProductsController extends Controller
                 'product_name'  => 'required', // only alphabetical characters and spaces
                 'product_code'  => "required|regex:/^\w+$/|unique:products,product_code,{$id}", // alphanumeric regular expression
                 'product_price' => 'required|numeric',
-                'product_color' => 'required|regex:/^[\pL\s\-]+$/u', // only alphabetical characters and spaces
+                'brand_id' => 'required|exists:brands,id', // only alphabetical characters and spaces
             ];
 
             $customMessages = [ // Specifying A Custom Message For A Given Attribute: https://laravel.com/docs/9.x/validation#specifying-a-custom-message-for-a-given-attribute
