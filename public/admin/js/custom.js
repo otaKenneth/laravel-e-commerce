@@ -606,6 +606,22 @@ $(document).ready(function() {
     })
 
 
+    $('.value_short_found_us').each(function() {
+        let value = parseInt($(this).text(), 10);
+        let formattedValue;
+
+        if (value >= 1000000) {
+            formattedValue = (value / 1000000).toFixed(1) + 'm';
+        } else if (value >= 1000) {
+            formattedValue = (value / 1000).toFixed(1) + 'k';
+        } else {
+            formattedValue = value;
+        }
+
+        $(this).text(formattedValue);
+    });
+
+
     $('#found_us_select').on('change', function() {
         var selectedValue = $(this).val();
         
