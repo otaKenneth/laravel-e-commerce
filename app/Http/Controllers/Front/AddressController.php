@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -74,7 +75,27 @@ class AddressController extends Controller
                 // ADD a new delivery address (INSERT INTO the `delivery_addresses` database table)
                 } else { // if there's no delivery address id submitted from the HTML Form via AJAX, this means it's Add a new Delivery Address (not Edit delivery address) i.e. (INSERT INTO the `delivery_addresses` database table)    // $data['delivery_id'] comes from the 'data' object inside the $.ajax() method. Check front/js/custom.js                        
                     // INSERT INTO the `delivery_addresses` database table
+                    $user = User::find(Auth::user()->id);
+                    $user_addresses = \App\Models\DeliveryAddress::where('user_id', Auth::user()->id)->count();
                     \App\Models\DeliveryAddress::create($address); // Check the DeliveryAddress.php model for Mass Assignment: https://laravel.com/docs/10.x/eloquent#mass-assignment    // Check 5:56 in 
+                    
+                    if ($user_addresses == 0) {
+                        $user->address = $address['address'];
+                        $user->city = $address['city'];
+                        $user->state = $address['state'];
+                        $user->country = $address['country'];
+                        $user->pincode = $address['pincode'];
+
+                        $user->update();
+                    } else if (is_null($user->pincode) || is_null($user->country) || is_null($user->state) || is_null($user->city) || is_null($user->address)) {
+                        $user->address = $address['address'];
+                        $user->city = $address['city'];
+                        $user->state = $address['state'];
+                        $user->country = $address['country'];
+                        $user->pincode = $address['pincode'];
+
+                        $user->update();
+                    }
                 }
 
                 return response()->json([
