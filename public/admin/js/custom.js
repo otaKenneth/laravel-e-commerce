@@ -638,3 +638,65 @@ $(document).ready(function() {
     $('#found_us_select').trigger('change');
 
 }); // End of $(document).ready()
+
+
+
+
+/**
+ * @license
+ * Copyright 2019 Google LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+let map;
+let marker;
+let geocoder;
+
+async function initMap() {
+    const position = { lat: 14.5806494, lng: 121.0203798 };
+
+    const { Map } = await google.maps.importLibrary("maps");
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    
+    map = new Map(document.getElementById("map_vendor_details"), {
+        zoom: 11,
+        center: position,
+        // mapTypeControl: false,
+        mapId: "e36eca20b19b9c"
+    });
+    geocoder = new google.maps.Geocoder();
+    marker = new AdvancedMarkerElement({
+        map: map,
+        position: new google.maps.LatLng(14.5806494, 121.0203798),
+        title: "Metro Manila"
+    });
+
+
+    map.addListener('click', function(event) {
+        
+        marker.position = event.latLng;
+
+        $('#update_vendor_details_form #business_address_lat[name*="lat"]').val(Object.values(marker.position)[0])
+        $('#update_vendor_details_form #business_address_lng[name*="lng"]').val(Object.values(marker.position)[1])
+    });
+
+
+}
+window.addEventListener("load", initMap);
+
+$(document).ready(function() {
+
+    function requestGeocode(address) {
+        geocoder.geocode({
+            "address": address
+        }, function (results, status) {
+            if (status == "OK") {
+                map.setCenter(results[0].geometry.location);
+                marker.position = results[0].geometry.location;
+
+                $('#update_vendor_details_form #business_address_lat[name*="lat"]').val(Object.values(marker.position)[0])
+                $('#update_vendor_details_form #business_address_lng[name*="lng"]').val(Object.values(marker.position)[1])
+            }
+        })
+    }
+
+});
