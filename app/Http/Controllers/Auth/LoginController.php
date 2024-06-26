@@ -37,20 +37,30 @@ class LoginController extends Controller
             if ($finduser) {
                 Auth::login($finduser);
 
-                return redirect('/cart');
+                return redirect('/');
             } else {
-                $newUser = User::create([
-                    'google_id' => $user->id,
-                    'first_name' => $user->user['given_name'],
-                    'last_name' => $user->user['family_name'],
-                    'email' => $user->email,
-                    'password' => Hash::make(Str::random(16)),
-                    'email_verified_at' => now(),
-                    'status' => 1
-                ]);
+                $finduser = User::where('email', $user->email)->first();
 
-                Auth::login($newUser);
-                return redirect('/cart');
+                if ($finduser) {
+                    $finduser->google_id = $user->id;
+                    $finduser->update();
+
+                    Auth::login($finduser);
+                } else {
+                    $newUser = User::create([
+                        'google_id' => $user->id,
+                        'first_name' => $user->user['given_name'],
+                        'last_name' => $user->user['family_name'],
+                        'email' => $user->email,
+                        'password' => Hash::make(Str::random(16)),
+                        'email_verified_at' => now(),
+                        'status' => 1
+                    ]);
+
+                    Auth::login($newUser);
+                }
+
+                return redirect('/');
             }
         } catch (\Throwable $th) {
             return redirect('/user/login-register')->withErrors([
