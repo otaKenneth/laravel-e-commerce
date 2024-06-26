@@ -683,7 +683,11 @@ async function initMap() {
 }
 window.addEventListener("load", initMap);
 
+
+
+
 $(document).ready(function() {
+
 
     function requestGeocode(address) {
         geocoder.geocode({
@@ -699,4 +703,175 @@ $(document).ready(function() {
         })
     }
 
-});
+    /**
+     * On change of country name - load city
+     */
+    $('#update_vendor_details_form #shop_country').change((el) => {
+        let country = $(el.currentTarget).val();
+
+        var settings = {
+            "url": 'https://countriesnow.space/api/v0.1/countries/states',
+            "method": "POST",
+            data: {
+                "country": country
+            }
+        };
+          
+
+        $.ajax(settings).done(function (response) {
+            if (!response.error) {
+                $('#update_vendor_details_form #shop_state .added-through-api').remove();
+
+                let states = response.data.states.map((state) => {
+                    let newOption = $('<option>', {
+                        value: state.name,
+                        text: state.name,
+                        class: "added-through-api"
+                    });
+
+                    return newOption;
+                });
+                
+                $('#update_vendor_details_form #shop_state').append(states);
+            }
+        });
+    })
+
+    /**
+     * On change of state get cities
+     */
+    $('#update_vendor_details_form #shop_state').change((el) => {
+        let country = $('#shop_country').val();
+        let state = $(el.currentTarget).val();
+
+        var settings = {
+            "url": 'https://countriesnow.space/api/v0.1/countries/state/cities',
+            "method": "POST",
+            data: {
+                "country": country,
+                "state": state
+            }
+        }
+
+        $.ajax(settings).done(function (response) {
+            if (!response.error) {
+                $('#update_vendor_details_form #shop_city .added-through-api').remove();
+                
+                let cities = response.data.map((city) => {
+                    let newOption = $('<option>', {
+                        value: city,
+                        text: city,
+                        class: "added-through-api"
+                    });
+
+                    return newOption;
+                });
+                
+                $('#update_vendor_details_form #shop_city').append(cities);
+            }
+        });
+    });
+
+
+
+    // Business Details
+    /**
+     * On change of country name - load city
+     */
+    $('#update_vendor_details_form #shop_country').change((el) => {
+        let country = $(el.currentTarget).val();
+
+        var settings = {
+            "url": 'https://countriesnow.space/api/v0.1/countries/states',
+            "method": "POST",
+            data: {
+                "country": country
+            }
+        };
+          
+
+        $.ajax(settings).done(function (response) {
+            if (!response.error) {
+                $('#update_vendor_details_form #shop_state .added-through-api').remove();
+
+                let states = response.data.states.map((state) => {
+                    let newOption = $('<option>', {
+                        value: state.name,
+                        text: state.name,
+                        class: "added-through-api"
+                    });
+
+                    return newOption;
+                });
+                
+                $('#update_vendor_details_form #shop_state').append(states);
+                requestGeocode(country);
+            }
+        });
+    })
+    /**
+     * On change of state get cities
+     */
+    $('#update_vendor_details_form #shop_state').change((el) => {
+        let country = $('#update_vendor_details_form #shop_country').val();
+        let state = $(el.currentTarget).val();
+
+        var settings = {
+            "url": 'https://countriesnow.space/api/v0.1/countries/state/cities',
+            "method": "POST",
+            data: {
+                "country": country,
+                "state": state
+            }
+        }
+
+        $.ajax(settings).done(function (response) {
+            if (!response.error) {
+                $('#update_vendor_details_form #shop_city .added-through-api').remove();
+                
+                let cities = response.data.map((city) => {
+                    let newOption = $('<option>', {
+                        value: city,
+                        text: city,
+                        class: "added-through-api"
+                    });
+
+                    return newOption;
+                });
+                
+                $('#update_vendor_details_form #shop_city').append(cities);
+                requestGeocode(`${state}, ${country}`);
+            }
+        });
+    });
+ 
+
+    let business_address;
+    let timeoutId;
+    $('#update_vendor_details_form #shop_city').keyup(function (e) {
+        let business_city_val = $(e.currentTarget).val();
+        clearTimeout(timeoutId);
+        
+        let country = $('#update_vendor_details_form #shop_country').val();
+        let state = $('#update_vendor_details_form #shop_city').val();
+        business_address = `${business_city_val}, ${state}, ${country}`;
+        timeoutId = setTimeout(() => {
+            requestGeocode(business_address)
+        }, 300);
+    })
+    
+
+    $('#update_vendor_details_form #shop_address').keyup(function (e) {
+        let business_address_val = $(e.currentTarget).val();
+        clearTimeout(timeoutId);
+
+        let country = $('#update_vendor_details_form #shop_country').val();
+        let state = $('#update_vendor_details_form #shop_state').val();
+        let city = $('#update_vendor_details_form #shop_city');
+        business_address = `${business_address_val} ${city}, ${state}, ${country}`;
+        timeoutId = setTimeout(() => {
+            requestGeocode(business_address)
+        }, 300);
+    })
+
+})

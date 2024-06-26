@@ -116,6 +116,7 @@
                                                         @foreach ($countries as $country) {{-- $countries was passed from AdminController to view using compact() method --}}
                                                             <option value="{{ $country['country_name'] }}" @if ($country['country_name'] == $vendorDetails['country']) selected @endif>{{ $country['country_name'] }}</option>
                                                         @endforeach
+                                                        
             
                                                     </select>
                                                 </div>
@@ -237,7 +238,13 @@
                                                 </div>
                                                 <div class="form-group col-12 col-md-4">
                                                     <label for="shop_state">Shop Province</label>
-                                                    <input type="text" class="form-control" id="shop_state" placeholder="Enter Shop State" name="shop_state"  @if (isset($vendorDetails['shop_state'])) value="{{ $vendorDetails['shop_state'] }}" @endif> {{-- $vendorDetails was passed from AdminController --}}
+                                                    <select
+                                                        name="business[state]"
+                                                        id="shop_state"
+                                                        class="address-field elementor-field-textual elementor-size-sm"
+                                                        required="required"
+                                                        aria-required="true"
+                                                    ></select>
                                                 </div>
                                                 <div class="form-group col-12 col-md-4">
                                                     <label for="shop_city">Shop City</label>
