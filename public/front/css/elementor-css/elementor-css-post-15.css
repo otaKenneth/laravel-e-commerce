@@ -101,3 +101,35 @@
 .elementor-element-977d0d9 .custom_h2_size.four-line{
 	font-size: 16px;
 }
+
+
+
+/*CUSTOM CSS NINO FELICIANO*/
+.elementor-15 .elementor-element-dee8d3b > .e-con-inner{
+	display: block;
+	width: 100%;
+    max-width: 100%;
+}
+.elementor-15 .elementor-element-ca69b15 > .e-con-inner{
+	max-width: 100%;
+}
+.elementor-15 .elementor-element-ca69b15{
+	padding-left: 0;
+    padding-right: 0;
+}
+.elementor-15 .elementor-element.elementor-element-c9adeb5 img{
+	width: 100%;
+    height: 90vh;
+    min-height: 800px;
+    object-fit: cover;
+}
+
+@media (max-width: 767px){
+	.elementor-15 .elementor-element.elementor-element-c9adeb5 img{
+		height: 80vh;
+		min-height: 400px;
+	}
+	.elementor-15 .elementor-element.elementor-element-7ab35dc > .elementor-widget-container{
+		padding-bottom: 0 !important;
+	}
+}

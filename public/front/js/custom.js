@@ -1064,4 +1064,24 @@ $(document).ready(function() {
     });
 
 
+    $('.review--btn').on('click', function() {
+        $('.popup_review_order.elementor-491').addClass('active');
+    });
+
+
+    $('.popup_review_order.elementor-491 .close_image_review_popup').on('click', function() {
+        $('.popup_review_order.elementor-491').removeClass('active');
+    });
+
+
+    $('.refund--btn').on('click', function() {
+        $('.refund_popup_outer').addClass('active');
+    });
+
+
+    $('.refund_popup_outer .close_image_refund_popup').on('click', function() {
+        $('.refund_popup_outer').removeClass('active');
+    });
+
+
 });
