@@ -54,6 +54,7 @@ class RatingController extends Controller
 
                     $rating->user_id    = $user_id;
                     $rating->product_id = $data['product_id'];
+                    $rating->title     = $data['title'];
                     $rating->review     = $data['review'];
                     $rating->rating     = $data['rating'];
                     $rating->status     = 1; // Will give a default value of 0 (disabled) to enable the admin to approve the rating first
@@ -129,7 +130,10 @@ class RatingController extends Controller
                     ];
                     
                     // return redirect()->back()->with('success_message', $message);
-                    return response()->view('front.products.product_reviews', $data, 200)->header('Content-Type', 'text/html');
+                    return response()->json([
+                        'success' => true,
+                        'message' => "Your review has been added successfully. Thank you for reviewing this item."
+                    ]);
                 }
             }
         }
