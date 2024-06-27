@@ -368,19 +368,6 @@
     
                     </div>
                 </div>
-                <div
-                    class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-field_81b127l elementor-col-50 elementor-field-required">
-                    <label for="form-field-field_81b127l" class="elementor-field-label elementor-screen-only">
-                        Latitude</label>
-                    <div class="elementor-field elementor-select-wrapper remove-before">
-                        <label for="form-field-field_81b127l" class="elementor-field-label elementor-screen-only">
-                            Latitude</label>
-                        <input size="1" type="text" name="delivery_lat" id="form-field-field_81b127l"
-                            class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Latitude"
-                            required="required" aria-required="true" hidden="hidden">
-    
-                    </div>
-                </div>
                 
                 <div class="hidden">
                     <input type="hidden" id="shipping_address_lat" name="shipping[lat]" value="">

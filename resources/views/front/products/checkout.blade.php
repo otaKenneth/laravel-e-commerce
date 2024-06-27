@@ -305,12 +305,12 @@
                                     <div class="elementor-widget-container">
                                         <table>
                                             <tr>
-                                                <td>Delivery Fee</td>
-                                                <td class="align-right">₱ {{number_format($delivery_fee, 2)}}</td>
-                                            </tr>
-                                            <tr>
                                                 <td>Sub total</td>
                                                 <td class="align-right">₱{{$sub_total}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Delivery Fee</td>
+                                                <td class="align-right">₱ {{number_format($delivery_fee, 2)}}</td>
                                             </tr>
                                             <!-- <tr>
                                                 <td>Coupon discount</td>

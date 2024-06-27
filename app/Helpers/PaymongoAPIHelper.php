@@ -65,12 +65,14 @@ class PaymongoAPIHelper
     }
 
     public function setItems($cart_items) {
+        $total_amount = 0;
         foreach ($cart_items as $key => $cart_item) {
             $item_description = "Kapiton Store: ";
             $item_description .= $cart_item['product']['product_name'] . ", " . $cart_item['color'] . ", " . $cart_item['size'] . ".";
 
-            $amount = round($cart_item['product']['product_price'], 2);
-            $amount = $amount * 100;
+            $prod_price = $cart_item['product']['product_price'];
+            $total_amount += $prod_price;
+            $amount = round($prod_price * 100, 0);
             Log::info("Paymongo: setItems - " . $amount);
             
             $line_item = [
@@ -83,12 +85,22 @@ class PaymongoAPIHelper
             array_push($this->line_items, $line_item);
         }
 
+        // transaction fee
+        $total_amount = round(($total_amount / 0.95) * 100, 0);
+        $line_item = [
+            'amount' => (int) $total_amount,
+            'currency' => "PHP",
+            'description' => "Paymongo - Transaction Fee",
+            'name' => "Transaction Fee",
+            'quantity' => 1
+        ];
+        array_push($this->line_items, $line_item);
+
         return $this;
     }
 
     public function setDeliveryFee($delivery_fee) {
-        $amount = round($delivery_fee, 2);
-        $amount = $amount * 100;
+        $amount = round($delivery_fee * 100, 0);
         Log::info("Paymongo: setItems - " . $amount);
 
         $delivery = [

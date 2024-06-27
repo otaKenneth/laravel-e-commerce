@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Helpers\PaymongoRefundAPIHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -24,6 +27,19 @@ class OrderController extends Controller
             return view('front.orders.order_details')->with(compact('orderDetails'));
         }
 
+    }
+
+    public function refund_order(Request $request) { // id product to be refunded
+        $payment = Payment::where('payment_id', $request->id)->first();
+        $refund = new PaymongoRefundAPIHelper;
+        // should create paymongo refund data
+        $resp = $refund->set('amount', $payment->amount)->setAmount()
+            ->set('notes', $request->notes)
+            ->set('payment_id', $payment->id)
+            ->set('reason', $request->reason)
+            ->createRefund();
+        
+        \Log::info("Refund Order: " . json_encode($resp));
     }
 
 }
