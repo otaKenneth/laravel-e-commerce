@@ -45,8 +45,8 @@ class AddressController extends Controller
                 'delivery_country' => 'required|string|max:100',   // string: https://laravel.com/docs/9.x/validation#rule-string    // max:value: https://laravel.com/docs/9.x/validation#rule-max
                 'delivery_pincode' => 'required|min_digits:4|max_digits:6',         // digits:value: https://laravel.com/docs/9.x/validation#rule-digits
                 'delivery_mobile'  => 'required|numeric|digits:10', // digits:value: https://laravel.com/docs/9.x/validation#rule-digits
-                'delivery_lat'     => 'required',
-                'delivery_lng'    => 'required'
+                'shipping.lat'     => 'required',
+                'shipping.lng'    => 'required'
             ]);
 
             if ($validator->passes()) { // if the user passes validation, add a new (INSERT) or edit (UPDATE) the delivery address
@@ -62,8 +62,8 @@ class AddressController extends Controller
                 $address['state']   = $data['delivery_state'];
                 $address['country'] = $data['delivery_country'];
                 $address['pincode'] = $data['delivery_pincode'];
-                $address['lat'] = floatval($data['delivery_lat']);
-                $address['lng'] = floatval($data['delivery_lng']);
+                $address['lat'] = floatval($data['shipping']['lat']);
+                $address['lng'] = floatval($data['shipping']['lng']);
                 $address['mobile']  = $data['mobile-dialing-code'].$data['delivery_mobile'];
     
     

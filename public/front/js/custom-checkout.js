@@ -95,10 +95,10 @@ $(document).ready(function () {
                 $('#form-editAddress [name="delivery_mobile"]').val(
                     resp.address["mobile"].replace(address_dialcode, '')
                 );
-                $('#form-editAddress [name="delivery_lat"]').val(
+                $('#form-editAddress #shipping_address_lat[name*="lat"]').val(
                     resp.address["lat"]
                 );
-                $('#form-editAddress [name="delivery_lng"]').val(
+                $('#form-editAddress #shipping_address_lat[name*="lng"]').val(
                     resp.address["lng"]
                 );
             },

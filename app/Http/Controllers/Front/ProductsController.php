@@ -763,6 +763,7 @@ class ProductsController extends Controller
         $selectedDeliveryAddress = $deliveryAddresses[0];
 
         $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
+        $shipping_charges = $this->lalamoveAPI_Helper->total_delivery_fee;
         
         if ($request->isMethod('post')) { // if the <form> in front/products/checkout.blade.php is submitted (the HTML Form that the user submits to submit their Delivery Address and Payment Method)
             $data = $request->all();
@@ -901,7 +902,7 @@ class ProductsController extends Controller
 
             // Calculate Shipping Charges `shipping_charges`
             // Get the Shipping Charge based on the chosen Delivery Address    
-            $shipping_charges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $deliveryAddress['country']) + $this->lalamoveAPI_Helper->total_delivery_fee;
+            $shipping_charges += \App\Models\ShippingCharge::getShippingCharges($total_weight, $deliveryAddress['country']);
 
             // Grand Total (`grand_total`)
             $grand_total = $total_price + $shipping_charges - Session::get('couponAmount');
@@ -1098,7 +1099,7 @@ class ProductsController extends Controller
         }
 
         $sub_total = number_format($total_price, 2);
-        $delivery_fee = $this->lalamoveAPI_Helper->total_delivery_fee;
+        $delivery_fee = $shipping_charges;
         $total_price += $delivery_fee;
         $total_price = number_format($total_price, 2);
         

@@ -849,20 +849,52 @@ class APIController extends Controller
         // Verify the signature
         if ($paymongo->verifySignature($expectedSignature, $request->getContent(), $signatures['t'])) {
             // Handle the webhook payload
-            $payload = $request->json()->all()['data']['attributes']['data'];
+            $payload = $request->json()->all()['data'];
             \Log::info('PayMongo webhook received', $payload);
 
-            // Process the payment status here
-            $payment = \App\Models\Payment::find($payload['attributes']['payment_intent_id']);
-            $payment->payment_status = $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
-            $payment->update();
-            // ...
+            switch ($payload['attributes']['type']) {
+                case 'payment.paid':
+                    $this->updatePaymentStatus($payload['attributes']['data']);
+                    break;
+
+                case 'payment.failed':
+                    $this->updatePaymentStatus($payload['attributes']['data']);
+                    break;
+
+                case 'payment.refunded':
+                    $this->updateRefundStatus($payload['attributes']['data']);
+                    break;
+                    
+                case 'payment.refund.updated':
+                    $this->updateRefundStatus($payload['attributes']['data']);
+                    break;
+                
+                default:
+                    $this->updatePaymentStatus($payload['attributes']['data']);
+                    break;
+            }
 
             return response()->json(['status' => 'success'], 200);
         } else {
             \Log::warning('PayMongo webhook signature verification failed');
             return response()->json(['status' => 'error', 'message' => 'Invalid signature'], 400);
         }
+    }
+
+    private function updatePaymentStatus($payload) {
+        // Process the payment status here
+        $payment = \App\Models\Payment::where('payment_id', $payload['attributes']['payment_intent_id'])->first();
+        $payment->payment_status = $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
+        $payment->update();
+        // ...
+    }
+
+    private function updateRefundStatus($payload) {
+        // Process the payment status here
+        $refund = \App\Models\Refunds::find($payload['id']);
+        $refund->status = $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
+        $refund->update();
+        // ...
     }
 
 }
