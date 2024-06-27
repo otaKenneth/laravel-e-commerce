@@ -887,6 +887,15 @@ class APIController extends Controller
         $payment->payment_status = $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
         $payment->update();
         // ...
+
+        $order = \App\Models\Order::find($payment->order_id);
+        $order->order_status = 'Paid';
+        $order->update();
+
+        $log = new \App\Models\OrdersLog;
+        $log->order_id     = $order->id;
+        $log->order_status = $order->order_status;
+        $log->save();
     }
 
     private function updateRefundStatus($payload) {
@@ -895,6 +904,19 @@ class APIController extends Controller
         $refund->status = $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
         $refund->update();
         // ...
+
+        $order = \App\Models\Order::find($refund->order_id);
+        $order->order_status = 'Paid';
+        $order->update();
+
+        $order_product = \App\Models\OrdersProduct::where('order_id', $order->id)
+            ->where('product_id', $refund->product_id)->first();
+
+        $log = new \App\Models\OrdersLog;
+        $log->order_id     = $order->id;
+        $log->order_item_id = $order_product->id;
+        $log->order_status = $order->order_status;
+        $log->save();
     }
 
 }

@@ -9,6 +9,12 @@
     class="elementor elementor-843"
     data-elementor-post-type="page"
 >
+<!-- POP UP CONTENT -->
+
+<!-- Modal -->
+    @include('front.orders.review_dialog')
+
+<!-- POP UP CONTENT -->
     <div
         class="elementor-element elementor-element-a808a63 e-flex e-con-boxed e-con e-parent"
         data-id="a808a63"
@@ -264,6 +270,18 @@
                                                                 <h2 class="elementor-heading-title elementor-size-default">{{$product->product_name}}</h2>
                                                             </div>
                                                         </div>
+
+                                                        <div class="elementor-element elementor-element-777x2zz elementor-widget elementor-widget-heading">
+                                                            <div class="btn--wrapper">
+                                                                @if ($order->order_status === "Delivered")
+                                                                    <a class="review--btn" data-product_id="{{$product->product_id}}" href="#">Product Review</a>
+                                                                    <a class="refund--btn" data-product_id="{{$product->product_id}}" href="#">Refund</a>
+                                                                @elseif ($order->order_status === "Shipped")
+                                                                    <a class="received--btn" data-product_id="{{$product->product_id}}" href="#">Order Received</a>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                     <div
                                                         class="elementor-element elementor-element-03a8e1a e-con-full e-flex e-con e-child"

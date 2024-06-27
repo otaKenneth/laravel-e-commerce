@@ -74,3 +74,92 @@
 	src: url(./../../fonts/Lexend-Medium.ttf) format('truetype');
 }
 /* End Custom Fonts CSS */
+
+
+/*CUSTOM CSS NINO FELICIANO*/
+.elementor-843 .elementor-element-777x2zz .btn--wrapper{
+	display: flex;
+	gap: 10px;
+}
+.elementor-843 .elementor-element-777x2zz .btn--wrapper a{
+	border-radius: 100px;
+	padding: 4px 10px;
+	font-size: 12px;
+	font-weight: bold;
+	text-transform: uppercase;
+	font-family: "Lexend", Sans-serif;
+}
+.elementor-843 .elementor-element-777x2zz .btn--wrapper a.review--btn{
+	background: #87cbb9;
+    color: white;
+}
+.elementor-843 .elementor-element-777x2zz .btn--wrapper a.received--btn{
+	background: #5f7a61;
+    color: white
+}
+.elementor-843 .elementor-element-777x2zz .btn--wrapper a.refund--btn{
+	background: #ff6666;
+    color: white;
+}
+.elementor-491 .elementor-element-1dc2f32.displayed-block{
+	display: block !important;
+}
+.popup_review_order,
+.refund_popup_outer{
+	position: fixed;
+    z-index: 9;
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    background: #000000a8;
+    height: calc(100vh - 126px);
+    display: none;
+}
+.popup_review_order.active,
+.refund_popup_outer.active{
+	display: flex;
+}
+.popup_review_order .elementor-element-1dc2f32,
+.refund_popup_outer .refund_popup_inner{
+	background: white;
+    padding: 30px;
+    width: 470px !important;
+    border-radius: 20px;
+    margin: auto;
+    max-width: 90vw !important;
+}
+.popup_review_order .close_image_review_popup,
+.refund_popup_outer .close_image_refund_popup{
+	background: white;
+    color: black;
+    padding: 5px;
+    top: 10px;
+    position: absolute;
+    left: auto;
+    right: 20px;
+    border-radius: 100px;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0px white;
+}
+.refund_popup_outer .refund__popup__btn{
+	background: #ff6666;
+    border-radius: 100px;
+    font-family: Lexend, sans-serif;
+    margin-top: 10px;
+}
+@media (max-width: 767px){
+	.elementor-843 .elementor-element-777x2zz .btn--wrapper a{
+		text-align: center;
+		display: flex;
+		align-items: center;
+	}
+}

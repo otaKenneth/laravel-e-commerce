@@ -899,10 +899,19 @@ $(document).ready(function() {
             type: "POST",
             data: formdata,
             success: function (resp) {
-                if (typeof(resp) == "object") {
-                    console.log(resp);
+                $('.popup_review_order.elementor-491 .close_image_review_popup').click();
+                if (resp && resp.success) {
+                    $('#success-modal').modal('toggle');
+                    $("#success-modal .modal-body .message").text(resp.message);
+                    setTimeout(() => {
+                        $('#success-modal').modal('toggle');
+                    }, 1500);
                 } else {
-                    $('#container-productreviews').html(resp);
+                    $('#error-modal').modal('toggle');
+                    $("#error-modal .modal-body .message").text(resp.message);
+                    setTimeout(() => {
+                        $('#error-modal').modal('toggle');
+                    }, 1500);
                 }
             }, error: function (err) {
                 console.log(err)
@@ -1061,6 +1070,30 @@ $(document).ready(function() {
             $('.paymongo-options').removeClass('active');
             $('input[type="radio"][name="payment_gateway_type"]').prop('checked', false);
         }
+    });
+
+
+    $('.review--btn').on('click', function(e) {
+        var product_id = $(e.currentTarget).data('product_id');
+        console.log(e.currentTarget, product_id);
+        
+        $('.popup_review_order.elementor-491 #form-productReview input#product_id').val(product_id);
+        $('.popup_review_order.elementor-491').addClass('active');
+    });
+
+
+    $('.popup_review_order.elementor-491 .close_image_review_popup').on('click', function() {
+        $('.popup_review_order.elementor-491').removeClass('active');
+    });
+
+
+    $('.refund--btn').on('click', function() {
+        $('.refund_popup_outer').addClass('active');
+    });
+
+
+    $('.refund_popup_outer .close_image_refund_popup').on('click', function() {
+        $('.refund_popup_outer').removeClass('active');
     });
 
 

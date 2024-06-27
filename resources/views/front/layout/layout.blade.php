@@ -182,8 +182,14 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14
                     'href' => 'front/css/elementor-css/elementor-css-post-743.css'
                 ],
                 'front.user.orders' => [
-                    'id' => 'elementor-post-843-css',
-                    'href' => 'front/css/elementor-css/elementor-css-post-843.css'
+                    [
+                        'id' => 'elementor-post-843-css',
+                        'href' => 'front/css/elementor-css/elementor-css-post-843.css'
+                    ],
+                    [
+                        'id' => 'elementor-post-491-css',
+                        'href' => 'front/css/elementor-css/elementor-css-post-491.css'
+                    ]
                 ],
                 'front.user.security' => [
                     'id' => 'elementor-post-884-css',
@@ -238,12 +244,23 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14
         @endphp
         @foreach ($css_headers as $css_header_name => $css_header)
             @if ($currentRoute == $css_header_name || is_numeric($css_header_name))
-            <link
-                rel="stylesheet"
-                id="{{$css_header['id']}}"
-                href="{{ url($css_header['href']) }}"
-                media="all"
-            >
+                @if (isset($css_header['id']))
+                <link
+                    rel="stylesheet"
+                    id="{{$css_header['id']}}"
+                    href="{{ url($css_header['href']) }}"
+                    media="all"
+                >
+                @else
+                    @foreach ($css_header as $css_file)
+                        <link
+                            rel="stylesheet"
+                            id="{{$css_file['id']}}"
+                            href="{{ url($css_file['href']) }}"
+                            media="all"
+                        >
+                    @endforeach
+                @endif
             @endif
         @endforeach
         <link
