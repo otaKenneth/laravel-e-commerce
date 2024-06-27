@@ -217,3 +217,27 @@
     </div>
 </div>
 <!-- Quick-view-Modal /- -->
+
+<div id="success-modal" class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 18vw;">
+        <div class="modal-content bg-success">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
+            </div>
+            <div class="modal-body"><p class="message"></p></div>
+        </div>
+    </div>
+</div>
+
+<div id="error-modal" class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog text-white" role="document" style="width: 18vw;">
+        <div class="modal-content bg-danger ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+            </div>
+            <div class="modal-body"><p class="message"></p></div>
+        </div>
+    </div>
+</div>
