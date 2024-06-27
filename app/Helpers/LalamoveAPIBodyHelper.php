@@ -202,7 +202,7 @@ class LalamoveAPIBodyHelper
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
-        \Log::info($response);
+        \Log::info("Process Lalamove: " . $response);
         $json_decoded_response = json_decode($response);
 
         return $json_decoded_response;
