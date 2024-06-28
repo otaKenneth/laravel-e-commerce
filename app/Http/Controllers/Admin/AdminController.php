@@ -340,15 +340,21 @@ class AdminController extends Controller
                 $rules = [
                     'shop_name'           => 'required|regex:/^[\pL\s\-]+$/u', // only alphabetical characters and spaces
                     'shop_city'           => 'required|regex:/^[\pL\s\-]+$/u', // only alphabetical characters and spaces
+                    'shop_state'          => 'required',  
                     'shop_mobile'         => 'required|numeric',
+                    'business.lat'        => 'required',
+                    'business.lng'        => 'required',
                     'address_proof'       => 'required',
                 ];
 
                 $customMessages = [ // Specifying A Custom Message For A Given Attribute: https://laravel.com/docs/9.x/validation#specifying-a-custom-message-for-a-given-attribute
                     'shop_name.required'           => 'Name is required',
                     'shop_city.required'           => 'City is required',
+                    'shop_state.required'          => 'Province is required',
                     'shop_city.regex'              => 'Valid City alphabetical is required',
                     'shop_name.regex'              => 'Valid Shop Name is required',
+                    'business.lat'                 => 'Latitude value is required. Please input a valid address.',
+                    'business.lng'                 => 'Longitude value is required. Please input a valid address.',
                     'shop_mobile.required'         => 'Mobile is required',
                     'shop_mobile.numeric'          => 'Valid Mobile is required',
                 ];
@@ -395,6 +401,8 @@ class AdminController extends Controller
                         'shop_state'              => $data['shop_state'],
                         'shop_country'            => $data['shop_country'],
                         'shop_pincode'            => $data['shop_pincode'],
+                        'lat'                     => $data['business']['lat'],
+                        'long'                     => $data['business']['lng'],
                         'business_license_number' => $data['business_license_number'],
                         'address_proof'           => $data['address_proof'],
                         'address_proof_image'     => $imageName,
@@ -412,6 +420,8 @@ class AdminController extends Controller
                         'shop_state'              => $data['shop_state'],
                         'shop_country'            => $data['shop_country'],
                         'shop_pincode'            => $data['shop_pincode'],
+                        'lat'                     => $data['business']['lat'],
+                        'long'                     => $data['business']['lng'],
                         'business_license_number' => $data['business_license_number'],
                         'address_proof'           => $data['address_proof'],
                         'address_proof_image'     => $imageName,

@@ -11,12 +11,23 @@
             {{-- Displaying Laravel Validation Errors: https://laravel.com/docs/9.x/validation#quick-displaying-the-validation-errors --}}    
             {{-- Determining If An Item Exists In The Session (using has() method): https://laravel.com/docs/9.x/session#determining-if-an-item-exists-in-the-session --}}
             @if (Session::has('error_message')) <!-- Check AdminController.php, updateAdminPassword() method -->
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Error:</strong> {{ Session::get('error_message') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                @if (is_array(Session::get('error_message')))
+                    @foreach (Session::get('error_message') as $messages)
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error:</strong> {{ $messages }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @endforeach
+                @else
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error:</strong> {{ Session::get('error_message') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
             @endif
 
 
@@ -228,6 +239,30 @@
                                 <label style="font-weight: 550">Mobile: </label>
                                 <label>{{ $orderDetails['mobile'] }}</label>
                             </div>
+
+                            <div>
+                            <h5 class="card-title">Delivery Details</h5>
+
+                            @if ($orderDetails['order_status'] == "For Delivery" && !empty($orderDetails['courier_name']))
+                                <div class="form-group" style="height: 15px">
+                                    <label style="font-weight: 550">Courier Name: </label>
+                                    <label><a href="{{$orderDetails['courier_name']}}" target="_blank" >{{Lalamove}}</a></label>
+                                </div>
+                            @else
+                                <div class="form-group" style="height: 15px">
+                                    <label style="font-weight: 550">Courier Name: </label>
+                                    <label>{{$orderDetails['courier_name']}}</label>
+                                </div>
+                            @endif
+                            
+
+                            @if (!empty($orderDetails['tracking_number']))
+                                <div class="form-group" style="height: 15px">
+                                    <label style="font-weight: 550">Tracking Number: </label>
+                                    <label>{{ $orderDetails['tracking_number'] }}</label>
+                                </div>
+                            @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -274,7 +309,7 @@
 
                                     {{-- Shiprocket API integration --}}
                                     @if ($orderDetails['is_pushed'] == 1) {{-- If the Order has been pushed to Shiprocket, state this --}}
-                                        <span style="color: green">(Order Pushed to Shiprocket)</span>
+                                        <span style="color: green">(Order Pushed to Lalamove)</span>
                                     @endif
 
                                     {{-- Note: There are two types of Shipping Process: "manual" and "automatic". "Manual" is in the case like small businesses, where the courier arrives at the owner warehouse to to pick up the order for shipping, and the small business owner takes the shipment details (like courier name, tracking number, ...) from the courier, and inserts those details themselves in the Admin Panel when they "Update Order Status" Section (by an 'admin') or "Update Item Status" Section (by a 'vendor' or 'admin') (in admin/orders/order_details.blade.php). With "automatic" shipping process, we're integrating third-party APIs and orders go directly to the shipping partner, and the updates comes from the courier's end, and orders are automatically delivered to customers --}}

@@ -1043,6 +1043,7 @@ $(document).ready(function() {
     });
 
 
+    // Page Contents
     $('.management-popup-info a').click((ev) => {
         let popupid = $(ev.currentTarget).data('popup-id');
         
@@ -1085,6 +1086,38 @@ $(document).ready(function() {
     $('.popup_review_order.elementor-491 .close_image_review_popup').on('click', function() {
         $('.popup_review_order.elementor-491').removeClass('active');
     });
+
+    $('#form-productRefund').on('submit', (e) => {
+        e.preventDefault();
+
+        var formdata = $(e.currentTarget).serialize();
+        console.log(formdata);
+        return 0;
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "{id}/refund",
+            type: "POST",
+            data: formdata,
+            success: function (resp) {
+                $('.popup_review_order.elementor-491 .close_image_review_popup').click();
+                if (resp && resp.success) {
+                    $('#success-modal').modal('toggle');
+                    $("#success-modal .modal-body .message").text(resp.message);
+                    setTimeout(() => {
+                        $('#success-modal').modal('toggle');
+                    }, 1500);
+                } else {
+                    $('#error-modal').modal('toggle');
+                    $("#error-modal .modal-body .message").text(resp.message);
+                    setTimeout(() => {
+                        $('#error-modal').modal('toggle');
+                    }, 1500);
+                }
+            }, error: function (err) {
+                console.log(err)
+            }
+        });
+    })
 
 
     $('.refund--btn').on('click', function() {

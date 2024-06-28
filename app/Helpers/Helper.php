@@ -53,3 +53,19 @@ function getCartItems() { // this method is called (used) in cart() method in Fr
 
     return $getCartItems;
 }
+
+function formatPhoneNumber ($phone) {
+    // Remove non-numeric characters
+    $phone = preg_replace('/\D/', '', $phone);
+
+    // Check if the phone number is in e.164 format
+    if (preg_match('/^\+?[1-9]\d{1,14}$/', $phone)) {
+        return $phone;
+    }
+
+    // Handle specific country formatting (example for the Philippines, country code +63)
+    if (preg_match('/^0\d{10}$/', $phone)) {
+        $phone = '+63' . substr($phone, 1);
+        return $phone;
+    }
+}

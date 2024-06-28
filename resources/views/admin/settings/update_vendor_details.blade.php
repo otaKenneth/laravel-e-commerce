@@ -239,12 +239,13 @@
                                                 <div class="form-group col-12 col-md-4">
                                                     <label for="shop_state">Shop Province</label>
                                                     <select
-                                                        name="business[state]"
+                                                        name="shop_state"
                                                         id="shop_state"
                                                         class="address-field elementor-field-textual elementor-size-sm"
                                                         required="required"
                                                         aria-required="true"
                                                     ></select>
+                                                    <input type="hidden" name="prev_shop_state_value" value="{{$vendorDetails['shop_state']}}">
                                                 </div>
                                                 <div class="form-group col-12 col-md-4">
                                                     <label for="shop_city">Shop City</label>
@@ -254,6 +255,14 @@
                                             <div class="form-group col-12 col-md-6">
                                                 <label for="shop_pincode">Shop Postal Code</label>
                                                 <input type="text" class="form-control" id="shop_pincode" placeholder="Enter Shop Pincode" name="shop_pincode"  @if (isset($vendorDetails['shop_pincode'])) value="{{ $vendorDetails['shop_pincode'] }}" @endif> {{-- $vendorDetails was passed from AdminController --}}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" id="business_address_lat" name="business[lat]" value="">
+                                            <input type="hidden" id="business_address_lng" name="business[lng]" value="">
+                                            <div class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_145d2ce elementor-col-100">
+                                                <div id="map_vendor_details" style="height: 380px; width: 100%;"></div>
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>                                    
@@ -296,18 +305,7 @@
                                             <a target="_blank" href="{{ url('admin/images/proofs/' . $vendorDetails['address_proof_image']) }}">View Image</a> <!-- We used    target="_blank"    to open the image in another separate page -->
                                             <input type="hidden" name="current_address_proof" value="{{ $vendorDetails['address_proof_image'] }}"> <!-- to send the current admin image url all the time with all the requests -->
                                         @endif
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <input type="hidden" id="business_address_lat" name="business[lat]" value="">
-                                        <input type="hidden" id="business_address_lng" name="business[lng]" value="">
-                                        <div class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_145d2ce elementor-col-100">
-                                            <div id="map_vendor_details" style="height: 380px; width: 100%;"></div>
-                                            <p></p>
-                                        </div>
-                                    </div>
-                                    
+                                    </div>          
 
                                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                                     <button type="reset"  class="btn btn-light">Cancel</button>

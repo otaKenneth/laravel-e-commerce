@@ -140,7 +140,11 @@ class OrderController extends Controller
                 // exit;
                 $all_lalamove_data = $this->lalamoveAPI_Helper->getQuotation($data['order_id'], Auth::guard('admin')->user()->vendor_id);
 
-                if (!isset($all_lalamove_data['errors'])) {
+                if (is_object($all_lalamove_data) && isset($all_lalamove_data->errors)) {
+                    return redirect()->back()->withErrors($all_lalamove_data->errors);
+                } elseif (is_array($all_lalamove_data) && isset($all_lalamove_data['errors'])) {
+                    return redirect()->back()->withErrors($all_lalamove_data['errors']);
+                } else {
                     $getResults = \App\Models\Order::pushOrder_to_Lalamove($all_lalamove_data, $data['order_id']);
                     // dd(collect($getResults->errors)->pluck('message')->toArray());
                     if (isset($getResults->errors)) {
@@ -154,8 +158,6 @@ class OrderController extends Controller
                             'tracking_number' => "{$getResults->data->orderId}-{$getResults->data->quotationId}-{$getResults->data->driverId}"
                         ]);
                     }
-                } else {
-                    return redirect()->back()->withErrors($all_lalamove_data['errors']);
                 }
             }
 

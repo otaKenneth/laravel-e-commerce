@@ -560,9 +560,7 @@ $(document).ready(function() {
                 $(el).show();
             }
         })
-    })
-
-    console.log('shiftttt');
+    });
 
     $('#pcontents-select').change(function (ev) {
         let pcontent_id = $(ev.currentTarget).val();
@@ -772,8 +770,6 @@ $(document).ready(function() {
         });
     });
 
-
-
     // Business Details
     /**
      * On change of country name - load city
@@ -788,11 +784,11 @@ $(document).ready(function() {
                 "country": country
             }
         };
-          
 
         $.ajax(settings).done(function (response) {
             if (!response.error) {
                 $('#update_vendor_details_form #shop_state .added-through-api').remove();
+                let selected = $('#update_vendor_details_form input[name="prev_shop_state_value"]').val();
 
                 let states = response.data.states.map((state) => {
                     let newOption = $('<option>', {
@@ -801,6 +797,8 @@ $(document).ready(function() {
                         class: "added-through-api"
                     });
 
+                    if (selected == state.name) newOption.prop('selected', true);
+                    
                     return newOption;
                 });
                 
@@ -809,6 +807,9 @@ $(document).ready(function() {
             }
         });
     })
+
+    $('#update_vendor_details_form #shop_country').trigger('change');
+
     /**
      * On change of state get cities
      */

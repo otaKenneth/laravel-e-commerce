@@ -131,9 +131,10 @@ class LalamoveAPIBodyHelper
         $vendor = $vendor_model->with('vendorbusinessdetails')->find($vendor_id);
         $this->sender = $vendor;
         $vendor_address = "{$vendor->vendorbusinessdetails->shop_name}, {$vendor->vendorbusinessdetails->shop_address}, {$vendor->vendorbusinessdetails->shop_city}, {$vendor->vendorbusinessdetails->shop_state}, {$vendor->vendorbusinessdetails->country}, {$vendor->vendorbusinessdetails->shop_pincode}";
-
-        if (empty($vendor->vendorbusinessdetails['lat']) || $vendor->vendorbusinessdetails['long']) {
-            return [
+        
+        if (empty($vendor->vendorbusinessdetails['lat']) || empty($vendor->vendorbusinessdetails['long'])) {
+            \Log::info("Vendor Business Details: " . $vendor->vendorbusinessdetails);
+            return (object) [
                 'errors' => [
                     'message' => "Latitude and Longitude for Vendor Business Detail is required."
                 ],
@@ -157,6 +158,7 @@ class LalamoveAPIBodyHelper
             ]
         ];
 
+        \Log::info("Line 161: Lalamove API: " . json_encode($body));
         $this->recipient = $user_model->find($order->user_id);
         $this->quotation = $this->processLalamove(json_encode(["data" => $body]));
 
