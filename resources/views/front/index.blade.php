@@ -317,6 +317,9 @@
             </div>
 
             @foreach ($bestSellers as $product)
+            @php
+                $product_image_path = $getImage("front/images/product_images/small/", $product['product_image']);
+            @endphp
             <div
                 class="elementor-element elementor-element-6b25072 e-con-full e-flex elementor-invisible e-con e-child"
                 data-id="6b25072"
@@ -335,10 +338,10 @@
                                 decoding="async"
                                 width="329"
                                 height="329"
-                                src="{{ $getImage('./images/', '2023-12-Frame-31-2.png') }}"
+                                src="{{ $product_image_path }}"
                                 class="attachment-large size-large wp-image-386"
                                 alt=""
-                                srcset="{{ $getImage('./images/', '2023-12-Frame-31-2.png') }} 329w, {{ $getImage('./images/', '2023-12-Frame-31-2.png') }} 300w, {{ $getImage('./images/', '2023-12-Frame-31-2.png') }} 150w"
+                                srcset="{{ $product_image_path }} 329w, {{ $product_image_path }} 300w, {{ $product_image_path }} 150w"
                                 sizes="(max-width: 329px) 100vw, 329px"
                             >
                         </a>
@@ -361,7 +364,7 @@
                     data-widget_type="heading.default"
                 >
                     <div class="elementor-widget-container">
-                        <h2 class="elementor-heading-title elementor-size-default"> ₱{{$product['product_price']}}</h2>
+                        <h2 class="elementor-heading-title elementor-size-default"> ₱{{number_format($product['product_price'], 2)}}</h2>
                     </div>
                 </div>
                 <div
@@ -479,7 +482,7 @@
                     data-widget_type="text-editor.default"
                 >
                     <div class="elementor-widget-container">
-                        <p> ₱{{$getDiscountPrice}}</p>
+                        <p> ₱{{number_format($getDiscountPrice, 2)}}</p>
                     </div>
                 </div>
                 <div
@@ -489,7 +492,7 @@
                     data-widget_type="text-editor.default"
                 >
                     <div class="elementor-widget-container">
-                        <em style="text-decoration: line-through;">₱{{$product['product_price']}}</em>
+                        <em style="text-decoration: line-through;">₱{{number_format($product['product_price'], 2)}}</em>
                     </div>
                 </div>
                 @else
@@ -500,7 +503,7 @@
                     data-widget_type="text-editor.default"
                 >
                     <div class="elementor-widget-container">
-                        <p> ₱{{$product['product_price']}}</p>
+                        <p> ₱{{number_format($product['product_price'], 2)}}</p>
                     </div>
                 </div>
                 @endif
