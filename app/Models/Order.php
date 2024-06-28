@@ -215,13 +215,13 @@ class Order extends Model
             "sender" => [
                 "stopId" => "{$quotation_data->stops[0]->stopId}",
                 "name" => $lalamove_data->sender->name,
-                "phone" => $lalamove_data->sender->vendorbusinessdetails->shop_mobile
+                "phone" => formatPhoneNumber($lalamove_data->sender->vendorbusinessdetails->shop_mobile)
             ],
             "recipients" => [
                 [
                     "stopId" => "{$quotation_data->stops[1]->stopId}",
                     "name" => "{$lalamove_data->recipient->first_name} {$lalamove_data->recipient->last_name}",
-                    "phone" => "{$lalamove_data->recipient->mobile}",
+                    "phone" => formatPhoneNumber($lalamove_data->recipient->mobile),
                     // "remarks" => "YYYYYY" // optional
                 ]
             ],

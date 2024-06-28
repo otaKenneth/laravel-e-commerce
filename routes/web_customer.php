@@ -90,10 +90,6 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     // Add a Newsletter Subscriber email HTML Form Submission in front/layout/footer.blade.php when clicking on the Submit button (using an AJAX Request/Call)
     Route::post('add-subscriber-email', 'NewsletterController@addSubscriber');
 
-    // Add Rating & Review on a product in front/products/detail.blade.php
-    Route::post('add-rating', 'RatingController@addRating');
-
-
     // Protecting the routes of user (user must be authenticated/logged in) (to prevent access to these links while being unauthenticated/not being logged in (logged out))
     Route::group(['middleware' => ['auth']], function() {
         // Render User Account page with 'GET' request (front/users/user_account.blade.php), or the HTML Form submission in the same page with 'POST' request using AJAX (to update user details). Check front/js/custom.js
@@ -133,6 +129,11 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
         Route::get('user/chats', 'ChatsController@index')->name('user.chats.show');
         Route::post('chats/send-message', 'ChatsController@store')->name('user.chats.store');
 
+        // Add Rating & Review on a product in front/products/detail.blade.php
+        Route::post('add-rating', 'RatingController@addRating');
+
+        // Refund an item
+        Route::post('user/orders/{id}/refund', 'OrderController@refund_order');
 
         // PayPal routes:
         // PayPal payment gateway integration in Laravel (this route is accessed from checkout() method in Front/ProductsController.php). Rendering front/paypal/paypal.blade.php page
@@ -146,8 +147,6 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
         // PayPal failed payment
         Route::get('error', 'PaypalController@error');
-
-
 
         // iyzipay (iyzico) routes:    // iyzico Payment Gateway integration in/with Laravel
         // iyzico payment gateway integration in Laravel (this route is accessed from checkout() method in Front/ProductsController.php). Rendering front/iyzipay/iyzipay.blade.php page

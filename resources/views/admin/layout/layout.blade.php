@@ -227,7 +227,7 @@
 
 
         {{-- Start: Our Custom Admin JS --}}
-        <script src="{{ url('admin/js/custom.js') }}"></script>
+        <script src="{{ url('admin/js/custom.js')  . '?date=' . date('m-d-Y h:m:s') }}"></script>
         {{-- End: Our Custom Admin JS --}}
 
 
