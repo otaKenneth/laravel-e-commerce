@@ -482,7 +482,7 @@
                     data-widget_type="text-editor.default"
                 >
                     <div class="elementor-widget-container">
-                        <p> ₱{{number_format($getDiscountPrice, 2)}}</p>
+                        <p> ₱{{$getDiscountPrice}}</p>
                     </div>
                 </div>
                 <div
