@@ -1076,9 +1076,8 @@ $(document).ready(function() {
 
     $('.review--btn').on('click', function(e) {
         var product_id = $(e.currentTarget).data('product_id');
-        console.log(e.currentTarget, product_id);
-        
         $('.popup_review_order.elementor-491 #form-productReview input#product_id').val(product_id);
+
         $('.popup_review_order.elementor-491').addClass('active');
     });
 
@@ -1121,6 +1120,9 @@ $(document).ready(function() {
 
 
     $('.refund--btn').on('click', function() {
+        var product_id = $(e.currentTarget).data('product_id');
+        $('.refund_popup_outer #form-productRefund input#product_id').val(product_id);
+
         $('.refund_popup_outer').addClass('active');
     });
 
@@ -1129,5 +1131,38 @@ $(document).ready(function() {
         $('.refund_popup_outer').removeClass('active');
     });
 
+    $('.received--btn').on('click', function (e) {
+        e.preventDefault();
 
+        var order_id = $(e.currentTarget).data('order_id');
+        var order_item_id = $(e.currentTarget).data('order_item_id');
+        var product_id = $(e.currentTarget).data('product_id');
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: `orders/${order_id}/update/${order_item_id}`,
+            type: "POST",
+            data: {
+                'product_id': product_id,
+                'status': "Delivered"
+            },
+            success: function (resp) {
+                if (resp && resp.success) {
+                    $('#success-modal').modal('toggle');
+                    $("#success-modal .modal-body .message").text(resp.message);
+                    setTimeout(() => {
+                        $('#success-modal').modal('toggle');
+                    }, 1500);
+                } else {
+                    $('#error-modal').modal('toggle');
+                    $("#error-modal .modal-body .message").text(resp.message);
+                    setTimeout(() => {
+                        $('#error-modal').modal('toggle');
+                    }, 1500);
+                }
+            }, error: function (err) {
+                console.log(err)
+            }
+        });
+    });
 });

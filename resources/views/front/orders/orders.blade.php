@@ -272,12 +272,15 @@
                                                         </div>
 
                                                         <div class="elementor-element elementor-element-777x2zz elementor-widget elementor-widget-heading">
+                                                            <div>
+                                                                <label>{{$product->item_status}}</label>
+                                                            </div>
                                                             <div class="btn--wrapper">
-                                                                @if ($order->order_status === "Delivered")
+                                                                @if ($product->item_status === "Delivered")
                                                                     <a class="review--btn" data-product_id="{{$product->product_id}}" href="#">Product Review</a>
                                                                     <a class="refund--btn" data-product_id="{{$product->product_id}}" href="#">Refund</a>
-                                                                @elseif ($order->order_status === "Shipped")
-                                                                    <a class="received--btn" data-product_id="{{$product->product_id}}" href="#">Order Received</a>
+                                                                @elseif ($product->item_status === "Shipped")
+                                                                    <a class="received--btn" data-order_id="{{$order->id}}" data-order_item_id="{{$product->id}}" data-product_id="{{$product->product_id}}">Order Received</a>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -297,7 +300,7 @@
                                                         >
                                                             <div class="elementor-widget-container">
                                                                 <h2 class="elementor-heading-title elementor-size-default">{{$product->product_qty}} x
-                                                                    <b>₱{{$product->product_price}}</b>
+                                                                    <b>₱{{number_format($product->product_price, 2)}}</b>
                                                                 </h2>
                                                             </div>
                                                         </div>
