@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Front;
 use App\Helpers\PaymongoRefundAPIHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrdersLog;
+use App\Models\OrdersProduct;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 
@@ -40,6 +42,58 @@ class OrderController extends Controller
             ->createRefund();
         
         \Log::info("Refund Order: " . json_encode($resp));
+    }
+
+    public function updateOrderStatus(Request $request, Order $order, OrdersProduct $ordersProduct) {
+        try {
+            // create new order log
+            $log = new OrdersLog;
+            $log->order_id = $order->id;
+            $log->order_item_id = $ordersProduct->id;
+            $log->order_status = $request->status;
+            $log->save();
+
+            // update product item status
+            $ordersProduct->item_status = $request->status;
+            $ordersProduct->update();
+
+            if ($request->status == "Delivered") {
+                // create new order log
+                $log = new OrdersLog;
+                $log->order_id = $order->id;
+
+                // get counts of all products under order
+                $ordersProducts_count = OrdersProduct::where('order_id', $order->id)
+                    ->count();
+                
+                // get count of all products that is Delivered
+                $ordersProducts_delivered_count = OrdersProduct::where('order_id', $order->id)
+                    ->where('item_status', 'Delivered')
+                    ->count();
+                
+                if ($ordersProducts_count == $ordersProducts_delivered_count) {
+                    $order->order_status = "Delivered";
+                    $log->order_status = $order->order_status;
+                } else {
+                    $order->order_status = "Partially Delivered";
+                    $log->order_status = $order->order_status;
+                }
+                // update product item status
+                $order->update();
+                $log->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "Order status has been updated. Thank you!!"
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+        
     }
 
 }

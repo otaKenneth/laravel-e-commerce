@@ -134,6 +134,8 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
         // Refund an item
         Route::post('user/orders/{id}/refund', 'OrderController@refund_order');
+        
+        Route::post('user/orders/{order}/update/{ordersProduct}', 'OrderController@updateOrderStatus');
 
         // PayPal routes:
         // PayPal payment gateway integration in Laravel (this route is accessed from checkout() method in Front/ProductsController.php). Rendering front/paypal/paypal.blade.php page

@@ -967,7 +967,7 @@ class ProductsController extends Controller
                 $cartItem->product_name    = $getProductDetails['product_name'];
                 $cartItem->product_color   = $item['color'];
                 $cartItem->product_size    = $item['size'];
-                $cartItem->item_status     = 1;
+                $cartItem->item_status     = "New";
 
                 $getDiscountAttributePrice = Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']); // from the `products_attributes` table, not the `products` table
                 $cartItem->product_price   = $getDiscountAttributePrice['final_price'];
