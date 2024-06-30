@@ -18,5 +18,8 @@
     <p>Please take necessary actions to verify and activate the vendor account.</p>
     
     <p>Thank you!</p>
+    <div width="150px">
+        <img src="{{ asset('front/images/main-logo/main-logo.png') }}">
+    </div>
 </body>
 </html>

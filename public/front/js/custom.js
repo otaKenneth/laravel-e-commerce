@@ -1090,11 +1090,11 @@ $(document).ready(function() {
         e.preventDefault();
 
         var formdata = $(e.currentTarget).serialize();
-        console.log(formdata);
-        return 0;
+        let order_id = $(e.currentTarget).find('input#order_id[name=order_id]').val();
+
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: "{id}/refund",
+            url: `orders/${order_id}/refund`,
             type: "POST",
             data: formdata,
             success: function (resp) {
@@ -1104,13 +1104,13 @@ $(document).ready(function() {
                     $("#success-modal .modal-body .message").text(resp.message);
                     setTimeout(() => {
                         $('#success-modal').modal('toggle');
-                    }, 1500);
+                    }, 3000);
                 } else {
                     $('#error-modal').modal('toggle');
                     $("#error-modal .modal-body .message").text(resp.message);
                     setTimeout(() => {
                         $('#error-modal').modal('toggle');
-                    }, 1500);
+                    }, 3000);
                 }
             }, error: function (err) {
                 console.log(err)
@@ -1119,8 +1119,13 @@ $(document).ready(function() {
     })
 
 
-    $('.refund--btn').on('click', function() {
+    $('.refund--btn').on('click', function(e) {
+        var order_id = $(e.currentTarget).data('order_id');
+        var order_item_id = $(e.currentTarget).data('order_item_id');
         var product_id = $(e.currentTarget).data('product_id');
+
+        $('.refund_popup_outer #form-productRefund input#order_id').val(order_id);
+        $('.refund_popup_outer #form-productRefund input#order_item_id').val(order_item_id);
         $('.refund_popup_outer #form-productRefund input#product_id').val(product_id);
 
         $('.refund_popup_outer').addClass('active');
@@ -1152,13 +1157,13 @@ $(document).ready(function() {
                     $("#success-modal .modal-body .message").text(resp.message);
                     setTimeout(() => {
                         $('#success-modal').modal('toggle');
-                    }, 1500);
+                    }, 2500);
                 } else {
                     $('#error-modal').modal('toggle');
                     $("#error-modal .modal-body .message").text(resp.message);
                     setTimeout(() => {
                         $('#error-modal').modal('toggle');
-                    }, 1500);
+                    }, 2500);
                 }
             }, error: function (err) {
                 console.log(err)

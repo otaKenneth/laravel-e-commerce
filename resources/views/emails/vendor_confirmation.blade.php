@@ -8,6 +8,7 @@
         <title></title>
     </head>
     <body>
+        <tr><td><img src="{{ asset('front/images/main-logo/main-logo.png') }}"></td></tr>
         <tr><td>Dear {{ $name }}!</td></tr>
         <tr><td>&nbsp;<br></td></tr>
         <tr><td>Please click on the link below to confirm your Vendor Account :-</td></tr>
