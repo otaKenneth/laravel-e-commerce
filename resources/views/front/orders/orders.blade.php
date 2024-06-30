@@ -13,6 +13,7 @@
 
 <!-- Modal -->
     @include('front.orders.review_dialog')
+    @include('front.orders.refund_dialog')
 
 <!-- POP UP CONTENT -->
     <div
@@ -278,7 +279,7 @@
                                                             <div class="btn--wrapper">
                                                                 @if ($product->item_status === "Delivered")
                                                                     <a class="review--btn" data-product_id="{{$product->product_id}}" href="#">Product Review</a>
-                                                                    <a class="refund--btn" data-product_id="{{$product->product_id}}" href="#">Refund</a>
+                                                                    <a class="refund--btn" data-order_id="{{$order->id}}" data-order_item_id="{{$product->id}}" data-product_id="{{$product->product_id}}" href="#">Refund</a>
                                                                 @elseif ($product->item_status === "Shipped")
                                                                     <a class="received--btn" data-order_id="{{$order->id}}" data-order_item_id="{{$product->id}}" data-product_id="{{$product->product_id}}">Order Received</a>
                                                                 @endif
