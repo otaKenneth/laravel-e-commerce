@@ -41,6 +41,14 @@ class OrderController extends Controller
         $order_product = OrdersProduct::find($request->order_item_id);
         $vendor = Vendor::find($order_product->vendor_id);
         $user = User::find($order->user_id);
+        $refund = Refunds::where('order_id', $request->order_id)->where('orders_product_id', $request->order_item_id)->first();
+
+        if (!is_null($refund)) {
+            return response()->json([
+                'success' => false,
+                'message' => "{$refund->status}"
+            ]);
+        }
         
         try {
             // update status
