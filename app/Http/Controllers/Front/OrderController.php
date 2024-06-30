@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Front;
 
 use App\Helpers\PaymongoRefundAPIHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Order;
 use App\Models\OrdersLog;
 use App\Models\OrdersProduct;
 use App\Models\Payment;
+use App\Models\Refunds;
+use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -31,17 +35,83 @@ class OrderController extends Controller
 
     }
 
-    public function refund_order(Request $request) { // id product to be refunded
-        $payment = Payment::where('payment_id', $request->id)->first();
-        $refund = new PaymongoRefundAPIHelper;
-        // should create paymongo refund data
-        $resp = $refund->set('amount', $payment->amount)->setAmount()
-            ->set('notes', $request->notes)
-            ->set('payment_id', $payment->id)
-            ->set('reason', $request->reason)
-            ->createRefund();
+    public function refundOrder(Request $request, Order $order) { // id product to be refunded
+        // Notify vendor that there is a product for refund
+        // $order = Order::find($request->order_id);
+        $order_product = OrdersProduct::find($request->order_item_id);
+        $vendor = Vendor::find($order_product->vendor_id);
+        $user = User::find($order->user_id);
         
-        \Log::info("Refund Order: " . json_encode($resp));
+        try {
+            // update status
+            // update order product status
+            $order_product->item_status = "Pending Refund";
+            $order_product->update();
+
+            // add order log
+            $log = new OrdersLog;
+            $log->order_id = $order->id;
+            $log->order_item_id = $order_product->id;
+            $log->order_status = "Pending Refund";
+            $log->save();
+
+            // send email to vendor and admins
+            $deliveryDetails = Order::select('mobile', 'email', 'name')->where('id', $order->id)->first()->toArray();
+
+            $messageData = [
+                'email'        => $user->email,
+                'name'         => $deliveryDetails['name'],
+                'order_id'     => $order->id,
+                'orderDetails' => $order->load(['orders_products' => function ($query) use ($order_product) {
+                    return $query->where('id', $order_product->id);
+                }])->toArray(),
+                'order_status' => $order_product->item_status,
+                'reason'       => $request->reason,
+            ];
+
+            // send an email to user
+            $email = $user->email;
+            \Illuminate\Support\Facades\Mail::send('emails.order_product_refund_request', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_status' is the order_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
+            });
+
+            // send an email to vendor
+            $email = $vendor->email;
+            $ccEmails = Admin::select('email')->where('vendor_id', 0)->where('status', 1)->whereIn('type', ['superadmin', 'admin'])->get()->pluck('email')->toArray();
+            array_push($ccEmails, $vendor->vendorbusinessdetails->shop_email);
+
+            \Illuminate\Support\Facades\Mail::send('emails.vendor_order_product_refund', $messageData, function ($message) use ($email, $ccEmails) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_status' is the order_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
+
+                // Adding CC emails
+                foreach ($ccEmails as $ccEmail) {
+                    $message->cc($ccEmail);
+                }
+            });
+
+            // save new refund data
+            $payment = Payment::where('order_id', $order->id)->first();
+
+            $refund = new Refunds;
+            $refund->order_id = $order->id;
+            $refund->orders_product_id = $order_product->id;
+            $refund->payment_id = $payment->id;
+            $refund->amount = $order_product->product_price * $order_product->product_qty;
+            $refund->status = $order_product->item_status;
+            $refund->reason = $request->reason;
+            $refund->save();
+
+            return [
+                'success' => true,
+                'message' => "Your product is being reviewed by the vendor for your request to refund. This may take some time."
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+
     }
 
     public function updateOrderStatus(Request $request, Order $order, OrdersProduct $ordersProduct) {

@@ -133,7 +133,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
         Route::post('add-rating', 'RatingController@addRating');
 
         // Refund an item
-        Route::post('user/orders/{id}/refund', 'OrderController@refund_order');
+        Route::post('user/orders/{order}/refund', 'OrderController@refundOrder');
         
         Route::post('user/orders/{order}/update/{ordersProduct}', 'OrderController@updateOrderStatus');
 
