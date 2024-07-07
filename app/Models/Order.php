@@ -233,6 +233,8 @@ class Order extends Model
             ]
         ]]);
 
+        \Log::info("Push Order to Lalamove:" . $body);
+
         $secret = config('app.lalamove.api_secret');
 
         $key = config('app.lalamove.api_key');
@@ -274,6 +276,7 @@ class Order extends Model
         curl_close($curl);
 
         $json_decoded_response = json_decode($response);
+        \Log::info("Lalamove Response: " . $response);
 
         return $json_decoded_response;
     }
