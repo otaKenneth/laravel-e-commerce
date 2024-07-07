@@ -79,4 +79,6 @@ Route::namespace('App\Http\Controllers\API')->group(function() { // Route Groups
     Route::post('update-stock-with-webhook', 'APIController@updateStockWithWebhook');
 
     Route::post('/paymongo/webhook', 'APIController@paymongoPaymentStatus');
+
+    Route::patch('/lalamove/webhook', 'APIController@lalamoveDeliveryStatus');
 });
