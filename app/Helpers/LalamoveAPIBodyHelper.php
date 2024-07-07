@@ -98,29 +98,29 @@ class LalamoveAPIBodyHelper
         return ["data" => $data];
     }
 
-    public function getQuotation ($order_id, $vendor_id) {
-        $order_model = new \App\Models\Order;
+    public function getQuotation ($orderDetails, $vendor_id) {
+        // dd($order);
+
+        $order = \App\Models\Order::find($orderDetails->order_id);
         $user_model = new \App\Models\User;
         $vendor_model = new \App\Models\Vendor;
 
-        $order = $order_model->with('orders_products_categories')->find($order_id);
-        // dd($order);
         // create quotation body
         $body = [
             'serviceType' => '',
             'language' => 'en_PH',
             'stops' => [],
             'item' => [
-                'quantity' => (string) $order->orders_products_categories->pluck('product_qty')->sum(),
+                'quantity' => (string) $orderDetails->product_qty,
                 'weight' => (string) $order->total_weight,
-                'categories' => $order->orders_products_categories->pluck('product_category.category_name')->toArray(),
+                'categories' => [$orderDetails->product_category->category_name],
                 'handlingInstructions' => []
             ],
             'isRouteOptimized' => true,
         ];
-
         // set service type
         foreach ($this->arr_service_type as $key => $service_type_weight) {
+            // checking for service weight
             if ($service_type_weight['min_weight'] <= $order->total_weight && $order->total_weight <= $service_type_weight['max_weight']) {
                 $body['serviceType'] = $key;
             }
@@ -158,7 +158,7 @@ class LalamoveAPIBodyHelper
             ]
         ];
 
-        \Log::info("Line 161: Lalamove API: " . json_encode($body));
+        \Log::info("Lalamove Get Quotation API Payload: " . json_encode($body));
         $this->recipient = $user_model->find($order->user_id);
         $this->quotation = $this->processLalamove(json_encode(["data" => $body]));
 
@@ -204,7 +204,7 @@ class LalamoveAPIBodyHelper
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
-        \Log::info("Process Lalamove: " . $response);
+        \Log::info("Process Lalamove Quotation Response: " . $response);
         $json_decoded_response = json_decode($response);
 
         return $json_decoded_response;

@@ -55,10 +55,10 @@ function getCartItems() { // this method is called (used) in cart() method in Fr
 }
 
 function formatPhoneNumber ($phone) {
-    // Remove non-numeric characters
-    $phone = preg_replace('/\D/', '', $phone);
+    // Remove non-numeric characters except +
+    $phone = preg_replace('/[^\d\+]/', '', $phone);
 
-    // Check if the phone number is in e.164 format
+    // Check if the phone number is already in e.164 format
     if (preg_match('/^\+?[1-9]\d{1,14}$/', $phone)) {
         return $phone;
     }
@@ -68,4 +68,12 @@ function formatPhoneNumber ($phone) {
         $phone = '+63' . substr($phone, 1);
         return $phone;
     }
+
+    // Handle phone numbers starting with the country code without the +
+    if (preg_match('/^63\d{10}$/', $phone)) {
+        $phone = '+' . $phone;
+        return $phone;
+    }
+
+    return $phone;
 }
