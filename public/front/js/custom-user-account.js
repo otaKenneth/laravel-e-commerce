@@ -2,26 +2,28 @@
 const jsonFile = "/front/js/dialingcodes.json";
 var dialingcodes = [];
 
-// Fetch the JSON file
-fetch(jsonFile)
-    .then((response) => {
-        // Check if the response status is OK (200)
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        // Parse the JSON from the response
-        return response.json();
-    })
-    .then((data) => {
-        // Handle the JSON data
-        dialingcodes = data;
-    })
-    .catch((error) => {
-        // Handle errors
-        console.error("Error fetching JSON:", error);
-    });
 
 $(document).ready(() => {
+    // Fetch the JSON file
+    fetch(jsonFile)
+        .then((response) => {
+            // Check if the response status is OK (200)
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // Parse the JSON from the response
+            return response.json();
+        })
+        .then((data) => {
+            // Handle the JSON data
+            dialingcodes = data;
+            setMobileDialingCodes()
+        })
+        .catch((error) => {
+            // Handle errors
+            console.error("Error fetching JSON:", error);
+        });
+
     function setMobileDialingCodes() {
         var html_dialingcodes_options = dialingcodes.map((dc) => {
             let newOption = $("<option>", {
@@ -171,7 +173,6 @@ $(document).ready(() => {
         }
     });
 
-    setMobileDialingCodes();
     var countryElement = $('.address-field[name*="delivery_country"]');
 
     // Check if the element has a value
