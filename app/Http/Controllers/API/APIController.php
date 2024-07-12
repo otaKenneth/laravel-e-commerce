@@ -923,7 +923,7 @@ class APIController extends Controller
         $data = $request->all();
         \Log::info("Lalamove Webhook Update Status: " . json_encode($data));
         
-        return response()->json(['status' => 'fail'], 401);
+        return response()->json(['status' => 'success'], 200);
     }
 
 }
