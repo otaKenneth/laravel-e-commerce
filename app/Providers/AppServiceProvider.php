@@ -47,7 +47,6 @@ class AppServiceProvider extends ServiceProvider
         try {
             $defaultImageUrl = $bucket->object($defaultImagePath)->signedUrl(new \DateTime('+1 hour'));
             // Log the signed URL for debugging
-            \Log::info('Default Image Signed URL: ' . $defaultImageUrl);
         } catch (\Exception $e) {
             \Log::error('Error generating signed URL: ' . $e->getMessage());
         }
@@ -81,7 +80,6 @@ class AppServiceProvider extends ServiceProvider
             $object = $bucket->object($objectName);
             $signedUrl = $object->signedUrl(new \DateTime($expiration));
             // Log the signed URL for debugging
-            \Log::info('Signed URL for ' . $objectName . ': ' . $signedUrl);
             return $signedUrl;
         } catch (\Exception $e) {
             \Log::error('Error generating signed URL for ' . $objectName . ': ' . $e->getMessage());
