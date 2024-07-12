@@ -412,7 +412,7 @@ class ProductsController extends Controller
     public function addAttributes(Request $request, $id) { // Add/Edit Attributes function    
         Session::put('page', 'products');
 
-        $product = \App\Models\Product::select('id', 'product_name', 'product_code', 'product_color', 'product_price', 'product_image')->with('attributes')->find($id); // with('attributes') is the relationship method name in the Product.php model
+        $product = \App\Models\Product::select('id', 'product_name', 'product_code', 'product_price', 'product_image')->with('attributes')->find($id); // with('attributes') is the relationship method name in the Product.php model
 
         if ($request->isMethod('post')) { // When the <form> is submitted
             $data = $request->all();
@@ -503,7 +503,7 @@ class ProductsController extends Controller
     public function addImages(Request $request, $id) { // $id is the URL Paramter (slug) passed from the URL
         Session::put('page', 'products');
 
-        $product = \App\Models\Product::select('id', 'product_name', 'product_code', 'product_color', 'product_price', 'product_image')->with('images')->find($id); // with('images') is the relationship method name in the Product.php model
+        $product = \App\Models\Product::select('id', 'product_name', 'product_code', 'product_price', 'product_image')->with('images')->find($id); // with('images') is the relationship method name in the Product.php model
 
 
         if ($request->isMethod('post')) { // if the <form> is submitted
