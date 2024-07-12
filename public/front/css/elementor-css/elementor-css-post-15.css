@@ -119,15 +119,15 @@
 }
 .elementor-15 .elementor-element.elementor-element-c9adeb5 img{
 	width: 100%;
-    height: 90vh;
-    min-height: 800px;
+    height: 40vh;
     object-fit: cover;
+    min-height: 400px;
 }
 
 @media (max-width: 767px){
 	.elementor-15 .elementor-element.elementor-element-c9adeb5 img{
-		height: 80vh;
-		min-height: 400px;
+		height: 40vh;
+        min-height: 150px;
 	}
 	.elementor-15 .elementor-element.elementor-element-7ab35dc > .elementor-widget-container{
 		padding-bottom: 0 !important;
