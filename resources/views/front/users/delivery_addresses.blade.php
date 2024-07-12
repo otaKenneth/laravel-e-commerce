@@ -363,8 +363,8 @@
                                                         >
                                                     </div>
                                                     <div class="hidden">
-                                                        <input type="hidden" id="shipping_address_lat" name="delivery_lat" value="">
-                                                        <input type="hidden" id="shipping_address_lng" name="delivery_lng" value="">
+                                                        <input type="hidden" id="shipping_address_lat" name="shipping[lat]" value="">
+                                                        <input type="hidden" id="shipping_address_lng" name="shipping[lng]" value="">
                                                     </div>
                                                    
                                                     <div class="elementor-field-type-html elementor-col-100 elementor-column iframe-map" style="border-radius: 15px !important; overflow: hidden;">
