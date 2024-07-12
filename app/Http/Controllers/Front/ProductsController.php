@@ -50,7 +50,8 @@ class ProductsController extends Controller
         }
 
         // collection, filters, categoryDetails, meta_title, meta_description, meta_keywords
-        extract($result);
+        if (is_array($result)) extract($result);
+        else return redirect('/products/collection/all');
 
         $collection = $collection->paginate(12);
         // dd($filters);
@@ -1163,6 +1164,8 @@ class ProductsController extends Controller
                 'catIds' => $catIds,
                 'categoryDetails' => $catDetails
             ];
+        } else {
+            return false;
         }
 
         $meta_title       = "Kapiton $section Collection";
