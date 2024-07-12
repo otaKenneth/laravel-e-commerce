@@ -437,9 +437,11 @@ $(document).ready(function() {
                     // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'    
                     $('.loader').hide();
 
-
-                    $('#forgot-success').attr('style', 'color: green'); // I already did this in the HTML page in the <p> tags in the HTML in front/users/login_register.blade.php (    <p id="forgot-name" style="color: red"></p>    )    // This is the same as:    $('#forgot-' + i).css('color', 'green');    // Change the CSS color of the <p> tags
-                    $('#forgot-success').html(resp.message); // replace the <p> tags that we created inside the user registration <form> in front/users/login_register.blade.php depending on x in their 'id' HTML attributes 'login-x' (e.g. forgot-mobile, forgot-email, ...)
+                    $('#success-modal').modal('toggle');
+                    $("#success-modal .modal-body .message").text(resp.message);
+                    setTimeout(() => {
+                        $('#success-modal').modal('toggle');
+                    }, 2500);
                 }
             },
             error  : function() { // if the AJAX request is unsuccessful

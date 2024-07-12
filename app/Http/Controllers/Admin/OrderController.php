@@ -224,16 +224,6 @@ class OrderController extends Controller
             // Get the `order_id` column (which is the foreign key to the `id` column in `orders` table) value from `orders_products` table
             $getOrderId = \App\Models\OrdersProduct::select('order_id')->where('id', $data['order_item_id'])->first()->toArray();
 
-
-            // We'll save the Update "Item Status" History/Logs in `orders_logs` database table (whenever a 'vendor' or 'admin' updates an order item status)    
-            // Note: In `orders_logs` table, if the `order_item_id` column is zero 0, this means the "Item Status" has never been updated, and if it's not zero 0, this means it's been previously updated by a 'vendor' or 'admin' and the number references/denotes the `id` column (foreign key) of the `orders_products` table
-            $log = new \App\Models\OrdersLog;
-            $log->order_id      = $getOrderId['order_id'];
-            $log->order_item_id = $data['order_item_id'];
-            $log->order_status  = $data['order_item_status'];
-            $log->save();
-
-
             // "Item Status" update email: We send an email and SMS to the user when the Item Status (in the "Ordered Products" section) is updated by a 'vendor' or 'admin' (pending, shipped, in progress, …) for every product on its own in the email (not the whole order products, but the email is about the product that has been updated ONLY)
             $deliveryDetails = \App\Models\Order::select('mobile', 'email', 'name')->where('id', $getOrderId['order_id'])->first()->toArray();
 
@@ -248,7 +238,14 @@ class OrderController extends Controller
             // Note: Now in this case, updating the item status of one product will send an email to user but with telling the item statuses of all of the Order items (not ONLY the item with the status updated!). The solution to this is using a subquery (Constraining Eager Loads)
 
 
-            if (!empty($data['item_courier_name']) && !empty($data['item_tracking_number'])) { // if a 'vendor' or 'admin' Updates the Order "Item Status" to 'Shipped' in admin/orders/order_details.blade.php, and submits both Courier Name and Tracking Number HTML input fields, include the Courier Name and Tracking Nubmer data in the email (send them with the email)
+            if (in_array($data['order_item_status'], [
+                "Refund Approved", "Refund Rejected", "Refund Cancelled"
+            ])) { 
+                $this->paymongoRefundOrder($getOrderId); 
+            } elseif ($data['order_item_status'] === "For Delivery" && 
+                (empty($data['item_courier_name']) && empty($data['item_tracking_number']))) {
+                $this->productForDelivery($data);
+            } elseif (!empty($data['item_courier_name']) && !empty($data['item_tracking_number'])) { // if a 'vendor' or 'admin' Updates the Order "Item Status" to 'Shipped' in admin/orders/order_details.blade.php, and submits both Courier Name and Tracking Number HTML input fields, include the Courier Name and Tracking Nubmer data in the email (send them with the email)
                 $email = $deliveryDetails['email'];
 
                 // The email message data/variables that will be passed in to the email view
@@ -266,13 +263,6 @@ class OrderController extends Controller
                     $message->to($email)->subject('Order Item Status Updated - ' . env('APP_URL'));
                 });
 
-            } elseif ($data['order_item_status'] === "For Delivery" && 
-                (empty($data['item_courier_name']) && empty($data['item_tracking_number']))) {
-                $this->productForDelivery($data);
-            } elseif (in_array($data['order_item_status'], [
-                "Refund Approved", "Refund Rejected", "Refund Cancelled"
-            ])) { 
-                $this->paymongoRefundOrder(); 
             } else { // if there are no Courier Name and Tracking Number data, don't include them in the email
                 $email = $deliveryDetails['email'];
 
@@ -289,6 +279,14 @@ class OrderController extends Controller
                     $message->to($email)->subject('Order Item Status Updated - ' . env('APP_URL'));
                 });
             }
+            
+            // We'll save the Update "Item Status" History/Logs in `orders_logs` database table (whenever a 'vendor' or 'admin' updates an order item status)    
+            // Note: In `orders_logs` table, if the `order_item_id` column is zero 0, this means the "Item Status" has never been updated, and if it's not zero 0, this means it's been previously updated by a 'vendor' or 'admin' and the number references/denotes the `id` column (foreign key) of the `orders_products` table
+            $log = new \App\Models\OrdersLog;
+            $log->order_id      = $getOrderId['order_id'];
+            $log->order_item_id = $data['order_item_id'];
+            $log->order_status  = $data['order_item_status'];
+            $log->save();
 
             $message = 'Order Item Status has been updated successfully!';
 
@@ -309,8 +307,8 @@ class OrderController extends Controller
         // exit;
         $all_lalamove_data = $this->lalamoveAPI_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
 
-        if (is_object($all_lalamove_data) && isset($all_lalamove_data->errors)) {
-            return redirect()->back()->withErrors($all_lalamove_data->errors);
+        if (is_object($all_lalamove_data) && isset($all_lalamove_data->quotation->errors)) {
+            return redirect()->back()->withErrors($all_lalamove_data->quotation->errors);
         } elseif (is_array($all_lalamove_data) && isset($all_lalamove_data['errors'])) {
             return redirect()->back()->withErrors($all_lalamove_data['errors']);
         } else {
@@ -328,19 +326,23 @@ class OrderController extends Controller
         }
     }
 
-    private function paymongoRefundOrder() {
-        // $payment = Payment::where('payment_id', $request->id)->first();
-        // $refund = new PaymongoRefundAPIHelper;
-        // // should create paymongo refund data
-        // $resp = $refund->set('amount', $payment->amount)->setAmount()
-        //     ->set('notes', $request->notes)
-        //     ->set('payment_id', $payment->id)
-        //     ->set('reason', $request->reason)
-        //     ->createRefund();
+    private function paymongoRefundOrder($orderId) {
+        $order = \App\Models\Order::find($orderId)->first();
+        $payment = \App\Models\Payment::where('order_id', $order->id)->first();
+        $refund = \App\Models\Refunds::where('order_id', $order->id)->where('payment_id', $payment->id)->first();
+        $refundHelper = new \App\Helpers\PaymongoRefundAPIHelper;
+        // should create paymongo refund data
+        $resp = $refundHelper->set('amount', $payment->amount)->setAmount()
+            ->set('notes', $refund->reason)
+            ->set('payment_id', $payment->payment_id)
+            ->set('reason', "requested_by_customer")
+            ->createRefund();
         
-        // \Log::info("Refund Order: " . json_encode($resp));
+        \Log::info("Refund Order: " . json_encode($resp));
 
-        // return response()->json($resp);
+        if (!$resp['success']) {
+            return redirect()->back()->withErrors($resp['message']);
+        }
     }
 
     // Render order invoice page (HTML) in order_invoice.blade.php    

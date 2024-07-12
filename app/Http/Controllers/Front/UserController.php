@@ -275,7 +275,7 @@ class UserController extends Controller
 
                 // The email message data/variables that will be passed in to the email view
                 $messageData = [
-                    'name'     => $userDetails['name'], // the user's name that they entered while submitting the registration form
+                    'name'     => $userDetails['first_name'] . " " . $userDetails['last_name'], // the user's name that they entered while submitting the registration form
                     'email'    => $email, // the user's email that they entered while submitting the registration form
                     'password' => $new_password // the user's email that they entered while submitting the registration form
                     // 'code'  => base64_encode($data['email']) // We base64 code the user's $email and send it as a Route Parameter from user_confirmation.blade.php to the 'user/confirm/{code}' route in web.php, then it gets base64 decoded again in confirmUser() method in Front/UserController.php    // we will use the opposite: base64_decode() in the confirmUser() method (encode X decode)
