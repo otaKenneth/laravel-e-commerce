@@ -205,6 +205,7 @@ class OrderController extends Controller
         // dd($request);
         if ($request->isMethod('post')) {
             session()->forget('errors');
+            session()->forget('error_message');
             $data = $request->all();
             // dd($data);
 

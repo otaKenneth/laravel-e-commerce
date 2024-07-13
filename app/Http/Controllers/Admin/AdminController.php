@@ -121,6 +121,7 @@ class AdminController extends Controller
 
     public function logout() {
         session()->forget('errors');
+        session()->forget('error_message');
         Auth::guard('admin')->logout(); // Logging out using our 'admin' guard that we created in auth.php    // Accessing Specific Guard Instances: https://laravel.com/docs/9.x/authentication#accessing-specific-guard-instances
         return redirect('admin/login');
     }
