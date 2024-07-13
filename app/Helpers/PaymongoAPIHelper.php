@@ -147,6 +147,7 @@ class PaymongoAPIHelper
 
             // Use the payload as needed
             $this->session = json_decode($responseBody)->data->attributes;
+            Log::info("Paymongo: Create Session Payload - " . $responseBody);
 
             return [
                 'success' => true,
