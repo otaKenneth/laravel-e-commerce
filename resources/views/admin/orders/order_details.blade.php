@@ -331,11 +331,7 @@
                                         @if (!empty($getItemDetails['courier_name']))
                                             <br>
                                             <span>Courier Name: 
-                                                @if ($log['order_status'] == "For Delivery")
-                                                    <label><a href="{{ $getItemDetails['courier_name'] }}" target="_blank" >Lalamove</a></label>
-                                                @else
-                                                    <label>{{ $getItemDetails['courier_name'] }}</label>
-                                                @endif
+                                                <label><a href="{{ $getItemDetails['courier_name'] }}" target="_blank" >Lalamove</a></label>
                                             </span>
                                         @endif
 
