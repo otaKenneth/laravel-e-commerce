@@ -922,6 +922,44 @@ class APIController extends Controller
     public function lalamoveDeliveryStatus(Request $request) {
         $data = $request->all();
         \Log::info("Lalamove Webhook Update Status: " . json_encode($data));
+
+        if ($data['eventType'] == 'ORDER_STATUS_CHANGED' && isset($data['data']['order'])) {
+            $lalamove_order = $data['data']['order'];
+            $order_products = \App\Models\OrdersProduct::where('courier_name', $lalamove_order['shareLink'])->get()->toArray();
+
+            $order = null; $tracking_number_explode_cnt = 0;
+            foreach ($order_products as $order_product) {
+                $tracking_number = explode("-", $order_product['tracking_number']);
+                $tracking_number_explode_cnt = count($tracking_number);
+                if ($lalamove_order['orderId'] == $tracking_number[0]) {
+                    $order = $order_product;
+                    break;
+                }
+            }
+
+            $log = new \App\Models\OrdersLog;
+            $log->order_id = $order['order_id'];
+            $log->order_item_id = $order['id'];
+            $log->order_status = "LALAMOVE - " .$lalamove_order['status'];
+            $log->save();
+
+            $orderProduct = \App\Models\OrdersProduct::find($order['id']);
+            if (!is_null($lalamove_order['driverId']) && $tracking_number_explode_cnt < 3) {
+                $orderProduct->tracking_numer = $orderProduct->tracking_number . $lalamove_order['driverId'];
+            }
+
+            if ($lalamove_order['status'] == 'PICKED_UP') {
+                $orderProduct->item_status = 'Shipped';
+
+                $log = new \App\Models\OrdersLog;
+                $log->order_id = $order['order_id'];
+                $log->order_item_id = $order['id'];
+                $log->order_status = "LALAMOVE - " .$lalamove_order['status'];
+                $log->save();
+            }
+            
+            $orderProduct->save();
+        }
         
         return response()->json(['status' => 'success'], 200);
     }
