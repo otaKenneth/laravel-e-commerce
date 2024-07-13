@@ -269,8 +269,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="hidden" id="business_address_lat" name="business[lat]" value="">
-                                            <input type="hidden" id="business_address_lng" name="business[lng]" value="">
+                                            <input type="hidden" id="business_address_lat" name="business[lat]" value="{{$vendorDetails['lat']}}">
+                                            <input type="hidden" id="business_address_lng" name="business[lng]" value="{{$vendorDetails['long']}}">
                                             <div class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_145d2ce elementor-col-100">
                                                 <div id="map_vendor_details" style="height: 380px; width: 100%;"></div>
                                                 <p></p>
@@ -279,7 +279,7 @@
                                     </div>                                    
                                     <div class="form-group">
                                         <label for="shop_mobile">Shop Mobile</label>
-                                        <input type="text" class="form-control" id="shop_mobile" placeholder="Enter 10 Digit Shop Mobile Number" name="shop_mobile"  @if (isset($vendorDetails['shop_mobile'])) value="{{ $vendorDetails['shop_mobile'] }}" @endif maxlength="10" minlength="10">
+                                        <input type="text" class="form-control" id="shop_mobile" placeholder="Enter 10 Digit Shop Mobile Number" name="shop_mobile"  @if (isset($vendorDetails['shop_mobile'])) value="{{ $vendorDetails['shop_mobile'] }}" @endif maxlength="15" minlength="11">
                                     </div>
                                     <div class="form-group">
                                         <label for="shop_mobile">Shop Website</label>

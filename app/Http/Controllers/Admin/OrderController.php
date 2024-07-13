@@ -204,6 +204,7 @@ class OrderController extends Controller
     public function updateOrderItemStatus(Request $request) {
         // dd($request);
         if ($request->isMethod('post')) {
+            session()->forget('errors');
             $data = $request->all();
             // dd($data);
 

@@ -650,7 +650,16 @@ let marker;
 let geocoder;
 
 async function initMap() {
-    const position = { lat: 14.5806494, lng: 121.0203798 };
+    let lat = $('#update_vendor_details_form #business_address_lat[name*="lat"]').val();
+    let lng = $('#update_vendor_details_form #business_address_lng[name*="lng"]').val();
+    let position;
+
+    if (lat === '' && lng === '') {
+        position = { lat: 14.5806494, lng: 121.0203798 };
+    } else {
+        position = { lat: parseFloat(lat), lng: parseFloat(lng) };
+    }
+
 
     const { Map } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
@@ -664,7 +673,7 @@ async function initMap() {
     geocoder = new google.maps.Geocoder();
     marker = new AdvancedMarkerElement({
         map: map,
-        position: new google.maps.LatLng(14.5806494, 121.0203798),
+        position: new google.maps.LatLng(position.lat, position.lng),
         title: "Metro Manila"
     });
 
@@ -789,6 +798,7 @@ $(document).ready(function() {
             if (!response.error) {
                 $('#update_vendor_details_form #shop_state .added-through-api').remove();
                 let selected = $('#update_vendor_details_form input[name="prev_shop_state_value"]').val();
+                console.log(selected)
 
                 let states = response.data.states.map((state) => {
                     let newOption = $('<option>', {
@@ -803,6 +813,7 @@ $(document).ready(function() {
                 });
                 
                 $('#update_vendor_details_form #shop_state').append(states);
+                $('#update_vendor_details_form #shop_state').change();
                 requestGeocode(country);
             }
         });
