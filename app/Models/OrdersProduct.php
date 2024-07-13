@@ -11,8 +11,12 @@ class OrdersProduct extends Model
 
     protected $table = 'orders_products';
 
+    public function order_product() {
+        return $this->belongsTo('App\Models\Product', 'product_id');
+    }
+
     public function product_category() {
-        return $this->hasOneThrough('\App\Models\Category', '\App\Models\Product', 'id', 'id');
+        return $this->order_product->category();
     }
 
     public function vendor() {
