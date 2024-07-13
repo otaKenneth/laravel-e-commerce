@@ -2,26 +2,28 @@
 const jsonFile = "/front/js/dialingcodes.json";
 var dialingcodes = [];
 
-// Fetch the JSON file
-fetch(jsonFile)
-    .then((response) => {
-        // Check if the response status is OK (200)
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        // Parse the JSON from the response
-        return response.json();
-    })
-    .then((data) => {
-        // Handle the JSON data
-        dialingcodes = data;
-    })
-    .catch((error) => {
-        // Handle errors
-        console.error("Error fetching JSON:", error);
-    });
 
 $(document).ready(() => {
+    // Fetch the JSON file
+    fetch(jsonFile)
+        .then((response) => {
+            // Check if the response status is OK (200)
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // Parse the JSON from the response
+            return response.json();
+        })
+        .then((data) => {
+            // Handle the JSON data
+            dialingcodes = data;
+            setMobileDialingCodes()
+        })
+        .catch((error) => {
+            // Handle errors
+            console.error("Error fetching JSON:", error);
+        });
+
     function setMobileDialingCodes() {
         var html_dialingcodes_options = dialingcodes.map((dc) => {
             let newOption = $("<option>", {
@@ -129,16 +131,11 @@ $(document).ready(() => {
 
                     // Note: in HTML in front/products/delivery_addresses.blade.php, to conveniently display the errors by jQuery loop, the pattern must be like: account-x (e.g. account-mobile, register-email, ... in order for the jQuery loop to work. And x must be identical to the 'name' HTML attributes (e.g. the <input> with the    name='mobile'    HTML attribute must have a <p> with an id HTML attribute    id="account-mobile"    ) so that when the vaildation errors array are sent as a response to the AJAX request, they could conveniently/easily be handled by the jQuery $.each() loop)
                     $.each(resp.errors, function (i, error) {
-                        // 'i' is the attribute (the 'name' HTML attribute) ('i' is the JavaScript object keys or the PHP array (sent from backend/server response from method inside controller) keys/indexes, and 'error' is the Validation Error ('error' is the JavaScript object values or the PHP array (sent from backend/server response from method inside controller) values    // $.each(): https://api.jquery.com/jquery.each/    // 'errors' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the userAccount() method in Front/UserController.php
-                        $("#delivery-" + i).attr("style", "color: red"); // I already did this in the HTML page in the <p> tags in the HTML in front/users/user_account.blade.php (    <p id="account-name" style="color: red"></p>    )    // This is the same as:    $('#delivery-' + i).css('color', 'red');    // Change the CSS color of the <p> tags
-                        $("#delivery-" + i).html(error); // replace the <p> tags that we created inside the user registration <form> in front/users/user_account.blade.php depending on x in their 'id' HTML attributes 'account-x' (e.g. account-mobile, account-email, ...)
-
-                        // Make the Validation Error Messages disappear after a certain amount of time (don't stick)
-                        setTimeout(function () {
-                            $("#delivery-" + i).css({
-                                display: "none",
-                            });
-                        }, 3000);
+                        $('#error-modal').modal('toggle');
+                        $("#error-modal .modal-body .message").text(error);
+                        setTimeout(() => {
+                            $('#error-modal').modal('toggle');
+                        }, 2500);
                     });
                 } else {
                     window.location.href = '';
@@ -176,7 +173,6 @@ $(document).ready(() => {
         }
     });
 
-    setMobileDialingCodes();
     var countryElement = $('.address-field[name*="delivery_country"]');
 
     // Check if the element has a value

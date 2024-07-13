@@ -94,6 +94,7 @@
                 <div class="collapse" id="ui-store">
                     <ul class="nav flex-column sub-menu" style="background: #fff !important; color: #5f7a61 !important">
                         <li class="nav-item"> <a @if (Session::get('page') == 'store_profile')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="#">Store Profile - Reels</a></li>
+                        <li class="nav-item"> <a @if (Session::get('page') == 'chats')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/chats') }}">Chats</a></li>
                     </ul>
                 </div>
             </li>

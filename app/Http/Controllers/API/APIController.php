@@ -919,4 +919,11 @@ class APIController extends Controller
         $log->save();
     }
 
+    public function lalamoveDeliveryStatus(Request $request) {
+        $data = $request->all();
+        \Log::info("Lalamove Webhook Update Status: " . json_encode($data));
+        
+        return response()->json(['status' => 'success'], 200);
+    }
+
 }

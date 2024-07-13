@@ -131,37 +131,6 @@ class OrderController extends Controller
             $data = $request->all();
             // dd($data);
 
-            // Note: There are two types of Shipping Process: "manual" and "automatic". "Manual" is in the case like small businesses, where the courier arrives at the owner warehouse to to pick up the order for shipping, and the small business owner takes the shipment details (like courier name, tracking number, ...) from the courier, and inserts those details themselves in the Admin Panel when they "Update Order Status" Section (by an 'admin') or "Update Item Status" Section (by a 'vendor' or 'admin') (in admin/orders/order_details.blade.php). With "automatic" shipping process, we're integrating third-party APIs (e.g. Shiprocket API) and orders go directly to the shipping partner, and the updates comes from the courier's end, and orders are automatically delivered to customers
-            // "Automatic" Shipping Process (when 'admin' does NOT enter the Courier Name and Tracking Number): Configure the Shiprocket API in our Admin Panel in admin/orders/order_details.blade.php (to automate Pushing Orders to Shiprocket API by selecting "Shipped" from the drop-down menu)    
-            if (empty($data['courier_name']) && empty($data['tracking_number']) && $data['order_status'] == 'For Delivery') { // if the 'admin' didn't enter the Courier Name and Tracking Nubmer when they selected "Shipped" from the drop-down menu in admin/orders/order_details.blade.php, use the "Automatic" Shipping Process (Push Orders to Shiprocket API), not the "Manual" Shipping process. Check the "Manual" Shipping process in the next if statement
-                $this->lalamoveAPI_Helper = new LalamoveAPIBodyHelper;
-                // dd('Inside Automatic Shipping Process if statement in updateOrderStatus() method in Admin/OrderController.php<br>');
-                // echo 'Inside Automatic Shipping Process if statement in updateOrderStatus() method in Admin/OrderController.php<br>';
-                // exit;
-                $all_lalamove_data = $this->lalamoveAPI_Helper->getQuotation($data['order_id'], Auth::guard('admin')->user()->vendor_id);
-
-                if (is_object($all_lalamove_data) && isset($all_lalamove_data->errors)) {
-                    return redirect()->back()->withErrors($all_lalamove_data->errors);
-                } elseif (is_array($all_lalamove_data) && isset($all_lalamove_data['errors'])) {
-                    return redirect()->back()->withErrors($all_lalamove_data['errors']);
-                } else {
-                    $getResults = \App\Models\Order::pushOrder_to_Lalamove($all_lalamove_data, $data['order_id']);
-                    // dd(collect($getResults->errors)->pluck('message')->toArray());
-                    if (isset($getResults->errors)) {
-                        Session::put('error_message', collect($getResults->errors)->pluck('message')->toArray()); // The message is coming from the Shiprocket API    // Storing Data: https://laravel.com/docs/9.x/session#storing-data
-        
-                        return redirect()->back(); // Redirecting With Flashed Session Data: https://laravel.com/docs/10.x/responses#redirecting-with-flashed-session-data
-                    } else {
-                        \App\Models\Order::where('id', $data['order_id'])->update([
-                            'is_pushed' => 1,
-                            'courier_name'    => $getResults->data->shareLink,
-                            'tracking_number' => "{$getResults->data->orderId}-{$getResults->data->quotationId}-{$getResults->data->driverId}"
-                        ]);
-                    }
-                }
-            }
-
-
             // Update Order Status in `orders` table
             \App\Models\Order::where('id', $data['order_id'])->update(['order_status' => $data['order_status']]);
 
@@ -233,6 +202,7 @@ class OrderController extends Controller
     // Update Item Status (which can be determined by both 'vendor'-s and 'admin'-s, in contrast to "Update Order Status" which is updated by 'admin'-s ONLY, not 'vendor'-s) (Pending, In Progress, Shipped, Delivered, ...) in admin/orders/order_details.blade.php in Admin Panel    
     // Note: The `order_statuses` table contains all kinds of order statuses (that can be updated by 'admin'-s ONLY in `orders` table) like: pending, in progress, shipped, canceled, ...etc. In `order_statuses` table, the `name` column can be: 'New', 'Pending', 'Canceled', 'In Progress', 'Shipped', 'Partially Shipped', 'Delivered', 'Partially Delivered' and 'Paid'. 'Partially Shipped': If one order has products from different vendors, and one vendor has shipped their product to the customer while other vendor (or vendors) didn't!. 'Partially Delivered': if one order has products from different vendors, and one vendor has shipped and DELIVERED their product to the customer while other vendor (or vendors) didn't!    // The `order_item_statuses` table contains all kinds of order statuses (that can be updated by both 'vendor'-s and 'admin'-s in `orders_products` table) like: pending, in progress, shipped, canceled, ...etc.
     public function updateOrderItemStatus(Request $request) {
+        // dd($request);
         if ($request->isMethod('post')) {
             $data = $request->all();
             // dd($data);
@@ -254,16 +224,6 @@ class OrderController extends Controller
             // Get the `order_id` column (which is the foreign key to the `id` column in `orders` table) value from `orders_products` table
             $getOrderId = \App\Models\OrdersProduct::select('order_id')->where('id', $data['order_item_id'])->first()->toArray();
 
-
-            // We'll save the Update "Item Status" History/Logs in `orders_logs` database table (whenever a 'vendor' or 'admin' updates an order item status)    
-            // Note: In `orders_logs` table, if the `order_item_id` column is zero 0, this means the "Item Status" has never been updated, and if it's not zero 0, this means it's been previously updated by a 'vendor' or 'admin' and the number references/denotes the `id` column (foreign key) of the `orders_products` table
-            $log = new \App\Models\OrdersLog;
-            $log->order_id      = $getOrderId['order_id'];
-            $log->order_item_id = $data['order_item_id'];
-            $log->order_status  = $data['order_item_status'];
-            $log->save();
-
-
             // "Item Status" update email: We send an email and SMS to the user when the Item Status (in the "Ordered Products" section) is updated by a 'vendor' or 'admin' (pending, shipped, in progress, …) for every product on its own in the email (not the whole order products, but the email is about the product that has been updated ONLY)
             $deliveryDetails = \App\Models\Order::select('mobile', 'email', 'name')->where('id', $getOrderId['order_id'])->first()->toArray();
 
@@ -278,7 +238,14 @@ class OrderController extends Controller
             // Note: Now in this case, updating the item status of one product will send an email to user but with telling the item statuses of all of the Order items (not ONLY the item with the status updated!). The solution to this is using a subquery (Constraining Eager Loads)
 
 
-            if (!empty($data['item_courier_name']) && !empty($data['item_tracking_number'])) { // if a 'vendor' or 'admin' Updates the Order "Item Status" to 'Shipped' in admin/orders/order_details.blade.php, and submits both Courier Name and Tracking Number HTML input fields, include the Courier Name and Tracking Nubmer data in the email (send them with the email)
+            if (in_array($data['order_item_status'], [
+                "Refund Approved", "Refund Rejected", "Refund Cancelled"
+            ])) { 
+                $this->paymongoRefundOrder($getOrderId); 
+            } elseif ($data['order_item_status'] === "For Delivery" && 
+                (empty($data['item_courier_name']) && empty($data['item_tracking_number']))) {
+                $this->productForDelivery($data);
+            } elseif (!empty($data['item_courier_name']) && !empty($data['item_tracking_number'])) { // if a 'vendor' or 'admin' Updates the Order "Item Status" to 'Shipped' in admin/orders/order_details.blade.php, and submits both Courier Name and Tracking Number HTML input fields, include the Courier Name and Tracking Nubmer data in the email (send them with the email)
                 $email = $deliveryDetails['email'];
 
                 // The email message data/variables that will be passed in to the email view
@@ -312,11 +279,69 @@ class OrderController extends Controller
                     $message->to($email)->subject('Order Item Status Updated - ' . env('APP_URL'));
                 });
             }
+            
+            // We'll save the Update "Item Status" History/Logs in `orders_logs` database table (whenever a 'vendor' or 'admin' updates an order item status)    
+            // Note: In `orders_logs` table, if the `order_item_id` column is zero 0, this means the "Item Status" has never been updated, and if it's not zero 0, this means it's been previously updated by a 'vendor' or 'admin' and the number references/denotes the `id` column (foreign key) of the `orders_products` table
+            $log = new \App\Models\OrdersLog;
+            $log->order_id      = $getOrderId['order_id'];
+            $log->order_item_id = $data['order_item_id'];
+            $log->order_status  = $data['order_item_status'];
+            $log->save();
 
             $message = 'Order Item Status has been updated successfully!';
 
 
             return redirect()->back()->with('success_message', $message);
+        }
+    }
+
+    // Note: There are two types of Shipping Process: "manual" and "automatic". "Manual" is in the case like small businesses, where the courier arrives at the owner warehouse to to pick up the order for shipping, and the small business owner takes the shipment details (like courier name, tracking number, ...) from the courier, and inserts those details themselves in the Admin Panel when they "Update Order Status" Section (by an 'admin') or "Update Item Status" Section (by a 'vendor' or 'admin') (in admin/orders/order_details.blade.php). With "automatic" shipping process, we're integrating third-party APIs (e.g. Shiprocket API) and orders go directly to the shipping partner, and the updates comes from the courier's end, and orders are automatically delivered to customers
+    // "Automatic" Shipping Process (when 'admin' does NOT enter the Courier Name and Tracking Number): Configure the Lalamove API in our Admin Panel in admin/orders/order_details.blade.php (to automate Pushing Orders to Shiprocket API by selecting "Shipped" from the drop-down menu)    
+    private function productForDelivery($data) {
+        $orderDetails = \App\Models\OrdersProduct::find($data['order_item_id'])
+            ->load('product_category');
+        
+        $this->lalamoveAPI_Helper = new LalamoveAPIBodyHelper;
+        // dd('Inside Automatic Shipping Process if statement in updateOrderStatus() method in Admin/OrderController.php<br>');
+        // echo 'Inside Automatic Shipping Process if statement in updateOrderStatus() method in Admin/OrderController.php<br>';
+        // exit;
+        $all_lalamove_data = $this->lalamoveAPI_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
+
+        if (is_object($all_lalamove_data) && isset($all_lalamove_data->quotation->errors)) {
+            return redirect()->back()->withErrors($all_lalamove_data->quotation->errors);
+        } elseif (is_array($all_lalamove_data) && isset($all_lalamove_data['errors'])) {
+            return redirect()->back()->withErrors($all_lalamove_data['errors']);
+        } else {
+            $getResults = \App\Models\Order::pushOrder_to_Lalamove($all_lalamove_data, $orderDetails->order_id);
+            // dd(collect($getResults->errors)->pluck('message')->toArray());
+            if (isset($getResults->errors)) {
+                Session::put('error_message', collect($getResults->errors)->pluck('message')->toArray()); // The message is coming from the Shiprocket API    // Storing Data: https://laravel.com/docs/9.x/session#storing-data
+
+                return redirect()->back(); // Redirecting With Flashed Session Data: https://laravel.com/docs/10.x/responses#redirecting-with-flashed-session-data
+            } else {
+                $orderDetails->courier_name = $getResults->data->shareLink;
+                $orderDetails->tracking_number = "{$getResults->data->orderId}-{$getResults->data->quotationId}-{$getResults->data->driverId}";
+                $orderDetails->save();
+            }
+        }
+    }
+
+    private function paymongoRefundOrder($orderId) {
+        $order = \App\Models\Order::find($orderId)->first();
+        $payment = \App\Models\Payment::where('order_id', $order->id)->first();
+        $refund = \App\Models\Refunds::where('order_id', $order->id)->where('payment_id', $payment->id)->first();
+        $refundHelper = new \App\Helpers\PaymongoRefundAPIHelper;
+        // should create paymongo refund data
+        $resp = $refundHelper->set('amount', $payment->amount)->setAmount()
+            ->set('notes', $refund->reason)
+            ->set('payment_id', $payment->payment_id)
+            ->set('reason', "requested_by_customer")
+            ->createRefund();
+        
+        \Log::info("Refund Order: " . json_encode($resp));
+
+        if (!$resp['success']) {
+            return redirect()->back()->withErrors($resp['message']);
         }
     }
 
