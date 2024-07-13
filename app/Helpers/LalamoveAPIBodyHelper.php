@@ -113,7 +113,7 @@ class LalamoveAPIBodyHelper
             'item' => [
                 'quantity' => (string) $orderDetails->product_qty,
                 'weight' => (string) $order->total_weight,
-                'categories' => [$orderDetails->product_category->category_name],
+                'categories' => [$orderDetails->order_product->category->category_name],
                 'handlingInstructions' => []
             ],
             'isRouteOptimized' => true,
