@@ -36,7 +36,7 @@
                         <td>
                             <div class="prod-cart">
                                 <div class="cart-img">
-                                    <img decoding="async" class="prod-img" src="{{ asset('front/images/product_images/small/' . $item['product']['product_image']) }}">
+                                    <img decoding="async" class="prod-img" src="{{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }}">
                                 </div>
                                 <div class="cart-prod-desc">
                                     <h4>{{ $item['product']['product_name'] }} ({{ $item['product']['product_code'] }}) - {{ $item['size'] }}</h4>
@@ -234,10 +234,6 @@
                             <tr>
                                 <td>Sub total</td>
                                 <td>₱{{number_format($total_price, 2)}}</td>
-                            </tr>
-                            <tr>
-                                <td>Coupon discount</td>
-                                <td>₱150.00 PHP</td>
                             </tr>
                             <tr>
                                 <td style="padding-top: 40px">
