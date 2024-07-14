@@ -100,6 +100,8 @@
                                                 class="address"
                                                 name="preferred_address-{{$deliveryAddress['user_id']}}"
                                                 value="{{$deliveryAddress['id']}}"
+                                                shipping_charges="{{$deliveryAddress['shipping_charges']}}"
+                                                total_price="{{str_replace(",", "", $sub_total)}}"
                                             >
                                             <label for="html">
                                                 <b>{{$deliveryAddress['address']}}, {{$deliveryAddress['city']}}, {{$deliveryAddress['state']}}, {{$deliveryAddress['country']}}
@@ -310,7 +312,11 @@
                                             </tr>
                                             <tr>
                                                 <td>Delivery Fee</td>
-                                                <td class="align-right">₱ {{number_format($delivery_fee, 2)}}</td>
+                                                <td class="shipping_charges align-right">₱ {{number_format($delivery_fee, 2)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Estimated Transaction Fee</td>
+                                                <td class="align-right">₱ {{number_format($est_transaction_fee, 2)}}</td>
                                             </tr>
                                             <!-- <tr>
                                                 <td>Coupon discount</td>
@@ -321,7 +327,7 @@
                                                     <b>GRAND TOTAL</b>
                                                 </td>
                                                 <td class="align-right" style="padding-top: 40px">
-                                                    <b>₱{{$total_price}}</b>
+                                                    <b class="grand_total">₱{{$total_price}}</b>
                                                 </td>
                                             </tr>
                                         </table>

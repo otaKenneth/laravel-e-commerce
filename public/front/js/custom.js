@@ -107,6 +107,12 @@ $(document).ready(function() {
 
                 if (resp.status == false) { // if    'status' => 'false'    is sent from as a response from the backend, show the message    // 'status' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
                     alert(resp.message);
+                } else {
+                    $('#success-modal').modal('toggle');
+                    $("#success-modal .modal-body .message").text(resp.message);
+                    setTimeout(() => {
+                        $('#success-modal').modal('toggle');
+                    }, 2500);
                 }
 
                 // console.log(resp.view);
@@ -658,7 +664,7 @@ $(document).ready(function() {
     });
 
     // Calculate the Grand Total, Shipping Charges and Coupon Amount and displaying them depending on the chosen Delivery Address in front/products/checkout.blade.php
-    $('input[name=address_id]').bind('change', function() {
+    $('input[name^="preferred_address"]').bind('change', function() {
 
         var shipping_charges = $(this).attr('shipping_charges'); // using Custom HTML data attributes (data-*)
         var total_price      = $(this).attr('total_price');      // using Custom HTML data attributes (data-*)
@@ -666,7 +672,7 @@ $(document).ready(function() {
         // alert(shipping_charges);
 
         // Display the Shipping Charges
-        $('.shipping_charges').html('EGP' + shipping_charges);
+        $('.shipping_charges').html('₱ ' + shipping_charges);
 
         // Show the right Payment Methods radio buttons in front/products/checkout.blade.php based on Getting the results of checking if both the COD and Prepaid PIN codes of the user's Delviery Address exist in our both `cod_pincodes` and `prepaid_pincodes` database tables. Check the checkout() method in Front/ProductsController.php and front/products/checkout.blade.php    
         var codpincodeCount     = $(this).attr('codpincodeCount');     // using Custom HTML data attributes (data-*)
@@ -683,19 +689,19 @@ $(document).ready(function() {
             $('.prepaidMethod').hide();
         }
 
-        if (coupon_amount == '') {
+        if (coupon_amount == '' || typeof(coupon_amount) == 'undefined') {
             coupon_amount = 0;
         }
 
         // Display the Coupon Amount
-        $('.couponAmount').html('EGP' + coupon_amount);
+        $('.couponAmount').html('₱ ' + coupon_amount);
 
         // Calculate the Grand Total
-        var grand_total = parseInt(total_price) + parseInt(shipping_charges) - parseInt(coupon_amount);
+        var grand_total = parseFloat(total_price) + parseFloat(shipping_charges) - parseFloat(coupon_amount);
         // alert(grand_total);
 
         // Display the Grand Total
-        $('.grand_total').html('EGP' + grand_total);
+        $('.grand_total').html('₱ ' + grand_total.toLocaleString('en-US'));
     });
 
     // PIN code Availability Check: check if the PIN code of the user's Delivery Address exists in our database (in both `cod_pincodes` and `prepaid_pincodes`) or not in front/products/detail.blade.php via AJAX    

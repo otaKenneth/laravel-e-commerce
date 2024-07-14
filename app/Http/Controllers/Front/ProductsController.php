@@ -746,12 +746,21 @@ class ProductsController extends Controller
             return redirect('/user/delivery-addresses')->withErrors("Please add your first address.");
         }
 
+        $selectedDeliveryAddress = null; $shipping_charges = 0;
         // Calculating the Shipping Charges of every one of the user's Delivery Addresses (depending on the 'country' of the Delivery Address)    
         foreach ($deliveryAddresses as $key => $value) {
             $shippingCharges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $value['country']);
 
+            $selectedDeliveryAddress = $value;
+            $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
             // Append/Add the Shipping Charge of every Delivery Address (depending on the 'country' of the Delivery Addresss) to the $deliveryAddresses array
-            $deliveryAddresses[$key]['shipping_charges'] = $shippingCharges;
+            $deliveryAddresses[$key]['shipping_charges'] = $shippingCharges + $this->lalamoveAPI_Helper->total_delivery_fee;
+            if ($request->isMethod('post')) {
+                if ($value['id'] == $request->address_id)
+                    $shipping_charges = $this->lalamoveAPI_Helper->total_delivery_fee;
+            } else {
+                if ($key == 0) $shipping_charges = $this->lalamoveAPI_Helper->total_delivery_fee;
+            }
 
             // Checking PIN code availability of BOTH COD and Prepaid PIN codes in BOTH `cod_pincodes` and `prepaid_pincodes` tables    
             // Check if the COD PIN code of that Delivery Address of the user exists in `cod_pincodes` table    
@@ -761,11 +770,6 @@ class ProductsController extends Controller
             $deliveryAddresses[$key]['prepaidpincodeCount'] = DB::table('prepaid_pincodes')->where('pincode', $value['pincode'])->count(); // Note that    $value['pincode']    denotes the `pincode` of the `delivery_addresses` table
         }
 
-        $selectedDeliveryAddress = $deliveryAddresses[0];
-
-        $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
-        $shipping_charges = $this->lalamoveAPI_Helper->total_delivery_fee;
-        
         if ($request->isMethod('post')) { // if the <form> in front/products/checkout.blade.php is submitted (the HTML Form that the user submits to submit their Delivery Address and Payment Method)
             $data = $request->all();
 
@@ -1040,7 +1044,7 @@ class ProductsController extends Controller
                 // PayPal payment gateway integration in Laravel
             } elseif ($data['payment_gateway'] == 'paymongo') {
                 $resp = $paymongo->setItems($getCartItems)
-                    ->setDeliveryFee($shipping_charges)
+                    ->setDeliveryFee($shipping_charges)->computeTransactionFee()
                     ->set("description", "Kapiton Store - " . Auth::user()->email . " bought items with a total of {$grand_total}.")
                     ->set("payment_method_types", ["card", "brankas_bdo", "gcash", "grab_pay", "paymaya"])
                     ->set("billing", [
@@ -1102,9 +1106,11 @@ class ProductsController extends Controller
         $sub_total = number_format($total_price, 2);
         $delivery_fee = $shipping_charges;
         $total_price += $delivery_fee;
+        $est_transaction_fee = $total_price * 0.05;
+        $total_price += $est_transaction_fee;
         $total_price = number_format($total_price, 2);
         
-        return view('front.products.checkout')->with(compact('deliveryAddresses', 'countries', 'getCartItems', 'sub_total', 'delivery_fee', 'total_price'));
+        return view('front.products.checkout')->with(compact('deliveryAddresses', 'countries', 'getCartItems', 'sub_total', 'delivery_fee', 'total_price', 'est_transaction_fee'));
     }
 
     // Rendering Thanks page (after placing an order)    
