@@ -85,17 +85,6 @@ class PaymongoAPIHelper
             array_push($this->line_items, $line_item);
         }
 
-        // transaction fee
-        $total_amount = round($total_amount / 95, 0);
-        $line_item = [
-            'amount' => (int) $total_amount,
-            'currency' => "PHP",
-            'description' => "Paymongo - Transaction Fee",
-            'name' => "Transaction Fee",
-            'quantity' => 1
-        ];
-        array_push($this->line_items, $line_item);
-
         return $this;
     }
 
@@ -113,6 +102,26 @@ class PaymongoAPIHelper
 
         array_push($this->line_items, $delivery);
 
+        return $this;
+    }
+
+    public function computeTransactionFee() {
+        $total_amount = array_sum(array_map(function ($a) {
+            return $a['amount'];
+        }, $this->line_items));
+        
+        // transaction fee
+        $a_amount = $total_amount * 0.05;
+        $b_amount = $a_amount * 0.04;
+        $amount = round($a_amount + $b_amount, 0);
+        $line_item = [
+            'amount' => (int) $amount,
+            'currency' => "PHP",
+            'description' => "Paymongo - Transaction Fee",
+            'name' => "Transaction Fee",
+            'quantity' => 1
+        ];
+        array_push($this->line_items, $line_item);
         return $this;
     }
 
