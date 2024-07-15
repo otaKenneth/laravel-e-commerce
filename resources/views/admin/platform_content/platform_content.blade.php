@@ -58,6 +58,98 @@
                         </div>
                     </div>
                 </div>
+
+
+                <div class="trusted_by_images elementor-element elementor-element-41763c3 login-container e-flex e-con-boxed e-con e-child"
+                    data-id="41763c3" data-element_type="container">
+                    <div class="e-con-inner">
+                        <div class="elementor-element elementor-element-a63ff4e elementor-widget elementor-widget-heading"
+                            data-id="a63ff4e" data-element_type="widget" data-widget_type="heading.default">
+                            <div class="elementor-widget-container">
+                                <h4 class="elementor-heading-title elementor-size-default">TRUSTED BY IMAGES
+                                </h4>
+                            </div>
+                        </div>   
+                        <div class="trusted_by_list_of_images">
+                            <div>
+                                <a href="#">
+                                    <span>DELETE</span>
+                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#">
+                                    <span>DELETE</span>
+                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#">
+                                    <span>DELETE</span>
+                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#">
+                                    <span>DELETE</span>
+                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#">
+                                    <span>DELETE</span>
+                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#">
+                                    <span>DELETE</span>
+                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#">
+                                    <span>DELETE</span>
+                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#">
+                                    <span>DELETE</span>
+                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#">
+                                    <span>DELETE</span>
+                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#">
+                                    <span>DELETE</span>
+                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="upload_trusted_by">
+                            <form action="" method="">
+                                <label for="files">Select files:</label><br>
+                                <input type="file" id="trusted_images_files" name="files" multiple><br><br>
+                                <input type="submit" value="SAVE" class="submit">
+                            </form>
+                        </div>
+                        
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
             </div>
         </div>
     </div>
