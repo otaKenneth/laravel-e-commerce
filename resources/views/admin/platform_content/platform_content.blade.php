@@ -71,71 +71,12 @@
                             </div>
                         </div>   
                         <div class="trusted_by_list_of_images">
-                            <div>
-                                <a href="#">
-                                    <span>DELETE</span>
-                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
-                                </a>
-                            </div>
-                            <div>
-                                <a href="#">
-                                    <span>DELETE</span>
-                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
-                                </a>
-                            </div>
-                            <div>
-                                <a href="#">
-                                    <span>DELETE</span>
-                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
-                                </a>
-                            </div>
-                            <div>
-                                <a href="#">
-                                    <span>DELETE</span>
-                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
-                                </a>
-                            </div>
-                            <div>
-                                <a href="#">
-                                    <span>DELETE</span>
-                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
-                                </a>
-                            </div>
-                            <div>
-                                <a href="#">
-                                    <span>DELETE</span>
-                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
-                                </a>
-                            </div>
-                            <div>
-                                <a href="#">
-                                    <span>DELETE</span>
-                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
-                                </a>
-                            </div>
-                            <div>
-                                <a href="#">
-                                    <span>DELETE</span>
-                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
-                                </a>
-                            </div>
-                            <div>
-                                <a href="#">
-                                    <span>DELETE</span>
-                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
-                                </a>
-                            </div>
-                            <div>
-                                <a href="#">
-                                    <span>DELETE</span>
-                                    <img class="trusted_logo" src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}">
-                                </a>
-                            </div>
+                            @include('admin.platform_content.trusted_by_list')
                         </div>
                         <div class="upload_trusted_by">
-                            <form action="" method="">
+                            <form id="formUpload_trusted_by" action="#" accept="jpeg,jpg,png">
                                 <label for="files">Select files:</label><br>
-                                <input type="file" id="trusted_images_files" name="files" multiple><br><br>
+                                <input type="file" id="trusted_images_files" name="files[]" multiple><br><br>
                                 <input type="submit" value="SAVE" class="submit">
                             </form>
                         </div>
