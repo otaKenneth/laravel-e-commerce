@@ -156,31 +156,37 @@
 
 
 /*SUCCESS ADD TO CART TOAST LAYOUT*/
-.modal .modal-dialog{
+.modal_success_container .modal-dialog,
+.modal_error_container .modal-dialog{
 	min-width: 260px !important;
 }
-.modal .modal-content{
+.modal_success_container .modal-content,
+.modal_error_container .modal-content{
 	border-radius: 20px !important;
     top: 40px !important;
     text-align: center !important;
 }
-.modal .modal-content .modal-header{
+.modal_success_container .modal-content .modal-header,
+.modal_error_container .modal-content .modal-header{
 	justify-content: center !important;
 	margin-right: 20px !important;
     margin-left: 20px !important;
 }
-.modal .modal-content .modal-header .modal-title{
+.modal_success_container .modal-content .modal-header .modal-title,
+.modal_error_container .modal-content .modal-header .modal-title{
     color: white !important;
     text-transform: uppercase !important;
     font-weight: bold !important;
 }
-.modal .modal-content .modal-body{
+.modal_success_container .modal-content .modal-body,
+.modal_error_container .modal-content .modal-body{
 	text-align: center !important;
 	color: white !important;
 }
 
 @media (max-width: 575px){
-	.modal .modal-dialog{
+	.modal_success_container .modal-dialog,
+	.modal_error_container .modal-dialog{
 		margin-left: auto !important;
 		margin-right: auto !important;
 	}
