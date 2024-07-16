@@ -218,7 +218,7 @@
 </div>
 <!-- Quick-view-Modal /- -->
 
-<div id="success-modal" class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+<div id="success-modal" class="modal_success_container modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document" style="width: 18vw;">
         <div class="modal-content bg-success">
@@ -230,7 +230,7 @@
     </div>
 </div>
 
-<div id="error-modal" class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+<div id="error-modal" class="modal_error_container modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
     aria-hidden="true">
     <div class="modal-dialog text-white" role="document" style="width: 18vw;">
         <div class="modal-content bg-danger ">

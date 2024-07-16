@@ -684,7 +684,15 @@
                                     <input type="hidden" name="product_id" value="{{ $productDetails['id'] }}">
 
                                     <div class="elementor-form-fields-wrapper elementor-labels-">
+                                        @php
+                                            $colorAttributes = array_unique(array_map(function ($a) {
+                                                return $a['color'];
+                                            }, $productDetails['attributes']));
 
+                                            $sizeAttributes = array_unique(array_map(function ($a) {
+                                                return $a['size'];
+                                            }, $productDetails['attributes']));
+                                        @endphp
                                         <div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-field_cfabe28 elementor-col-30 elementor-field-required">
                                             <label for="form-field-field_cfabe28" class="elementor-field-label elementor-screen-only" style="
                                                 display: block !important;
@@ -700,9 +708,9 @@
                                                     </svg>			
                                                 </div>
                                                 <select name="color" id="form-field-field_cfabe28" class="elementor-field-textual elementor-size-sm" required="required" aria-required="true">
-                                                    @foreach ($productDetails['attributes'] as $attribute)
-                                                        @if (!is_null($attribute['color']))
-                                                        <option value="{{$attribute['color']}}">{{$attribute['color']}}</option>
+                                                    @foreach ($colorAttributes as $attribute)
+                                                        @if (!is_null($attribute))
+                                                        <option value="{{$attribute}}">{{$attribute}}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
@@ -724,9 +732,9 @@
                                                     </svg>			
                                                 </div>
                                                 <select name="size" id="form-field-field_9ef7990" class="elementor-field-textual elementor-size-sm" required="required" aria-required="true">
-                                                    @foreach ($productDetails['attributes'] as $attribute)
-                                                        @if (!is_null($attribute['size']))
-                                                        <option value="{{$attribute['size']}}">{{$attribute['size']}}</option>
+                                                    @foreach ($sizeAttributes as $attribute)
+                                                        @if (!is_null($attribute))
+                                                        <option value="{{$attribute}}">{{$attribute}}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
