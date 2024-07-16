@@ -603,6 +603,45 @@ $(document).ready(function() {
         });
     })
 
+    $('#formUpload_trusted_by').on('submit', function(e) {
+        e.preventDefault();
+
+        console.log(e.currentTarget);
+        var formdata = new FormData(e.currentTarget);
+
+        // Log FormData keys and values to the console
+        for (var pair of formdata.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "/admin/platform-management/save-trusted-by",
+            type: "POST",
+            data: formdata,
+            contentType: false,
+            processData: false,
+            success: function (resp) {
+                if (resp && resp.success) {
+                    $('.trusted_by_list_of_images').html(resp.view);
+                    $('#success-modal').modal('toggle');
+                    $("#success-modal .modal-body .message").text(resp.message);
+                    setTimeout(() => {
+                        $('#success-modal').modal('toggle');
+                    }, 1500);
+                } else {
+                    $('#error-modal').modal('toggle');
+                    $("#error-modal .modal-body .message").text(resp.message);
+                    setTimeout(() => {
+                        $('#error-modal').modal('toggle');
+                    }, 1500);
+                }
+            }, error: function (err) {
+                console.log(err)
+            }
+        });
+    })
+
 
     $('.value_short_found_us').each(function() {
         let value = parseInt($(this).text(), 10);
