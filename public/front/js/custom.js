@@ -109,7 +109,7 @@ $(document).ready(function() {
                     alert(resp.message);
                 } else {
                     $('#success-modal').modal('toggle');
-                    $("#success-modal .modal-body .message").text(resp.message);
+                    $("#success-modal .modal-body .message").html(resp.message);
                     setTimeout(() => {
                         $('#success-modal').modal('toggle');
                     }, 2500);

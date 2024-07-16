@@ -157,6 +157,8 @@ Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Ad
         Route::get('platform-management/{pcontent}', 'PlatformContentController@show');
         Route::post('platform-management/{pcontent}/update', 'PlatformContentController@edit');
 
+        Route::post('platform-management/save-trusted-by', 'PlatformContentController@saveTrustedBy');
+
         Route::get('chats', 'ChatsController@index');
     });
 });
