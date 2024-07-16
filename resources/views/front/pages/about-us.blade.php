@@ -246,6 +246,7 @@
                     <style>/*! elementor - v3.18.0 - 08-12-2023 */ .elementor-widget-image-carousel .swiper,.elementor-widget-image-carousel .swiper-container{position:static}.elementor-widget-image-carousel .swiper-container .swiper-slide figure,.elementor-widget-image-carousel .swiper .swiper-slide figure{line-height:inherit}.elementor-widget-image-carousel .swiper-slide{text-align:center}.elementor-image-carousel-wrapper:not(.swiper-container-initialized):not(.swiper-initialized) .swiper-slide{max-width:calc(100% / var(--e-image-carousel-slides-to-show, 3))}</style>
                     <div class="elementor-image-carousel-wrapper swiper" dir="ltr">
                         <div class="elementor-image-carousel swiper-wrapper" aria-live="off">
+                            @foreach (\App\Models\TrustedBy::all() as $trusted_by)
                             <div
                                 class="swiper-slide"
                                 role="group"
@@ -256,116 +257,13 @@
                                     <img
                                         decoding="async"
                                         class="swiper-slide-image"
-                                        src="{{ $getImage('front/images/about/', '2024-03-z8.png') }}"
+                                        src="{{ $getImage('front/images/trusted_by/', $trusted_by->image) }}"
                                         alt="z8"
+                                        style="height: 75px;"
                                     >
                                 </figure>
                             </div>
-                            <div
-                                class="swiper-slide"
-                                role="group"
-                                aria-roledescription="slide"
-                                aria-label="2 of 8"
-                            >
-                                <figure class="swiper-slide-inner">
-                                    <img
-                                        decoding="async"
-                                        class="swiper-slide-image"
-                                        src="{{ $getImage('front/images/about/', '2024-03-z7.png') }}"
-                                        alt="z7"
-                                    >
-                                </figure>
-                            </div>
-                            <div
-                                class="swiper-slide"
-                                role="group"
-                                aria-roledescription="slide"
-                                aria-label="3 of 8"
-                            >
-                                <figure class="swiper-slide-inner">
-                                    <img
-                                        decoding="async"
-                                        class="swiper-slide-image"
-                                        src="{{ $getImage('front/images/about/', '2024-03-z6.png')}}"
-                                        alt="z6"
-                                    >
-                                </figure>
-                            </div>
-                            <div
-                                class="swiper-slide"
-                                role="group"
-                                aria-roledescription="slide"
-                                aria-label="4 of 8"
-                            >
-                                <figure class="swiper-slide-inner">
-                                    <img
-                                        decoding="async"
-                                        class="swiper-slide-image"
-                                        src="{{ $getImage('front/images/about/', '2024-03-z5.png') }}"
-                                        alt="z5"
-                                    >
-                                </figure>
-                            </div>
-                            <div
-                                class="swiper-slide"
-                                role="group"
-                                aria-roledescription="slide"
-                                aria-label="5 of 8"
-                            >
-                                <figure class="swiper-slide-inner">
-                                    <img
-                                        decoding="async"
-                                        class="swiper-slide-image"
-                                        src="{{ $getImage('front/images/about/', '2024-03-z4.png') }}"
-                                        alt="z4"
-                                    >
-                                </figure>
-                            </div>
-                            <div
-                                class="swiper-slide"
-                                role="group"
-                                aria-roledescription="slide"
-                                aria-label="6 of 8"
-                            >
-                                <figure class="swiper-slide-inner">
-                                    <img
-                                        decoding="async"
-                                        class="swiper-slide-image"
-                                        src="{{ $getImage('front/images/about/', '2024-03-z3.png') }}"
-                                        alt="z3"
-                                    >
-                                </figure>
-                            </div>
-                            <div
-                                class="swiper-slide"
-                                role="group"
-                                aria-roledescription="slide"
-                                aria-label="7 of 8"
-                            >
-                                <figure class="swiper-slide-inner">
-                                    <img
-                                        decoding="async"
-                                        class="swiper-slide-image"
-                                        src="{{ $getImage('front/images/about/', '2024-03-z2.png') }}"
-                                        alt="z2"
-                                    >
-                                </figure>
-                            </div>
-                            <div
-                                class="swiper-slide"
-                                role="group"
-                                aria-roledescription="slide"
-                                aria-label="8 of 8"
-                            >
-                                <figure class="swiper-slide-inner">
-                                    <img
-                                        decoding="async"
-                                        class="swiper-slide-image"
-                                        src="{{ $getImage('front/images/about/', '2024-03-z1.png') }}"
-                                        alt="z1"
-                                    >
-                                </figure>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
