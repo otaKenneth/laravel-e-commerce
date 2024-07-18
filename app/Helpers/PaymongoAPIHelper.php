@@ -71,7 +71,7 @@ class PaymongoAPIHelper
             $item_description .= $cart_item['product']['product_name'] . ", " . $cart_item['color'] . ", " . $cart_item['size'] . ".";
 
             $prod_price = $cart_item['product']['product_price'];
-            $amount = round($prod_price * 100, 0);
+            $amount = number_format($prod_price * 100, 0, '.', '');
             $total_amount += $amount;
             Log::info("Paymongo: setItems - " . $amount);
             
