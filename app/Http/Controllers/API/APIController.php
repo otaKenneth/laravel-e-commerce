@@ -877,7 +877,9 @@ class APIController extends Controller
             return response()->json(['status' => 'success'], 200);
         } else {
             \Log::warning('PayMongo webhook signature verification failed');
-            return response()->json(['status' => 'error', 'message' => 'Invalid signature'], 400);
+            \Log::info('Paymongo Expected Signature: ' . $expectedSignature);
+            \Log::info('Paymongo Signature: ' . $signatures['t']);
+            return response()->json(['status' => 'error', 'message' => 'Invalid signature'], 200);
         }
     }
 
