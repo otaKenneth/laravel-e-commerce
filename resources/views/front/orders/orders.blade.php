@@ -154,13 +154,13 @@
                                 <div class="e-con-inner">
                                     @foreach ($orders as $order)
                                     <div
-                                        class="elementor-element e-flex e-con-boxed e-con e-child"
+                                        class="order-container-outer elementor-element e-flex e-con-boxed e-con e-child"
                                         data-element_type="container"
                                         data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
                                     >
                                         <div class="e-con-inner">
                                             <div
-                                                class="elementor-element elementor-element-f457259 elementor-widget elementor-widget-heading"
+                                                class="order-id-and-cancel elementor-element elementor-element-f457259 elementor-widget elementor-widget-heading"
                                                 data-id="f457259"
                                                 data-element_type="widget"
                                                 data-widget_type="heading.default"
@@ -169,6 +169,9 @@
                                                     <h6 class="elementor-heading-title elementor-size-default">ORDER ID:  &nbsp;
                                                         <span style="font-size: 26px; color: black;">{{$order->id}}​</span>
                                                     </h6>
+                                                </div>
+                                                <div class="elementor-widget-container">
+                                                    <a href="#" class="cancel-order-btn">Cancel Order</a>
                                                 </div>
                                             </div>
                                             <div

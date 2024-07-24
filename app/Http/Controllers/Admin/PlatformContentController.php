@@ -35,7 +35,7 @@ class PlatformContentController extends Controller
         $pcontent->save();
 
         // Return a response if needed
-        return response()->json(['message' => 'Content saved successfully']);
+        return response()->json(['success' => true, 'message' => 'Content saved successfully']);
     }
 
     public function saveTrustedBy(Request $request) {
@@ -75,5 +75,15 @@ class PlatformContentController extends Controller
         }
 
         return response()->json(['error' => 'No files found'], 400);
+    }
+
+    public function deleteTrustedBy (TrustedBy $trustedBy) {
+        $trustedBy->delete();
+
+        $trusted_by_list = TrustedBy::all();
+        return response()->json([
+            'success' => true, 'message' => "Successfully deleted {$trustedBy->name}", 
+            'view' => (String) \Illuminate\Support\Facades\View::make('admin.platform_content.trusted_by_list')->with(compact('trusted_by_list')),
+        ]);
     }
 }
