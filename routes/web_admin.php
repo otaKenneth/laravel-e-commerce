@@ -153,11 +153,14 @@ Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Ad
         // Delete a Rating via AJAX in admin/ratings/ratings.blade.php, check admin/js/custom.js
         Route::get('delete-rating/{id}', 'RatingController@deleteRating'); 
 
-        Route::get('platform-management', 'PlatformContentController@index');
-        Route::get('platform-management/{pcontent}', 'PlatformContentController@show');
-        Route::post('platform-management/{pcontent}/update', 'PlatformContentController@edit');
-
-        Route::post('platform-management/save-trusted-by', 'PlatformContentController@saveTrustedBy');
+        Route::prefix('platform-management/')->group(function () {
+            Route::get('', 'PlatformContentController@index');
+            Route::get('{pcontent}', 'PlatformContentController@show');
+            Route::post('{pcontent}/update', 'PlatformContentController@edit');
+    
+            Route::post('save-trusted-by', 'PlatformContentController@saveTrustedBy');
+            Route::delete('trusted_by/{trustedBy}', 'PlatformContentController@deleteTrustedBy');
+        });
 
         Route::get('chats', 'ChatsController@index');
     });

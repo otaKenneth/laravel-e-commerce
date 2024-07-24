@@ -599,6 +599,14 @@ $(document).ready(function() {
             data   : {'content': htmlContent},
             success: function(resp) {
                 console.log(resp)
+                // platform-content-form
+                if (resp && resp.success) {
+                    $('.platform-content-form .alert.alert-success .alert-message').html(resp.message);
+                    $('.platform-content-form .alert.alert-success').toggleClass('d-none');
+                    setTimeout(() => {
+                        $('.platform-content-form .alert.alert-success').toggleClass('d-none');
+                    }, 1500);
+                }
             }
         });
     })
@@ -624,16 +632,16 @@ $(document).ready(function() {
             success: function (resp) {
                 if (resp && resp.success) {
                     $('.trusted_by_list_of_images').html(resp.view);
-                    $('#success-modal').modal('toggle');
-                    $("#success-modal .modal-body .message").text(resp.message);
+                    $('.trusted_by_images .alert.alert-success .alert-message').html(resp.message);
+                    $('.trusted_by_images .alert.alert-success').toggleClass('d-none');
                     setTimeout(() => {
-                        $('#success-modal').modal('toggle');
+                        $('.trusted_by_images .alert.alert-success').toggleClass('d-none');
                     }, 1500);
                 } else {
-                    $('#error-modal').modal('toggle');
-                    $("#error-modal .modal-body .message").text(resp.message);
+                    $('.trusted_by_images .alert.alert-danger .alert-message').html(resp.message);
+                    $('.trusted_by_images .alert.alert-danger').toggleClass('d-none');
                     setTimeout(() => {
-                        $('#error-modal').modal('toggle');
+                        $('.trusted_by_images .alert.alert-danger').toggleClass('d-none');
                     }, 1500);
                 }
             }, error: function (err) {
