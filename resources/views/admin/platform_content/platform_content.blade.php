@@ -25,9 +25,15 @@
 
             
             <div class="e-con-inner">
-                <div class="elementor-element elementor-element-67ba668 e-con-full e-flex e-con e-child"
+                <div class="platform-content-form elementor-element elementor-element-67ba668 e-con-full e-flex e-con e-child"
                     data-id="67ba668" data-element_type="container"
                     data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;container_type&quot;:&quot;flex&quot;}">
+                    <div class="alert alert-success d-none" role="alert">
+                        <strong>Success:</strong> <span class="alert-message"></span>
+                    </div>
+                    <div class="alert alert-danger d-none" role="alert">
+                        <strong>Error:</strong> <span class="alert-message"></span>
+                    </div>
                     <div class="elementor-element elementor-element-41763c3 login-container e-flex e-con-boxed e-con e-child"
                         data-id="41763c3" data-element_type="container">
                         <div class="e-con-inner">
@@ -78,6 +84,10 @@
 
                     <div class="trusted_by_images elementor-element elementor-element-41763c3 login-container e-flex e-con-boxed e-con e-child"
                         data-id="41763c3" data-element_type="container">
+                        <div class="alert alert-success d-none" role="alert">
+                            <strong>Success:</strong> <span class="alert-message"></span>
+                        </div>
+
                         <div class="e-con-inner">
                             <div class="elementor-element elementor-element-a63ff4e elementor-widget elementor-widget-heading"
                                 data-id="a63ff4e" data-element_type="widget" data-widget_type="heading.default">
