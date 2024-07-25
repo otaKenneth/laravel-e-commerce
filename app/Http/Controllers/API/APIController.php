@@ -6,6 +6,7 @@ use App\Helpers\PaymongoAPIHelper;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class APIController extends Controller
 {
@@ -850,7 +851,6 @@ class APIController extends Controller
         if ($paymongo->verifySignature($expectedSignature, $request->getContent(), $signatures['t'])) {
             // Handle the webhook payload
             $payload = $request->json()->all()['data'];
-            \Log::info('PayMongo webhook received', $payload);
 
             switch ($payload['attributes']['type']) {
                 case 'payment.paid':
@@ -870,7 +870,7 @@ class APIController extends Controller
                     break;
                 
                 default:
-                    $this->updatePaymentStatus($payload['attributes']['data']);
+                    \Log::info('PayMongo webhook received', $payload);
                     break;
             }
 
@@ -884,20 +884,27 @@ class APIController extends Controller
     }
 
     private function updatePaymentStatus($payload) {
-        // Process the payment status here
-        $payment = \App\Models\Payment::where('payment_id', $payload['attributes']['payment_intent_id'])->first();
-        $payment->payment_status = $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
-        $payment->update();
-        // ...
+        try {
+            // Process the payment status here
+            $payment = \App\Models\Payment::where('payment_id', $payload['attributes']['payment_intent_id'])
+                ->orWhere('payment_id', $payload['id'])
+                ->first();
 
-        $order = \App\Models\Order::find($payment->order_id);
-        $order->order_status = 'Paid';
-        $order->update();
-
-        $log = new \App\Models\OrdersLog;
-        $log->order_id     = $order->id;
-        $log->order_status = $order->order_status;
-        $log->save();
+            $payment->payment_id = $payload['id'];
+            $payment->payment_status = $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
+            $payment->update();
+    
+            $order = \App\Models\Order::find($payment->order_id);
+            $order->order_status = Str::title($payload['attributes']['status']);
+            $order->update();
+    
+            $log = new \App\Models\OrdersLog;
+            $log->order_id     = $order->id;
+            $log->order_status = $order->order_status;
+            $log->save();
+        } catch (\Exception $e) {
+            \Log::error('Paymongo Update Payment Status' . $e->getMessage());
+        }
     }
 
     private function updateRefundStatus($payload) {
