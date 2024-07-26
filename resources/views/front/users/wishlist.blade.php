@@ -1,8 +1,7 @@
-@extends('front.layout.layout')
+@extends('front.users.profile')
 
 
-@section('content')
-
+@section('user_account_content')
 <div
     data-elementor-type="wp-page"
     data-elementor-id="1956"
@@ -22,17 +21,6 @@
                 data-element_type="container"
                 data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;container_type&quot;:&quot;flex&quot;}"
             >
-                <div
-                    class="elementor-element elementor-element-0b7ad0a elementor-invisible elementor-widget elementor-widget-heading"
-                    data-id="0b7ad0a"
-                    data-element_type="widget"
-                    data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}"
-                    data-widget_type="heading.default"
-                >
-                    <div class="elementor-widget-container">
-                        <h1 class="elementor-heading-title elementor-size-default">MY WISHLIST</h1>
-                    </div>
-                </div>
                 <div
                     class="elementor-element elementor-element-b8d85aa login-container e-flex e-con-boxed elementor-invisible e-con e-child"
                     data-id="b8d85aa"
