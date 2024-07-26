@@ -156,6 +156,7 @@
                                     <div
                                         class="order-container-outer elementor-element e-flex e-con-boxed e-con e-child"
                                         data-element_type="container"
+                                        data-order_id="{{$order->id}}"
                                         data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
                                     >
                                         <div class="e-con-inner">
@@ -170,9 +171,11 @@
                                                         <span style="font-size: 26px; color: black;">{{$order->id}}​</span>
                                                     </h6>
                                                 </div>
+                                                @if (in_array($order->order_status, ['1', 'New', 'Pending', 'In Progress']))
                                                 <div class="elementor-widget-container">
                                                     <a href="#" class="cancel-order-btn">Cancel Order</a>
                                                 </div>
+                                                @endif
                                             </div>
                                             <div
                                                 class="elementor-element elementor-element-a61972a elementor-widget elementor-widget-heading"
