@@ -183,6 +183,10 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14
                 ],
                 'front.user.orders' => [
                     [
+                        'id' => 'elementor-post-743-css',
+                        'href' => 'front/css/elementor-css/elementor-css-post-743.css'
+                    ],
+                    [
                         'id' => 'elementor-post-843-css',
                         'href' => 'front/css/elementor-css/elementor-css-post-843.css'
                     ],
@@ -191,10 +195,13 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14
                         'href' => 'front/css/elementor-css/elementor-css-post-491.css'
                     ]
                 ],
-                'front.user.security' => [
+                'front.user.security' => [[
+                        'id' => 'elementor-post-743-css',
+                        'href' => 'front/css/elementor-css/elementor-css-post-743.css'
+                    ],[
                     'id' => 'elementor-post-884-css',
                     'href' => 'front/css/elementor-css/elementor-css-post-884.css'
-                ],
+                ]],
                 'front.user.cart' => [
                     'id' => 'elementor-post-896-css',
                     'href' => 'front/css/elementor-css/elementor-css-post-896.css'
@@ -209,15 +216,21 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14
                     'href' => 'front/css/elementor-css/elementor-css-post-1070.css',
                     'javascript_src' => 'front/js/custom-vendor-registration.js',
                 ],
-                'user.chats.show' => [
+                'user.chats.show' => [[
+                        'id' => 'elementor-post-743-css',
+                        'href' => 'front/css/elementor-css/elementor-css-post-743.css'
+                    ],[
                     'id' => 'elementor-post-1086-css',
                     'href' => 'front/css/elementor-css/elementor-css-post-1086.css'
-                ],
-                'user.delivery_address_list.show' => [
+                ]],
+                'user.delivery_address_list.show' => [[
+                        'id' => 'elementor-post-743-css',
+                        'href' => 'front/css/elementor-css/elementor-css-post-743.css'
+                    ],[
                     'id' => 'elementor-post-1628-css',
                     'href' => 'front/css/elementor-css/elementor-css-post-1628.css',
                     'javascript_src' => 'front/js/custom-user-account.js',
-                ],
+                ]],
                 'front.user.about-us' => [
                     'id' => 'elementor-post-1656-css',
                     'href' => 'front/css/elementor-css/elementor-css-post-1656.css'
@@ -226,10 +239,13 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14
                     'id' => 'elementor-post-1709-css',
                     'href' => 'front/css/elementor-css/elementor-css-post-1709.css'
                 ],
-                'front.user.wishlist' => [
+                'front.user.wishlist' => [[
+                        'id' => 'elementor-post-743-css',
+                        'href' => 'front/css/elementor-css/elementor-css-post-743.css'
+                    ],[
                     'id' => 'elementor-post-1956-css',
                     'href' => 'front/css/elementor-css/elementor-css-post-1956.css'
-                ],
+                ]],
                 'front.user.merchants' => [
                     'id' => 'elementor-post-1751-css',
                     'href' => 'front/css/elementor-css/elementor-css-post-1751.css'

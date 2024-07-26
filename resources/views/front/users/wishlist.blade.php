@@ -1,8 +1,7 @@
-@extends('front.layout.layout')
+@extends('front.users.profile')
 
 
-@section('content')
-
+@section('user_account_content')
 <div
     data-elementor-type="wp-page"
     data-elementor-id="1956"

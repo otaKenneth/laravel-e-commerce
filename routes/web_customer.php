@@ -45,8 +45,6 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     
     Route::post('wishlist/add', 'ProductsController@wishlistAdd');
 
-    Route::get('wishlist', 'WishlistController@wishlist')->name('front.user.wishlist');
-
     // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
     Route::get('about-us', 'IndexController@aboutUs')->name('front.user.about-us');
 
@@ -135,6 +133,8 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
                 
                 Route::post('{order}/update/{ordersProduct}', 'OrderController@updateOrderStatus');
             });
+
+            Route::get('wishlist', 'WishlistController@wishlist')->name('front.user.wishlist');
         });
 
         Route::get('user/chats', 'ChatsController@index')->name('user.chats.show');

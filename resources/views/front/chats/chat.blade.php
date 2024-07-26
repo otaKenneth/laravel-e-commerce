@@ -1,7 +1,7 @@
 {{-- User Chat Functionality --}} 
-@extends('front.layout.layout')
+@extends('front.users.profile')
 
 
-@section('content')
+@section('user_account_content')
 @livewire('chat-box');
 @endsection
