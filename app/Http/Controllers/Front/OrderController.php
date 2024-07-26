@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Helpers\PaymongoRefundAPIHelper;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Order;
@@ -20,19 +20,173 @@ class OrderController extends Controller
     public function orders($id = null) { // If the slug {id?} (Optional Parameters) is passed in, this means go to the front/orders/order_details.blade.php page, and if not, this means go to the front/orders/orders.blade.php page    // Optional Parameters: https://laravel.com/docs/9.x/routing#parameters-optional-parameters    
         if (empty($id)) { // if the order id is not passed in in the route (URL) as an Optional Parameter (slug), this means go to front/orders/orders.blade.php page
             // Get all the orders of the currently authenticated/logged-in user
-            $orders = \App\Models\Order::with('orders_products')->where('user_id', \Illuminate\Support\Facades\Auth::user()->id)->orderBy('id', 'Desc')->paginate(10); // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user    // Eager Loading: https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'orders_products' is the relationship method name in Order.php model
+            $orders = Order::with('orders_products')
+                ->where('user_id', \Illuminate\Support\Facades\Auth::user()->id)
+                ->where('order_status', '!=', 'Cancelled')
+                ->orderBy('id', 'Desc')
+                ->paginate(10); // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user    
+                // Eager Loading: https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    
+                // 'orders_products' is the relationship method name in Order.php model
             // dd($orders);
 
             return view('front.orders.orders')->with(compact('orders'));
 
         } else { // if the order id is passed in in the route (URL) as an Optional Parameter (slug), this means go to front/orders/order_details.blade.php page
-            $orderDetails = \App\Models\Order::with('orders_products')->where('id', $id)->first()->toArray();// Eager Loading: https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'orders_products' is the relationship method name in Order.php model
+            $orderDetails = Order::with('orders_products')->where('id', $id)->first()->toArray();// Eager Loading: https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'orders_products' is the relationship method name in Order.php model
             // dd($orderDetails);
 
 
             return view('front.orders.order_details')->with(compact('orderDetails'));
         }
 
+    }
+
+    public function cancelOrder(Request $request, Order $order) {
+        try {
+            if (in_array($order->order_status, ["1", "New", "Paid", "Pending", "In Progress"])) {
+                
+                // Notify customer for cancellation
+                $orderDetails = $order->with('orders_products')->first()->toArray();
+                $email = $order->email;
+                
+                // The email message data/variables that will be passed in to the email view
+                $messageData = [
+                    'email'        => $order->email,
+                    'name'         => $order->name, 
+                    'order_id'     => $order->id,
+                    'orderDetails' => $orderDetails
+                ];
+                
+                \Illuminate\Support\Facades\Mail::send('emails.order', $messageData, function ($message) use ($email) {
+                    $message->to($email)->subject('Order Cancelled - Kapiton Store');
+                });
+
+                // Notify vendor for cancellation
+                $vendors = $order->order_vendors;
+                foreach ($vendors as $vendor) {
+                    $email = $vendor->vendorbusinessdetails->shop_email;
+                    $orderDetails = $order->with(['orders_products' => function ($query) use ($vendor) {
+                        return $query->where('vendor_id', $vendor->id);
+                    }])->first()->toArray();
+
+                    // The email message data/variables that will be passed in to the email view
+                    $messageData = [
+                        'email'           => $email,
+                        'name'            => $vendor->vendorbusinessdetails->shop_name,
+                        'order_id'        => $order->id,
+                        'orderDetails'    => $orderDetails,
+                        'order_status'    => "Cancelled",
+                        'courier_name'    => "",
+                        'tracking_number' => ""
+                    ];
+
+                    \Illuminate\Support\Facades\Mail::send('emails.order_status', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_status' is the order_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                        $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
+                    });
+                }
+
+                // If paid, then refund order
+                $order_log = OrdersLog::where('order_id', $order->id)
+                    ->where('order_status', 'Paid')->count();
+
+                if ($order_log > 0) {
+                    // activate refund
+                    DB::transaction(function () use ($order) {
+                        $order->order_status = "Pending Refund";
+                        $order->update();
+    
+                        foreach ($order->orders_products as $order_product) {
+                            $order_product->item_status = "Pending Refund";
+                            $order_product->update();
+                        }
+    
+                        $log = new OrdersLog;
+                        $log->order_id = $order->id;
+                        $log->order_status = "Pending Refund";
+                        $log->save();
+                    });
+
+                    // >>>>
+                    $orderDetails = $order->with('orders_products')->first()->toArray();
+                    $messageData = [
+                        'email'        => $order->email,
+                        'name'         => $order->name,
+                        'order_id'     => $order->id,
+                        'orderDetails' => $orderDetails,
+                        'order_status' => $order->order_status,
+                        'reason'       => "Order Cancellation",
+                    ];
+        
+                    // send an email to user
+                    $email = $order->email;
+                    \Illuminate\Support\Facades\Mail::send('emails.order_product_refund_request', $messageData, function ($message) use ($email) {
+                        $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
+                    });
+        
+                    // send an email to vendor
+                    foreach ($vendors as $vendor) {
+                        $messageData['orderDetails'] = $orderDetails = $order->with(['orders_products' => function ($query) use ($vendor) {
+                            return $query->where('vendor_id', $vendor->id);
+                        }])->first()->toArray();
+                        $email = $vendor->email;
+                        $ccEmails = Admin::select('email')->where('vendor_id', 0)->where('status', 1)->whereIn('type', ['superadmin', 'admin'])->get()->pluck('email')->toArray();
+                        array_push($ccEmails, $vendor->vendorbusinessdetails->shop_email);
+            
+                        \Illuminate\Support\Facades\Mail::send('emails.vendor_order_product_refund', $messageData, function ($message) use ($email, $ccEmails) {
+                            $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
+            
+                            // Adding CC emails
+                            foreach ($ccEmails as $ccEmail) {
+                                $message->cc($ccEmail);
+                            }
+                        });
+                    }
+        
+                    // save new refund data
+                    DB::transaction(function () use ($order) {
+                        $payment = Payment::where('order_id', $order->id)->first();
+            
+                        $refund = new Refunds;
+                        $refund->order_id = $order->id;
+                        $refund->payment_id = $payment->id;
+                        $refund->amount = $order->grand_total;
+                        $refund->status = $order->order_status;
+                        $refund->reason = "Order Cancellation";
+                        $refund->save();
+                    });
+                    // <<<<
+                }
+
+                DB::transaction(function () use ($order) {
+                    $order->order_status = "Cancelled";
+                    $order->update();
+    
+                    foreach ($order->orders_products as $order_product) {
+                        $order_product->item_status = "Pending Refund";
+                        $order_product->update();
+                    }
+        
+                    $log = new OrdersLog;
+                    $log->order_id = $order->id;
+                    $log->order_status = "Cancelled";
+                    $log->save();
+                });
+        
+                $message = "Order {$order->id} has been cancelled.";
+                $message .= $order_log > 0 ? " Your product is being reviewed by the vendor for refund. This may take some time.":"";
+    
+                return response()->json([
+                    'success' => true,
+                    'message' => $message
+                ]);
+            }
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     public function refundOrder(Request $request, Order $order) { // id product to be refunded
@@ -79,7 +233,7 @@ class OrderController extends Controller
 
             // send an email to user
             $email = $user->email;
-            \Illuminate\Support\Facades\Mail::send('emails.order_product_refund_request', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_status' is the order_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+            \Illuminate\Support\Facades\Mail::send('emails.order_product_refund_request', $messageData, function ($message) use ($email) {
                 $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
             });
 
@@ -88,7 +242,7 @@ class OrderController extends Controller
             $ccEmails = Admin::select('email')->where('vendor_id', 0)->where('status', 1)->whereIn('type', ['superadmin', 'admin'])->get()->pluck('email')->toArray();
             array_push($ccEmails, $vendor->vendorbusinessdetails->shop_email);
 
-            \Illuminate\Support\Facades\Mail::send('emails.vendor_order_product_refund', $messageData, function ($message) use ($email, $ccEmails) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_status' is the order_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+            \Illuminate\Support\Facades\Mail::send('emails.vendor_order_product_refund', $messageData, function ($message) use ($email, $ccEmails) {
                 $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
 
                 // Adding CC emails

@@ -1178,4 +1178,36 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('.cancel-order-btn').click(e => {
+        e.preventDefault();
+
+        var order_id = $(e.target).closest('.order-container-outer').data('order_id');
+        
+        var result = confirm(`Are you sure you want to cancel this order ${order_id}?`);
+        if (result) {
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                url: `/user/orders/${order_id}/cancel`,
+                type: "POST",
+                success: function (resp) {
+                    if (resp && resp.success) {
+                        $('#success-modal').modal('toggle');
+                        $("#success-modal .modal-body .message").text(resp.message);
+                        setTimeout(() => {
+                            $('#success-modal').modal('toggle');
+                        }, 2500);
+                    } else {
+                        $('#error-modal').modal('toggle');
+                        $("#error-modal .modal-body .message").text(resp.message);
+                        setTimeout(() => {
+                            $('#error-modal').modal('toggle');
+                        }, 2500);
+                    }
+                }, error: function (err) {
+                    console.log(err)
+                }
+            });
+        }
+    })
 });

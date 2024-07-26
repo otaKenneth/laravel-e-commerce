@@ -92,16 +92,6 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
     // Protecting the routes of user (user must be authenticated/logged in) (to prevent access to these links while being unauthenticated/not being logged in (logged out))
     Route::group(['middleware' => ['auth']], function() {
-        // Render User Account page with 'GET' request (front/users/user_account.blade.php), or the HTML Form submission in the same page with 'POST' request using AJAX (to update user details). Check front/js/custom.js
-        Route::match(['GET', 'POST'], 'user/account', ['as' => 'front.user.account', 'uses' => 'UserController@userAccount']);
-
-        // User Account Update Password HTML Form submission via AJAX. Check front/js/custom.js
-        Route::post('user/update-password', 'UserController@userUpdatePassword');
-        
-        Route::get('user/delivery-addresses', 'UserController@showDeliveryAddresses')->name('user.delivery_address_list.show');
-
-        Route::get('user/security', 'UserController@showSecurity')->name('front.user.security');
-
         // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission via AJAX in front/products/cart_items.blade.php, check front/js/custom.js
         Route::post('/apply-coupon', 'ProductsController@applyCoupon'); // Important Note: We added this route here as a protected route inside the 'auth' middleware group because ONLY logged in/authenticated users are allowed to redeem Coupons!
 
@@ -121,21 +111,37 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
         Route::get('thanks', 'ProductsController@thanks');
 
         // Render User 'My Orders' page
-        Route::get('user/orders/{id?}', [
-            'as' => 'front.user.orders',
-            'uses' => 'OrderController@orders'
-        ]); // If the slug {id?} (Optional Parameters) is passed in, this means go to the front/orders/order_details.blade.php page, and if not, this means go to the front/orders/orders.blade.php page
+        Route::prefix('user')->group(function () {
+            Route::get('', function () {
+                return view('front.users.profile');
+            });
+
+            // Render User Account page with 'GET' request (front/users/user_account.blade.php), or the HTML Form submission in the same page with 'POST' request using AJAX (to update user details). Check front/js/custom.js
+            Route::match(['GET', 'POST'], 'account', ['as' => 'front.user.account', 'uses' => 'UserController@userAccount']);
+
+            // User Account Update Password HTML Form submission via AJAX. Check front/js/custom.js
+            Route::post('update-password', 'UserController@userUpdatePassword');
+            
+            Route::get('delivery-addresses', 'UserController@showDeliveryAddresses')->name('user.delivery_address_list.show');
+
+            Route::get('security', 'UserController@showSecurity')->name('front.user.security');
+
+            Route::prefix('orders')->group(function () {
+                Route::get('{id?}', 'OrderController@orders')->name('front.user.orders');  // If the slug {id?} (Optional Parameters) is passed in, this means go to the front/orders/order_details.blade.php page, and if not, this means go to the front/orders/orders.blade.php page
+                Route::post('{order}/cancel', 'OrderController@cancelOrder');
+
+                // Refund an item
+                Route::post('{order}/refund', 'OrderController@refundOrder');
+                
+                Route::post('{order}/update/{ordersProduct}', 'OrderController@updateOrderStatus');
+            });
+        });
 
         Route::get('user/chats', 'ChatsController@index')->name('user.chats.show');
         Route::post('chats/send-message', 'ChatsController@store')->name('user.chats.store');
 
         // Add Rating & Review on a product in front/products/detail.blade.php
         Route::post('add-rating', 'RatingController@addRating');
-
-        // Refund an item
-        Route::post('user/orders/{order}/refund', 'OrderController@refundOrder');
-        
-        Route::post('user/orders/{order}/update/{ordersProduct}', 'OrderController@updateOrderStatus');
 
         // PayPal routes:
         // PayPal payment gateway integration in Laravel (this route is accessed from checkout() method in Front/ProductsController.php). Rendering front/paypal/paypal.blade.php page

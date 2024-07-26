@@ -24,7 +24,9 @@ class Order extends Model
         return $this->hasMany('App\Models\OrdersProduct', 'order_id')->with('product_category');
     }
 
-
+    public function order_vendors() {
+        return $this->hasManyThrough(Vendor::class, OrdersProduct::class, 'order_id', 'id', 'id', 'vendor_id');
+    }
 
 
 
