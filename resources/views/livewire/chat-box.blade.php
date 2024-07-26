@@ -14,9 +14,6 @@
         data-core-v316-plus="true"
     >
         <div class="e-con-inner">
-        @php
-            $account_page = 'user_chats';
-        @endphp
             <div
                 class="elementor-element elementor-element-aca939b login-container e-flex e-con-boxed e-con e-child"
                 data-id="aca939b"

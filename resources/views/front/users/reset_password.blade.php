@@ -4,10 +4,6 @@
 
 
 @section('user_account_content')
-
-@php
-    $account_page = 'user_security';
-@endphp
 <div
     class="elementor-element elementor-element-1d0a7bf e-con-full e-flex e-con e-child"
     data-id="1d0a7bf"
