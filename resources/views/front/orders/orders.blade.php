@@ -2,11 +2,6 @@
 @extends('front.users.profile')
 
 @section('user_account_content')
-
-@php
-    $account_page = 'user_orders';
-@endphp
-
 <div
     class="elementor-element elementor-element-bc5a439 e-con-full e-flex e-con e-child"
     data-id="bc5a439"

@@ -31,22 +31,7 @@
                     data-widget_type="heading.default"
                 >
                     <div class="elementor-widget-container">
-                        @if(isset($account_page))
-                            @if($account_page == "user_account")
-                                <h1 class="elementor-heading-title elementor-size-default">MY ACCOUNT</h1>
-                            @elseif($account_page == 'user_delivery_addresses')
-                                <h1 class="elementor-heading-title elementor-size-default">ADDRESSES</h1>
-                            @elseif($account_page == 'user_security')
-                                <h1 class="elementor-heading-title elementor-size-default">CHANGE PASSWORD</h1>
-                            @elseif($account_page == 'user_orders')
-                                <h1 class="elementor-heading-title elementor-size-default">ORDER LIST</h1>
-                            @elseif($account_page == 'user_wishlist')
-                                <h1 class="elementor-heading-title elementor-size-default">WISHLIST</h1>
-                            @elseif($account_page == 'user_chats')
-                                <h1 class="elementor-heading-title elementor-size-default">CHATS</h1>
-                            @endif  
-                        @endif
-                        
+                        <h1 class="elementor-heading-title elementor-size-default">{{$activeBreadcrumb}}</h1>
                     </div>
                 </div>
                 <div
@@ -69,15 +54,9 @@
                                 data-widget_type="icon-list.default"
                             >
                                 <div class="elementor-widget-container">
-                                    <ul class="elementor-icon-list-items">
+                                    <ul class="elementor-icon-list-items navigation">
                                         <li class="elementor-icon-list-item">
-                                            <a href="{{ url('user/account') }}"
-                                            @if(isset($account_page))
-                                                @if($account_page == "user_account")
-                                                    style="opacity: 1;"
-                                                @endif
-                                            @endif
-                                            >
+                                            <a href="{{ url('user/account') }}" class="{{ request()->is('user/account') ? 'active' : '' }}">
                                                 <span class="elementor-icon-list-icon">
                                                     <svg
                                                         aria-hidden="true"
@@ -92,13 +71,7 @@
                                             </a>
                                         </li>
                                         <li class="elementor-icon-list-item">
-                                            <a href="{{ url('user/delivery-addresses') }}" 
-                                            @if(isset($account_page))
-                                                @if($account_page == "user_delivery_addresses")
-                                                    style="opacity: 1;"
-                                                @endif
-                                            @endif
-                                            >
+                                            <a href="{{ url('user/delivery-addresses') }}" class="{{ request()->is('user/delivery-addresses') ? 'active' : '' }}">
                                                 <span class="elementor-icon-list-icon">
                                                     <svg aria-hidden="true" class="e-font-icon-svg e-fas-map-marker-alt" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"></path>
                                                 </svg>
@@ -107,13 +80,7 @@
                                             </a>
                                         </li>
                                         <li class="elementor-icon-list-item">
-                                            <a href="{{ url('user/security') }}"
-                                            @if(isset($account_page))
-                                                @if($account_page == "user_security")
-                                                    style="opacity: 1;"
-                                                @endif
-                                            @endif
-                                            >
+                                            <a href="{{ url('user/security') }}" class="{{ request()->is('user/security') ? 'active' : '' }}">
                                                 <span class="elementor-icon-list-icon">
                                                 <svg aria-hidden="true" class="e-font-icon-svg e-fas-lock" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 152v72H48c-26.5 0-48 21.5-48 48v192c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V272c0-26.5-21.5-48-48-48zm-104 0H152v-72c0-39.7 32.3-72 72-72s72 32.3 72 72v72z"></path>
@@ -123,13 +90,7 @@
                                             </a>
                                         </li>
                                         <li class="elementor-icon-list-item">
-                                            <a href="{{ url('user/orders') }}"
-                                            @if(isset($account_page))
-                                                @if($account_page == "user_orders")
-                                                    style="opacity: 1;"
-                                                @endif
-                                            @endif
-                                            >
+                                            <a href="{{ url('user/orders') }}" class="{{ request()->is('user/orders') ? 'active' : '' }}">
                                                 <span class="elementor-icon-list-icon">
                                                     <svg
                                                         aria-hidden="true"
@@ -144,13 +105,7 @@
                                             </a>
                                         </li>
                                         <li class="elementor-icon-list-item">
-                                            <a href="{{ url('user/wishlist') }}"
-                                            @if(isset($account_page))
-                                                @if($account_page == "user_wishlist")
-                                                    style="opacity: 1;"
-                                                @endif
-                                            @endif
-                                            >
+                                            <a href="{{ url('user/wishlist') }}" class="{{ request()->is('user/wishlist') ? 'active' : '' }}">
                                                 <span class="elementor-icon-list-icon">
                                                     <svg
                                                         aria-hidden="true"
@@ -165,13 +120,7 @@
                                             </a>
                                         </li>
                                         <li class="elementor-icon-list-item">
-                                            <a href="{{ url('user/chats') }}"
-                                            @if(isset($account_page))
-                                                @if($account_page == "user_chats")
-                                                    style="opacity: 1;"
-                                                @endif
-                                            @endif
-                                            >
+                                            <a href="{{ url('user/chats') }}" class="{{ request()->is('user/chats') ? 'active' : '' }}">
                                                 <span class="elementor-icon-list-icon">
                                                     <svg aria-hidden="true" class="e-font-icon-svg e-fas-comments" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M416 192c0-88.4-93.1-160-208-160S0 103.6 0 192c0 34.3 14.1 65.9 38 92-13.4 30.2-35.5 54.2-35.8 54.5-2.2 2.3-2.8 5.7-1.5 8.7S4.8 352 8 352c36.6 0 66.9-12.3 88.7-25 32.2 15.7 70.3 25 111.3 25 114.9 0 208-71.6 208-160zm122 220c23.9-26 38-57.7 38-92 0-66.9-53.5-124.2-129.3-148.1.9 6.6 1.3 13.3 1.3 20.1 0 105.9-107.7 192-240 192-10.8 0-21.3-.8-31.7-1.9C207.8 439.6 281.8 480 368 480c41 0 79.1-9.2 111.3-25 21.8 12.7 52.1 25 88.7 25 3.2 0 6.1-1.9 7.3-4.8 1.3-2.9.7-6.3-1.5-8.7-.3-.3-22.4-24.2-35.8-54.5z"></path>
@@ -206,4 +155,11 @@
         </div>
     </div>
 </div>
+
+<style>
+    .navigation .active {
+        opacity: 1 !important;
+    }
+</style>
+
 @endsection

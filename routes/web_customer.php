@@ -109,7 +109,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
         Route::get('thanks', 'ProductsController@thanks');
 
         // Render User 'My Orders' page
-        Route::prefix('user')->group(function () {
+        Route::prefix('user')->middleware('breadcrumbs')->group(function () {
             Route::get('', function () {
                 return view('front.users.profile');
             });
@@ -135,9 +135,10 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
             });
 
             Route::get('wishlist', 'WishlistController@wishlist')->name('front.user.wishlist');
+            
+            Route::get('chats', 'ChatsController@index')->name('user.chats.show');
         });
 
-        Route::get('user/chats', 'ChatsController@index')->name('user.chats.show');
         Route::post('chats/send-message', 'ChatsController@store')->name('user.chats.store');
 
         // Add Rating & Review on a product in front/products/detail.blade.php
