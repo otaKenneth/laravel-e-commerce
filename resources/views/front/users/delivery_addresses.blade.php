@@ -1,6 +1,9 @@
 @extends('front.users.profile')
 
 @section('user_account_content')
+@php
+    $account_page = 'user_delivery_addresses';
+@endphp
 <div
     class="elementor-element elementor-element-48758d2 e-con-full e-flex e-con e-child"
     data-id="48758d2"

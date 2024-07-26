@@ -5,6 +5,7 @@
     data-elementor-post-type="page"
     wire:poll="refreshMessages"
 >
+
     <div
         class="elementor-element elementor-element-be0fba5 e-flex e-con-boxed e-con e-parent"
         data-id="be0fba5"
@@ -13,6 +14,9 @@
         data-core-v316-plus="true"
     >
         <div class="e-con-inner">
+        @php
+            $account_page = 'user_chats';
+        @endphp
             <div
                 class="elementor-element elementor-element-aca939b login-container e-flex e-con-boxed e-con e-child"
                 data-id="aca939b"
@@ -172,3 +176,4 @@
         </div>
     </div>
 </div>
+

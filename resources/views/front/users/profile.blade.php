@@ -6,7 +6,7 @@
 <div
     data-elementor-type="wp-page"
     data-elementor-id="743"
-    class="elementor elementor-743"
+    class="elementor elementor-743 elementor-1628 elementor-884 elementor-843 elementor-1086 elementor-1956"
     data-elementor-post-type="page"
 >
     <div
@@ -31,7 +31,22 @@
                     data-widget_type="heading.default"
                 >
                     <div class="elementor-widget-container">
-                        <h1 class="elementor-heading-title elementor-size-default">MY ACCOUNT</h1>
+                        @if(isset($account_page))
+                            @if($account_page == "user_account")
+                                <h1 class="elementor-heading-title elementor-size-default">MY ACCOUNT</h1>
+                            @elseif($account_page == 'user_delivery_addresses')
+                                <h1 class="elementor-heading-title elementor-size-default">ADDRESSES</h1>
+                            @elseif($account_page == 'user_security')
+                                <h1 class="elementor-heading-title elementor-size-default">CHANGE PASSWORD</h1>
+                            @elseif($account_page == 'user_orders')
+                                <h1 class="elementor-heading-title elementor-size-default">ORDER LIST</h1>
+                            @elseif($account_page == 'user_wishlist')
+                                <h1 class="elementor-heading-title elementor-size-default">WISHLIST</h1>
+                            @elseif($account_page == 'user_chats')
+                                <h1 class="elementor-heading-title elementor-size-default">CHATS</h1>
+                            @endif  
+                        @endif
+                        
                     </div>
                 </div>
                 <div
@@ -56,7 +71,13 @@
                                 <div class="elementor-widget-container">
                                     <ul class="elementor-icon-list-items">
                                         <li class="elementor-icon-list-item">
-                                            <a href="{{ url('user/account') }}">
+                                            <a href="{{ url('user/account') }}"
+                                            @if(isset($account_page))
+                                                @if($account_page == "user_account")
+                                                    style="opacity: 1;"
+                                                @endif
+                                            @endif
+                                            >
                                                 <span class="elementor-icon-list-icon">
                                                     <svg
                                                         aria-hidden="true"
@@ -71,7 +92,13 @@
                                             </a>
                                         </li>
                                         <li class="elementor-icon-list-item">
-                                            <a href="{{ url('user/delivery-addresses') }}">
+                                            <a href="{{ url('user/delivery-addresses') }}" 
+                                            @if(isset($account_page))
+                                                @if($account_page == "user_delivery_addresses")
+                                                    style="opacity: 1;"
+                                                @endif
+                                            @endif
+                                            >
                                                 <span class="elementor-icon-list-icon">
                                                     <svg aria-hidden="true" class="e-font-icon-svg e-fas-map-marker-alt" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"></path>
                                                 </svg>
@@ -80,7 +107,13 @@
                                             </a>
                                         </li>
                                         <li class="elementor-icon-list-item">
-                                            <a href="{{ url('user/security') }}">
+                                            <a href="{{ url('user/security') }}"
+                                            @if(isset($account_page))
+                                                @if($account_page == "user_security")
+                                                    style="opacity: 1;"
+                                                @endif
+                                            @endif
+                                            >
                                                 <span class="elementor-icon-list-icon">
                                                 <svg aria-hidden="true" class="e-font-icon-svg e-fas-lock" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 152v72H48c-26.5 0-48 21.5-48 48v192c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V272c0-26.5-21.5-48-48-48zm-104 0H152v-72c0-39.7 32.3-72 72-72s72 32.3 72 72v72z"></path>
@@ -90,7 +123,13 @@
                                             </a>
                                         </li>
                                         <li class="elementor-icon-list-item">
-                                            <a href="{{ url('user/orders') }}">
+                                            <a href="{{ url('user/orders') }}"
+                                            @if(isset($account_page))
+                                                @if($account_page == "user_orders")
+                                                    style="opacity: 1;"
+                                                @endif
+                                            @endif
+                                            >
                                                 <span class="elementor-icon-list-icon">
                                                     <svg
                                                         aria-hidden="true"
@@ -105,7 +144,13 @@
                                             </a>
                                         </li>
                                         <li class="elementor-icon-list-item">
-                                            <a href="{{ url('user/wishlist') }}">
+                                            <a href="{{ url('user/wishlist') }}"
+                                            @if(isset($account_page))
+                                                @if($account_page == "user_wishlist")
+                                                    style="opacity: 1;"
+                                                @endif
+                                            @endif
+                                            >
                                                 <span class="elementor-icon-list-icon">
                                                     <svg
                                                         aria-hidden="true"
@@ -120,7 +165,13 @@
                                             </a>
                                         </li>
                                         <li class="elementor-icon-list-item">
-                                            <a href="{{ url('user/chats') }}">
+                                            <a href="{{ url('user/chats') }}"
+                                            @if(isset($account_page))
+                                                @if($account_page == "user_chats")
+                                                    style="opacity: 1;"
+                                                @endif
+                                            @endif
+                                            >
                                                 <span class="elementor-icon-list-icon">
                                                     <svg aria-hidden="true" class="e-font-icon-svg e-fas-comments" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M416 192c0-88.4-93.1-160-208-160S0 103.6 0 192c0 34.3 14.1 65.9 38 92-13.4 30.2-35.5 54.2-35.8 54.5-2.2 2.3-2.8 5.7-1.5 8.7S4.8 352 8 352c36.6 0 66.9-12.3 88.7-25 32.2 15.7 70.3 25 111.3 25 114.9 0 208-71.6 208-160zm122 220c23.9-26 38-57.7 38-92 0-66.9-53.5-124.2-129.3-148.1.9 6.6 1.3 13.3 1.3 20.1 0 105.9-107.7 192-240 192-10.8 0-21.3-.8-31.7-1.9C207.8 439.6 281.8 480 368 480c41 0 79.1-9.2 111.3-25 21.8 12.7 52.1 25 88.7 25 3.2 0 6.1-1.9 7.3-4.8 1.3-2.9.7-6.3-1.5-8.7-.3-.3-22.4-24.2-35.8-54.5z"></path>

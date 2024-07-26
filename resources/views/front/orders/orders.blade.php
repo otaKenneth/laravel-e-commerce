@@ -2,6 +2,11 @@
 @extends('front.users.profile')
 
 @section('user_account_content')
+
+@php
+    $account_page = 'user_orders';
+@endphp
+
 <div
     class="elementor-element elementor-element-bc5a439 e-con-full e-flex e-con e-child"
     data-id="bc5a439"
@@ -30,7 +35,7 @@
                     >
                         <div class="elementor-widget-container">
                             <h6 class="elementor-heading-title elementor-size-default">ORDER ID:  &nbsp;
-                                <span style="font-size: 26px; color: black;">{{$order->id}}​</span>
+                                <span style="font-size: 26px; color: black;">{{$order->id}}</span>
                             </h6>
                         </div>
                         @if (in_array($order->order_status, ['1', 'New', 'Pending', 'In Progress']))
