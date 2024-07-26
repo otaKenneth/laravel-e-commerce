@@ -867,7 +867,7 @@ class APIController extends Controller
                     break;
                     
                 case 'payment.refund.updated':
-                    $this->updateRefundStatus($payload['attributes']['data']);
+                    $this->updatePaymentRefundStatus($payload['attributes']['data']);
                     break;
                 
                 default:
