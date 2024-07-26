@@ -6,6 +6,7 @@ use App\Helpers\PaymongoAPIHelper;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class APIController extends Controller
@@ -908,24 +909,60 @@ class APIController extends Controller
     }
 
     private function updateRefundStatus($payload) {
-        // Process the payment status here
-        $refund = \App\Models\Refunds::find($payload['id']);
-        $refund->status = $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
-        $refund->update();
-        // ...
+        try {
+            $refunds = $payload['attributes']['refunds'];
 
-        $order = \App\Models\Order::find($refund->order_id);
-        $order->order_status = 'Paid';
-        $order->update();
+            foreach ($refunds as $key => $p_refund) {
+                DB::transaction(function () use ($p_refund) {
+                    // Process the payment status here
+                    $payment = \App\Models\Payment::where('payment_id', $p_refund['attributes']['payment_id'])->first();
+                    $refund = \App\Models\Refunds::where('payment_id', $payment->id)->first();
+                    $refund->paymongo_refund_id = $p_refund['id'];
+                    $refund->status = "Refund Request - " . $p_refund['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
+                    $refund->update();
+                    
+                    $order = \App\Models\Order::find($refund->order_id);
+                    $order->order_status = $refund->status;
+                    $order->update();
+            
+                    $order_product = \App\Models\OrdersProduct::where('order_id', $order->id)
+                        ->where('product_id', $refund->product_id)->first();
+            
+                    $log = new \App\Models\OrdersLog;
+                    $log->order_id     = $order->id;
+                    $log->order_item_id = $order_product->id;
+                    $log->order_status = $order->order_status;
+                    $log->save();
+                });
+            }
+        } catch (\Exception $e) {
+            \Log::error('Paymongo Update Payment Status' . $e->getMessage());
+        }
+    }
 
-        $order_product = \App\Models\OrdersProduct::where('order_id', $order->id)
-            ->where('product_id', $refund->product_id)->first();
-
-        $log = new \App\Models\OrdersLog;
-        $log->order_id     = $order->id;
-        $log->order_item_id = $order_product->id;
-        $log->order_status = $order->order_status;
-        $log->save();
+    private function updatePaymentRefundStatus($payload) {
+        try {
+            DB::transaction(function () use ($payload) {
+                $refund = \App\Models\Refunds::where('paymongo_refund_id', $payload['id'])->first();
+                $refund->status = "Refund " . $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
+                $refund->update();
+                
+                $order = \App\Models\Order::find($refund->order_id);
+                $order->order_status = $refund->status;
+                $order->update();
+        
+                $order_product = \App\Models\OrdersProduct::where('order_id', $order->id)
+                    ->where('product_id', $refund->product_id)->first();
+        
+                $log = new \App\Models\OrdersLog;
+                $log->order_id     = $order->id;
+                $log->order_item_id = $order_product->id;
+                $log->order_status = $order->order_status;
+                $log->save();
+            });
+        } catch (\Exception $e) {
+            \Log::error('Paymongo Update Payment Status' . $e->getMessage());
+        }
     }
 
     public function lalamoveDeliveryStatus(Request $request) {
