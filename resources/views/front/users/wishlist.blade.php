@@ -2,11 +2,6 @@
 
 
 @section('user_account_content')
-
-@php
-    $account_page = 'user_wishlist';
-@endphp
-
 <div
     data-elementor-type="wp-page"
     data-elementor-id="1956"
