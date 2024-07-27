@@ -31,17 +31,19 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     // The AJAX call from front/js/custom.js file, to show the the correct related `price` and `stock` depending on the selected `size` (from the `products_attributes` table)) by clicking the size <select> box in front/products/detail.blade.php
     Route::post('get-product-price', 'ProductsController@getProductPrice');
 
-    // Add to Cart <form> submission in front/products/detail.blade.php
-    Route::post('cart/add', 'ProductsController@cartAdd');
-
-    // Render Cart page (front/products/cart.blade.php)    // this route is accessed from the <a> HTML tag inside the flash message inside cartAdd() method in Front/ProductsController.php (inside front/products/detail.blade.php)
-    Route::get('cart', 'ProductsController@cart')->name('front.user.cart');
-
-    // Update Cart Item Quantity AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
-    Route::post('cart/update', 'ProductsController@cartUpdate');
-
-    // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
-    Route::post('cart/delete', 'ProductsController@cartDelete');
+    Route::prefix('cart')->group(function () {
+        // Render Cart page (front/products/cart.blade.php)    // this route is accessed from the <a> HTML tag inside the flash message inside cartAdd() method in Front/ProductsController.php (inside front/products/detail.blade.php)
+        Route::get('', 'ProductsController@cart')->name('front.user.cart');
+        
+        // Add to Cart <form> submission in front/products/detail.blade.php
+        Route::post('add', 'ProductsController@cartAdd');
+    
+        // Update Cart Item Quantity AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
+        Route::post('update', 'ProductsController@cartUpdate');
+    
+        // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
+        Route::post('delete', 'ProductsController@cartDelete');
+    });
     
     Route::post('wishlist/add', 'ProductsController@wishlistAdd');
 

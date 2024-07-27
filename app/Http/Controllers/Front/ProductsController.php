@@ -746,8 +746,9 @@ class ProductsController extends Controller
             return redirect('/user/delivery-addresses')->withErrors("Please add your first address.");
         }
 
-        $delivery_shipping_charges = \App\Models\ShippingCharge::whereIn('country', Arr::pluck($deliveryAddresses, 'country'))->count();
-        if ($delivery_shipping_charges < count($deliveryAddresses)) {
+        $deliveryAddresses_countries = array_unique(Arr::pluck($deliveryAddresses, 'country'));
+        $delivery_shipping_charges = \App\Models\ShippingCharge::whereIn('country', $deliveryAddresses_countries)->count();
+        if ($delivery_shipping_charges < count($deliveryAddresses_countries)) {
             return redirect('/user/delivery-addresses')->withErrors("One or more selected coutry from your delivery addresses is not yet available for shipping.");
         }
 
