@@ -77,16 +77,16 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::get('user/confirm/{code}', 'UserController@confirmAccount'); // {code} is the base64 encoded user's 'Activation Code' sent to the user in the Confirmation E-mail with which they have registered, which is received as a Route Parameters/URL Paramters in the 'Activation Link'    // this route is requested (accessed/opened) from inside the mail sent to user (in resources/views/emails/confirmation.blade.php)
 
     // Website Search Form (to search for all website products). Check the HTML Form in front/layout/header.blade.php
-    Route::get('search-products', 'ProductsController@listing')->name('search.listing');
+    // Route::get('search-products', 'ProductsController@listing')->name('search.listing');
 
     // PIN code Availability Check: check if the PIN code of the user's Delivery Address exists in our database (in both `cod_pincodes` and `prepaid_pincodes`) or not in front/products/detail.blade.php via AJAX. Check front/js/custom.js
     Route::post('check-pincode', 'ProductsController@checkPincode');
 
     // Render the Contact Us page (front/pages/contact.blade.php) using GET HTTP Requests, or the HTML Form Submission using POST HTTP Requests
-    Route::match(['get', 'post'], 'contact', 'CmsController@contact');
+    // Route::match(['get', 'post'], 'contact', 'CmsController@contact');
 
     // Add a Newsletter Subscriber email HTML Form Submission in front/layout/footer.blade.php when clicking on the Submit button (using an AJAX Request/Call)
-    Route::post('add-subscriber-email', 'NewsletterController@addSubscriber');
+    // Route::post('add-subscriber-email', 'NewsletterController@addSubscriber');
 
     // Protecting the routes of user (user must be authenticated/logged in) (to prevent access to these links while being unauthenticated/not being logged in (logged out))
     Route::group(['middleware' => ['auth']], function() {
@@ -146,23 +146,23 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
         // PayPal routes:
         // PayPal payment gateway integration in Laravel (this route is accessed from checkout() method in Front/ProductsController.php). Rendering front/paypal/paypal.blade.php page
-        Route::get('paypal', 'PaypalController@paypal');
+        // Route::get('paypal', 'PaypalController@paypal');
 
         // Make a PayPal payment
-        Route::post('pay', 'PaypalController@pay')->name('payment'); 
+        // Route::post('pay', 'PaypalController@pay')->name('payment'); 
 
         // PayPal successful payment
-        Route::get('success', 'PaypalController@success');
+        // Route::get('success', 'PaypalController@success');
 
         // PayPal failed payment
-        Route::get('error', 'PaypalController@error');
+        // Route::get('error', 'PaypalController@error');
 
         // iyzipay (iyzico) routes:    // iyzico Payment Gateway integration in/with Laravel
         // iyzico payment gateway integration in Laravel (this route is accessed from checkout() method in Front/ProductsController.php). Rendering front/iyzipay/iyzipay.blade.php page
-        Route::get('iyzipay', 'IyzipayController@iyzipay');
+        // Route::get('iyzipay', 'IyzipayController@iyzipay');
 
         // Make an iyzipay payment (redirect the user to iyzico payment gateway with the order details)
-        Route::get('iyzipay/pay', 'IyzipayController@pay'); 
+        // Route::get('iyzipay/pay', 'IyzipayController@pay'); 
     });
 
 });

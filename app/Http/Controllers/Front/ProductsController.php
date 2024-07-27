@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Helpers\PaymongoAPIHelper;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -70,7 +71,6 @@ class ProductsController extends Controller
             // We'll search for the searched term by the user in the `product_name`, `product_code`, `product_color` and `description` columns in the `products` table and in the `category_name` column in the `categories` table
             $query->where('products.product_name',    'like', '%' . $search_product . '%')  // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
                 ->orWhere('products.product_code',    'like', '%' . $search_product . '%')  // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
-                ->orWhere('products.product_color',   'like', '%' . $search_product . '%')  // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
                 ->orWhere('products.description',     'like', '%' . $search_product . '%')  // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
                 ->orWhere('categories.category_name', 'like', '%' . $search_product . '%'); // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
         })->where('products.status', 1);
@@ -744,6 +744,11 @@ class ProductsController extends Controller
 
         if (count($deliveryAddresses) == 0) {
             return redirect('/user/delivery-addresses')->withErrors("Please add your first address.");
+        }
+
+        $delivery_shipping_charges = \App\Models\ShippingCharge::whereIn('country', Arr::pluck($deliveryAddresses, 'country'))->count();
+        if ($delivery_shipping_charges < count($deliveryAddresses)) {
+            return redirect('/user/delivery-addresses')->withErrors("One or more selected coutry from your delivery addresses is not yet available for shipping.");
         }
 
         $selectedDeliveryAddress = null; $shipping_charges = 0;
