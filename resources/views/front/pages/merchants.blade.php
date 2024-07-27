@@ -82,12 +82,13 @@
                                                 <h5 class="elementor-heading-title elementor-size-default">{{$vendor->vendorbusinessdetails->shop_name}}</h5>
                                             </div>
                                         </div>
+
+                                        <!--
                                         <div
                                             class="elementor-element elementor-element-77f2f47 elementor-widget elementor-widget-text-editor"
                                             data-id="77f2f47"
                                             data-element_type="widget"
-                                            data-widget_type="text-editor.default"
-                                        >
+                                            data-widget_type="text-editor.default">
                                             <div class="elementor-widget-container">
                                                 <style>/*! elementor - v3.18.0 - 08-12-2023 */ .elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#69727d;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#69727d;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}</style>
                                                 <p>{{$vendor->name}}<br>
@@ -97,6 +98,8 @@
                                                 </p>
                                             </div>
                                         </div>
+                                        -->
+
                                         <div
                                             class="elementor-element elementor-element-0d99fff e-flex e-con-boxed e-con e-child"
                                             data-id="0d99fff"
@@ -185,7 +188,7 @@
                                                 <div class="elementor-button-wrapper">
                                                     <a class="elementor-button elementor-button-link elementor-size-sm" href="{{ url('products/vendor/' . $vendor['id']) }}">
                                                         <span class="elementor-button-content-wrapper">
-                                                            <span class="elementor-button-text">SHOP THIS MERCHANT</span>
+                                                            <span class="elementor-button-text">VIEW STORE</span>
                                                         </span>
                                                     </a>
                                                 </div>

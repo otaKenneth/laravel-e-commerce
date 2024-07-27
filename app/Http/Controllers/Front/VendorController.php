@@ -75,9 +75,9 @@ class VendorController extends Controller
                 // <input> "name" attribute.validation rule => validation rule message
                 'name.required'             => 'Name is required',
                 'email.required'            => 'Email is required',
-                'email.unique'              => 'Email alreay exists',
+                'email.unique'              => 'Email already exists',
                 'mobile.required'           => 'Mobile is required',
-                'mobile.unique'             => 'Mobile alreay exists',
+                'mobile.unique'             => 'Mobile already exists',
                 // personal address
                 // 'personal.address.required' => 'Address is required.',
                 // 'personal.city.required' => 'Address City is required.',
@@ -224,7 +224,7 @@ class VendorController extends Controller
         // For Security Reasons, check if the vendor email exists first (after the vendor has entered their mail while registering)
         $vendorCount = \App\Models\Vendor::where('email', $email)->count();
         if ($vendorCount > 0) { // if the vendor email exists
-            // Check if the vendor is alreay active
+            // Check if the vendor is already active
             $vendorDetails = \App\Models\Vendor::where('email', $email)->first();
             if ($vendorDetails->confirm == 'Yes') { // if the vendor is already confirmed
 
