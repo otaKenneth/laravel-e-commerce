@@ -49,7 +49,7 @@
                                                             <br>
                                                         @endforeach
                                                     </td>
-                                                    <td>{{ $order['grand_total'] }}</td>
+                                                    <td>₱&nbsp;{{ number_format($order['grand_total'], 2) }}</td>
                                                     <td>{{ $order['order_status'] }}</td>
                                                     <td>{{ $order['payment_method'] }}</td>
                                                     <td>
