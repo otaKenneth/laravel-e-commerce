@@ -77,7 +77,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::get('user/confirm/{code}', 'UserController@confirmAccount'); // {code} is the base64 encoded user's 'Activation Code' sent to the user in the Confirmation E-mail with which they have registered, which is received as a Route Parameters/URL Paramters in the 'Activation Link'    // this route is requested (accessed/opened) from inside the mail sent to user (in resources/views/emails/confirmation.blade.php)
 
     // Website Search Form (to search for all website products). Check the HTML Form in front/layout/header.blade.php
-    Route::get('search-products', 'ProductsController@listing')->name('search.listing');
+    // Route::get('search-products', 'ProductsController@listing')->name('search.listing');
 
     // PIN code Availability Check: check if the PIN code of the user's Delivery Address exists in our database (in both `cod_pincodes` and `prepaid_pincodes`) or not in front/products/detail.blade.php via AJAX. Check front/js/custom.js
     Route::post('check-pincode', 'ProductsController@checkPincode');
