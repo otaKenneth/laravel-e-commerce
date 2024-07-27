@@ -126,8 +126,8 @@ class VendorController extends Controller
             // $vendor->pincode = $data['personal']['postal'];
             $vendor->wdyfu = $data['business']['wdyfu'];
 
-            // Set Laravel's default timezone to Egypt's (to enter correct `created_at` and `updated_at` records in the database tables) instead of UTC
-            date_default_timezone_set('Africa/Cairo'); // https://www.php.net/manual/en/timezones.php and https://www.php.net/manual/en/timezones.africa.php
+            // Set Laravel's default timezone to Manila's (to enter correct `created_at` and `updated_at` records in the database tables) instead of UTC
+            date_default_timezone_set('Asia/Manila'); // https://www.php.net/manual/en/timezones.php and https://www.php.net/manual/en/timezones.africa.php
             $vendor->created_at = date('Y-m-d H:i:s'); // enter `created_at` MANUALLY!    // Formatting the date for MySQL: https://www.php.net/manual/en/function.date.php
             $vendor->updated_at = date('Y-m-d H:i:s'); // enter `updated_at` MANUALLY!
 
@@ -149,7 +149,7 @@ class VendorController extends Controller
             $admin->password  = bcrypt($initial_password); // hashing the password to store the hashed password in the table (NOT THE PASSWORD ITSELF!!)
             $admin->status    = 0; // Note: After a new vendor registers a new account, they will remain inactive/disabled (`status` is 0), untill the confirmation email arrives for them and they click the link, and they complete filling their vendor details, then the admin APPROVES them (then status becomes 1)
 
-            // Set Laravel's default timezone to Egypt's (to enter correct `created_at` and `updated_at` records in the database tables) instead of UTC
+            // Set Laravel's default timezone to Manila's (to enter correct `created_at` and `updated_at` records in the database tables) instead of UTC
             date_default_timezone_set('Asia/Manila'); // https://www.php.net/manual/en/timezones.php and https://www.php.net/manual/en/timezones.africa.php
             $admin->created_at = date('Y-m-d H:i:s'); // enter `created_at` MANUALLY!    // Formatting the date for MySQL: https://www.php.net/manual/en/function.date.php
             $admin->updated_at = date('Y-m-d H:i:s'); // enter `updated_at` MANUALLY!
