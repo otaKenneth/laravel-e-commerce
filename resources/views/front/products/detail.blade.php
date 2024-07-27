@@ -497,7 +497,7 @@
                     >
 
 
-
+                        @auth
                         <div
                             class="elementor-element elementor-element-8b97798 elementor-widget elementor-widget-image"
                             data-id="8b97798"
@@ -517,6 +517,7 @@
                                 >
                             </div>
                         </div>
+                        @endauth
 
                         
                         <div
