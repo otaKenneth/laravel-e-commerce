@@ -69,7 +69,7 @@
                                     <input type="number" value="{{ $item['quantity'] }}">
                                     <button class="qty-cart add" data-cartId="{{ $item["id"] }}" data-qty="{{ $item['quantity'] }}">+</button>
                                 </div>
-                                <a href="#" class="remove-item">
+                                <a class="remove-item deleteCartItem" data-cartItemId="{{ $item["id"] }}">
                                     <svg
                                         aria-hidden="true"
                                         class="e-font-icon-svg e-far-trash-alt"

@@ -152,7 +152,6 @@ $(document).ready(function() {
 
     $(document).on('click', '.item-addCart', function(v) {
         // cart/add
-        console.log($(v.currentTarget).data('product'));
         var data = {
             product_id: $(v.currentTarget).data('product'),
             quantity: 1
@@ -240,8 +239,8 @@ $(document).ready(function() {
 
     // Delete a Cart Item in front/products/cart_items.blade.php (which is 'include'-ed by front/products/cart.blade.php)     
     $(document).on('click', '.deleteCartItem', function() {
-        var cartid = $(this).data('cartid'); // using Custom HTML Attributes (data-*)
-        // alert(cartId);
+        var cartid = $(this).attr('data-cartItemId'); // using Custom HTML Attributes (data-*)
+        // alert(cartid);
 
 
         // Confirm Deletion
@@ -958,12 +957,19 @@ $(document).ready(function() {
                         window.location.href = resp.redirect;
                     } else {
                         $(".popup_review_container .close_image_review_popup").click();
-                        $(".alert.alert-dialog").show();
-                        $(".alert.alert-dialog > p").text("Message sent successfully.");
+                        $(".alert.alert-dialog.success").show();
+                        $(".alert.alert-dialog.success > p").text("Message sent successfully.");
                     }
                 }
             }, error: function (err) {
-                console.log(err)
+                // console.log(err)
+                if (err && err.status === 401) {
+                    let resp = err.responseJSON;
+                    if (resp.message == 'Unauthenticated') {
+                        $(".alert.alert-dialog.error").show();
+                        $(".alert.alert-dialog.error > p").text("You need to have an account before you can send a message.");
+                    }
+                }
             }
         });
     });
