@@ -295,7 +295,7 @@ class ProductsController extends Controller
             // If new product, add to admin product review
             if (is_null($id)) {
                 $adminModel = new \App\Models\Admin;
-                $admins_emails = $adminModel->whereIn('type', ['admin', 'superadmin', 'subadmin'])->pluck('email')->toArray();
+                $admins_emails = $adminModel->whereIn('type', ['admin', 'superadmin', 'subadmin'])->get()->pluck('email')->toArray();
     
                 $vendorModel = new \App\Models\Vendor;
                 $vendorDetails = $vendorModel->find($product->vendor_id)->first();
