@@ -38,7 +38,7 @@ class ProductsController extends Controller
                 break;
             case 'vendor':
                 $vendor = Vendor::find($name);
-                $pageTitle = "{$vendor->name} Shop";
+                $pageTitle = "{$vendor->vendorbusinessdetails->shop_name} Shop";
                 $result = $this->vendorListing($vendor, $request->all());
                 break;
             case 'search':
