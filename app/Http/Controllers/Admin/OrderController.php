@@ -650,8 +650,7 @@ class OrderController extends Controller
                         <div class="company-address">
                             <h2 class="title">Kapiton</h2>
                             <p>
-                                37 Salah Salem St.<br>
-                                Cairo, Egypt
+                                Metro Manila, Philippines
                             </p>
                         </div>
                         <div class="company-contact">

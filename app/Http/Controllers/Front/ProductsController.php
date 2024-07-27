@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Helpers\PaymongoAPIHelper;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -744,6 +745,11 @@ class ProductsController extends Controller
 
         if (count($deliveryAddresses) == 0) {
             return redirect('/user/delivery-addresses')->withErrors("Please add your first address.");
+        }
+
+        $delivery_shipping_charges = \App\Models\ShippingCharge::whereIn('country', Arr::pluck($deliveryAddresses, 'country'))->count();
+        if ($delivery_shipping_charges < count($deliveryAddresses)) {
+            return redirect('/user/delivery-addresses')->withErrors("One or more selected coutry from your delivery addresses is not yet available for shipping.");
         }
 
         $selectedDeliveryAddress = null; $shipping_charges = 0;
