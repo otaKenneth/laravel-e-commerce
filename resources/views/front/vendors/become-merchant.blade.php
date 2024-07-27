@@ -524,7 +524,7 @@
                             data-id="173e254" data-element_type="widget"
                             data-widget_type="text-editor.default">
                             <div class="elementor-widget-container">
-                                <p><strong>FAST  AND RELIABLE</strong><br /><strong>SHIPPING
+                                <p><strong>FAST AND RELIABLE</strong><br /><strong>SHIPPING
                                         OPTIONS</strong></p>
                             </div>
                         </div>
@@ -544,8 +544,7 @@
                             data-id="6d59a45" data-element_type="widget"
                             data-widget_type="text-editor.default">
                             <div class="elementor-widget-container">
-                                <p><strong>FAST  AND RELIABLE</strong><br /><strong>SHIPPING
-                                        OPTIONS</strong></p>
+                                <p><strong>SEAMLESS ORDER</strong><br /><strong>MANAGEMENT</strong></p>
                             </div>
                         </div>
                     </div>
@@ -852,7 +851,7 @@
                                 <div class="elementor-widget-container">
                                     <div class="elementor-button-wrapper"> <a
                                             class="elementor-button elementor-button-link elementor-size-sm"
-                                            href="#"> <span class="elementor-button-content-wrapper"> <span
+                                            href="https://share.xffiliate.com/PxQCGkPR" target="_blank"> <span class="elementor-button-content-wrapper"> <span
                                                     class="elementor-button-text">CREATE YOUR OWN
                                                     STORE</span> </span> </a> </div>
                                 </div>
