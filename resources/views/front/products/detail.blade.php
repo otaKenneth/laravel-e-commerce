@@ -408,10 +408,10 @@
                                                                         decoding="async"
                                                                         width="522"
                                                                         height="522"
-                                                                        src="{{ $getImage('front/images/product_images/small/', $product_image['image']) }}"
+                                                                        src="{{ $getImage('front/images/product_images/large/', $product_image['image']) }}"
                                                                         class="attachment-large size-large wp-image-503"
                                                                         alt=""
-                                                                        srcset="{{ $getImage('front/images/product_images/small/', $product_image['image']) }} 522w, {{ $getImage('front/images/product_images/small/', $product_image['image']) }} 300w, {{ $getImage('front/images/product_images/small/', $product_image['image']) }} 150w"
+                                                                        srcset="{{ $getImage('front/images/product_images/large/', $product_image['image']) }} 522w, {{ $getImage('front/images/product_images/large/', $product_image['image']) }} 300w, {{ $getImage('front/images/product_images/large/', $product_image['image']) }} 150w"
                                                                         sizes="(max-width: 522px) 100vw, 522px"
                                                                     >
                                                                 </div>

@@ -203,7 +203,7 @@ class UserController extends Controller
         // For Security Reasons, check if that decoded user's $email exists in the `users` database table
         $userCount = \App\Models\User::where('email', $email)->count();
         if ($userCount > 0) { // if the user's email exists in `users` table
-            // Check if the user is alreay active
+            // Check if the user is already active
             $userDetails = \App\Models\User::where('email', $email)->first();
             if ($userDetails->status == 1) { // if the user's account is already activated
                 // Redirect the user to the User Login/Register page with an 'error' message
