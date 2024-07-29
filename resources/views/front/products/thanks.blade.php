@@ -3,29 +3,13 @@
 
 
 @section('content')
-    <!-- Page Introduction Wrapper -->
-    <div class="page-style-a">
-        <div class="container">
-            <div class="page-intro">
-                <h2>Cart</h2>
-                <ul class="bread-crumb">
-                    <li class="has-separator">
-                        <i class="ion ion-md-home"></i>
-                        <a href="{{ url('/') }}">Home</a>
-                    </li>
-                    <li class="is-marked">
-                        <a href="#">Thanks</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- Page Introduction Wrapper /- -->
     <!-- Cart-Page -->
-    <div class="page-cart u-s-p-t-80">
+    <div class="page-cart thank-you-page">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12" align="center">
+                    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+                    <dotlottie-player src="https://lottie.host/0ff4511f-e778-4a9d-9a0f-ca27acf524a0/LYUGVGP11d.json" background="transparent" speed="1" loop autoplay></dotlottie-player>
                     <h3>YOUR ORDER HAS BEEN PLACED SUCCESSFULLY</h3>
                     <p>Your order number is {{ Session::get('order_id') }} and Grand Total is PHP {{ Session::get('grand_total') }}</p> {{-- The Order Number is the order `id` in the `orders` database table. We stored the order id in Session in checkout() method in Front/ProductsController.php --}} {{-- Retrieving Data: https://laravel.com/docs/10.x/session#retrieving-data --}}
                 </div>
