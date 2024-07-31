@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProductsAttribute;
 use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 
@@ -409,50 +411,42 @@ class ProductsController extends Controller
         return redirect()->back()->with('success_message', $message);
     }
 
-    public function addAttributes(Request $request, $id) { // Add/Edit Attributes function    
+    public function addAttributes(Request $request, \App\Models\Product $product) { // Add/Edit Attributes function    
         Session::put('page', 'products');
 
-        $product = \App\Models\Product::select('id', 'product_name', 'product_code', 'product_price', 'product_image')->with('attributes')->find($id); // with('attributes') is the relationship method name in the Product.php model
-
-        if ($request->isMethod('post')) { // When the <form> is submitted
+        if ($request->isMethod('post')) {
+            // dd($request->attribute);
+            $this->validate($request, [
+                'attribute.*.color' => 'required|string',
+                'attribute.*.size' => 'required|string'
+            ]);
+    
             $data = $request->all();
-            // dd($data);
-
-            foreach ($data['sku'] as $key => $value) { // or instead could be: $data['size'], $data['price'] or $data['stock']
-                // echo '<pre>', var_dump($key), '</pre>';
-                // echo '<pre>', var_dump($value), '</pre>';
-                
-                if (!empty($value)) {
-                    // Validation:
-                    // SKU duplicate check (Prevent duplicate SKU) because SKU is UNIQUE for every product
-                    $skuCount = \App\Models\ProductsAttribute::where('sku', $value)->count();
-                    if ($skuCount > 0) { // if there's an SKU for the product ALREADY EXISTING
-                        return redirect()->back()->with('error_message', 'SKU already exists! Please add another SKU!');
-                    }
-
-                    // Size duplicate check (Prevent duplicate Size) because Size is UNIQUE for every product
-                    $sizeCount = \App\Models\ProductsAttribute::where(['product_id' => $id, 'size' => $data['size'][$key]])->count();
-                    if ($sizeCount > 0) { // if there's an SKU for the product ALREADY EXISTING
-                        return redirect()->back()->with('error_message', 'Size already exists! Please add another Size!');
-                    }
-
-
-                    $attribute = new \App\Models\ProductsAttribute;
-
-                    $attribute->product_id = $id; // $id is passed in up there to the addAttributes() method
-                    $attribute->sku        = $value;
-                    $attribute->color       = $data['color'][$key];  // $key denotes the iteration/loop cycle number (0, 1, 2, ...), e.g. $data['color'][0]
-                    $attribute->size       = $data['size'][$key];  // $key denotes the iteration/loop cycle number (0, 1, 2, ...), e.g. $data['size'][0]
-                    $attribute->price      = $data['price'][$key]; // $key denotes the iteration/loop cycle number (0, 1, 2, ...), e.g. $data['price'][0]
-                    $attribute->stock      = $data['stock'][$key]; // $key denotes the iteration/loop cycle number (0, 1, 2, ...), e.g. $data['stock'][0]
-                    $attribute->status     = 1;
-                    
-                    $attribute->save();
-                }
+    
+            if (!isset($data['attribute'])) {
+                return back()->with('error', 'No attributes provided');
             }
-            return redirect()->back()->with('success_message', 'Product Attributes have been addded successfully!');
+    
+            foreach ($data['attribute'] as $key => $attributes) {
+    
+                $is_unique = $product->attributes()
+                    ->where('color', $attributes['color'])
+                    ->where('size', $attributes['size'])
+                    ->count();
+                if ($is_unique > 0) {
+                    return redirect()->back()->with('error_message', 'This attribute already exists!');
+                }
+                
+                $product->attributes()->create([
+                    'sku' => \App\Models\Product::generateSku($product),
+                    'color' => Str::title($attributes['color']),
+                    'size' => $attributes['size'],
+                    'price' => 0.00,
+                    'stock' => 0,
+                    'status' => 1,
+                ]);
+            }
         }
-
 
         return view('admin.attributes.add_edit_attributes')->with(compact('product'));
     }
