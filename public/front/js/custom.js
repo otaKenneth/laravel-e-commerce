@@ -92,6 +92,13 @@ $(document).ready(function() {
         });
     });
 
+    $('#form-field-field_cfabe28').on('change', function (ev) {
+        let stock = $(ev.target).find('option:selected').attr('data-productStock');
+        let q = $(ev.target).closest('form#product-detail-add-to-cart-form').find('#product-quantity');
+        q.attr('max', stock);
+        q.val('1');
+    })
+
     $('#product-detail-add-to-cart-form').submit(function (v) {
         let form = new FormData(v.target);
 
