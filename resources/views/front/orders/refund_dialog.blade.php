@@ -15,6 +15,7 @@
             </div>
             <div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100 e-form__buttons"
                 style="justify-content: center;">
+                <input type="file" id="return-product-upload" accept="image/*" style="margin: 15px auto 20px; max-width: 240px;"/>
                 <button type="submit" class="elementor-button elementor-size-sm refund__popup__btn">
                     <span>
                         <span class="elementor-button-icon"></span>
