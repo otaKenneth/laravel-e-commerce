@@ -188,7 +188,7 @@
                     >
                         <div class="e-con-inner">
                             @if (isset($product['vendor']))
-                            <a href="{{ url('products/vendor/' . $product->vendor->id) }}">
+                            <a class="vendor__name" href="{{ url('products/vendor/' . $product->vendor->id) }}">
                                 <div
                                     class="elementor-element elementor-element-a282fc6 e-con-full e-flex e-con e-child"
                                     data-id="a282fc6"
@@ -230,7 +230,7 @@
 
                             <!-- Ratings -->
                             <div
-                                class="elementor-element elementor-element-036fcb9 elementor-widget elementor-widget-rating"
+                                class="elementor-element elementor-element-036fcb9 elementor-widget elementor-widget-rating css_seller_rating"
                                 data-id="036fcb9"
                                 data-element_type="widget"
                                 data-widget_type="rating.default"

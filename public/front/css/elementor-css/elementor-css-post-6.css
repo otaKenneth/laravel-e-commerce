@@ -48,3 +48,28 @@
 	src: url(./../../fonts/Lexend-Medium.ttf) format('truetype');
 }
 /* End Custom Fonts CSS */
+
+
+/*THANK YOU PAGE CSS*/
+.thank-you-page {
+    padding: 50px;
+    min-height: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	background: #f0f5f0;
+}
+.thank-you-page h3{
+	margin-top: 50px;
+}
+.thank-you-page dotlottie-player{
+	height: auto;
+	width: 210px;
+	max-width: 60%;
+}
+@media (max-width: 767px){
+	.thank-you-page {
+		min-height: unset;
+		padding: 50px 10px;
+	}
+}
