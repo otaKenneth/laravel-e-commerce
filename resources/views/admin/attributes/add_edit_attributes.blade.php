@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 grid-margin stretch-card">
+                <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Add Attributes</h4>
@@ -114,11 +114,8 @@
                                 <div class="form-group">
                                     <div class="field_wrapper">
                                         <div>
-                                            <input type="text" name="color[]"  placeholder="Color"  style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
-                                            <input type="text" name="size[]"  placeholder="Size"  style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
-                                            <input type="text" name="sku[]"   placeholder="SKU"   style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
-                                            <input type="text" name="price[]" placeholder="Price" style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
-                                            <input type="text" name="stock[]" placeholder="Stock" style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
+                                            <input type="text" name="attribute[0][color]"  placeholder="Color"  style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
+                                            <input type="text" name="attribute[0][size]"  placeholder="Size"  style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
                                             <a href="javascript:void(0);" class="add_button" title="Add Attributes">Add</a> {{-- Add another 4 input fields like the former --}}
                                         </div>
                                     </div>
@@ -155,7 +152,9 @@
                                                 <td>{{ $attribute['id'] }}</td>
                                                 <td>{{ $attribute['color'] }}</td>
                                                 <td>{{ $attribute['size'] }}</td>
-                                                <td>{{ $attribute['sku'] }}</td>
+                                                <td>
+                                                    <input type="text" name="sku[]" value="{{ $attribute['sku'] }}" placeholder="SKU" style="width:150px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
+                                                </td>
                                                 <td>
                                                     <input type="number" name="price[]" value="{{ $attribute['price'] }}" required style="width: 60px"> {{-- !! Note the "name" HTML attribute SQUARE BRACKETS [] !! --}}
                                                 </td>

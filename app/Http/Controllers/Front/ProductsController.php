@@ -309,15 +309,15 @@ class ProductsController extends Controller
                 $data['quantity'] = 1;
             }
 
-            if (!isset($data['color']) || !isset($data['size'])) {
-                $prod_attribute = \App\Models\ProductsAttribute::where('product_id', $data['product_id'])->first();
+            if (!isset($data['variation'])) {
+                $prod_attribute = ProductsAttribute::where('product_id', $data['product_id'])->first();
                 $getProductStock = $prod_attribute->stock;
                 
                 $data['color'] = $prod_attribute->color;
                 $data['size'] = $prod_attribute->size;
             } else {
                 // Check if the selected product `product_id` with that selected `size` have available `stock` in `products_attributes` table
-                $getProductStock = \App\Models\ProductsAttribute::getProductStock($data['product_id'], $data['color'], $data['size']);
+                $getProductStock = ProductsAttribute::find($data['variation'])->stock;
             }
 
             if ($getProductStock < $data['quantity']) { // if the `stock` available (in `products_attributes` table) is less than the ordered quantity by user (the quantity that the user desires)
