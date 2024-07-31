@@ -253,6 +253,9 @@ body, html{
     overflow: hidden !important;
     line-height: 1em !important;
 }
+.product_list_container .css_seller_rating{
+	min-width: 60px;
+}
 
 @media (max-width: 1024px){
 	.elementor-682 .elementor-element.elementor-element-80f00c9 {
