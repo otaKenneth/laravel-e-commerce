@@ -49,6 +49,13 @@ class Product extends Model
         return $this->hasMany(Rating::class, 'product_id', 'id');
     }
 
+    public static function generateSku($product)
+    {
+        $prefix = strtoupper(substr($product->category->category_name, 0, 3)); // Example: Category prefix
+        $uniqueId = strtoupper(uniqid());
+        return $prefix . '-' . $uniqueId;
+    }
+
     public static function product_computed_ratings ($product_id) {
         $product_ratings = \App\Models\Rating::select('rating')->where('product_id', $product_id)->get()->toArray();
         $cnt = count($product_ratings);
