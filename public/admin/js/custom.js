@@ -10,7 +10,8 @@ $(document).ready(function() {
     $('#products').DataTable({
         search: {
             search: $('input[name="search"]').val()
-        }
+        },
+        order: [[1, 'asc']]
     });    // in products.blade.php
     $('#banners').DataTable();     // in banners.blade.php
     $('#filters').DataTable();     // in filters.blade.php
