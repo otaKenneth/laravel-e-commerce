@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\FileStorageService;
 use App\Models\Admin;
 use App\Models\Order;
 use App\Models\OrdersLog;
@@ -262,6 +263,62 @@ class OrderController extends Controller
             $refund->status = $order_product->item_status;
             $refund->reason = $request->reason;
             $refund->save();
+
+            if ($request->hasFile('image_proof')) {
+                $images = $request->file('image_proof');
+                // dd($images);
+
+                foreach ($images as $key => $image) {
+                    // Uploading the images:
+                    // Generate Temp Image
+                    $fileStorageService = new FileStorageService;
+
+                    // Get image name
+                    $image_name = $image->getClientOriginalName();
+                    // dd($image_tmp);
+
+                    // Get image extension
+                    $extension = $image->getClientOriginalExtension();
+
+                    // Generate a new random name for the uploaded image (to avoid that the image might get overwritten if its name is repeated)
+                    $imageName = str_replace(".{$extension}", "", $image_name) . "-". rand(111, 99999) . '.' . $extension; // e.g. 5954.png
+
+                    // Assigning the uploaded images path inside the 'public' folder
+                    // We will have three folders: small, medium and large, depending on the images sizes
+                    $arr_filePaths = [
+                        [
+                            'path' => 'front/images/refund_proof_images/large/'  . $imageName,
+                            'size' => [
+                                'width' => 1000,
+                                'height' => 1000,
+                            ]
+                        ], // 'large'  images folder 
+                        [
+                            'path' => 'front/images/refund_proof_images/medium/' . $imageName,
+                            'size' => [
+                                'width' => 500,
+                                'height' => 500,
+                            ]
+                        ], // 'medium' images folder
+                        [
+                            'path' => 'front/images/refund_proof_images/small/'  . $imageName,
+                            'size' => [
+                                'width' => 250,
+                                'height' => 250,
+                            ]
+                        ] // 'small'  images folder
+                    ];
+
+                    // Upload the image using the 'Intervention' package and save it in our THREE paths (folders) inside the 'public' folder
+                    foreach ($arr_filePaths as $key => $path) {
+                        $fileStorageService->storeFile($image, $path['path'], $path['size']);
+                    }
+
+                    $refund->refund_images()->create([
+                        'image' => $imageName
+                    ]);
+                }
+            }
 
             return [
                 'success' => true,
