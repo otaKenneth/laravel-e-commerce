@@ -686,14 +686,10 @@
 
                                     <div class="elementor-form-fields-wrapper elementor-labels-">
                                         @php
-                                            $colorAttributes = array_unique(array_map(function ($a) {
-                                                return $a['color'];
-                                            }, $productDetails['attributes']));
-
-                                            $sizeAttributes = array_unique(array_map(function ($a) {
-                                                return $a['size'];
-                                            }, $productDetails['attributes']));
+                                            $attributes = $productDetails['attributes'];
+                                            $curStock = isset($attributes[0]) ? $attributes[0]['stock']:0;
                                         @endphp
+                                        @if (count($attributes) > 0)
                                         <div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-field_cfabe28 elementor-col-30 elementor-field-required">
                                             <label for="form-field-field_cfabe28" class="elementor-field-label elementor-screen-only" style="
                                                 display: block !important;
@@ -701,41 +697,17 @@
                                                 top: 0;
                                                 height: auto;
                                                 width: auto;
-                                                margin-bottom: 5px;">Color</label>
+                                                margin-bottom: 5px;">Variations</label>
                                             <div class="elementor-field elementor-select-wrapper remove-before ">
                                                 <div class="select-caret-down-wrapper">
                                                     <svg aria-hidden="true" class="e-font-icon-svg e-eicon-caret-down" viewBox="0 0 571.4 571.4" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M571 393Q571 407 561 418L311 668Q300 679 286 679T261 668L11 418Q0 407 0 393T11 368 36 357H536Q550 357 561 368T571 393Z"></path>
                                                     </svg>			
                                                 </div>
-                                                <select name="color" id="form-field-field_cfabe28" class="elementor-field-textual elementor-size-sm" required="required" aria-required="true">
-                                                    @foreach ($colorAttributes as $attribute)
+                                                <select name="variation" id="form-field-field_cfabe28" class="elementor-field-textual elementor-size-sm" aria-required="true">
+                                                    @foreach ($attributes as $attribute)
                                                         @if (!is_null($attribute))
-                                                        <option value="{{$attribute}}">{{$attribute}}</option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-field_9ef7990 elementor-col-30 elementor-field-required">
-                                            <label for="form-field-field_9ef7990" class="elementor-field-label elementor-screen-only" style="
-                                                display: block !important;
-                                                position: relative;
-                                                top: 0;
-                                                height: auto;
-                                                width: auto;
-                                                margin-bottom: 5px;">Size</label>
-                                            <div class="elementor-field elementor-select-wrapper remove-before ">
-                                                <div class="select-caret-down-wrapper">
-                                                    <svg aria-hidden="true" class="e-font-icon-svg e-eicon-caret-down" viewBox="0 0 571.4 571.4" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M571 393Q571 407 561 418L311 668Q300 679 286 679T261 668L11 418Q0 407 0 393T11 368 36 357H536Q550 357 561 368T571 393Z"></path>
-                                                    </svg>			
-                                                </div>
-                                                <select name="size" id="form-field-field_9ef7990" class="elementor-field-textual elementor-size-sm" required="required" aria-required="true">
-                                                    @foreach ($sizeAttributes as $attribute)
-                                                        @if (!is_null($attribute))
-                                                        <option value="{{$attribute}}">{{$attribute}}</option>
+                                                        <option value="{{$attribute['id']}}" data-productStock="{{ $attribute['stock'] }}">{{$attribute['color']}} - {{$attribute['size']}}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
@@ -747,17 +719,17 @@
                                         </div>
 
                                         <div class="elementor-field-type-number elementor-field-group elementor-column elementor-field-group-name elementor-col-20 elementor-field-required" style="margin-bottom: 30px;">
-                                            <label for="form-field-name" class="elementor-field-label">Quantity</label>
+                                            <label for="product-quantity" class="elementor-field-label">Quantity</label>
                                             <input
                                                 type="number"
                                                 name="quantity"
-                                                id="form-field-name"
+                                                id="product-quantity"
                                                 class="elementor-field elementor-size-sm  elementor-field-textual"
                                                 placeholder="1"
                                                 required="required"
                                                 aria-required="true"
                                                 min="1"
-                                                max=""
+                                                max="{{ $curStock }}"
                                                 value="1"
                                             >
                                         </div>
@@ -774,6 +746,9 @@
                                                 </span>
                                             </button>
                                         </div>
+                                        @else
+                                        <div>No Stock</div>
+                                        @endif
                                         @if (Auth::check())
                                         <div class="wishlist-btn">
                                             <div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-25 e-form__buttons elementor-md-60">

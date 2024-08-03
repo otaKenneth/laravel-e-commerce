@@ -10,13 +10,16 @@ $(document).ready(function() {
     $('#products').DataTable({
         search: {
             search: $('input[name="search"]').val()
-        }
+        },
+        order: [[1, 'asc']]
     });    // in products.blade.php
     $('#banners').DataTable();     // in banners.blade.php
     $('#filters').DataTable();     // in filters.blade.php
     $('#coupons').DataTable();     // in admin/coupons/coupons.blade.php              
     $('#users').DataTable();       // in admin/users/users.blade.php                  
-    $('#orders').DataTable();      // in admin/orders/orders.blade.php                
+    $('#orders').DataTable({
+        order: [[0, 'desc'], [1, 'desc']]
+    });      // in admin/orders/orders.blade.php                
     $('#shipping').DataTable();    // in admin/shipping/shipping_charges.blade.php    
     $('#subscribers').DataTable(); // in admin/subscribers/subscribers.blade.php      
     $('#ratings').DataTable();     // in admin/ratings/ratings.blade.php              
@@ -484,7 +487,7 @@ $(document).ready(function() {
     var maxField = 10; //Input fields increment limitation
     var addButton = $('.add_button'); //Add button selector
     var wrapper = $('.field_wrapper'); //Input field wrapper
-    var fieldHTML = '<div><div style="height:10px"></div><input type="text" name="color[]" placeholder="Color" style="width:100px">&nbsp;<input type="text" name="size[]" placeholder="Size" style="width:100px">&nbsp;<input type="text" name="sku[]" placeholder="SKU" style="width:100px">&nbsp;<input type="text" name="price[]" placeholder="Price" style="width:100px">&nbsp;<input type="text" name="stock[]" placeholder="Stock" style="width:100px">&nbsp;<a href="javascript:void(0);" class="remove_button">Remove</a></div>'; //New input field html 
+    var fieldHTML = `<div><div style="height:10px"></div><input type="text" name="attribute[${x}][color]" placeholder="Color" style="width:100px">&nbsp;<input type="text" name="attribute[${x}][size]" placeholder="Size" style="width:100px">&nbsp;<a href="javascript:void(0);" class="remove_button">Remove</a></div>'; //New input field htm` 
     var x = 1; //Initial field counter is 1
     
     // Once add button is clicked
