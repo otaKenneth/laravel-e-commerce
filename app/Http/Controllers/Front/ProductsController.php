@@ -317,7 +317,7 @@ class ProductsController extends Controller
                 $data['size'] = $prod_attribute->size;
             } else {
                 // Check if the selected product `product_id` with that selected `size` have available `stock` in `products_attributes` table
-                $prod_attribute = ProductsAttribute::find($data['variation'])->first();
+                $prod_attribute = ProductsAttribute::where('id', $data['variation'])->first();
                 $getProductStock = $prod_attribute->stock;
 
                 $data['color'] = $prod_attribute->color;
