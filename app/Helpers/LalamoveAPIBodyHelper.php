@@ -10,19 +10,21 @@ class LalamoveAPIBodyHelper
             'min_weight' => '0',
             'max_weight' => '10'
         ],
-        'SEDAN200KG' => [
+        'SEDAN' => [
             'min_weight' => '10',
             'max_weight' => '200'
         ],
-        'MPV300KG' => [
+        'MPV' => [
             'min_weight' => '200',
             'max_weight' => '300'
         ],
-        'MPV600KG' => [
+        'VAN' => [
             'min_weight' => '300',
             'max_weight' => '600'
         ],
     ];
+
+    // \"10WHEEL_TRUCK\", \"2000KG_ALUMINUM_LD\", \"2000KG_FB_LD\", \"LD_10WHEEL_TRUCK\", \"MOTORCYCLE\", \"MPV\", \"MPV_INTERCITY\", \"SEDAN\", \"SEDAN_INTERCITY\", \"TRUCK550\", \"VAN\", \"VAN1000\", \"VAN_INTERCITY\"
 
     public $priceBreakdown = [], $quotation = [], $total_delivery_fee = 0.0, $sender = null, $recipient = null;
 
