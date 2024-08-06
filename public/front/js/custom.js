@@ -1110,7 +1110,7 @@ $(document).ready(function() {
     $('#form-productRefund').on('submit', (e) => {
         e.preventDefault();
 
-        var formdata = $(e.currentTarget).serialize();
+        var formdata = new FormData(e.currentTarget);
         let order_id = $(e.currentTarget).find('input#order_id[name=order_id]').val();
 
         $.ajax({
@@ -1118,6 +1118,8 @@ $(document).ready(function() {
             url: `orders/${order_id}/refund`,
             type: "POST",
             data: formdata,
+            processData: false,
+            contentType: false,
             success: function (resp) {
                 $('.popup_review_order.elementor-491 .close_image_review_popup').click();
                 if (resp && resp.success) {
