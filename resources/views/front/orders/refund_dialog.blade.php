@@ -1,7 +1,7 @@
 <div class="refund_popup_outer">
     <div class="refund_popup_inner">
         <h3 style="text-align: center; margin-bottom: 40px; color: #5F7A61"><b>Reason for Refund</b></h3>
-        <form id="form-productRefund" action="javascript:;" name="refund-form">
+        <form id="form-productRefund" action="javascript:;" name="refund-form" enctype="multipart/form-data">
             @csrf
             <input type="hidden" id="order_id" name="order_id" value="">
             <input type="hidden" id="order_item_id" name="order_item_id" value="">
@@ -15,6 +15,7 @@
             </div>
             <div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100 e-form__buttons"
                 style="justify-content: center;">
+                <input type="file" id="return-product-upload" accept="image/*" style="margin: 15px auto 20px; max-width: 240px;" name="image_proof[]" multiple/>
                 <button type="submit" class="elementor-button elementor-size-sm refund__popup__btn">
                     <span>
                         <span class="elementor-button-icon"></span>

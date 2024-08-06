@@ -317,7 +317,11 @@ class ProductsController extends Controller
                 $data['size'] = $prod_attribute->size;
             } else {
                 // Check if the selected product `product_id` with that selected `size` have available `stock` in `products_attributes` table
-                $getProductStock = ProductsAttribute::find($data['variation'])->stock;
+                $prod_attribute = ProductsAttribute::where('id', $data['variation'])->first();
+                $getProductStock = $prod_attribute->stock;
+
+                $data['color'] = $prod_attribute->color;
+                $data['size'] = $prod_attribute->size;
             }
 
             if ($getProductStock < $data['quantity']) { // if the `stock` available (in `products_attributes` table) is less than the ordered quantity by user (the quantity that the user desires)
