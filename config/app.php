@@ -221,4 +221,6 @@ return [
         'api_secret' => env('LALAMOVE_API_SECRET')
     ],
 
+    'seller_base_url' => env('APP_SELLER_URL'),
+
 ];

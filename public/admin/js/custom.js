@@ -939,12 +939,27 @@ $(document).ready(function() {
 
     $(".attached_refund_image").click(function(event) {
         event.preventDefault();
-        $(".refund_image_popup_container").addClass("active");
+        let log_id = $(event.currentTarget).data('log');
+        let order_id = $(event.currentTarget).data('order');
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            type   : 'get',
+            url    : `/admin/orders/${order_id}/refund-log-details/${log_id}`,
+            success: function(resp) {
+                if (resp.success) {
+                    $('#refund-detail-modal').html(resp.view)
+                    $(".refund_image_popup_container").addClass("active");
+                    
+                    $(".refund_image_popup_container .close_refund_popup").click(function(event) {
+                        event.preventDefault();
+                        $(".refund_image_popup_container").removeClass("active");
+                    });
+                }
+            },
+            error  : function(err) {alert(err.response.message);}
+        });
     });
 
-    $(".refund_image_popup_container .close_refund_popup").click(function(event) {
-        event.preventDefault();
-        $(".refund_image_popup_container").removeClass("active");
-    });
 
 })

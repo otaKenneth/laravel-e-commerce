@@ -295,12 +295,8 @@
                                 </form>
                                 <br>
 
-                            @else
-                                {{-- If the authenticated/logged-in user is 'vendor', restrict the "Update Order Status" feature --}}
-                                This feature is restricted.
                             @endif
                             <hr>
-                            <br>
                             <div style="overflow-y: scroll; max-height: 250px;">
                             {{-- Show the "Update Order Status" History/Log in admin/orders/order_details.blade.php     --}}
                             @foreach ($orderLog as $key => $log)
@@ -348,88 +344,12 @@
                                 {{ date('Y-m-d h:i:s', strtotime($log['created_at'])) }}
                                 <br>
 
-                                @if ($log['order_status'] == "Pending Refund")
-                                <button class="btn-primary attached_refund_image" style="margin: 10px 0 0 3px;">
+                                @if ($log['order_status'] == "Pending Refund" && gettype($log['id']) !== "undefined")
+                                <button class="btn-primary attached_refund_image" data-order="{{ $log['order_id'] }}" data-log="{{ $log['id'] }}" style="margin: 10px 0 0 3px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="20px">
                                         <path fill="#ffffff" d="M160 32c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l352 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64L160 32zM396 138.7l96 144c4.9 7.4 5.4 16.8 1.2 24.6S480.9 320 472 320l-144 0-48 0-80 0c-9.2 0-17.6-5.3-21.6-13.6s-2.9-18.2 2.9-25.4l64-80c4.6-5.7 11.4-9 18.7-9s14.2 3.3 18.7 9l17.3 21.6 56-84C360.5 132 368 128 376 128s15.5 4 20 10.7zM192 128a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120L0 344c0 75.1 60.9 136 136 136l320 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-320 0c-48.6 0-88-39.4-88-88l0-224z"/>
                                     </svg>
                                 </button>
-
-
-                                <style>
-                                    .refund_image_popup_container{
-                                        position: fixed;
-                                        z-index: 9;
-                                        left: 0;
-                                        right: 0;
-                                        top: 0;
-                                        bottom: 0;
-                                        background: #000000a8;
-                                        height: 100vh;
-                                        display: none;
-                                    }
-                                    .refund_image_popup_container.active{
-                                        display: flex !important;
-                                    }
-                                    .refund_image_popup_container img{
-                                        display: block; 
-                                        width: 100%;
-                                        max-width: 700px;
-                                        border-radius: 10px;
-                                    }
-                                    .close_refund_popup{
-                                        background: white;
-                                        color: black;
-                                        padding: 5px;
-                                        top: 10px;
-                                        position: absolute;
-                                        left: auto;
-                                        right: 20px;
-                                        border-radius: 100px;
-                                        height: 30px;
-                                        width: 30px;
-                                        text-align: center;
-                                        display: flex;
-                                        align-content: center;
-                                        justify-content: center;
-                                        align-items: center;
-                                        font-weight: bold;
-                                        transition: all 0.3s ease;
-                                        box-shadow: 0 0 0px white;
-                                    }
-                                    .refund_image_popup_container > div{
-                                        background: white;
-                                        padding: 30px;
-                                        width: 470px !important;
-                                        border-radius: 20px;
-                                        margin: auto;
-                                        max-width: 90vw !important;
-                                        max-height: 590px;        
-                                    }
-                                    .refund_image_popup_container .refund_images{
-                                        display: flex;
-                                        overflow: auto;
-                                        gap: 10px;
-                                    }
-                                </style>
-
-                                <div class="refund_image_popup_container">
-                                
-                                    <a href="#" class="close_refund_popup">X</a>
-                                    <div>
-                                        <div>
-                                            <p style="text-align: center; margin: 30px 10px;"><b>CUSTOMER:</b> &nbsp;The item is broken. Please check the attached image. Thank you!!</p>
-                                            <div class="refund_images">
-                                                <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
-                                                <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
-                                                <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
-                                                <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
-                                            </div>
-                                                
-                                        </div>
-                                    </div>
-                                </div>
-
                                 @endif
                                 <hr>
                             @endforeach
@@ -439,6 +359,10 @@
                     </div>
                 </div>
 
+                
+                <div id="refund-detail-modal">
+                    @include('admin.orders.refund_details');
+                </div>
                 
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
