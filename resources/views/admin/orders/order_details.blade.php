@@ -375,6 +375,8 @@
                                         display: block; 
                                         width: 100%;
                                         max-width: 700px;
+                                        border-radius: 10px;
+                                        margin-bottom: 10px
                                     }
                                     .close_refund_popup{
                                         background: white;
@@ -396,13 +398,18 @@
                                         transition: all 0.3s ease;
                                         box-shadow: 0 0 0px white;
                                     }
-                                    .refund_image_popup_container div{
+                                    .refund_image_popup_container > div{
                                         background: white;
                                         padding: 30px;
                                         width: 470px !important;
                                         border-radius: 20px;
                                         margin: auto;
                                         max-width: 90vw !important;
+                                        
+                                    }
+                                    .refund_image_popup_container div div{
+                                        max-height: 590px;
+                                        overflow-y: auto;
                                     }
                                 </style>
 
@@ -410,8 +417,13 @@
                                 
                                     <a href="#" class="close_refund_popup">X</a>
                                     <div>
-                                        <p style="text-align: center; margin: 30px 10px;"><b>CUSTOMER:</b> &nbsp;The item is broken. Please check the attached image. Thank you!!</p>
-                                        <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
+                                        <div>
+                                            <p style="text-align: center; margin: 30px 10px;"><b>CUSTOMER:</b> &nbsp;The item is broken. Please check the attached image. Thank you!!</p>
+                                            <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
+                                            <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
+                                            <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
+                                            <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
+                                        </div>
                                     </div>
                                 </div>
 
