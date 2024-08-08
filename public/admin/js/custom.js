@@ -937,6 +937,14 @@ $(document).ready(function() {
     })
 
 
+    $(".attached_refund_image").click(function(event) {
+        event.preventDefault();
+        $(".refund_image_popup_container").addClass("active");
+    });
 
+    $(".refund_image_popup_container .close_refund_popup").click(function(event) {
+        event.preventDefault();
+        $(".refund_image_popup_container").removeClass("active");
+    });
 
 })
