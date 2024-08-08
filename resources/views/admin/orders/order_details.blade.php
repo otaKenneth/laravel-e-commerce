@@ -376,7 +376,6 @@
                                         width: 100%;
                                         max-width: 700px;
                                         border-radius: 10px;
-                                        margin-bottom: 10px
                                     }
                                     .close_refund_popup{
                                         background: white;
@@ -405,11 +404,12 @@
                                         border-radius: 20px;
                                         margin: auto;
                                         max-width: 90vw !important;
-                                        
+                                        max-height: 590px;        
                                     }
-                                    .refund_image_popup_container div div{
-                                        max-height: 590px;
-                                        overflow-y: auto;
+                                    .refund_image_popup_container .refund_images{
+                                        display: flex;
+                                        overflow: auto;
+                                        gap: 10px;
                                     }
                                 </style>
 
@@ -419,10 +419,13 @@
                                     <div>
                                         <div>
                                             <p style="text-align: center; margin: 30px 10px;"><b>CUSTOMER:</b> &nbsp;The item is broken. Please check the attached image. Thank you!!</p>
-                                            <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
-                                            <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
-                                            <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
-                                            <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
+                                            <div class="refund_images">
+                                                <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
+                                                <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
+                                                <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
+                                                <img src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}">
+                                            </div>
+                                                
                                         </div>
                                     </div>
                                 </div>
