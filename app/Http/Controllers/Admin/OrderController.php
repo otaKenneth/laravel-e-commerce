@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Refunds;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -798,6 +799,18 @@ class OrderController extends Controller
 
         // Output the generated PDF to Browser
         $dompdf->stream();
+    }
+
+    public function orderRefundDetail (Request $request, \App\Models\Order $order, \App\Models\OrdersLog $order_log) {
+        if ($order_log->order_status === "Pending Refund") {
+            $refund = Refunds::where('order_id', $order->id)->with('refund_images')->first();
+
+            return response()->json([
+                'success' => true,
+                'message' => "Refund details has been fethed.",
+                'view' => (String) \Illuminate\Support\Facades\View::make('admin.orders.refund_details')->with(compact('refund'))
+            ]);
+        }
     }
 
 }

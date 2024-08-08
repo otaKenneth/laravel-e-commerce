@@ -77,3 +77,8 @@ function formatPhoneNumber ($phone) {
 
     return $phone;
 }
+
+function seller_url ($path = '') {
+    $sellerBaseUrl = config('app.seller_base_url');
+    return "{$sellerBaseUrl}/{$path}";
+}

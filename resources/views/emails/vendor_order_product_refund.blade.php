@@ -5,7 +5,7 @@
         <tr><td>&nbsp;</td></tr>
         <tr><td>Hello {{ $name }}</td></tr>
         <tr><td>&nbsp;<br></td></tr>
-        <tr><td>An Order <a href="{{ url('admin/orders/' . $order_id) }}">#{{ $order_id }}</a> status has been updated to {{ $order_status }}</td></tr>
+        <tr><td>An Order <a href="{{ seller_url('admin/orders/' . $order_id) }}">#{{ $order_id }}</a> status has been updated to {{ $order_status }}</td></tr>
         <tr><td>&nbsp;</td></tr>
         <tr><td>For reason: {{$reason}}</td></tr>
         <tr><td>The Order details are as below:</td></tr>
