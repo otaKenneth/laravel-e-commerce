@@ -40,6 +40,12 @@ class IndexController extends Controller
     public function aboutUsManagement() {
         return view('front.pages.management');
     }
+    public function privacyPolicy() {
+        return view('front.pages.privacy-policy');
+    }
+    public function termsAndConditions() {
+        return view('front.pages.terms-and-conditions');
+    }
 
     public function getKSContainerContent(Request $request) {
         if (isset($request->page)) {
