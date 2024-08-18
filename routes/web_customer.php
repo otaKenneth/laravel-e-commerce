@@ -53,6 +53,10 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
     Route::get('management', 'IndexController@aboutUsManagement')->name('front.user.management');
 
+    Route::get('privacy-policy', 'IndexController@privacyPolicy')->name('front.user.privacy-policy');
+
+    Route::get('terms-and-conditions', 'IndexController@termsAndConditions')->name('front.user.terms-and-conditions');
+
     Route::get('merchants', 'VendorController@vendorList')->name('front.user.merchants');
 
     Route::get('become-merchant', 'VendorController@becomeMerchant')->name('front.become-merchant');
