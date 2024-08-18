@@ -152,11 +152,11 @@
                             </span>
                             <br>
                             <span style="color: #ffffff;">
-                                <a style="color: #ffffff;" href="#">Privacy Policy</a>
+                                <a style="color: #ffffff;" href="{{ url('privacy-policy') }}">Privacy Policy</a>
                             </span>
                             <br>
                             <span style="color: #ffffff;">
-                                <a style="color: #ffffff;" href="#">T&amp;C</a>
+                                <a style="color: #ffffff;" href="{{ url('terms-and-conditions') }}">T&amp;C</a>
                             </span>
                         </p>
                     </div>
