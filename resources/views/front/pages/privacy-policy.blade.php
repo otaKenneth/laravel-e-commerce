@@ -43,7 +43,7 @@
 
     <p>Last updated: February 13, 2024</p>
 
-    <p>Welcome to Kapiton! At Kapiton, we highly prioritize your privacy and are unwaveringly committed to ensuring the security and confidentiality of your personal information. This meticulously crafted Privacy Policy serves as a comprehensive guide, providing intricate details on how we collect, utilize, share, and fortify your data when you engage with our website or avail yourself of our services. By accessing Kapiton or utilizing our services, you explicitly affirm your agreement to the terms delineated in this Privacy Policy.</p>
+    <p class="indented-text">Welcome to Kapiton! At Kapiton, we highly prioritize your privacy and are unwaveringly committed to ensuring the security and confidentiality of your personal information. This meticulously crafted Privacy Policy serves as a comprehensive guide, providing intricate details on how we collect, utilize, share, and fortify your data when you engage with our website or avail yourself of our services. By accessing Kapiton or utilizing our services, you explicitly affirm your agreement to the terms delineated in this Privacy Policy.</p>
     
     <h2>1. Information We Collect:</h2>
     <p class="heading-italize">A. Personal Information</p>
