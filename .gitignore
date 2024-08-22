@@ -14,9 +14,13 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-composer.lock
-gcp-key.json
-gcp-key_admin.json
+public/front/images/*
+public/admin/images/*
+gcp-key*
+
+.dockerignore
+Dockerfile
+compose.yaml
 
 /Database - multivendor_ecommerce
 /Postman Collection of API Endpoints
