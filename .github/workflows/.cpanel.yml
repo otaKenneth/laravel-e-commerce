@@ -1,0 +1,45 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - kapiton-uat
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create deploy directory if it doesn't exist
+        run: |
+          mkdir -p /home1/hryftate/repositories/kapiton-uat/
+
+      - name: Deploy to cPanel
+        run: |
+          export DEPLOYPATH=/home1/hryftate/repositories/kapiton-uat/
+          /bin/cp -R . $DEPLOYPATH
+          echo "Deployed to $DEPLOYPATH"
+          
+      - name: List files in DEPLOYPATH
+        run: ls -la /home1/hryftate/repositories/kapiton-uat/
+        
+      - name: Copy files to UAT directory
+        run: |
+          mkdir -p /home1/hryftate/UAT
+          /bin/cp -R /home1/hryftate/repositories/kapiton-uat/public /home1/hryftate/UAT
+          echo "Copied files to UAT directory"
+          
+      - name: List files in UAT directory
+        run: ls -la /home1/hryftate/UAT
+
+      - name: Copy files to seller.kapiton.store directory
+        run: |
+          mkdir -p /home1/hryftate/seller.kapiton.store
+          /bin/cp -R /home1/hryftate/repositories/kapiton-uat/public /home1/hryftate/seller.kapiton.store
+          echo "Copied files to seller.kapiton.store directory"
+          
+      - name: List files in seller.kapiton.store directory
+        run: ls -la /home1/hryftate/seller.kapiton.store

@@ -17,6 +17,6 @@ if (env('APP_ENV') == "development") {
     require __DIR__ . "/web_local.php";
 } elseif (env('APP_ENV') == "testing") {
     require __DIR__ . "/web_uat.php";
-} elseif (env('APP_ENV') == "production") {
+ } elseif (env('APP_ENV') == "production") {
     require __DIR__ . "/web_master.php";
 }
