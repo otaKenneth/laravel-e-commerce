@@ -5,12 +5,15 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-lg-12 grid-margin stretch-card">
+                <div class="col-lg-12 grid-margin stretch-card mobile-space-top">
+                    <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                        <span class="icon-menu"></span>
+                    </button>
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Products</h4>
 
-
+                            <input type="hidden" name="search" value="{{$search_value}}">
 
                             
                             <a href="{{ url('admin/add-edit-product') }}" style="max-width: 150px; float: right; display: inline-block" class="btn btn-block btn-primary">Add Product</a>
@@ -36,7 +39,6 @@
                                             <th>ID</th>
                                             <th>Product Name</th>
                                             <th>Product Code</th>
-                                            <th>Product Color</th>
                                             <th>Product Image</th>
                                             <th>Category</th> {{-- Through the relationship --}}
                                             <th>Section</th>  {{-- Through the relationship --}}
@@ -51,15 +53,12 @@
                                                 <td>{{ $product['id'] }}</td>
                                                 <td>{{ $product['product_name'] }}</td>
                                                 <td>{{ $product['product_code'] }}</td>
-                                                <td>{{ $product['product_color'] }}</td>
                                                 <td>
-                                                    @if (!empty($product['product_image']))
-                                                        <img style="width:120px; height:100px" src="{{ asset('front/images/product_images/small/' . $product['product_image']) }}"> {{-- Show the 'small' image size from the 'small' folder --}}
-                                                    @else
-                                                        <img style="width:120px; height:100px" src="{{ asset('front/images/product_images/small/no-image.png') }}"> {{-- Show the 'no-image' Dummy Image: If you have for example a table with an 'images' column (that can exist or not exist), use a 'Dummy Image' in case there's no image. Example: https://dummyimage.com/  --}}
-                                                    @endif
+                                                    <img style="width:120px; height:100px" src="{{ $getImage('front/images/product_images/small/', $product['product_image']) }}"> {{-- Show the 'small' image size from the 'small' folder --}}
                                                 </td>
-                                                <td>{{ $product['category']['category_name'] }}</td> {{-- Through the relationship --}}
+                                                <td>@if (isset($product['category']['category_name']))
+                                                    {{ $product['category']['category_name'] }}
+                                                @endif</td> {{-- Through the relationship --}}
                                                 <td>{{ $product['section']['name'] }}</td> {{-- Through the relationship --}}
                                                 <td>
                                                     @if ($product['admin_type'] == 'vendor')

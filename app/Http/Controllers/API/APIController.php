@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\PaymongoAPIHelper;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class APIController extends Controller
 {
@@ -830,6 +834,180 @@ class APIController extends Controller
                 'message' => $message
             ], 422); // 422 HTTP Status Code: Unprocessable Content        
         }
+    }
+
+    public function paymongoPaymentStatus(Request $request) {
+        \Log::info('PayMongo webhook received' . json_encode($request->all()));
+        $paymongo = new PaymongoAPIHelper;
+        // Get the signature headers
+        $paymongoSignature = $request->header('paymongo-signature');
+        
+        // Parse the signature headers
+        $signatures = $paymongo->parseSignatureHeader($paymongoSignature);
+
+        // Choose the correct signature based on the environment
+        $expectedSignature = app()->environment(['development', 'testing']) ? $signatures['te'] : $signatures['li'];
+
+        // Verify the signature
+        if ($paymongo->verifySignature($expectedSignature, $request->getContent(), $signatures['t'])) {
+            // Handle the webhook payload
+            $payload = $request->json()->all()['data'];
+
+            switch ($payload['attributes']['type']) {
+                case 'payment.paid':
+                    $this->updatePaymentStatus($payload['attributes']['data']);
+                    break;
+
+                case 'payment.failed':
+                    $this->updatePaymentStatus($payload['attributes']['data']);
+                    break;
+
+                case 'payment.refunded':
+                    $this->updateRefundStatus($payload['attributes']['data']);
+                    break;
+                    
+                case 'payment.refund.updated':
+                    $this->updatePaymentRefundStatus($payload['attributes']['data']);
+                    break;
+                
+                default:
+                    \Log::info('PayMongo webhook received', $payload);
+                    break;
+            }
+
+            return response()->json(['status' => 'success'], 200);
+        } else {
+            \Log::warning('PayMongo webhook signature verification failed');
+            \Log::info('Paymongo Expected Signature: ' . $expectedSignature);
+            \Log::info('Paymongo Signature: ' . $signatures['t']);
+            return response()->json(['status' => 'error', 'message' => 'Invalid signature'], 200);
+        }
+    }
+
+    private function updatePaymentStatus($payload) {
+        try {
+            // Process the payment status here
+            $payment = \App\Models\Payment::where('payment_id', $payload['attributes']['payment_intent_id'])
+                ->orWhere('payment_id', $payload['id'])
+                ->first();
+
+            $payment->payment_id = $payload['id'];
+            $payment->payment_status = $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
+            $payment->update();
+    
+            $order = \App\Models\Order::find($payment->order_id);
+            $order->order_status = Str::title($payload['attributes']['status']);
+            $order->update();
+    
+            $log = new \App\Models\OrdersLog;
+            $log->order_id     = $order->id;
+            $log->order_status = $order->order_status;
+            $log->save();
+        } catch (\Exception $e) {
+            \Log::error('Paymongo Update Payment Status' . $e->getMessage());
+        }
+    }
+
+    private function updateRefundStatus($payload) {
+        try {
+            $refunds = $payload['attributes']['refunds'];
+
+            foreach ($refunds as $key => $p_refund) {
+                DB::transaction(function () use ($p_refund) {
+                    // Process the payment status here
+                    $payment = \App\Models\Payment::where('payment_id', $p_refund['attributes']['payment_id'])->first();
+                    $refund = \App\Models\Refunds::where('payment_id', $payment->id)->first();
+                    $refund->paymongo_refund_id = $p_refund['id'];
+                    $refund->status = "Refund Request - " . $p_refund['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
+                    $refund->update();
+                    
+                    $order = \App\Models\Order::find($refund->order_id);
+                    $order->order_status = $refund->status;
+                    $order->update();
+            
+                    $order_product = \App\Models\OrdersProduct::where('order_id', $order->id)
+                        ->where('product_id', $refund->product_id)->first();
+            
+                    $log = new \App\Models\OrdersLog;
+                    $log->order_id     = $order->id;
+                    $log->order_item_id = $order_product->id;
+                    $log->order_status = $order->order_status;
+                    $log->save();
+                });
+            }
+        } catch (\Exception $e) {
+            \Log::error('Paymongo Update Payment Status' . $e->getMessage());
+        }
+    }
+
+    private function updatePaymentRefundStatus($payload) {
+        try {
+            DB::transaction(function () use ($payload) {
+                $refund = \App\Models\Refunds::where('paymongo_refund_id', $payload['id'])->first();
+                $refund->status = "Refund " . $payload['attributes']['status']; // Comes from PayPal website (i.e. API / backend)
+                $refund->update();
+                
+                $order = \App\Models\Order::find($refund->order_id);
+                $order->order_status = $refund->status;
+                $order->update();
+        
+                $order_product = \App\Models\OrdersProduct::where('order_id', $order->id)
+                    ->where('product_id', $refund->product_id)->first();
+        
+                $log = new \App\Models\OrdersLog;
+                $log->order_id     = $order->id;
+                $log->order_item_id = $order_product->id;
+                $log->order_status = $order->order_status;
+                $log->save();
+            });
+        } catch (\Exception $e) {
+            \Log::error('Paymongo Update Payment Status' . $e->getMessage());
+        }
+    }
+
+    public function lalamoveDeliveryStatus(Request $request) {
+        $data = $request->all();
+        \Log::info("Lalamove Webhook Update Status: " . json_encode($data));
+
+        if ($data['eventType'] == 'ORDER_STATUS_CHANGED' && isset($data['data']['order'])) {
+            $lalamove_order = $data['data']['order'];
+            $order_products = \App\Models\OrdersProduct::where('courier_name', $lalamove_order['shareLink'])->get()->toArray();
+
+            $order = null; $tracking_number_explode_cnt = 0;
+            foreach ($order_products as $order_product) {
+                $tracking_number = explode("-", $order_product['tracking_number']);
+                $tracking_number_explode_cnt = count($tracking_number);
+                if ($lalamove_order['orderId'] == $tracking_number[0]) {
+                    $order = $order_product;
+                    break;
+                }
+            }
+
+            $log = new \App\Models\OrdersLog;
+            $log->order_id = $order['order_id'];
+            $log->order_item_id = $order['id'];
+            $log->order_status = "LALAMOVE - " .$lalamove_order['status'];
+            $log->save();
+
+            $orderProduct = \App\Models\OrdersProduct::find($order['id']);
+            if (!is_null($lalamove_order['driverId']) && $tracking_number_explode_cnt < 3) {
+                $orderProduct->tracking_numer = $orderProduct->tracking_number . $lalamove_order['driverId'];
+            }
+
+            if ($lalamove_order['status'] == 'PICKED_UP') {
+                $orderProduct->item_status = 'Shipped';
+
+                $log = new \App\Models\OrdersLog;
+                $log->order_id = $order['order_id'];
+                $log->order_item_id = $order['id'];
+                $log->order_status = "LALAMOVE - " .$lalamove_order['status'];
+                $log->save();
+            }
+            
+            $orderProduct->save();
+        }
+        
+        return response()->json(['status' => 'success'], 200);
     }
 
 }

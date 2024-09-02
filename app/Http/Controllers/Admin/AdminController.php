@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
+use App\Models\Vendor;
+use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 // Auth without a namespace here works fine because the Admin.php model extends Authenticatable
 use Illuminate\Support\FacadesAuth;
@@ -25,9 +28,13 @@ class AdminController extends Controller
         $couponsCount    = \App\Models\Coupon::count();
         $brandsCount     = \App\Models\Brand::count();
         $usersCount      = \App\Models\User::count();
+        $wdyfu_fb        = Vendor::where('wdyfu', 'Facebook')->count();
+        $wdyfu_ig        = Vendor::where('wdyfu', 'Instagram')->count();
+        $wdyfu_li        = Vendor::where('wdyfu', 'LinkedIn')->count();
+        $wdyfu_re        = Vendor::where('wdyfu', 'Referral')->count();
+        $wdyfu_wm        = Vendor::where('wdyfu', 'Word-of-Mouth')->count();
 
-
-        return view('admin/dashboard')->with(compact('sectionsCount', 'categoriesCount', 'productsCount', 'ordersCount', 'couponsCount', 'brandsCount', 'usersCount')); // is the same as:    return view('admin.dashboard');
+        return view('admin/dashboard')->with(compact('sectionsCount', 'categoriesCount', 'productsCount', 'ordersCount', 'couponsCount', 'brandsCount', 'usersCount', 'wdyfu_fb', 'wdyfu_ig', 'wdyfu_li', 'wdyfu_re', 'wdyfu_wm')); // is the same as:    return view('admin.dashboard');
     }
 
     public function login(Request $request) { // Logging in using our 'admin' guard (whether 'vendor' or 'admin' (depending on the `type` and `vendor_id` columns in `admins` table)) we created in auth.php
@@ -71,7 +78,50 @@ class AdminController extends Controller
         return view('admin/login');
     }
 
+    public function forgotPassword(Request $request) {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            // dd($data);
+
+            // Validation
+            $rules = [
+                'email'    => 'required|email|max:255|exists:vendors,email',
+            ];
+
+            $customMessages = [ // Specifying A Custom Message For A Given Attribute: https://laravel.com/docs/9.x/validation#specifying-a-custom-message-for-a-given-attribute
+                'email.required'    => 'Email Address is required!',
+                'email.email'       => 'Valid Email Address is required',
+            ];
+
+            $this->validate($request, $rules, $customMessages);
+
+            $userDetails = Vendor::where('email', $data['email'])->first();
+            $email = $data['email'];
+            $new_password = \Illuminate\Support\Str::random(16);
+
+            // The email message data/variables that will be passed in to the email view
+            $messageData = [
+                'name'     => $userDetails['name'], // the user's name that they entered while submitting the registration form
+                'email'    => $email, // the user's email that they entered while submitting the registration form
+                'password' => $new_password // the user's email that they entered while submitting the registration form
+                // 'code'  => base64_encode($data['email']) // We base64 code the user's $email and send it as a Route Parameter from user_confirmation.blade.php to the 'user/confirm/{code}' route in web.php, then it gets base64 decoded again in confirmUser() method in Front/UserController.php    // we will use the opposite: base64_decode() in the confirmUser() method (encode X decode)
+            ];
+
+            $admin = Admin::where('vendor_id', $userDetails->id)->first();
+            $admin->password = bcrypt($new_password);
+            $admin->update();
+
+            \Illuminate\Support\Facades\Mail::send('emails.user_forgot_password', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_status' is the order_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                $message->to($email)->subject('New Password - ' . env('APP_URL'));
+            });
+        }
+
+        return view('admin.forgotpassword');
+    }
+
     public function logout() {
+        session()->forget('errors');
+        session()->forget('error_message');
         Auth::guard('admin')->logout(); // Logging out using our 'admin' guard that we created in auth.php    // Accessing Specific Guard Instances: https://laravel.com/docs/9.x/authentication#accessing-specific-guard-instances
         return redirect('admin/login');
     }
@@ -168,7 +218,9 @@ class AdminController extends Controller
                     $imagePath = 'admin/images/photos/' . $imageName;
 
                     // Upload the image using the Intervention package and save it in our path inside the 'public' folder
-                    Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                    // Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                    $fileStorageService = new FileStorageService;
+                    $fileStorageService->storeFile($image_tmp, $imagePath);
                 }
 
             } else if (!empty($data['current_admin_image'])) { // In case the admins updates other fields but doesn't update the image itself (doesn't upload a new image), but there's an already existing old image
@@ -239,7 +291,9 @@ class AdminController extends Controller
                         $imagePath = 'admin/images/photos/' . $imageName;
 
                         // Upload the image using the Intervention package and save it in our path inside the 'public' folder
-                        Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                        // Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                        $fileStorageService = new FileStorageService;
+                        $fileStorageService->storeFile($image_tmp, $imagePath);
                     }
 
                 } else if (!empty($data['current_vendor_image'])) { // In case the admins updates other fields but doesn't update the image itself (doesn't upload a new image), but there's an already existing old image
@@ -288,15 +342,21 @@ class AdminController extends Controller
                 $rules = [
                     'shop_name'           => 'required|regex:/^[\pL\s\-]+$/u', // only alphabetical characters and spaces
                     'shop_city'           => 'required|regex:/^[\pL\s\-]+$/u', // only alphabetical characters and spaces
+                    'shop_state'          => 'required',  
                     'shop_mobile'         => 'required|numeric',
+                    'business.lat'        => 'required',
+                    'business.lng'        => 'required',
                     'address_proof'       => 'required',
                 ];
 
                 $customMessages = [ // Specifying A Custom Message For A Given Attribute: https://laravel.com/docs/9.x/validation#specifying-a-custom-message-for-a-given-attribute
                     'shop_name.required'           => 'Name is required',
                     'shop_city.required'           => 'City is required',
+                    'shop_state.required'          => 'Province is required',
                     'shop_city.regex'              => 'Valid City alphabetical is required',
                     'shop_name.regex'              => 'Valid Shop Name is required',
+                    'business.lat'                 => 'Latitude value is required. Please input a valid address.',
+                    'business.lng'                 => 'Longitude value is required. Please input a valid address.',
                     'shop_mobile.required'         => 'Mobile is required',
                     'shop_mobile.numeric'          => 'Valid Mobile is required',
                 ];
@@ -319,7 +379,9 @@ class AdminController extends Controller
                         $imagePath = 'admin/images/proofs/' . $imageName;
 
                         // Upload the image using the Intervention package and save it in our path inside the 'public' folder
-                        Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                        // Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                        $fileStorageService = new FileStorageService;
+                        $fileStorageService->storeFile($image_tmp, $imagePath);
                     }
 
                 } else if (!empty($data['current_address_proof'])) { // In case the admins updates other fields but doesn't update the image itself (doesn't upload a new image), but there's an already existing old image
@@ -341,9 +403,9 @@ class AdminController extends Controller
                         'shop_state'              => $data['shop_state'],
                         'shop_country'            => $data['shop_country'],
                         'shop_pincode'            => $data['shop_pincode'],
+                        'lat'                     => $data['business']['lat'],
+                        'long'                     => $data['business']['lng'],
                         'business_license_number' => $data['business_license_number'],
-                        'gst_number'              => $data['gst_number'],
-                        'pan_number'              => $data['pan_number'],
                         'address_proof'           => $data['address_proof'],
                         'address_proof_image'     => $imageName,
                     ]);
@@ -360,9 +422,9 @@ class AdminController extends Controller
                         'shop_state'              => $data['shop_state'],
                         'shop_country'            => $data['shop_country'],
                         'shop_pincode'            => $data['shop_pincode'],
+                        'lat'                     => $data['business']['lat'],
+                        'long'                     => $data['business']['lng'],
                         'business_license_number' => $data['business_license_number'],
-                        'gst_number'              => $data['gst_number'],
-                        'pan_number'              => $data['pan_number'],
                         'address_proof'           => $data['address_proof'],
                         'address_proof_image'     => $imageName,
                     ]);
@@ -478,6 +540,9 @@ class AdminController extends Controller
             $admins = $admins->where('type', $type);
             $title = ucfirst($type) . 's';
 
+            if ($type == "vendor") {
+                $admins->with('vendorBusiness');
+            }
             // Correcting issues in the Skydash Admin Panel Sidebar using Session
             Session::put('page', 'view_' . strtolower($title));
 
@@ -491,7 +556,7 @@ class AdminController extends Controller
         $admins = $admins->get()->toArray(); // toArray() method converts the Collection object to a plain PHP array
         // dd($admins);
 
-        return view('admin/admins/admins')->with(compact('admins', 'title'));
+        return view('admin.admins.admins')->with(compact('admins', 'title'));
     }
 
     public function viewVendorDetails($id) { // View further 'vendor' details inside Admin Management table (if the authenticated user is superadmin, admin or subadmin)

@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProductsAttribute;
+use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 
 class ProductsController extends Controller
 {
-    public function products() { // render products.blade.php in the Admin Panel
+    public function products(Request $request) { // render products.blade.php in the Admin Panel
         Session::put('page', 'products');
 
 
@@ -44,8 +47,11 @@ class ProductsController extends Controller
         $products = $products->get()->toArray(); // $products will be either ALL products Or VENDOR products ONLY (depending on the last if condition)    // Using subqueries with Eager Loading for a better performance    // Constraining Eager Loads: https://laravel.com/docs/9.x/eloquent-relationships#constraining-eager-loads    // Subquery Where Clauses: https://laravel.com/docs/9.x/queries#subquery-where-clauses    // Advanced Subqueries: https://laravel.com/docs/9.x/eloquent#advanced-subqueries    // ['section', 'category'] are the relationships methods names
         // dd($products);
 
-
-        return view('admin.products.products')->with(compact('products')); // render products.blade.php page, and pass $products variable to the view
+        $search_value = "";
+        if (isset($request->product_code)) {
+            $search_value = $request->product_code;
+        }
+        return view('admin.products.products')->with(compact('products','search_value')); // render products.blade.php page, and pass $products variable to the view
     }
     
     public function updateProductStatus(Request $request) { // Update Product Status using AJAX in products.blade.php
@@ -104,9 +110,9 @@ class ProductsController extends Controller
             $rules = [
                 'category_id'   => 'required',
                 'product_name'  => 'required', // only alphabetical characters and spaces
-                'product_code'  => 'required|regex:/^\w+$/', // alphanumeric regular expression
+                'product_code'  => "required|regex:/^\w+$/|unique:products,product_code,{$id}", // alphanumeric regular expression
                 'product_price' => 'required|numeric',
-                'product_color' => 'required|regex:/^[\pL\s\-]+$/u', // only alphabetical characters and spaces
+                'brand_id' => 'required|exists:brands,id', // only alphabetical characters and spaces
             ];
 
             $customMessages = [ // Specifying A Custom Message For A Given Attribute: https://laravel.com/docs/9.x/validation#specifying-a-custom-message-for-a-given-attribute
@@ -132,20 +138,40 @@ class ProductsController extends Controller
                 if ($image_tmp->isValid()) { // Validating Successful Uploads: https://laravel.com/docs/9.x/requests#validating-successful-uploads
                     // Get image extension
                     $extension = $image_tmp->getClientOriginalExtension();
+                    $fileStorageService = new FileStorageService;
 
                     // Generate a new random name for the uploaded image (to avoid that the image might get overwritten if its name is repeated)
                     $imageName = rand(111, 99999) . '.' . $extension; // e.g. 5954.png
 
                     // Assigning the uploaded images path inside the 'public' folder
                     // We will have three folders: small, medium and large, depending on the images sizes
-                    $largeImagePath  = 'front/images/product_images/large/'  . $imageName; // 'large'  images folder
-                    $mediumImagePath = 'front/images/product_images/medium/' . $imageName; // 'medium' images folder
-                    $smallImagePath  = 'front/images/product_images/small/'  . $imageName; // 'small'  images folder
+                    $arr_filePaths = [
+                        [
+                            'path' => 'front/images/product_images/large/'  . $imageName,
+                            'size' => [
+                                'width' => 1000,
+                                'height' => 1000,
+                            ]
+                        ], // 'large'  images folder 
+                        [
+                            'path' => 'front/images/product_images/medium/' . $imageName,
+                            'size' => [
+                                'width' => 500,
+                                'height' => 500,
+                            ]
+                        ], // 'medium' images folder
+                        [
+                            'path' => 'front/images/product_images/small/'  . $imageName,
+                            'size' => [
+                                'width' => 250,
+                                'height' => 250,
+                            ]
+                        ] // 'small'  images folder
+                    ];
 
-                    // Upload the image using the 'Intervention' package and save it in our THREE paths (folders) inside the 'public' folder
-                    Image::make($image_tmp)->resize(1000, 1000)->save($largeImagePath);  // resize the 'large'  image size then store it in the 'large'  folder
-                    Image::make($image_tmp)->resize(500,   500)->save($mediumImagePath); // resize the 'medium' image size then store it in the 'medium' folder
-                    Image::make($image_tmp)->resize(250,   250)->save($smallImagePath);  // resize the 'small'  image size then store it in the 'small'  folder
+                    foreach ($arr_filePaths as $key => $path) {
+                        $fileStorageService->storeFile($image_tmp, $path['path'], $path['size']);
+                    }
                 
                     // Insert the image name in the database table
                     $product->product_image = $imageName;
@@ -169,7 +195,8 @@ class ProductsController extends Controller
                     $videoPath = 'front/videos/product_videos/';
 
                     // Move the video from the temporary path (which is assigned by the web server) to our assigned path inside the 'public' folder    // Copying & Moving Files: https://laravel.com/docs/9.x/filesystem#copying-moving-files
-                    $video_tmp->move($videoPath, $videoName);
+                    // $video_tmp->move($videoPath, $videoName);
+                    $fileStorageService->storeVideo($video_tmp, $videoPath, $videoName);
 
                     // Insert the video name in the database table
                     $product->product_video = $videoName;
@@ -187,7 +214,8 @@ class ProductsController extends Controller
             $product->group_code  = $data['group_code']; // Managing Product Colors (in front/products/detail.blade.php)
 
             
-            // Saving the seleted filter for a product
+            // Saving the selected filter for a product
+            $features = [];
             $productFilters = \App\Models\ProductsFilter::productFilters(); // Get ALL the (enabled/active) Filters
             foreach ($productFilters as $filter) { // get ALL the filters, then check if every filter's `filter_column` is submitted by the category_filters.blade.php page
                 // dd($filter);
@@ -195,12 +223,13 @@ class ProductsController extends Controller
                 // Firstly, for every filter in the `products_filters` table, Get the filter's (from the foreach loop) `cat_ids` using filterAvailable() method, then check if the current category_id exists in the filter cat_ids, then show the filter, if not, then don't show the filter
                 $filterAvailable = \App\Models\ProductsFilter::filterAvailable($filter['id'], $data['category_id']);
                 if ($filterAvailable == 'Yes') {
-                    if (isset($filter['filter_column']) && $data[$filter['filter_column']]) { // check if every filter's `filter_column` is submitted by the category_filters.blade.php page
+                    if (isset($filter['filter_column']) && isset($data[$filter['filter_column']])) { // check if every filter's `filter_column` is submitted by the category_filters.blade.php page
                         // Save the product filter in the `products` table
-                        $product->{$filter['filter_column']} = $data[$filter['filter_column']]; // i.e. $product->filter_column = filter_value    // $data[$filter['filter_column']]    is like    $data['screen_size']    which is equal to the filter value e.g.    $data['screen_size'] = 5 to 5.4 in    // $data comes from the <select> box in category_filters.blade.php
+                        $features[$filter['filter_column']] = $data[$filter['filter_column']]; // i.e. $product->filter_column = filter_value    // $data[$filter['filter_column']]    is like    $data['screen_size']    which is equal to the filter value e.g.    $data['screen_size'] = 5 to 5.4 in    // $data comes from the <select> box in category_filters.blade.php
                     }
                 }
             }
+            $product->features         = json_encode($features);
 
 
             if ($id == '') { // if a NEW product is added by an 'admin' or 'vendor', assign those new values. Otherwise, when Edit/Update an already existing product, leave everything as is
@@ -232,7 +261,6 @@ class ProductsController extends Controller
 
             $product->product_name     = $data['product_name'];
             $product->product_code     = $data['product_code'];
-            $product->product_color    = $data['product_color'];
             $product->product_price    = $data['product_price'];
             $product->product_discount = $data['product_discount'];
             $product->product_weight   = $data['product_weight'];
@@ -261,11 +289,42 @@ class ProductsController extends Controller
             }
 
 
-            $product->status = 1;
+            $product->status = is_null($id) ? 0:$product->status;
 
 
             $product->save(); // Save all data in the database
 
+            // If new product, add to admin product review
+            if (is_null($id)) {
+                $adminModel = new \App\Models\Admin;
+                $admins_emails = $adminModel->whereIn('type', ['admin', 'superadmin', 'subadmin'])->get()->pluck('email')->toArray();
+    
+                $vendorModel = new \App\Models\Vendor;
+                $vendorDetails = $vendorModel->find($product->vendor_id)->first();
+    
+                $messageData = [
+                    'product_id' => $product->id,
+                    'vendor' => $vendorDetails,
+                    'product_code' => $product->product_code,
+                    'category' => $categoryDetails
+                ];
+    
+                \Illuminate\Support\Facades\Mail::send('emails.new_product', $messageData, function ($message) use ($admins_emails) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.vendor_approved' is the vendor_approved.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that vendor_approved.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                    $message->to($admins_emails)->subject('Product for Review');
+                });
+            }
+            
+            if ($request->hasFile('product_image') && !is_null($product->product_image)) {
+                // Insert the image name in the database table `products_images`
+                $image = new \App\Models\ProductsImage;
+    
+                $image->image      = $product->product_image;
+                $image->product_id = $product->id;
+                $image->status     = 1;
+    
+                $image->save();
+            }
+            
             return redirect('admin/products')->with('success_message', $message);
         }
 
@@ -278,9 +337,21 @@ class ProductsController extends Controller
         $brands = \App\Models\Brand::where('status', 1)->get()->toArray();
         // dd($brands);
 
+        $product->features = json_decode($product->features, true);
+        // dd($product);
+
+        $breadcrumb = [
+            [
+                'url' => 'admin/products',
+                'value' => 'Products'
+            ],
+            [
+                'value' => 'Product'
+            ]
+        ];
 
         // return view('admin.products.add_edit_product')->with(compact('title', 'product'));
-        return view('admin.products.add_edit_product')->with(compact('title', 'product', 'categories', 'brands'));
+        return view('admin.products.add_edit_product')->with(compact('title', 'product', 'categories', 'brands', 'breadcrumb'));
     }
 
     public function deleteProductImage($id) { // AJAX call from admin/js/custom.js    // Delete the product image from BOTH SERVER (FILESYSTEM) & DATABASE    // $id is passed as a Route Parameter    
@@ -340,49 +411,42 @@ class ProductsController extends Controller
         return redirect()->back()->with('success_message', $message);
     }
 
-    public function addAttributes(Request $request, $id) { // Add/Edit Attributes function    
+    public function addAttributes(Request $request, \App\Models\Product $product) { // Add/Edit Attributes function    
         Session::put('page', 'products');
 
-        $product = \App\Models\Product::select('id', 'product_name', 'product_code', 'product_color', 'product_price', 'product_image')->with('attributes')->find($id); // with('attributes') is the relationship method name in the Product.php model
-
-        if ($request->isMethod('post')) { // When the <form> is submitted
+        if ($request->isMethod('post')) {
+            // dd($request->attribute);
+            $this->validate($request, [
+                'attribute.*.color' => 'required|string',
+                'attribute.*.size' => 'required|string'
+            ]);
+    
             $data = $request->all();
-            // dd($data);
-
-            foreach ($data['sku'] as $key => $value) { // or instead could be: $data['size'], $data['price'] or $data['stock']
-                // echo '<pre>', var_dump($key), '</pre>';
-                // echo '<pre>', var_dump($value), '</pre>';
-                
-                if (!empty($value)) {
-                    // Validation:
-                    // SKU duplicate check (Prevent duplicate SKU) because SKU is UNIQUE for every product
-                    $skuCount = \App\Models\ProductsAttribute::where('sku', $value)->count();
-                    if ($skuCount > 0) { // if there's an SKU for the product ALREADY EXISTING
-                        return redirect()->back()->with('error_message', 'SKU already exists! Please add another SKU!');
-                    }
-
-                    // Size duplicate check (Prevent duplicate Size) because Size is UNIQUE for every product
-                    $sizeCount = \App\Models\ProductsAttribute::where(['product_id' => $id, 'size' => $data['size'][$key]])->count();
-                    if ($sizeCount > 0) { // if there's an SKU for the product ALREADY EXISTING
-                        return redirect()->back()->with('error_message', 'Size already exists! Please add another Size!');
-                    }
-
-
-                    $attribute = new \App\Models\ProductsAttribute;
-
-                    $attribute->product_id = $id; // $id is passed in up there to the addAttributes() method
-                    $attribute->sku        = $value;
-                    $attribute->size       = $data['size'][$key];  // $key denotes the iteration/loop cycle number (0, 1, 2, ...), e.g. $data['size'][0]
-                    $attribute->price      = $data['price'][$key]; // $key denotes the iteration/loop cycle number (0, 1, 2, ...), e.g. $data['price'][0]
-                    $attribute->stock      = $data['stock'][$key]; // $key denotes the iteration/loop cycle number (0, 1, 2, ...), e.g. $data['stock'][0]
-                    $attribute->status     = 1;
-                    
-                    $attribute->save();
-                }
+    
+            if (!isset($data['attribute'])) {
+                return back()->with('error', 'No attributes provided');
             }
-            return redirect()->back()->with('success_message', 'Product Attributes have been addded successfully!');
+    
+            foreach ($data['attribute'] as $key => $attributes) {
+    
+                $is_unique = $product->attributes()
+                    ->where('color', $attributes['color'])
+                    ->where('size', $attributes['size'])
+                    ->count();
+                if ($is_unique > 0) {
+                    return redirect()->back()->with('error_message', 'This attribute already exists!');
+                }
+                
+                $product->attributes()->create([
+                    'sku' => \App\Models\Product::generateSku($product),
+                    'color' => Str::title($attributes['color']),
+                    'size' => $attributes['size'],
+                    'price' => 0.00,
+                    'stock' => 0,
+                    'status' => 1,
+                ]);
+            }
         }
-
 
         return view('admin.attributes.add_edit_attributes')->with(compact('product'));
     }
@@ -433,7 +497,7 @@ class ProductsController extends Controller
     public function addImages(Request $request, $id) { // $id is the URL Paramter (slug) passed from the URL
         Session::put('page', 'products');
 
-        $product = \App\Models\Product::select('id', 'product_name', 'product_code', 'product_color', 'product_price', 'product_image')->with('images')->find($id); // with('images') is the relationship method name in the Product.php model
+        $product = \App\Models\Product::select('id', 'product_name', 'product_code', 'product_price', 'product_image')->with('images')->find($id); // with('images') is the relationship method name in the Product.php model
 
 
         if ($request->isMethod('post')) { // if the <form> is submitted
@@ -447,7 +511,7 @@ class ProductsController extends Controller
                 foreach ($images as $key => $image) {
                     // Uploading the images:
                     // Generate Temp Image
-                    $image_tmp = Image::make($image);
+                    $fileStorageService = new FileStorageService;
 
                     // Get image name
                     $image_name = $image->getClientOriginalName();
@@ -461,14 +525,34 @@ class ProductsController extends Controller
 
                     // Assigning the uploaded images path inside the 'public' folder
                     // We will have three folders: small, medium and large, depending on the images sizes
-                    $largeImagePath  = 'front/images/product_images/large/'  . $imageName; // 'large'  images folder
-                    $mediumImagePath = 'front/images/product_images/medium/' . $imageName; // 'medium' images folder
-                    $smallImagePath  = 'front/images/product_images/small/'  . $imageName; // 'small'  images folder
+                    $arr_filePaths = [
+                        [
+                            'path' => 'front/images/product_images/large/'  . $imageName,
+                            'size' => [
+                                'width' => 1000,
+                                'height' => 1000,
+                            ]
+                        ], // 'large'  images folder 
+                        [
+                            'path' => 'front/images/product_images/medium/' . $imageName,
+                            'size' => [
+                                'width' => 500,
+                                'height' => 500,
+                            ]
+                        ], // 'medium' images folder
+                        [
+                            'path' => 'front/images/product_images/small/'  . $imageName,
+                            'size' => [
+                                'width' => 250,
+                                'height' => 250,
+                            ]
+                        ] // 'small'  images folder
+                    ];
 
                     // Upload the image using the 'Intervention' package and save it in our THREE paths (folders) inside the 'public' folder
-                    Image::make($image_tmp)->resize(1000, 1000)->save($largeImagePath);  // resize the 'large'  image size then store it in the 'large'  folder
-                    Image::make($image_tmp)->resize(500,   500)->save($mediumImagePath); // resize the 'medium' image size then store it in the 'medium' folder
-                    Image::make($image_tmp)->resize(250,   250)->save($smallImagePath);  // resize the 'small'  image size then store it in the 'small'  folder
+                    foreach ($arr_filePaths as $key => $path) {
+                        $fileStorageService->storeFile($image, $path['path'], $path['size']);
+                    }
                 
                     // Insert the image name in the database table `products_images`
                     $image = new \App\Models\ProductsImage;

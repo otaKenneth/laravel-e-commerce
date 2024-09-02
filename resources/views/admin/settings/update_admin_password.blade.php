@@ -6,9 +6,12 @@
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-12 grid-margin">
+                        <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                            <span class="icon-menu"></span>
+                        </button>
                     <div class="row">
-                        <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                            <h3 class="font-weight-bold">Admin Settings</h3>
+                        <div class="col-12 col-xl-12 mb-4 mb-xl-0">
+                            <h3 class="font-weight-bold">User Management</h3>
                         </div>
                         <div class="col-12 col-xl-4">
                             <div class="justify-content-end d-flex">
@@ -29,7 +32,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 grid-margin stretch-card">
+                <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
 
@@ -61,7 +64,7 @@
 
 
 
-                            <h4 class="card-title">Update Admin Password</h4>
+                            <h4 class="card-title">Update Password</h4>
 
 
 
@@ -70,11 +73,12 @@
 
 
                                 <div class="form-group">
-                                    <label>Admin Username/Email</label>
-                                    <input class="form-control" value="{{ $adminDetails['email'] }}" readonly> <!-- Check updateAdminPassword() method in AdminController.php -->
+                                    <label>Username/Email</label>
+                                    <input class="form-control" value="{{ $adminDetails['email'] }}" readonly> 
+                                    <!-- Check updateAdminPassword() method in AdminController.php -->
                                 </div>
                                 <div class="form-group">
-                                    <label>Admin Type</label>
+                                    <label>Type</label>
                                     <input class="form-control" value="{{ $adminDetails['type'] }}" readonly>
                                 </div>
                                 <div class="form-group">

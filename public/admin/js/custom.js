@@ -7,12 +7,19 @@ $(document).ready(function() {
     $('#sections').DataTable();    // in sections.blade.php
     $('#categories').DataTable();  // in categories.blade.php
     $('#brands').DataTable();      // in brands.blade.php
-    $('#products').DataTable();    // in products.blade.php
+    $('#products').DataTable({
+        search: {
+            search: $('input[name="search"]').val()
+        },
+        order: [[1, 'asc']]
+    });    // in products.blade.php
     $('#banners').DataTable();     // in banners.blade.php
     $('#filters').DataTable();     // in filters.blade.php
     $('#coupons').DataTable();     // in admin/coupons/coupons.blade.php              
     $('#users').DataTable();       // in admin/users/users.blade.php                  
-    $('#orders').DataTable();      // in admin/orders/orders.blade.php                
+    $('#orders').DataTable({
+        order: [[0, 'desc'], [1, 'desc']]
+    });      // in admin/orders/orders.blade.php                
     $('#shipping').DataTable();    // in admin/shipping/shipping_charges.blade.php    
     $('#subscribers').DataTable(); // in admin/subscribers/subscribers.blade.php      
     $('#ratings').DataTable();     // in admin/ratings/ratings.blade.php              
@@ -480,7 +487,7 @@ $(document).ready(function() {
     var maxField = 10; //Input fields increment limitation
     var addButton = $('.add_button'); //Add button selector
     var wrapper = $('.field_wrapper'); //Input field wrapper
-    var fieldHTML = '<div><div style="height:10px"></div><input type="text" name="size[]" placeholder="Size" style="width:100px">&nbsp;<input type="text" name="sku[]" placeholder="SKU" style="width:100px">&nbsp;<input type="text" name="price[]" placeholder="Price" style="width:100px">&nbsp;<input type="text" name="stock[]" placeholder="Stock" style="width:100px">&nbsp;<a href="javascript:void(0);" class="remove_button">Remove</a></div>'; //New input field html 
+    var fieldHTML = `<div><div style="height:10px"></div><input type="text" name="attribute[${x}][color]" placeholder="Color" style="width:100px">&nbsp;<input type="text" name="attribute[${x}][size]" placeholder="Size" style="width:100px">&nbsp;<a href="javascript:void(0);" class="remove_button">Remove</a></div>'; //New input field htm` 
     var x = 1; //Initial field counter is 1
     
     // Once add button is clicked
@@ -541,4 +548,418 @@ $(document).ready(function() {
         }
     });
 
+    // Reports
+    // Sales Filter form
+    $('#filterBy').change(function (v) {
+        // Set the search filter label to what is selected from Filter By: input
+        $('#filterBy-labelValue').text($(v.currentTarget).find('option:selected').text() + ":");
+        let filterVal = v.currentTarget.value;
+        
+        $('.filter-container .input-group[data-filterFor]').each((k, el) => {
+            $(el).hide();
+            let filterFor = $(el).attr('data-filterFor').split(",");
+            // show filterFor search input
+            if (filterFor.find(d => d == filterVal)) {
+                $(el).show();
+            }
+        })
+    });
+
+    $('#pcontents-select').change(function (ev) {
+        let pcontent_id = $(ev.currentTarget).val();
+        console.log(ev);
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type   : 'get',
+            url    : 'platform-management/' + pcontent_id, // check this route in web.php
+            success: function(resp) {
+                if (resp && resp.content) {
+                    // Get the TinyMCE editor instance
+                    var editor = tinymce.get('tinymce');
+
+                    // Check if the editor instance exists
+                    if (editor) {
+                        // Update the content of the editor
+                        let content = resp.content == null ? '':resp.content;
+                        editor.setContent(content);
+                    } else {
+                        console.error('TinyMCE editor instance not found.');
+                    }
+                }
+            }
+        });
+    })
+
+    $('#pcontents-save-btn').click(function (ev) {
+        let pcontent_id = $('#pcontents-select').val();
+        var editor = tinymce.get('tinymce');
+        var htmlContent = editor.getContent();
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type   : 'post',
+            url    : 'platform-management/' + pcontent_id + '/update', // check this route in web.php
+            data   : {'content': htmlContent},
+            success: function(resp) {
+                console.log(resp)
+                // platform-content-form
+                if (resp && resp.success) {
+                    $('.platform-content-form .alert.alert-success .alert-message').html(resp.message);
+                    $('.platform-content-form .alert.alert-success').toggleClass('d-none');
+                    setTimeout(() => {
+                        $('.platform-content-form .alert.alert-success').toggleClass('d-none');
+                    }, 1500);
+                }
+            }
+        });
+    })
+
+    $('#formUpload_trusted_by').on('submit', function(e) {
+        e.preventDefault();
+
+        console.log(e.currentTarget);
+        var formdata = new FormData(e.currentTarget);
+
+        // Log FormData keys and values to the console
+        for (var pair of formdata.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "/admin/platform-management/save-trusted-by",
+            type: "POST",
+            data: formdata,
+            contentType: false,
+            processData: false,
+            success: function (resp) {
+                if (resp && resp.success) {
+                    $('.trusted_by_list_of_images').html(resp.view);
+                    $('.trusted_by_images .alert.alert-success .alert-message').html(resp.message);
+                    $('.trusted_by_images .alert.alert-success').toggleClass('d-none');
+                    setTimeout(() => {
+                        $('.trusted_by_images .alert.alert-success').toggleClass('d-none');
+                    }, 1500);
+                } else {
+                    $('.trusted_by_images .alert.alert-danger .alert-message').html(resp.message);
+                    $('.trusted_by_images .alert.alert-danger').toggleClass('d-none');
+                    setTimeout(() => {
+                        $('.trusted_by_images .alert.alert-danger').toggleClass('d-none');
+                    }, 1500);
+                }
+            }, error: function (err) {
+                console.log(err)
+            }
+        });
+    })
+
+
+    $('.value_short_found_us').each(function() {
+        let value = parseInt($(this).text(), 10);
+        let formattedValue;
+
+        if (value >= 1000000) {
+            formattedValue = (value / 1000000).toFixed(1) + 'm';
+        } else if (value >= 1000) {
+            formattedValue = (value / 1000).toFixed(1) + 'k';
+        } else {
+            formattedValue = value;
+        }
+
+        $(this).text(formattedValue);
+    });
+
+
+    $('#found_us_select').on('change', function() {
+        var selectedValue = $(this).val();
+        
+        $('.card-body p[class^="fu_"]').each(function() {
+            if ($(this).hasClass(selectedValue)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+
+    // Trigger the change event on page load to set the initial state
+    $('#found_us_select').trigger('change');
+
 }); // End of $(document).ready()
+
+
+
+
+/**
+ * @license
+ * Copyright 2019 Google LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+let map;
+let marker;
+let geocoder;
+
+async function initMap() {
+    let lat = $('#update_vendor_details_form #business_address_lat[name*="lat"]').val();
+    let lng = $('#update_vendor_details_form #business_address_lng[name*="lng"]').val();
+    let position;
+
+    if (lat === '' && lng === '') {
+        position = { lat: 14.5806494, lng: 121.0203798 };
+    } else {
+        position = { lat: parseFloat(lat), lng: parseFloat(lng) };
+    }
+
+
+    const { Map } = await google.maps.importLibrary("maps");
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    
+    map = new Map(document.getElementById("map_vendor_details"), {
+        zoom: 11,
+        center: position,
+        // mapTypeControl: false,
+        mapId: "e36eca20b19b9c"
+    });
+    geocoder = new google.maps.Geocoder();
+    marker = new AdvancedMarkerElement({
+        map: map,
+        position: new google.maps.LatLng(position.lat, position.lng),
+        title: "Metro Manila"
+    });
+
+
+    map.addListener('click', function(event) {
+        
+        marker.position = event.latLng;
+
+        $('#update_vendor_details_form #business_address_lat[name*="lat"]').val(Object.values(marker.position)[0])
+        $('#update_vendor_details_form #business_address_lng[name*="lng"]').val(Object.values(marker.position)[1])
+    });
+
+
+}
+window.addEventListener("load", initMap);
+
+
+
+
+$(document).ready(function() {
+
+
+    function requestGeocode(address) {
+        geocoder.geocode({
+            "address": address
+        }, function (results, status) {
+            if (status == "OK") {
+                map.setCenter(results[0].geometry.location);
+                marker.position = results[0].geometry.location;
+
+                $('#update_vendor_details_form #business_address_lat[name*="lat"]').val(Object.values(marker.position)[0])
+                $('#update_vendor_details_form #business_address_lng[name*="lng"]').val(Object.values(marker.position)[1])
+            }
+        })
+    }
+
+    /**
+     * On change of country name - load city
+     */
+    $('#update_vendor_details_form #shop_country').change((el) => {
+        let country = $(el.currentTarget).val();
+
+        var settings = {
+            "url": 'https://countriesnow.space/api/v0.1/countries/states',
+            "method": "POST",
+            data: {
+                "country": country
+            }
+        };
+          
+
+        $.ajax(settings).done(function (response) {
+            if (!response.error) {
+                $('#update_vendor_details_form #shop_state .added-through-api').remove();
+
+                let states = response.data.states.map((state) => {
+                    let newOption = $('<option>', {
+                        value: state.name,
+                        text: state.name,
+                        class: "added-through-api"
+                    });
+
+                    return newOption;
+                });
+                
+                $('#update_vendor_details_form #shop_state').append(states);
+            }
+        });
+    })
+
+    /**
+     * On change of state get cities
+     */
+    $('#update_vendor_details_form #shop_state').change((el) => {
+        let country = $('#shop_country').val();
+        let state = $(el.currentTarget).val();
+
+        var settings = {
+            "url": 'https://countriesnow.space/api/v0.1/countries/state/cities',
+            "method": "POST",
+            data: {
+                "country": country,
+                "state": state
+            }
+        }
+
+        $.ajax(settings).done(function (response) {
+            if (!response.error) {
+                $('#update_vendor_details_form #shop_city .added-through-api').remove();
+                
+                let cities = response.data.map((city) => {
+                    let newOption = $('<option>', {
+                        value: city,
+                        text: city,
+                        class: "added-through-api"
+                    });
+
+                    return newOption;
+                });
+                
+                $('#update_vendor_details_form #shop_city').append(cities);
+            }
+        });
+    });
+
+    // Business Details
+    /**
+     * On change of country name - load city
+     */
+    $('#update_vendor_details_form #shop_country').change((el) => {
+        let country = $(el.currentTarget).val();
+
+        var settings = {
+            "url": 'https://countriesnow.space/api/v0.1/countries/states',
+            "method": "POST",
+            data: {
+                "country": country
+            }
+        };
+
+        $.ajax(settings).done(function (response) {
+            if (!response.error) {
+                $('#update_vendor_details_form #shop_state .added-through-api').remove();
+                let selected = $('#update_vendor_details_form input[name="prev_shop_state_value"]').val();
+                console.log(selected)
+
+                let states = response.data.states.map((state) => {
+                    let newOption = $('<option>', {
+                        value: state.name,
+                        text: state.name,
+                        class: "added-through-api"
+                    });
+
+                    if (selected == state.name) newOption.prop('selected', true);
+                    
+                    return newOption;
+                });
+                
+                $('#update_vendor_details_form #shop_state').append(states);
+                $('#update_vendor_details_form #shop_state').change();
+                requestGeocode(country);
+            }
+        });
+    })
+
+    $('#update_vendor_details_form #shop_country').trigger('change');
+
+    /**
+     * On change of state get cities
+     */
+    $('#update_vendor_details_form #shop_state').change((el) => {
+        let country = $('#update_vendor_details_form #shop_country').val();
+        let state = $(el.currentTarget).val();
+
+        var settings = {
+            "url": 'https://countriesnow.space/api/v0.1/countries/state/cities',
+            "method": "POST",
+            data: {
+                "country": country,
+                "state": state
+            }
+        }
+
+        $.ajax(settings).done(function (response) {
+            if (!response.error) {
+                $('#update_vendor_details_form #shop_city .added-through-api').remove();
+                
+                let cities = response.data.map((city) => {
+                    let newOption = $('<option>', {
+                        value: city,
+                        text: city,
+                        class: "added-through-api"
+                    });
+
+                    return newOption;
+                });
+                
+                $('#update_vendor_details_form #shop_city').append(cities);
+                requestGeocode(`${state}, ${country}`);
+            }
+        });
+    });
+ 
+
+    let business_address;
+    let timeoutId;
+    $('#update_vendor_details_form #shop_city').keyup(function (e) {
+        let business_city_val = $(e.currentTarget).val();
+        clearTimeout(timeoutId);
+        
+        let country = $('#update_vendor_details_form #shop_country').val();
+        let state = $('#update_vendor_details_form #shop_city').val();
+        business_address = `${business_city_val}, ${state}, ${country}`;
+        timeoutId = setTimeout(() => {
+            requestGeocode(business_address)
+        }, 300);
+    })
+    
+
+    $('#update_vendor_details_form #shop_address').keyup(function (e) {
+        let business_address_val = $(e.currentTarget).val();
+        clearTimeout(timeoutId);
+
+        let country = $('#update_vendor_details_form #shop_country').val();
+        let state = $('#update_vendor_details_form #shop_state').val();
+        let city = $('#update_vendor_details_form #shop_city');
+        business_address = `${business_address_val} ${city}, ${state}, ${country}`;
+        timeoutId = setTimeout(() => {
+            requestGeocode(business_address)
+        }, 300);
+    })
+
+
+    $(".attached_refund_image").click(function(event) {
+        event.preventDefault();
+        let log_id = $(event.currentTarget).data('log');
+        let order_id = $(event.currentTarget).data('order');
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            type   : 'get',
+            url    : `/admin/orders/${order_id}/refund-log-details/${log_id}`,
+            success: function(resp) {
+                if (resp.success) {
+                    $('#refund-detail-modal').html(resp.view)
+                    $(".refund_image_popup_container").addClass("active");
+                    
+                    $(".refund_image_popup_container .close_refund_popup").click(function(event) {
+                        event.preventDefault();
+                        $(".refund_image_popup_container").removeClass("active");
+                    });
+                }
+            },
+            error  : function(err) {alert(err.response.message);}
+        });
+    });
+
+
+})

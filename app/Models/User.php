@@ -19,10 +19,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'google_id',
+        'first_name',
+        'last_name',
         'email',
+        'email_verified_at',
         'password',
+        'status'
     ];
+
+    protected $with = ['deliveryAddress'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,4 +48,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function userDeliveryAddresses() {
+        return $this->hasMany(\App\Models\DeliveryAddress::class);
+    }
+
+    public function deliveryAddress() {
+        return $this->userDeliveryAddresses()->take(1);
+    }
+
+    public function chats() {
+        return $this->belongsToMany(Chats::class, 'chat_users', 'user_id', 'chat_id');
+    }
 }

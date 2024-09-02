@@ -1,114 +1,80 @@
-{{-- Note: cart.blade.php is the page that opens when you ... --}}
+{{-- This page is rendered by orders() method inside Front/OrderController.php (depending on if the order id Optional Parameter (slug) is passed in or not) --}}
+
+
 @extends('front.layout.layout')
 
 
+
 @section('content')
-    <!-- Page Introduction Wrapper -->
-    <div class="page-style-a">
-        <div class="container">
-            <div class="page-intro">
-                <h2>Cart</h2>
-                <ul class="bread-crumb">
-                    <li class="has-separator">
-                        <i class="ion ion-md-home"></i>
-                        <a href="index.html">Home</a>
-                    </li>
-                    <li class="is-marked">
-                        <a href="cart.html">Cart</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- Page Introduction Wrapper /- -->
-    <!-- Cart-Page -->
-    <div class="page-cart u-s-p-t-80">
-        <div class="container">
-
-
-
-                {{-- Displaying The Validation Errors: https://laravel.com/docs/9.x/validation#quick-displaying-the-validation-errors AND https://laravel.com/docs/9.x/blade#validation-errors --}} 
-                {{-- Determining If An Item Exists In The Session (using has() method): https://laravel.com/docs/9.x/session#determining-if-an-item-exists-in-the-session --}}
-                {{-- Our Bootstrap success message in case of updating admin password is successful: --}}
-                {{-- Displaying Success Message --}}
-                @if (Session::has('success_message')) <!-- Check vendorRegister() method in Front/VendorController.php -->
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Success:</strong> {{ Session::get('success_message') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
+<div
+    data-elementor-type="wp-page"
+    data-elementor-id="896"
+    class="elementor elementor-896"
+    data-elementor-post-type="page"
+>
+    <div
+        class="elementor-element elementor-element-5992232 e-flex e-con-boxed e-con e-parent"
+        data-id="5992232"
+        data-element_type="container"
+        data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
+        data-core-v316-plus="true"
+    >
+        <div class="e-con-inner">
+            <div
+                class="elementor-element elementor-element-4bfdb6c e-con-full e-flex e-con e-child"
+                data-id="4bfdb6c"
+                data-element_type="container"
+                data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;container_type&quot;:&quot;flex&quot;}"
+            >
+                <div
+                    class="elementor-element elementor-element-0a0e423 elementor-invisible elementor-widget elementor-widget-heading"
+                    data-id="0a0e423"
+                    data-element_type="widget"
+                    data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}"
+                    data-widget_type="heading.default"
+                >
+                    <div class="elementor-widget-container">
+                        <h1 class="elementor-heading-title elementor-size-default">Your Cart</h1>
                     </div>
-                @endif
-                {{-- Displaying Error Messages --}}
-                @if (Session::has('error_message')) <!-- Check vendorRegister() method in Front/VendorController.php -->
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Error:</strong> {{ Session::get('error_message') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
+                </div>
+                <div
+                    class="elementor-element elementor-element-dfa69c4 elementor-widget elementor-widget-button"
+                    data-id="dfa69c4"
+                    data-element_type="widget"
+                    data-widget_type="button.default"
+                >
+                    <div class="elementor-widget-container">
+                        <div class="elementor-button-wrapper">
+                            <a class="elementor-button elementor-button-link elementor-size-sm" href="{{ url('') }}">
+                                <span class="elementor-button-content-wrapper">
+                                    <span class="elementor-button-icon elementor-align-icon-left">
+                                        <svg
+                                            aria-hidden="true"
+                                            class="e-font-icon-svg e-fas-arrow-left"
+                                            viewbox="0 0 448 512"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="elementor-button-text">Continue Shopping</span>
+                                </span>
+                            </a>
+                        </div>
                     </div>
-                @endif
-                {{-- Displaying Error Messages --}}
-                @if ($errors->any()) <!-- Check vendorRegister() method in Front/VendorController.php -->
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Error:</strong> @php echo implode('', $errors->all('<div>:message</div>')); @endphp
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                @endif
-
-
-
-            <div class="row">
-                <div class="col-lg-12">
-
-
-
-                    
-                    <div id="appendCartItems"> {{-- We 'include'-ed this file to allow the AJAX call in front/js/custom.js when updating orders quantities in the Cart --}}
+                </div>
+                <div
+                    class="elementor-element elementor-element-4b6f841 login-container e-flex e-con-boxed elementor-invisible e-con e-child"
+                    data-id="4b6f841"
+                    data-element_type="container"
+                    data-settings="{&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
+                >
+                    <div id="appendCartItems" class="e-con-inner">
                         @include('front.products.cart_items')
                     </div>
-
-
-
-
-
-                    {{-- To solve the problem of Submiting the Coupon Code works only once, we moved the Coupon part from cart_items.blade.php to here in cart.blade.php --}} {{-- Explanation of the problem: http://publicvoidlife.blogspot.com/2014/03/on-on-or-event-delegation-explained.html --}}
-                    <!-- Coupon -->
-                    <div class="coupon-continue-checkout u-s-m-b-60">
-                        <div class="coupon-area">
-                            <h6>Enter your coupon code if you have one.</h6>
-                            <div class="coupon-field">
-
-
-
-                                {{-- Note: For Coupons, user must be logged in (authenticated) to be able to redeem them. Both 'admins' and 'vendors' can add Coupons. Coupons added by 'vendor' will be available for their products ONLY, but ones added by 'admins' will be available for ALL products. --}}
-                                
-                                <form id="applyCoupon" method="post" action="javascript:void(0)"  @if (\Illuminate\Support\Facades\Auth::check()) user=1 @endif> {{-- Created an id for this <form> to use it as a handle in jQuery for submission via AJAX. Check front/js/custom.js --}} {{-- Only logged in (authenticated) users can redeem the coupon, so we make a condition, if the user is logged in (authenticated), we create that Custom HTML attribute 'user = 1' so that jQuery can use it to submit the form. Check front/js/custom.js --}} {{-- Note: We need to deactivate the 'action' HTML attribute (using    action="javascript:void(0)"    ) as we'r going to submit using an AJAX call. Check front/js/custom.js --}}
-                                    <label class="sr-only" for="coupon-code">Apply Coupon</label>
-                                    <input type="text" class="text-field" placeholder="Enter Coupon Code" id="code" name="code">
-                                    <button type="submit" class="button">Apply Coupon</button>
-                                </form>
-
-
-
-                            </div>
-                        </div>
-                        <div class="button-area">
-                            <a href="{{ url('/') }}" class="continue">Continue Shopping</a>
-                            <a href="{{ url('/checkout') }}" class="checkout">Proceed to Checkout</a>
-                        </div>
-                    </div>
-                    <!-- Coupon /- -->
-
-
-
-
-
                 </div>
             </div>
         </div>
     </div>
-    <!-- Cart-Page /- -->
+</div>
 @endsection

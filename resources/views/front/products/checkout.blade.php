@@ -1,224 +1,365 @@
-{{-- Note: This page (view) is rendered by the checkout() method in the Front/ProductsController.php --}}
+{{-- This page is rendered by orders() method inside Front/OrderController.php (depending on if the order id Optional Parameter (slug) is passed in or not) --}}
 @extends('front.layout.layout')
 
 
 @section('content')
-    <!-- Page Introduction Wrapper -->
-    <div class="page-style-a">
-        <div class="container">
-            <div class="page-intro">
-                <h2>Checkout</h2>
-                <ul class="bread-crumb">
-                    <li class="has-separator">
-                        <i class="ion ion-md-home"></i>
-                        <a href="index.html">Home</a>
-                    </li>
-                    <li class="is-marked">
-                        <a href="checkout.html">Checkout</a>
-                    </li>
-                </ul>
+<div
+    data-elementor-type="wp-page"
+    data-elementor-id="992"
+    class="elementor elementor-992"
+    data-elementor-post-type="page"
+>
+    <div
+        class="elementor-element elementor-element-5a04e41 e-flex e-con-boxed e-con e-parent"
+        data-id="5a04e41"
+        data-element_type="container"
+        data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
+        data-core-v316-plus="true"
+    >
+        <div class="e-con-inner">
+            <div
+                id="checkout-details-container"
+                class="elementor-element elementor-element-7a52fdc e-con-full e-flex e-con e-child"
+                data-id="7a52fdc"
+                data-element_type="container"
+                data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;container_type&quot;:&quot;flex&quot;}"
+            >
+                <div
+                    class="elementor-element elementor-element-6760428 elementor-invisible elementor-widget elementor-widget-heading"
+                    data-id="6760428"
+                    data-element_type="widget"
+                    data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}"
+                    data-widget_type="heading.default"
+                >
+                    <div class="elementor-widget-container">
+                        <h1 class="elementor-heading-title elementor-size-default">CHECKOUT</h1>
+                    </div>
+                </div>
+                <div
+                    class="elementor-element elementor-element-bbcb354 elementor-widget elementor-widget-button"
+                    data-id="bbcb354"
+                    data-element_type="widget"
+                    data-widget_type="button.default"
+                >
+                    <div class="elementor-widget-container">
+                        <div class="elementor-button-wrapper">
+                            <a class="elementor-button elementor-button-link elementor-size-sm" href="{{ url('/cart') }}">
+                                <span class="elementor-button-content-wrapper">
+                                    <span class="elementor-button-icon elementor-align-icon-left">
+                                        <svg
+                                            aria-hidden="true"
+                                            class="e-font-icon-svg e-fas-arrow-left"
+                                            viewbox="0 0 448 512"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="elementor-button-text">View cart</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="elementor-element elementor-element-831ec76 e-flex e-con-boxed e-con e-child"
+                    data-id="831ec76"
+                    data-element_type="container"
+                    data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
+                >
+                    <div class="e-con-inner">
+                        <div
+                            class="elementor-element elementor-element-30ff520 e-flex e-con-boxed e-con e-child"
+                            data-id="30ff520"
+                            data-element_type="container"
+                            data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
+                        >
+                            <div class="e-con-inner">
+                                <div
+                                    class="elementor-element elementor-element-4d22d4f elementor-widget elementor-widget-heading"
+                                    data-id="4d22d4f"
+                                    data-element_type="widget"
+                                    data-widget_type="heading.default"
+                                >
+                                    <div class="elementor-widget-container">
+                                        <h6 class="elementor-heading-title elementor-size-default">SHIP TO</h6>
+                                    </div>
+                                </div>
+                                <div
+                                    class="checkout-form elementor-element elementor-element-4605a74 elementor-widget elementor-widget-html"
+                                    data-id="4605a74"
+                                    data-element_type="widget"
+                                    data-widget_type="html.default"
+                                >
+                                    <div id="checkout-user-preferred-addresses" class="elementor-widget-container">
+                                        @foreach ($deliveryAddresses as $deliveryAddress_key => $deliveryAddress)
+                                        <div class="addressess">
+                                            <input
+                                                {{$deliveryAddress_key == 0 ? "checked":""}}
+                                                type="radio"
+                                                class="address"
+                                                name="preferred_address-{{$deliveryAddress['user_id']}}"
+                                                value="{{$deliveryAddress['id']}}"
+                                                shipping_charges="{{$deliveryAddress['shipping_charges']}}"
+                                                total_price="{{str_replace(",", "", $sub_total)}}"
+                                            >
+                                            <label for="html">
+                                                <b>{{$deliveryAddress['address']}}, {{$deliveryAddress['city']}}, {{$deliveryAddress['state']}}, {{$deliveryAddress['country']}}
+                                                    <br>{{$deliveryAddress['mobile']}}
+                                                </b>
+                                            </label>
+                                            <a href="#" class="address_edit_checkout editAddress" data-addressid="{{$deliveryAddress['id']}}">Edit</a>
+                                            <a href="#">Remove</a>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <!-- edit delivery address section -->
+                                @include('front.products.delivery_addresses')
+                                <!-- add new delivery address section -->
+                                @include('front.products.new_delivery_address')
+                                <div
+                                    class="elementor-element elementor-element-79e7f6d elementor-widget elementor-widget-heading"
+                                    data-id="79e7f6d"
+                                    data-element_type="widget"
+                                    data-widget_type="heading.default"
+                                >
+                                    <div class="elementor-widget-container">
+                                        <h6 class="elementor-heading-title elementor-size-default">PAYMENT METHOD</h6>
+                                    </div>
+                                </div>
+                                <div
+                                    class="checkout-form elementor-element elementor-element-52dbad4 elementor-widget elementor-widget-html"
+                                    data-id="52dbad4"
+                                    data-element_type="widget"
+                                    data-widget_type="html.default"
+                                >
+                                    <div class="elementor-widget-container">
+                                        <div class="payment-gateway">
+                                            <input
+                                                checked
+                                                type="radio"
+                                                id="COD"
+                                                name="payment_gateway"
+                                                value="COD"
+                                            >
+                                            <label for="COD" style="cursor:pointer;">
+                                                <b>COD</b>
+                                            </label>
+                                        </div>
+                                        <div class="payment-gateway">
+                                            <input
+                                                type="radio"
+                                                id="paymongo"
+                                                name="payment_gateway"
+                                                value="paymongo"
+                                            >
+                                            <label for="paymongo" style="cursor:pointer;">
+                                                <b>Secure Payment via PayMongo</b>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="elementor-element elementor-element-e2935f5 e-flex e-con-boxed e-con e-child"
+                                    data-id="e2935f5"
+                                    data-element_type="container"
+                                    data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
+                                >
+                                    <div class="e-con-inner">
+                                        <div
+                                            class="elementor-element elementor-element-3aabf85 elementor-widget__width-inherit elementor-widget-mobile__width-inherit elementor-hidden-mobile elementor-widget elementor-widget-button"
+                                            data-id="3aabf85"
+                                            data-element_type="widget"
+                                            data-widget_type="button.default"
+                                        >
+                                            <div class="elementor-widget-container">
+                                                <div class="elementor-button-wrapper">
+                                                    <button id="checkout-submit-btn" class="elementor-button elementor-button-link elementor-size-sm" type="button">
+                                                        <span class="elementor-button-content-wrapper">
+                                                            <span class="elementor-button-text">PAY NOW</span>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="elementor-element elementor-element-c8a9d24 e-flex e-con-boxed e-con e-child"
+                            data-id="c8a9d24"
+                            data-element_type="container"
+                            data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
+                        >
+                            <div class="e-con-inner">
+                                <div
+                                    class="elementor-element elementor-element-9827c6f elementor-widget elementor-widget-heading"
+                                    data-id="9827c6f"
+                                    data-element_type="widget"
+                                    data-widget_type="heading.default"
+                                >
+                                    <div class="elementor-widget-container">
+                                        <h6 class="elementor-heading-title elementor-size-default">YOUR ORDER</h6>
+                                    </div>
+                                </div>
+                                @foreach ($getCartItems as $item)
+                                @php
+                                    $getDiscountAttributePrice = \App\Models\Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']);
+                                @endphp
+                                <div
+                                    class="elementor-element elementor-element-35df199 e-flex e-con-boxed e-con e-child"
+                                    data-id="35df199"
+                                    data-element_type="container"
+                                    data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
+                                >
+                                    <div class="e-con-inner">
+                                        <div
+                                            class="elementor-element elementor-element-825f4dd e-con-full e-flex e-con e-child"
+                                            data-id="825f4dd"
+                                            data-element_type="container"
+                                            data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;container_type&quot;:&quot;flex&quot;}"
+                                        >
+                                            <div
+                                                class="elementor-element elementor-element-d9f74cd elementor-widget elementor-widget-image"
+                                                data-id="d9f74cd"
+                                                data-element_type="widget"
+                                                data-widget_type="image.default"
+                                            >
+                                                <div class="elementor-widget-container">
+                                                    <img
+                                                        fetchpriority="high"
+                                                        decoding="async"
+                                                        width="800"
+                                                        height="968"
+                                                        src="{{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }}"
+                                                        class="attachment-large size-large wp-image-422"
+                                                        alt=""
+                                                        srcset="{{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }} 846w, {{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }} 248w, {{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }} 768w, {{ $getImage('front/images/product_images/small/', $item['product']['product_image']) }} 879w"
+                                                        sizes="(max-width: 800px) 100vw, 800px"
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="elementor-element elementor-element-dc91550 e-con-full e-flex e-con e-child"
+                                            data-id="dc91550"
+                                            data-element_type="container"
+                                            data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;container_type&quot;:&quot;flex&quot;}"
+                                        >
+                                            <div
+                                                class="elementor-element elementor-element-60145ec elementor-widget elementor-widget-heading"
+                                                data-id="60145ec"
+                                                data-element_type="widget"
+                                                data-widget_type="heading.default"
+                                            >
+                                                <div class="elementor-widget-container">
+                                                    <h6 class="elementor-heading-title elementor-size-default">{{ $item['product']['product_name'] }}</h6>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="elementor-element elementor-element-626fc5b elementor-widget elementor-widget-text-editor"
+                                                data-id="626fc5b"
+                                                data-element_type="widget"
+                                                data-widget_type="text-editor.default"
+                                            >
+                                                <div class="elementor-widget-container">
+                                                    <p>
+                                                        <strong>₱{{ number_format($getDiscountAttributePrice['final_price'], 2) }} x {{ $item['quantity'] }}
+                                                            <br>
+                                                        </strong>{{ $item['product']['meta_keywords'] }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="elementor-element elementor-element-e3a5e3c e-flex e-con-boxed e-con e-child"
+                                            data-id="e3a5e3c"
+                                            data-element_type="container"
+                                            data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
+                                        >
+                                            <div class="e-con-inner">
+                                                <div
+                                                    class="elementor-element elementor-element-434c9b8 elementor-widget elementor-widget-text-editor"
+                                                    data-id="434c9b8"
+                                                    data-element_type="widget"
+                                                    data-widget_type="text-editor.default"
+                                                >
+                                                    <div class="elementor-widget-container">
+                                                        <p>
+                                                            <strong>₱{{ number_format($getDiscountAttributePrice['final_price'] * $item['quantity'], 2) }}</strong>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                                <div
+                                    class="elementor-element elementor-element-a05a04e elementor-widget elementor-widget-html"
+                                    data-id="a05a04e"
+                                    data-element_type="widget"
+                                    data-widget_type="html.default"
+                                >
+                                    <div class="elementor-widget-container">
+                                        <table>
+                                            <tr>
+                                                <td>Sub total</td>
+                                                <td class="align-right">₱{{$sub_total}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Delivery Fee</td>
+                                                <td class="shipping_charges align-right">₱ {{number_format($delivery_fee, 2)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Estimated Transaction Fee</td>
+                                                <td class="align-right">₱ {{number_format($est_transaction_fee, 2)}}</td>
+                                            </tr>
+                                            <!-- <tr>
+                                                <td>Coupon discount</td>
+                                                <td class="align-right">₱150.00</td>
+                                            </tr> -->
+                                            <tr>
+                                                <td style="padding-top: 40px">
+                                                    <b>GRAND TOTAL</b>
+                                                </td>
+                                                <td class="align-right" style="padding-top: 40px">
+                                                    <b class="grand_total">₱{{$total_price}}</b>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div
+                                    class="elementor-element elementor-element-00d6840 elementor-widget__width-inherit elementor-widget-mobile__width-inherit elementor-hidden-desktop elementor-hidden-tablet elementor-widget elementor-widget-button"
+                                    data-id="00d6840"
+                                    data-element_type="widget"
+                                    data-widget_type="button.default"
+                                >
+                                    <div class="elementor-widget-container">
+                                        <div class="elementor-button-wrapper">
+                                            <a class="elementor-button elementor-button-link elementor-size-sm" href="#">
+                                                <span class="elementor-button-content-wrapper">
+                                                    <span class="elementor-button-text">PAY NOW</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <!-- Page Introduction Wrapper /- -->
-    <!-- Checkout-Page -->
-    <div class="page-checkout u-s-p-t-80">
-        <div class="container">
+</div>
 
-            {{-- Showing the following HTML Form Validation Errors: (check checkout() method in Front/ProductsController.php) --}}
-            {{-- Determining If An Item Exists In The Session (using has() method): https://laravel.com/docs/9.x/session#determining-if-an-item-exists-in-the-session --}}
-            @if (Session::has('error_message')) <!-- Check AdminController.php, updateAdminPassword() method -->
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Error:</strong> {{ Session::get('error_message') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
-
-
-
-                <div class="row">
-                    <div class="col-lg-12 col-md-12">
-
-                        <!-- Second Accordion /- -->
-
-                        <div class="row">
-                            <!-- Billing-&-Shipping-Details -->
-                            <div class="col-lg-6" id="deliveryAddresses"> {{-- We created this id="deliveryAddresses" to use it as a handle for jQuery AJAX to refresh this page, check front/js/custom.js --}}
-
-
-
-                                
-                                
-                                @include('front.products.delivery_addresses')
-
-
-
-                            </div>
-                            <!-- Billing-&-Shipping-Details /- -->
-                            <!-- Checkout -->
-                            <div class="col-lg-6">
-
-
-
-                                {{-- The complete HTML Form of the user submitting their Delivery Address and Payment Method --}}
-                                <form name="checkoutForm" id="checkoutForm" action="{{ url('/checkout') }}" method="post">
-                                    @csrf {{-- Preventing CSRF Requests: https://laravel.com/docs/9.x/csrf#preventing-csrf-requests --}}
-
-
-                                    
-                                    
-                                    @if (count($deliveryAddresses) > 0) {{-- Checking if there are any $deliveryAddreses for the currently authenticated/logged-in user --}} {{-- $deliveryAddresses variable is passed in from checkout() method in Front/ProductsController.php --}}
-
-                                        <h4 class="section-h4">Delivery Addresses</h4>
-
-                                        @foreach ($deliveryAddresses as $address)
-                                            <div class="control-group" style="float: left; margin-right: 5px">
-                                                {{-- We'll use the Custom HTML data attributes:    shipping_charges    ,    total_price    ,    coupon_amount    ,    codpincodeCount    and    prepaidpincodeCount    to use them as handles for jQuery to change the calculations in "Your Order" section using jQuery. Check front/js/custom.js file --}}  
-                                                <input type="radio" id="address{{ $address['id'] }}" name="address_id" value="{{ $address['id'] }}" shipping_charges="{{ $address['shipping_charges'] }}" total_price="{{ $total_price }}" coupon_amount="{{ \Illuminate\Support\Facades\Session::get('couponAmount') }}" codpincodeCount="{{ $address['codpincodeCount'] }}" prepaidpincodeCount="{{ $address['prepaidpincodeCount'] }}"> {{-- $total_price variable is passed in from checkout() method in Front/ProductsController.php --}} {{-- We created the Custom HTML Attribute id="address{{ $address['id'] }}" to get the UNIQUE ids of the addresses in order for the <label> HTML element to be able to point for that <input> --}}
-                                            </div>
-                                            <div>
-                                                <label class="control-label" for="address{{ $address['id'] }}">
-                                                    {{ $address['name'] }}, {{ $address['address'] }}, {{ $address['city'] }}, {{ $address['state'] }}, {{ $address['country'] }} ({{ $address['mobile'] }})
-                                                </label>
-                                                <a href="javascript:;" data-addressid="{{ $address['id'] }}" class="removeAddress" style="float: right; margin-left: 10px">Remove</a> {{-- We used href="javascript:;" to prevent the <a> link from being clickable (to make the <a> unclickable) (stop the <a> function or action) because we'll use jQuery AJAX to click this link, check front/js/custom.js --}} {{-- We use the class="removeAddress" as a handle for the AJAX request in front/js/custom.js --}}
-                                                <a href="javascript:;" data-addressid="{{ $address['id'] }}" class="editAddress"   style="float: right"                   >Edit</a>   {{-- We used href="javascript:;" to prevent the <a> link from being clickable (to make the <a> unclickable) (stop the <a> function or action) because we'll use jQuery AJAX to click this link, check front/js/custom.js --}} {{-- We use the class="editAddress" as a handle for the AJAX request in front/js/custom.js --}}
-                                            </div>
-                                        @endforeach
-                                        <br>
-                                    @endif 
-
-
-                                    <h4 class="section-h4">Your Order</h4>
-                                    <div class="order-table">
-                                        <table class="u-s-m-b-13">
-                                            <thead>
-                                                <tr>
-                                                    <th>Product</th>
-                                                    <th>Total</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-
-                                                
-                                                {{-- We'll place this $total_price inside the foreach loop to calculate the total price of all products in Cart. Check the end of the next foreach loop before @endforeach --}}
-                                                @php $total_price = 0 @endphp
-
-                                                @foreach ($getCartItems as $item) {{-- $getCartItems is passed in from cart() method in Front/ProductsController.php --}}
-                                                    @php
-                                                        $getDiscountAttributePrice = \App\Models\Product::getDiscountAttributePrice($item['product_id'], $item['size']); // from the `products_attributes` table, not the `products` table
-                                                        // dd($getDiscountAttributePrice);
-                                                    @endphp
-
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="{{ url('product/' . $item['product_id']) }}">
-                                                                <img width="50px" src="{{ asset('front/images/product_images/small/' . $item['product']['product_image']) }}" alt="Product">
-                                                                <h6 class="order-h6">{{ $item['product']['product_name'] }}
-                                                                <br>
-                                                                {{ $item['size'] }}/{{ $item['product']['product_color'] }}</h6>
-                                                            </a>
-                                                            <span class="order-span-quantity">x {{ $item['quantity'] }}</span>
-                                                        </td>
-                                                        <td>
-                                                            <h6 class="order-h6">EGP{{ $getDiscountAttributePrice['final_price'] * $item['quantity'] }}</h6> {{-- price of all products (after discount (if any)) (= price (after discoutn) * no. of products) --}}
-                                                        </td>
-                                                    </tr>
-
-
-                                                    
-                                                    {{-- This is placed here INSIDE the foreach loop to calculate the total price of all products in Cart --}}
-                                                    @php $total_price = $total_price + ($getDiscountAttributePrice['final_price'] * $item['quantity']) @endphp
-                                                @endforeach
-
-
-                                                <tr>
-                                                    <td>
-                                                        <h3 class="order-h3">Subtotal</h3>
-                                                    </td>
-                                                    <td>
-                                                        <h3 class="order-h3">EGP{{ $total_price }}</h3>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <h6 class="order-h6">Shipping Charges</h6>
-                                                    </td>
-                                                    <td>
-                                                        <h6 class="order-h6">
-                                                            <span class="shipping_charges">EGP0</span>
-                                                        </h6>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <h6 class="order-h6">Coupon Discount</h6>
-                                                    </td>
-                                                    <td>
-                                                        <h6 class="order-h6">
-                                                            
-                                                            @if (\Illuminate\Support\Facades\Session::has('couponAmount')) {{-- We stored the 'couponAmount' in a Session Variable inside the applyCoupon() method in Front/ProductsController.php --}}
-                                                                <span class="couponAmount">EGP{{ \Illuminate\Support\Facades\Session::get('couponAmount') }}</span>
-                                                            @else
-                                                                EGP0
-                                                            @endif
-                                                        </h6>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <h3 class="order-h3">Grand Total</h3>
-                                                    </td>
-                                                    <td>
-                                                        <h3 class="order-h3">
-                                                            <strong class="grand_total">EGP{{ $total_price - \Illuminate\Support\Facades\Session::get('couponAmount') }}</strong> {{-- We create the 'grand_total' CSS class to use it as a handle for AJAX inside    $('#applyCoupon').submit();    function in front/js/custom.js --}} {{-- We stored the 'couponAmount' a Session Variable inside the applyCoupon() method in Front/ProductsController.php --}}
-                                                        </h3>
-                                                    </td>
-                                                </tr>
-
-
-                                            </tbody>
-                                        </table>
-                                        <div class="u-s-m-b-13 codMethod"> {{-- We added the codMethod CSS class to disable that payment method (check front/js/custom.js) if the PIN code of that user's Delivery Address doesn't exist in our `cod_pincodes` database table --}}
-                                            <input type="radio" class="radio-box" name="payment_gateway" id="cash-on-delivery" value="COD">
-                                            <label class="label-text" for="cash-on-delivery">Cash on Delivery</label>
-                                        </div>
-                                        <div class="u-s-m-b-13 prepaidMethod"> {{-- We added the prepaidMethod CSS class to disable that payment method (check front/js/custom.js) if the PIN code of that user's Delivery Address doesn't exist in our `prepaid_pincodes` database table --}}
-                                            <input type="radio" class="radio-box" name="payment_gateway" id="paypal" value="Paypal">
-                                            <label class="label-text" for="paypal">PayPal</label>
-                                        </div>
-
-
-                                        {{-- iyzico Payment Gateway integration in/with Laravel --}}
-                                        <div class="u-s-m-b-13 prepaidMethod"> {{-- We added the prepaidMethod CSS class to disable that payment method (check front/js/custom.js) if the PIN code of that user's Delivery Address doesn't exist in our `prepaid_pincodes` database table --}}
-                                            <input type="radio" class="radio-box" name="payment_gateway" id="iyzipay" value="iyzipay">
-                                            <label class="label-text" for="iyzipay">iyzipay</label>
-                                        </div>
-
-
-                                        <div class="u-s-m-b-13">
-                                            <input type="checkbox" class="check-box" id="accept" name="accept" value="Yes" title="Please agree to T&C">
-                                            <label class="label-text no-color" for="accept">I’ve read and accept the
-                                                <a href="terms-and-conditions.html" class="u-c-brand">terms & conditions</a>
-                                            </label>
-                                        </div>
-                                        <button type="submit" id="placeOrder" class="button button-outline-secondary">Place Order</button> {{-- Show our Preloader/Loader/Loading Page/Preloading Screen while the <form> is submitted using the    id="placeOrder"    HTML attribute. Check front/js/custom.js --}}
-                                    </div>
-                                </form>
-
-
-                            </div>
-                            <!-- Checkout /- -->
-                        </div>
-
-                    </div>
-                </div>
-
-
-        </div>
-    </div>
-    <!-- Checkout-Page /- -->
 @endsection
+
+<script>
+    var LALAMOVE = @json(config('app.lalamove'))
+</script>

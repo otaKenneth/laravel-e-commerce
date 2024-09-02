@@ -21,4 +21,13 @@ class Rating extends Model
         return $this->belongsTo('App\Models\Product', 'product_id'); // 'product_id' is the Foreign Key of the Relationship
     }
 
+    public static function productRating($product_id) {
+        $product_rating = Rating::selectRaw('AVG(rating) as average_rating')
+            ->where('product_id', $product_id)
+            ->groupBy('product_id')
+            ->first();
+
+        return is_null($product_rating) ? 0:$product_rating->average_rating;
+    }
+
 }

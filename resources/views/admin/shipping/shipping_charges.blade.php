@@ -5,13 +5,26 @@
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="row space-right-mobile">
+                        <div class="col-12 col-xl-12 mb-4 mb-xl-0">
+                            <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                                <span class="icon-menu"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Shipping Charges</h4>
                             
-
+                            <a href="{{ url('admin/shipping-charges/create') }}" style="max-width: 150px; float: right; display: inline-block" class="btn btn-block btn-primary">Add Shipping Charge</a>
 
                             {{-- Displaying The Validation Errors: https://laravel.com/docs/9.x/validation#quick-displaying-the-validation-errors AND https://laravel.com/docs/9.x/blade#validation-errors --}}
                             {{-- Determining If An Item Exists In The Session (using has() method): https://laravel.com/docs/9.x/session#determining-if-an-item-exists-in-the-session --}}

@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Refunds;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LalamoveAPIBodyHelper;
 
 class OrderController extends Controller
 {
     // Note: In the Admin Panel, in the Orders Management section, if the authenticated/logged-in user is 'vendor', we'll show the orders of the products added by/related to that 'vendor' ONLY, but if the authenticated/logged-in user is 'admin', we'll show ALL orders    
 
-
+    private $lalamoveAPI_Helper;
 
     // Render admin/orders/orders.blade.php page (Orders Management section) in the Admin Panel    
     public function orders() {
@@ -130,24 +132,6 @@ class OrderController extends Controller
             $data = $request->all();
             // dd($data);
 
-            // Note: There are two types of Shipping Process: "manual" and "automatic". "Manual" is in the case like small businesses, where the courier arrives at the owner warehouse to to pick up the order for shipping, and the small business owner takes the shipment details (like courier name, tracking number, ...) from the courier, and inserts those details themselves in the Admin Panel when they "Update Order Status" Section (by an 'admin') or "Update Item Status" Section (by a 'vendor' or 'admin') (in admin/orders/order_details.blade.php). With "automatic" shipping process, we're integrating third-party APIs (e.g. Shiprocket API) and orders go directly to the shipping partner, and the updates comes from the courier's end, and orders are automatically delivered to customers
-            // "Automatic" Shipping Process (when 'admin' does NOT enter the Courier Name and Tracking Number): Configure the Shiprocket API in our Admin Panel in admin/orders/order_details.blade.php (to automate Pushing Orders to Shiprocket API by selecting "Shipped" from the drop-down menu)    
-            if (empty($data['courier_name']) && empty($data['tracking_number']) && $data['order_status'] == 'Shipped') { // if the 'admin' didn't enter the Courier Name and Tracking Nubmer when they selected "Shipped" from the drop-down menu in admin/orders/order_details.blade.php, use the "Automatic" Shipping Process (Push Orders to Shiprocket API), not the "Manual" Shipping process. Check the "Manual" Shipping process in the next if statement
-                // dd('Inside Automatic Shipping Process if statement in updateOrderStatus() method in Admin/OrderController.php<br>');
-                // echo 'Inside Automatic Shipping Process if statement in updateOrderStatus() method in Admin/OrderController.php<br>';
-                // exit;
-
-                $getResults = \App\Models\Order::pushOrder($data['order_id']);
-                // dd($getResults);
-                if (!isset($getResults['status']) || (isset($getResults['status']) && $getResults['status'] == false)) { // If Status is not coming at all, or it's coming but it's false
-                    Session::put('error_message', $getResults['message']); // The message is coming from the Shiprocket API    // Storing Data: https://laravel.com/docs/9.x/session#storing-data
-
-                    return redirect()->back(); // Redirecting With Flashed Session Data: https://laravel.com/docs/10.x/responses#redirecting-with-flashed-session-data
-                    // return redirect()->back()->with('error_message', $getResults['message']); // Redirecting With Flashed Session Data: https://laravel.com/docs/10.x/responses#redirecting-with-flashed-session-data
-                }
-            }
-
-
             // Update Order Status in `orders` table
             \App\Models\Order::where('id', $data['order_id'])->update(['order_status' => $data['order_status']]);
 
@@ -189,7 +173,7 @@ class OrderController extends Controller
                 ];
 
                 \Illuminate\Support\Facades\Mail::send('emails.order_status', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_status' is the order_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
-                    $message->to($email)->subject('Order Status Updated - MultiVendorEcommerceApplication.com.eg');
+                    $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
                 });
 
             } else { // if there are no Courier Name and Tracking Number data, don't include them in the email
@@ -205,7 +189,7 @@ class OrderController extends Controller
                 ];
     
                 \Illuminate\Support\Facades\Mail::send('emails.order_status', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_status' is the order_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
-                    $message->to($email)->subject('Order Status Updated - MultiVendorEcommerceApplication.com.eg');
+                    $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
                 });
             }
 
@@ -219,7 +203,10 @@ class OrderController extends Controller
     // Update Item Status (which can be determined by both 'vendor'-s and 'admin'-s, in contrast to "Update Order Status" which is updated by 'admin'-s ONLY, not 'vendor'-s) (Pending, In Progress, Shipped, Delivered, ...) in admin/orders/order_details.blade.php in Admin Panel    
     // Note: The `order_statuses` table contains all kinds of order statuses (that can be updated by 'admin'-s ONLY in `orders` table) like: pending, in progress, shipped, canceled, ...etc. In `order_statuses` table, the `name` column can be: 'New', 'Pending', 'Canceled', 'In Progress', 'Shipped', 'Partially Shipped', 'Delivered', 'Partially Delivered' and 'Paid'. 'Partially Shipped': If one order has products from different vendors, and one vendor has shipped their product to the customer while other vendor (or vendors) didn't!. 'Partially Delivered': if one order has products from different vendors, and one vendor has shipped and DELIVERED their product to the customer while other vendor (or vendors) didn't!    // The `order_item_statuses` table contains all kinds of order statuses (that can be updated by both 'vendor'-s and 'admin'-s in `orders_products` table) like: pending, in progress, shipped, canceled, ...etc.
     public function updateOrderItemStatus(Request $request) {
+        // dd($request);
         if ($request->isMethod('post')) {
+            session()->forget('errors');
+            session()->forget('error_message');
             $data = $request->all();
             // dd($data);
 
@@ -240,16 +227,6 @@ class OrderController extends Controller
             // Get the `order_id` column (which is the foreign key to the `id` column in `orders` table) value from `orders_products` table
             $getOrderId = \App\Models\OrdersProduct::select('order_id')->where('id', $data['order_item_id'])->first()->toArray();
 
-
-            // We'll save the Update "Item Status" History/Logs in `orders_logs` database table (whenever a 'vendor' or 'admin' updates an order item status)    
-            // Note: In `orders_logs` table, if the `order_item_id` column is zero 0, this means the "Item Status" has never been updated, and if it's not zero 0, this means it's been previously updated by a 'vendor' or 'admin' and the number references/denotes the `id` column (foreign key) of the `orders_products` table
-            $log = new \App\Models\OrdersLog;
-            $log->order_id      = $getOrderId['order_id'];
-            $log->order_item_id = $data['order_item_id'];
-            $log->order_status  = $data['order_item_status'];
-            $log->save();
-
-
             // "Item Status" update email: We send an email and SMS to the user when the Item Status (in the "Ordered Products" section) is updated by a 'vendor' or 'admin' (pending, shipped, in progress, …) for every product on its own in the email (not the whole order products, but the email is about the product that has been updated ONLY)
             $deliveryDetails = \App\Models\Order::select('mobile', 'email', 'name')->where('id', $getOrderId['order_id'])->first()->toArray();
 
@@ -264,7 +241,14 @@ class OrderController extends Controller
             // Note: Now in this case, updating the item status of one product will send an email to user but with telling the item statuses of all of the Order items (not ONLY the item with the status updated!). The solution to this is using a subquery (Constraining Eager Loads)
 
 
-            if (!empty($data['item_courier_name']) && !empty($data['item_tracking_number'])) { // if a 'vendor' or 'admin' Updates the Order "Item Status" to 'Shipped' in admin/orders/order_details.blade.php, and submits both Courier Name and Tracking Number HTML input fields, include the Courier Name and Tracking Nubmer data in the email (send them with the email)
+            if (in_array($data['order_item_status'], [
+                "Refund Approved", "Refund Rejected", "Refund Cancelled"
+            ])) { 
+                $this->paymongoRefundOrder($getOrderId); 
+            } elseif ($data['order_item_status'] === "For Delivery" && 
+                (empty($data['item_courier_name']) && empty($data['item_tracking_number']))) {
+                $this->productForDelivery($data);
+            } elseif (!empty($data['item_courier_name']) && !empty($data['item_tracking_number'])) { // if a 'vendor' or 'admin' Updates the Order "Item Status" to 'Shipped' in admin/orders/order_details.blade.php, and submits both Courier Name and Tracking Number HTML input fields, include the Courier Name and Tracking Nubmer data in the email (send them with the email)
                 $email = $deliveryDetails['email'];
 
                 // The email message data/variables that will be passed in to the email view
@@ -279,7 +263,7 @@ class OrderController extends Controller
                 ];
 
                 \Illuminate\Support\Facades\Mail::send('emails.order_item_status', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_item_status' is the order_item_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_item_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
-                    $message->to($email)->subject('Order Item Status Updated - MultiVendorEcommerceApplication.com.eg');
+                    $message->to($email)->subject('Order Item Status Updated - ' . env('APP_URL'));
                 });
 
             } else { // if there are no Courier Name and Tracking Number data, don't include them in the email
@@ -295,14 +279,71 @@ class OrderController extends Controller
                 ];
     
                 \Illuminate\Support\Facades\Mail::send('emails.order_item_status', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_item_status' is the order_item_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_item_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
-                    $message->to($email)->subject('Order Item Status Updated - MultiVendorEcommerceApplication.com.eg');
+                    $message->to($email)->subject('Order Item Status Updated - ' . env('APP_URL'));
                 });
             }
+            
+            // We'll save the Update "Item Status" History/Logs in `orders_logs` database table (whenever a 'vendor' or 'admin' updates an order item status)    
+            // Note: In `orders_logs` table, if the `order_item_id` column is zero 0, this means the "Item Status" has never been updated, and if it's not zero 0, this means it's been previously updated by a 'vendor' or 'admin' and the number references/denotes the `id` column (foreign key) of the `orders_products` table
+            $log = new \App\Models\OrdersLog;
+            $log->order_id      = $getOrderId['order_id'];
+            $log->order_item_id = $data['order_item_id'];
+            $log->order_status  = $data['order_item_status'];
+            $log->save();
 
             $message = 'Order Item Status has been updated successfully!';
 
 
             return redirect()->back()->with('success_message', $message);
+        }
+    }
+
+    // Note: There are two types of Shipping Process: "manual" and "automatic". "Manual" is in the case like small businesses, where the courier arrives at the owner warehouse to to pick up the order for shipping, and the small business owner takes the shipment details (like courier name, tracking number, ...) from the courier, and inserts those details themselves in the Admin Panel when they "Update Order Status" Section (by an 'admin') or "Update Item Status" Section (by a 'vendor' or 'admin') (in admin/orders/order_details.blade.php). With "automatic" shipping process, we're integrating third-party APIs (e.g. Shiprocket API) and orders go directly to the shipping partner, and the updates comes from the courier's end, and orders are automatically delivered to customers
+    // "Automatic" Shipping Process (when 'admin' does NOT enter the Courier Name and Tracking Number): Configure the Lalamove API in our Admin Panel in admin/orders/order_details.blade.php (to automate Pushing Orders to Shiprocket API by selecting "Shipped" from the drop-down menu)    
+    private function productForDelivery($data) {
+        $orderDetails = \App\Models\OrdersProduct::find($data['order_item_id']);
+        
+        $this->lalamoveAPI_Helper = new LalamoveAPIBodyHelper;
+        // dd('Inside Automatic Shipping Process if statement in updateOrderStatus() method in Admin/OrderController.php<br>');
+        // echo 'Inside Automatic Shipping Process if statement in updateOrderStatus() method in Admin/OrderController.php<br>';
+        // exit;
+        $all_lalamove_data = $this->lalamoveAPI_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
+
+        if (is_object($all_lalamove_data) && isset($all_lalamove_data->quotation->errors)) {
+            return redirect()->back()->withErrors($all_lalamove_data->quotation->errors);
+        } elseif (is_array($all_lalamove_data) && isset($all_lalamove_data['errors'])) {
+            return redirect()->back()->withErrors($all_lalamove_data['errors']);
+        } else {
+            $getResults = \App\Models\Order::pushOrder_to_Lalamove($all_lalamove_data, $orderDetails->order_id);
+            // dd(collect($getResults->errors)->pluck('message')->toArray());
+            if (isset($getResults->errors)) {
+                Session::put('error_message', collect($getResults->errors)->pluck('message')->toArray()); // The message is coming from the Shiprocket API    // Storing Data: https://laravel.com/docs/9.x/session#storing-data
+
+                return redirect()->back(); // Redirecting With Flashed Session Data: https://laravel.com/docs/10.x/responses#redirecting-with-flashed-session-data
+            } else {
+                $orderDetails->courier_name = $getResults->data->shareLink;
+                $orderDetails->tracking_number = "{$getResults->data->orderId}-{$getResults->data->quotationId}-{$getResults->data->driverId}";
+                $orderDetails->save();
+            }
+        }
+    }
+
+    private function paymongoRefundOrder($orderId) {
+        $order = \App\Models\Order::find($orderId)->first();
+        $payment = \App\Models\Payment::where('order_id', $order->id)->first();
+        $refund = \App\Models\Refunds::where('order_id', $order->id)->where('payment_id', $payment->id)->first();
+        $refundHelper = new \App\Helpers\PaymongoRefundAPIHelper;
+        // should create paymongo refund data
+        $resp = $refundHelper->set('amount', $payment->amount)->setAmount()
+            ->set('notes', $refund->reason)
+            ->set('payment_id', $payment->payment_id)
+            ->set('reason', "requested_by_customer")
+            ->createRefund();
+        
+        \Log::info("Refund Order: " . json_encode($resp));
+
+        if (!$resp['success']) {
+            return redirect()->back()->withErrors($resp['message']);
         }
     }
 
@@ -608,10 +649,9 @@ class OrderController extends Controller
                 <header class="clearfix">
                     <div class="container">
                         <div class="company-address">
-                            <h2 class="title">Multi-vendor E-commerce Application</h2>
+                            <h2 class="title">Kapiton</h2>
                             <p>
-                                37 Salah Salem St.<br>
-                                Cairo, Egypt
+                                Metro Manila, Philippines
                             </p>
                         </div>
                         <div class="company-contact">
@@ -643,7 +683,7 @@ class OrderController extends Controller
                                 <div class="title">Order ID: ' . $orderDetails['id'] . '</div>
                                 <div class="date">
                                     Order Date: ' . date('Y-m-d h:i:s', strtotime($orderDetails['created_at'])) . '<br>
-                                    Order Amount: INR ' . $orderDetails['grand_total'] . '<br>
+                                    Order Amount: PHP ' . $orderDetails['grand_total'] . '<br>
                                     Order Status: ' . $orderDetails['order_status'] . '<br>
                                     Payment Method: ' . $orderDetails['payment_method'] . '<br>
                                 </div>
@@ -671,10 +711,9 @@ class OrderController extends Controller
                                     <tr>
                                         <td class="desc">' . $product['product_code'] . '</td>
                                         <td class="qty">' . $product['product_size'] . '</td>
-                                        <td class="qty">' . $product['product_color'] . '</td>
                                         <td class="qty">' . $product['product_qty'] . '</td>
-                                        <td class="unit">INR ' . $product['product_price'] . '</td>
-                                        <td class="total">INR ' . $product['product_price'] * $product['product_qty'] . '</td>
+                                        <td class="unit">PHP ' . $product['product_price'] . '</td>
+                                        <td class="total">PHP ' . $product['product_price'] * $product['product_qty'] . '</td>
                                     </tr>';
 
                                 // Continue: Calculate the Subtotal
@@ -693,14 +732,14 @@ class OrderController extends Controller
                                         <td class="desc"></td>
                                         <td class="desc"></td>
                                         <td class="total" colspan=2>SUBTOTAL</td>
-                                        <td class="total">INR ' . $subTotal . '</td>
+                                        <td class="total">PHP ' . $subTotal . '</td>
                                     </tr>
                                     <tr>
                                         <td class="desc"></td>
                                         <td class="desc"></td>
                                         <td class="desc"></td>
                                         <td class="total" colspan=2>SHIPPING</td>
-                                        <td class="total">INR 0</td>
+                                        <td class="total">PHP 0</td>
                                     </tr>
                                     <tr>
                                         <td class="desc"></td>
@@ -710,10 +749,10 @@ class OrderController extends Controller
 
                                         if ($orderDetails['coupon_amount'] > 0) {
                                             // We CONCATENATE $invoiceHTML
-                                            $invoiceHTML .= '<td class="total">INR '. $orderDetails['coupon_amount'] . '</td>';
+                                            $invoiceHTML .= '<td class="total">PHP '. $orderDetails['coupon_amount'] . '</td>';
                                         } else {
                                             // We CONCATENATE $invoiceHTML
-                                            $invoiceHTML .= '<td class="total">INR 0</td>';
+                                            $invoiceHTML .= '<td class="total">PHP 0</td>';
                                         }
 
                                         // We CONCATENATE $invoiceHTML
@@ -724,7 +763,7 @@ class OrderController extends Controller
                                         <td class="desc"></td>
                                         <td class="desc"></td>
                                         <td class="total" colspan="2">TOTAL</td>
-                                        <td class="total">INR ' . $orderDetails['grand_total'] . '</td>
+                                        <td class="total">PHP ' . $orderDetails['grand_total'] . '</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -760,6 +799,18 @@ class OrderController extends Controller
 
         // Output the generated PDF to Browser
         $dompdf->stream();
+    }
+
+    public function orderRefundDetail (Request $request, \App\Models\Order $order, \App\Models\OrdersLog $order_log) {
+        if ($order_log->order_status === "Pending Refund") {
+            $refund = Refunds::where('order_id', $order->id)->with('refund_images')->first();
+
+            return response()->json([
+                'success' => true,
+                'message' => "Refund details has been fethed.",
+                'view' => (String) \Illuminate\Support\Facades\View::make('admin.orders.refund_details')->with(compact('refund'))
+            ]);
+        }
     }
 
 }

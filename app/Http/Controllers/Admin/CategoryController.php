@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
@@ -113,7 +114,9 @@ class CategoryController extends Controller
                     $imagePath = 'front/images/category_images/' . $imageName;
 
                     // Upload the image using the 'Intervention' package and save it in our path inside the 'public' folder
-                    Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                    // Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                    $fileStorageService = new FileStorageService;
+                    $fileStorageService->storeFile($image_tmp, $imagePath);
 
                     // Insert the image name in the database table
                     $category->category_image = $imageName; 

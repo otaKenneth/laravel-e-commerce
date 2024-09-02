@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
@@ -114,7 +115,11 @@ class BannersController extends Controller
 
                     // Upload the image using the 'Intervention' package and save it in our path inside the 'public' folder
                     // Image::make($image_tmp)->resize(1920, 720)->save($imagePath); // '\Image' is the Intervention package
-                    Image::make($image_tmp)->resize($width, $height)->save($imagePath); // '\Image' is the Intervention package
+                    $fileStorageService = new FileStorageService;
+                    $fileStorageService->storeFile($image_tmp, $imagePath, [
+                        'width' => $width,
+                        'height' => $height
+                    ]);
 
                     // Insert the image name in the database table
                     $banner->image = $imageName;

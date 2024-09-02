@@ -6,7 +6,10 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-lg-12 grid-margin stretch-card">
+                <div class="col-lg-12 grid-margin stretch-card mobile-space-top">
+                    <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                        <span class="icon-menu"></span>
+                    </button>
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Orders</h4>
@@ -32,8 +35,9 @@
                                     <tbody>
                                         @php
                                             // dd($orders); // check if the authenticated/logged-in user is 'vendor' (show ONLY orders of products belonging to them), or 'admin' (show ALL orders)
+                                            $sortedOrders = collect($orders)->sortByDesc('created_at');
                                         @endphp
-                                        @foreach ($orders as $order)
+                                        @foreach ($sortedOrders as $order)
                                             @if ($order['orders_products']) {{-- If the 'vendor' has ordered products (if a 'vendor' product has been ordered), show them. Check how we constrained the eager loads using a subquery in orders() method in Admin/OrderController.php inside the if condition --}}
                                                 <tr>
                                                     <td>{{ $order['id'] }}</td>
@@ -46,7 +50,7 @@
                                                             <br>
                                                         @endforeach
                                                     </td>
-                                                    <td>{{ $order['grand_total'] }}</td>
+                                                    <td>₱&nbsp;{{ number_format($order['grand_total'], 2) }}</td>
                                                     <td>{{ $order['order_status'] }}</td>
                                                     <td>{{ $order['payment_method'] }}</td>
                                                     <td>

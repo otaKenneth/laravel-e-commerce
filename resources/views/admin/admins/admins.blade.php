@@ -5,7 +5,12 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-lg-12 grid-margin stretch-card">
+                <div class="col-lg-12 grid-margin stretch-card mobile-space-top">
+
+                        <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                            <span class="icon-menu"></span>
+                        </button>
+
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">{{ $title }}</h4>
@@ -14,11 +19,15 @@
                                     <thead>
                                         <tr>
                                             <th>Admin ID</th>
-                                            <th>Name</th>
+                                            <th>
+                                                @if ($title == "Vendors") Business @endif
+                                                Name
+                                            </th>
                                             <th>Type</th>
                                             <th>Mobile</th>
                                             <th>Email</th>
                                             <th>Image</th>
+                                            <th>Verified</th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
@@ -27,7 +36,7 @@
                                         @foreach ($admins as $admin)
                                             <tr>
                                                 <td>{{ $admin['id'] }}</td>
-                                                <td>{{ $admin['name'] }}</td>
+                                                <td>{{ $title == "Vendors" ? $admin['vendor_business']['shop_name']:$admin['name'] }}</td>
                                                 <td>{{ $admin['type'] }}</td>
                                                 <td>{{ $admin['mobile'] }}</td>
                                                 <td>{{ $admin['email'] }}</td>
@@ -36,6 +45,17 @@
                                                         <img src="{{ asset('admin/images/photos/' . $admin['image']) }}">
                                                     @else
                                                         <img src="{{ asset('admin/images/photos/no-image.gif') }}">
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($admin['confirm'] == 'Yes')
+                                                        <a class="updateAdminConfirmed" id="admin-{{ $admin['id'] }}" admin_id="{{ $admin['id'] }}" href="javascript:void(0)"> {{-- Using HTML Custom Attributes. Check admin/js/custom.js --}}
+                                                            <i style="font-size: 25px" class="mdi mdi-bookmark-check" status="Active"></i> {{-- Icons from Skydash Admin Panel Template --}}
+                                                        </a>
+                                                    @else {{-- if the admin status is inactive --}}
+                                                        <a class="updateAdminConfirmed" id="admin-{{ $admin['id'] }}" admin_id="{{ $admin['id'] }}" href="javascript:void(0)"> {{-- Using HTML Custom Attributes. Check admin/js/custom.js --}}
+                                                            <i style="font-size: 25px" class="mdi mdi-bookmark-outline" status="Inactive"></i> {{-- Icons from Skydash Admin Panel Template --}}
+                                                        </a>
                                                     @endif
                                                 </td>
                                                 <td>

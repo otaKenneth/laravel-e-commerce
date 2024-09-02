@@ -4,6 +4,7 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Admin Panel</title>
         <!-- plugins:css -->
         <link rel="stylesheet" href="{{ url('admin/vendors/feather/feather.css') }}">
@@ -71,6 +72,13 @@
                                         {{-- My code: --}}
                                         <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">SIGN IN</button>
 
+                                    </div>
+                                    <div class="my-2 d-flex justify-content-center align-items-center">
+                               
+                                            <label class="form-check-label text-muted">
+                                            <a style="text-align: center; text-decoration: underline; color: black;" href="/admin/forgot-password">Forgot password</a>
+                                            </label>
+                                
                                     </div>
                                     <div class="my-2 d-flex justify-content-between align-items-center">
                                         <div class="form-check">

@@ -1,20 +1,45 @@
-  name: cPanel Deploy Action
-  # You may pin to the exact commit or the version.
-  # uses: pinkasey/cpanel-deploy-action@1f18599f58d17239fa1dc67253f20f2c4b3e1c81
-  uses: pinkasey/cpanel-deploy-action@v1.1.2
-  with:
-    # hostname of cPanel installation, including protocol. for instance: https://hostname.example.com
-    hostname: 
-    # Port of cPanel API. The default value is 2083 - don't change it unless you know what you're doing
-    cPanelApiPort: # optional, default is 2083
-    # cPanel API token, used for authorization. You should store this as a repository-secret.
-    cpanel_token: 
-    # cPanel username used for API calls. Must be the same username used to create the token. e.g: 'joe'
-    cpanel_username: 
-    # folder in which the repository is installed in the target cPanel account. must already exist. e.g: /home/your_account/repositories/your_repository
-    repository_root: 
-    # Whether or not to update the repository before triggering the deployment. If true - parameter 'branch' is required. defaults to 'true'.
-    updateRepository: # default is true
-    # branch to deploy. e.g: 'main' or 'master', or any other branch
-    branch: kapiton-uat
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - kapiton-uat
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create deploy directory if it doesn't exist
+        run: |
+          mkdir -p /home1/hryftate/repositories/kapiton-uat/
+
+      - name: Deploy to cPanel
+        run: |
+          export DEPLOYPATH=/home1/hryftate/repositories/kapiton-uat/
+          /bin/cp -R . $DEPLOYPATH
+          echo "Deployed to $DEPLOYPATH"
           
+      - name: List files in DEPLOYPATH
+        run: ls -la /home1/hryftate/repositories/kapiton-uat/
+        
+      - name: Copy files to UAT directory
+        run: |
+          mkdir -p /home1/hryftate/UAT
+          /bin/cp -R /home1/hryftate/repositories/kapiton-uat/public /home1/hryftate/UAT
+          echo "Copied files to UAT directory"
+          
+      - name: List files in UAT directory
+        run: ls -la /home1/hryftate/UAT
+
+      - name: Copy files to seller.kapiton.store directory
+        run: |
+          mkdir -p /home1/hryftate/seller.kapiton.store
+          /bin/cp -R /home1/hryftate/repositories/kapiton-uat/public /home1/hryftate/seller.kapiton.store
+          echo "Copied files to seller.kapiton.store directory"
+          
+      - name: List files in seller.kapiton.store directory
+        run: ls -la /home1/hryftate/seller.kapiton.store

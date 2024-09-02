@@ -4,18 +4,34 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Category extends Model
 {
     use HasFactory;
 
-
+    public function products() {
+        return $this->hasMany('App\Models\Product', 'category_id');
+    }
 
     // Every category belongs to a section    // The inverse of the relationship
     public function section() {
         return $this->belongsTo('App\Models\Section', 'section_id')->select('id', 'name'); // 'section_id' is the `categories` table foreign key to the `sections` table    // select('id', 'name') means select `id` and `name` coumns ONLY from the `sections` table for a better performance
     }
 
+    public function filters() {
+        return $this->select([
+            'products_filters.id',
+            DB::raw('SUBSTRING_INDEX(SUBSTRING_INDEX(products_filters.cat_ids, ",", categories.id), ",", -1) as `category_id`'),
+            'products_filters.filter_name'
+        ])
+            ->join('products_filters', function ($join) {
+                $join->whereRaw('CHAR_LENGTH(products_filters.cat_ids) - CHAR_LENGTH(REPLACE(products_filters.cat_ids, ",", "")) >= categories.id - 1');
+            })
+            ->where('products_filters.status', 1)
+            ->orderBy('products_filters.id')
+            ->orderBy('categories.id');
+    }
 
 
     // Multi-level categories (and subcategories (children)) relationships
@@ -26,7 +42,6 @@ class Category extends Model
     public function subCategories() { // this method could be better named 'children'    // This relationship brings the categories that point to the current category (using their `parent_id`) (Example: If the current category with `id` = 4, i.e. \App\Models\Category::find(4), the relationship brings all the categories that their `parent_id` = 4)    // A one category can have many subcategories (this is a relationship inside the same table `categories` (not between two different tables))    
         return $this->hasMany('App\Models\Category', 'parent_id')->where('status', 1);
     }
-
 
 
     // Get the parent category & its subcategories (child categories) of a URL
@@ -46,14 +61,14 @@ class Category extends Model
         if ($categoryDetails['parent_id'] == 0) { // if the category is PARENT category (not SUBcategory)
             // Show main category only in the Breadcrumb
             $breadcrumbs = '
-                <li class="is-marked"><a href="' . url($categoryDetails['url']) .'">' . $categoryDetails['category_name'] .'</a></li>
+                <a href="' . url($categoryDetails['url']) .'">' . $categoryDetails['category_name'] .'</a>
             ';
         } else { // if the category is SUBcategory category (not PARENT category)
             // Show BOTH main (parent) category AND subcategory in the Breadcrumb
             $parentCategory = \App\Models\Category::select('category_name', 'url')->where('id', $categoryDetails['parent_id'])->first()->toArray();
             $breadcrumbs = '
-                <li class="has-separator"><a href="' . url($parentCategory['url'])  .'">' . $parentCategory['category_name']  . '</a></li>
-                <li class="is-marked"><a href="'     . url($categoryDetails['url']) .'">' . $categoryDetails['category_name'] . '</a></li>
+                <a href="' . url($parentCategory['url'])  .'">' . $parentCategory['category_name']  . '</a>
+                <a href="'     . url($categoryDetails['url']) .'">' . $categoryDetails['category_name'] . '</a>
             ';
         }
 
@@ -81,7 +96,11 @@ class Category extends Model
         $getCategoryName = \App\Models\Category::select('category_name')->where('id', $category_id)->first();
 
 
-        return $getCategoryName->category_name;
+        if ($getCategoryName !== null) {
+            return $getCategoryName->category_name;
+        }
+    
+        return null;
     }
 
     // Note: We also prevent making orders of the products of the Categories that are disabled (`status` = 0) (whether the Category is a Child Category or a Parent Category (Root Category) is disabled) in admin/categories/categories.blade.php

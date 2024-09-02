@@ -3,6 +3,19 @@
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="row space-right-mobile">
+                        <div class="col-12 col-xl-12 mb-4 mb-xl-0">
+                            <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                                <span class="icon-menu"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
@@ -48,7 +61,7 @@
                                             <tr>
                                                 <td>{{ $banner['id'] }}</td>
                                                 <td>
-                                                    <img style="width: 180px" src="{{ asset('front/images/banner_images/' . $banner['image']) }}">
+                                                    <img style="width: 180px" src="{{ $getImage('front/images/banner_images/', $banner['image']) }}">
                                                 </td>
                                                 <td>{{ $banner['type'] }}</td>
                                                 <td>{{ $banner['link'] }}</td>

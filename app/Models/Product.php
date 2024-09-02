@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class Product extends Model
 {
@@ -22,7 +23,7 @@ class Product extends Model
     }
 
     public function brand() { // Every product belongs to some brand    // this relationship method is used in Front/ProductsController.php    
-        return $this->belongsTo('App\Models\Brand', 'brand_id'); // 'brand_id' is the foreign key
+        return $this->belongsTo('App\Models\Brand', 'brand_id', 'id'); // 'brand_id' is the foreign key
     }
 
     // Every product has many attributes
@@ -35,12 +36,37 @@ class Product extends Model
         return $this->hasMany('App\Models\ProductsImage');
     }
 
+    public function product_category_filters() {
+        return $this->category()->with('filters');
+    }
 
     // Relationship of a Product `products` table with Vendor `vendors` table (every product belongs to a vendor)    
     public function vendor() {    
         return $this->belongsTo('App\Models\Vendor', 'vendor_id')->with('vendorbusinessdetails'); // 'vendor_id' is the Foreign Key of the Relationship    
     }
 
+    public function ratings() {
+        return $this->hasMany(Rating::class, 'product_id', 'id');
+    }
+
+    public static function generateSku($product)
+    {
+        $prefix = strtoupper(substr($product->category->category_name, 0, 3)); // Example: Category prefix
+        $uniqueId = strtoupper(uniqid());
+        return $prefix . '-' . $uniqueId;
+    }
+
+    public static function product_computed_ratings ($product_id) {
+        $product_ratings = \App\Models\Rating::select('rating')->where('product_id', $product_id)->get()->toArray();
+        $cnt = count($product_ratings);
+        
+        $computed = 0;
+        if ($cnt > 0) {
+            $computed = array_sum(Arr::pluck($product_ratings, 'rating')) / $cnt;
+        }
+
+        return $computed;
+    }
 
 
     // A static method (to be able to be called directly without instantiating an object in index.blade.php) to determine the final price of a product because a product can have a discount from TWO things: either a `CATEGORY` discount or `PRODUCT` discout    
@@ -65,15 +91,16 @@ class Product extends Model
         }
 
 
-        return $discounted_price;
+        return number_format($discounted_price, 2);
     }
 
 
     
-    public static function getDiscountAttributePrice($product_id, $size) { // this method is called (used) in front/products/detail.blade.php and cart_items.blade.php and in applyCoupon() method in Front/ProudctsController.php
+    public static function getDiscountAttributePrice($product_id, $color, $size) { // this method is called (used) in front/products/detail.blade.php and cart_items.blade.php and in applyCoupon() method in Front/ProudctsController.php
         // Get that product attributes from `products_attributes` table which has that specific `product_id` and `size`
         $proAttrPrice = \App\Models\ProductsAttribute::where([ // from `products_attributes` table
             'product_id' => $product_id,
+            'color'      => $color,
             'size'       => $size
         ])->first()->toArray();
 
@@ -148,6 +175,12 @@ class Product extends Model
     // Delete a product from Cart if it's 'disabled' (`status` = 0) or it's out of stock (sold out)    
     public static function deleteCartProduct($product_id) {
         Cart::where('product_id', $product_id)->delete();
+    }
+
+    public static function getProductsBySectionName($section_name) {
+        $section_id = \App\Models\Section::where('name', $section_name)->where('status', 1)->get('id')->toArray();
+
+        return Product::where('section_id', $section_id)->where('status', 1)->with('vendor');
     }
 
 }
