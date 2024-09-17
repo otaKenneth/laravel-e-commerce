@@ -13,4 +13,22 @@
     .elementor-1656 .elementor-element.elementor-element-48168f6 img{
         max-width: 100px;
     }
-}/* End custom CSS */
+}
+.elementor-1656 .elementor-element.elementor-element-5f0d9zz .elementor-heading-title{
+    font-size: 52px;
+    font-weight: 500;
+}
+
+@media (max-width: 767px){
+    .elementor-1656 .elementor-element.elementor-element-5f0d9zz .elementor-heading-title{
+        font-size: 32px;
+        text-align: center;
+    }
+    .elementor-1656 .elementor-element.elementor-element-5f0d9zz p{
+        text-align: center;
+    }
+}
+/* End custom CSS */
+
+
+
