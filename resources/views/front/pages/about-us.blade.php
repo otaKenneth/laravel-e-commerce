@@ -121,6 +121,18 @@
                 data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;container_type&quot;:&quot;flex&quot;}"
             >
                 <div
+                    class="elementor-element elementor-element-5f0d9zz elementor-widget elementor-widget-heading"
+                    data-id="5f0d9zz"
+                    data-element_type="widget"
+                    data-widget_type="heading.default"
+                >
+                    <div class="elementor-widget-container">
+                        <h1 style="margin-bottom: 20px;" class="elementor-heading-title elementor-size-default">Who we are?<br>
+                        How are we different?</h1>
+                        <p>At Kapiton, we're not just building a marketplace; we're creating an ecosystem that nurtures the entrepreneurial spirit of students. Our platform serves as a canvas for student creators to showcase their products, a hub for local brands to thrive, and a community where ideas turn into reality.</p>
+                    </div>
+                </div>
+                <div
                     class="elementor-element elementor-element-5f0d9ad elementor-widget elementor-widget-heading"
                     data-id="5f0d9ad"
                     data-element_type="widget"

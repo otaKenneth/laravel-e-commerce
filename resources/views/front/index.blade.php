@@ -195,14 +195,13 @@
     </div>
     <!-- Our top Categories /- -->
 
-    <!-- Who we Are? -->
+    <!-- Who we Are? 
     <div
         class="elementor-element elementor-element-698ae04 e-flex e-con-boxed e-con e-parent"
         data-id="698ae04"
         data-element_type="container"
         data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
-        data-core-v316-plus="true"
-    >
+        data-core-v316-plus="true">
         <div class="e-con-inner">
             <div
                 class="elementor-element elementor-element-733cff2 e-con-full e-flex e-con e-child"
@@ -292,7 +291,7 @@
             </div>
         </div>
     </div>
-    <!-- Who we Are? /- -->
+    Who we Are? /- -->
 
     <!-- Top Products -->
     @if (count($bestSellers) > 0)
