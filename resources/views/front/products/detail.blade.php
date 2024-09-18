@@ -707,7 +707,7 @@
                                                 <select name="variation" id="form-field-field_cfabe28" class="elementor-field-textual elementor-size-sm" aria-required="true">
                                                     @foreach ($attributes as $attribute)
                                                         @if (!is_null($attribute))
-                                                        <option value="{{$attribute['id']}}" data-productStock="{{ $attribute['stock'] }}">{{$attribute['color']}} - {{$attribute['size']}}</option>
+                                                        <option value="{{$attribute['id']}}" data-productStock="{{ $attribute['stock'] }}">{{$attribute['color']}} - {{$attribute['size']}} - ₱{{$attribute['price']}}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
