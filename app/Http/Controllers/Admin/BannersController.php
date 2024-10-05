@@ -85,6 +85,13 @@ class BannersController extends Controller
             $data = $request->all();
             // dd($data);
 
+            $this->validate($request, [
+                'type' => 'required|string',
+                'link' => 'required|string',
+                'title' => 'required|string',
+                'alt' => 'required|string'
+            ]);
+
             $banner->type   = $data['type'];
             $banner->link   = $data['link'];
             $banner->title  = $data['title'];
