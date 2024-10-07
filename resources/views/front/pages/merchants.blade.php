@@ -66,7 +66,7 @@
                                                     decoding="async"
                                                     width="138"
                                                     height="151"
-                                                    src="{{ $getImage('front/images/vendor/owl-carousel/dist/', $vendor->vendorbusinessdetails->license_image) }}"
+                                                    src="{{ $getImage('front/images/brand-logos/', $vendor->vendorbusinessdetails->shop_logo) }}"
                                                     class="attachment-large size-large wp-image-445"
                                                     alt=""
                                                 >
