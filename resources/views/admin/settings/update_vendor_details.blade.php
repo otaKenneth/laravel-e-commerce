@@ -160,6 +160,7 @@
                     <div class="col-md-12 col-lg-10 col-xl-6 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
+                                <img width="250" height="250" src="{{ $getImage('front/images/brand-logos/', $vendorDetails['shop_logo']) }}"/>
                                 <h4 class="card-title">Update Vendor Business Information</h4>
 
 
@@ -294,8 +295,8 @@
                                         <input type="file" class="form-control" id="shop_logo" name="shop_logo">
                                         {{-- Show the admin image if exists --}}
                                         @if (!empty($vendorDetails['shop_logo']))
-                                            <a target="_blank" href="{{ url('admin/images/proofs/' . $vendorDetails['shop_logo']) }}">View Image</a> <!-- We used    target="_blank"    to open the image in another separate page -->
-                                            <input type="hidden" name="shop_logo" value="{{ $vendorDetails['shop_logo'] }}"> <!-- to send the current admin image url all the time with all the requests -->
+                                            <a target="_blank" href="{{ $getImage('front/images/brand-logos/', $vendorDetails['shop_logo']) }}">View Image</a> <!-- We used    target="_blank"    to open the image in another separate page -->
+                                            <input type="hidden" name="current_shop_logo" value="{{ $vendorDetails['shop_logo'] }}"> <!-- to send the current admin image url all the time with all the requests -->
                                         @endif
                                     </div>
                                     <div class="form-group">

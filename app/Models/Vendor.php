@@ -11,6 +11,10 @@ class Vendor extends Model
     
     use HasFactory;
 
+    public function admin() {
+        return $this->belongsTo(Admin::class, 'id', 'vendor_id');
+    }
+
     public function products() {
         return $this->hasMany('\App\Models\Product', 'vendor_id')->where([
             'status' => 1

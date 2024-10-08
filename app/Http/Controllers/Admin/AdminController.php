@@ -390,6 +390,30 @@ class AdminController extends Controller
                     $imageName = '';
                 }
 
+                if ($request->hasFile('shop_logo')) {
+                    $image_tmp = $request->file('shop_logo');
+
+                    if ($image_tmp->isValid()) {
+                        // Get the image extension
+                        $extension = $image_tmp->getClientOriginalExtension();
+
+                        // Generate a random name for the uploaded image (to avoid that the image might get overwritten if its name is repeated)
+                        $shop_logo_imageName = rand(111, 99999) . '.' . $extension;
+
+                        // Assigning the uploaded images path inside the 'public' folder
+                        $imagePath = 'front/images/brand-logos/' . $shop_logo_imageName;
+
+                        // Upload the image using the Intervention package and save it in our path inside the 'public' folder
+                        // Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
+                        $fileStorageService = new FileStorageService;
+                        $fileStorageService->storeFile($image_tmp, $imagePath);
+                    }
+                } else if (!empty($data['current_shop_logo'])) {
+                    $shop_logo_imageName = $data['current_shop_logo'];
+                } else {
+                    $shop_logo_imageName = '';
+                }
+
 
                 $vendorCount = \App\Models\VendorsBusinessDetail::where('vendor_id', Auth::guard('admin')->user()->vendor_id)->count(); // Accessing Specific Guard Instances: https://laravel.com/docs/9.x/authentication#accessing-specific-guard-instances
                 if ($vendorCount > 0) { // if there's a vendor already existing, them UPDATE
@@ -408,6 +432,7 @@ class AdminController extends Controller
                         'business_license_number' => $data['business_license_number'],
                         'address_proof'           => $data['address_proof'],
                         'address_proof_image'     => $imageName,
+                        'shop_logo'     => $shop_logo_imageName,
                     ]);
 
                 } else { // if there's no vendor already existing, then INSERT
@@ -427,6 +452,7 @@ class AdminController extends Controller
                         'business_license_number' => $data['business_license_number'],
                         'address_proof'           => $data['address_proof'],
                         'address_proof_image'     => $imageName,
+                        'shop_logo'     => $shop_logo_imageName,
                     ]);
                 }
 
