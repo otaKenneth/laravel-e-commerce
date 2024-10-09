@@ -549,7 +549,7 @@
                             data-element_type="widget"
                             data-widget_type="heading.default">
                             <div class="elementor-widget-container">
-                                <h5 class="elementor-heading-title elementor-size-default">{{ (isset($productDetails['vendor']['name'])  ? $productDetails['vendor']['name']:'') }}</h5>
+                                <h5 class="elementor-heading-title elementor-size-default">{{ (isset($productDetails['vendor']['vendorbusinessdetails']['shop_name'])  ? $productDetails['vendor']['vendorbusinessdetails']['shop_name']:'') }}</h5>
                             </div>
                         </div>
 

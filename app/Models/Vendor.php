@@ -65,4 +65,8 @@ class Vendor extends Model
         
         return number_format($avg_ratings, 1);
     }
+
+    public function vendorProductOrders() {
+        return $this->hasMany(OrdersProduct::class, 'vendor_id', 'id');
+    }
 }
