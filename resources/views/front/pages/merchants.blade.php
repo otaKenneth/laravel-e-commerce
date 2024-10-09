@@ -109,6 +109,7 @@
                                             @php
                                                 $avg_rating = $vendor->vendorProductRatings();
                                             @endphp
+                                            @if ($vendor->ratings()->count() > 0)
                                             <div class="e-con-inner">
                                                 <div
                                                     class="elementor-element elementor-element-70dd1ff elementor-widget elementor-widget-text-editor"
@@ -118,9 +119,14 @@
                                                 >
                                                     <div class="elementor-widget-container">
                                                         <p>
-                                                            <strong>{{$avg_rating}}</strong>based on {{$vendor->ratings()->count()}} reviews
+                                                            <strong>{{$avg_rating}}</strong> based on {{$vendor->ratings()->count()}} reviews
                                                         </p>
                                                     </div>
+                                                    @if ($vendor->vendor_product_orders_sum_product_qty > 0)
+                                                    <div style="display: flex; justify-content: center; font-weight: bold;">
+                                                        {{$vendor->vendor_product_orders_sum_product_qty}} SOLD
+                                                    </div>
+                                                    @endif
                                                 </div>
                                                 <div
                                                     class="elementor-element elementor-element-14c7ad9 elementor-widget elementor-widget-rating"
@@ -176,6 +182,22 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            @else
+                                            <div class="e-con-inner">
+                                                <div
+                                                    class="elementor-element elementor-element-70dd1ff elementor-widget elementor-widget-text-editor"
+                                                    data-id="70dd1ff"
+                                                    data-element_type="widget"
+                                                    data-widget_type="text-editor.default"
+                                                >
+                                                    <div class="elementor-widget-container">
+                                                        <p>
+                                                            <strong>No Reviews</strong>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endif
                                         </div>
                                         
                                         <div
