@@ -962,7 +962,17 @@
                                     class="elementor-element elementor-element-5d724d5 e-flex e-con-boxed e-con e-child"
                                     data-id="5d724d5"
                                     data-element_type="container"
-                                    data-settings="{&quot;background_background&quot;:&quot;slideshow&quot;,&quot;background_slideshow_gallery&quot;:[{&quot;id&quot;:1503,&quot;url&quot;:&quot;https:\/\/kapiton.seikodesigns.com\/wp-content\/uploads\/2024\/02\/TB1Wodes4naK1RjSZFtXXbC2VXa-420-193.jpg&quot;},{&quot;id&quot;:1504,&quot;url&quot;:&quot;https:\/\/kapiton.seikodesigns.com\/wp-content\/uploads\/2024\/02\/O1CN01CPKVqy1SYDC5atlgE_6000000002258-2-tps-832-360.png&quot;}],&quot;background_slideshow_slide_duration&quot;:2000,&quot;background_slideshow_ken_burns&quot;:&quot;yes&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;,&quot;background_slideshow_loop&quot;:&quot;yes&quot;,&quot;background_slideshow_slide_transition&quot;:&quot;fade&quot;,&quot;background_slideshow_transition_duration&quot;:500,&quot;background_slideshow_ken_burns_zoom_direction&quot;:&quot;in&quot;}"
+                                    data-settings="{&quot;background_background&quot;:&quot;slideshow&quot;,&quot;background_slideshow_gallery&quot;:[
+                                        {
+                                        &quot;id&quot;:1503,&quot;url&quot;:&quot;\/front\/images\/banner_images\/business-insights-banner-1.png&quot;
+                                        },
+                                        {
+                                        &quot;id&quot;:1504,&quot;url&quot;:&quot;\/front\/images\/banner_images\/business-insights-banner-2.png&quot;
+                                        },
+                                        {
+                                        &quot;id&quot;:1504,&quot;url&quot;:&quot;\/front\/images\/banner_images\/business-insights-banner-3.png&quot;
+                                        }
+                                        ],&quot;background_slideshow_slide_duration&quot;:2000,&quot;background_slideshow_ken_burns&quot;:&quot;yes&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;,&quot;background_slideshow_loop&quot;:&quot;yes&quot;,&quot;background_slideshow_slide_transition&quot;:&quot;fade&quot;,&quot;background_slideshow_transition_duration&quot;:500,&quot;background_slideshow_ken_burns_zoom_direction&quot;:&quot;in&quot;}"
                                 >
                                     <div class="e-con-inner"></div>
                                 </div>

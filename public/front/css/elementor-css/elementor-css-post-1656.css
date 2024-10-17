@@ -3,6 +3,7 @@
 }
 .elementor-1656 .elementor-element.elementor-element-48168f6 img{
     max-width: 220px;
+    object-fit: contain;
 }
 @media (max-width:1024px){
     .elementor-1656 .elementor-element.elementor-element-48168f6 img{
