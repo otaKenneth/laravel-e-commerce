@@ -11,6 +11,10 @@ class Vendor extends Model
     
     use HasFactory;
 
+    public function admin() {
+        return $this->belongsTo(Admin::class, 'id', 'vendor_id');
+    }
+
     public function products() {
         return $this->hasMany('\App\Models\Product', 'vendor_id')->where([
             'status' => 1
@@ -60,5 +64,9 @@ class Vendor extends Model
             ->avg('rating'); // Assuming the column in the ratings table is 'rating'
         
         return number_format($avg_ratings, 1);
+    }
+
+    public function vendorProductOrders() {
+        return $this->hasMany(OrdersProduct::class, 'vendor_id', 'id');
     }
 }

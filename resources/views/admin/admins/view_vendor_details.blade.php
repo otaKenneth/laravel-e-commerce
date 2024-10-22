@@ -80,6 +80,24 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Business Information</h4>
+                            @if (!empty($vendorDetails['vendor_business']['shop_logo']))
+                                <div class="form-group">
+                                    <label for="shop_logo">Shop Logo</label>
+                                    <br>
+                                    <a 
+                                        href="{{ $getImage('front/images/brand-logos/', $vendorDetails['vendor_business']['shop_logo']) }}" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                    >
+                                        <img 
+                                          src="{{ $getImage('front/images/brand-logos/', $vendorDetails['vendor_business']['shop_logo']) }}" 
+                                          alt="Shop Logo" 
+                                          srcset=""
+                                          style="width: 150px;"
+                                        >
+                                    </a>
+                                </div>
+                            @endif
                             <div class="form-group">
                                 <label for="vendor_name">Shop Name</label>
                                 <input type="text" class="form-control"  @if (isset($vendorDetails['vendor_business']['shop_name'])) value="{{ $vendorDetails['vendor_business']['shop_name'] }}" @endif  readonly> {{-- $vendorDetails was passed from AdminController --}}
