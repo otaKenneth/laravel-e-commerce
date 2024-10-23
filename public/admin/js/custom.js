@@ -962,4 +962,100 @@ $(document).ready(function() {
     });
 
 
+
+
+    /*
+        DYNAMIC ATTIBUTE =======================================================================================
+    */
+   
+        document.getElementById("add-variation").addEventListener("click", function() {
+            // Select the span inside the button
+            let span = this.querySelector("span");
+            
+            // Get the current value inside the span and convert it to a number
+            let currentValue = parseInt(span.textContent);
+            
+            // Increment only if the current value is less than 2
+            if (currentValue < 2) {
+                let newValue = currentValue + 1;
+                span.textContent = newValue;
+                
+                if (newValue === 1) {
+                    // Dynamically create and populate variant-1
+                    let variant1Div = document.createElement('div');
+                    variant1Div.classList.add('variant-1');
+                    variant1Div.innerHTML = `
+                        <label>Variant Name1</label>
+                        <input name="variant-name-1" placeholder="Variant Name">
+                        <h3>Options</h3>
+                        <input name="variant-1-option-1" placeholder="Please type">
+                        <button class="remove-variant" data-variant="1">Remove</button>
+                    `;
+                    document.querySelector('#add-variation').after(variant1Div); // Insert after the button
+                } else if (newValue === 2) {
+                    // Dynamically create and populate variant-2
+                    let variant2Div = document.createElement('div');
+                    variant2Div.classList.add('variant-2');
+                    variant2Div.innerHTML = `
+                        <label>Variant Name2</label>
+                        <input name="variant-name-2" placeholder="Variant Name">
+                        <h3>Options</h3>
+                        <input name="variant-2-option-1" placeholder="Please type">
+                        <button class="remove-variant" data-variant="2">Remove</button>
+                    `;
+                    document.querySelector('div.variant-1').after(variant2Div); // Insert after variant-1
+                }
+            }
+            
+            // Attach event listeners to remove buttons
+            document.querySelectorAll('.remove-variant').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    let variantNumber = this.getAttribute('data-variant');
+                    
+                    if (variantNumber == 1) {
+                        let variant1Div = document.querySelector('div.variant-1');
+                        let variant2Div = document.querySelector('div.variant-2');
+                        
+                        if (variant2Div) {
+                            // Move variant-2 content to variant-1
+                            variant1Div.innerHTML = `
+                                <label>Variant Name1</label>
+                                <input name="variant-name-1" value="${variant2Div.querySelector('input[name=\'variant-name-2\']').value}" placeholder="Variant Name">
+                                <h3>Options</h3>
+                                <input name="variant-1-option-1" value="${variant2Div.querySelector('input[name=\'variant-2-option-1\']').value}" placeholder="Please type">
+                                <button class="remove-variant" data-variant="1">Remove</button>
+                            `;
+                            
+                            // Remove variant-2 but keep the div in the DOM
+
+                            variant2Div.remove();
+                        } else {
+                            // If no variant-2, just clear variant-1
+                            variant1Div.remove();
+                        }
+                        console.log(variant1Div);
+                    } else if (variantNumber == 2) {
+                        // Only remove variant-2, don't touch variant-1
+                        let variant2Div = document.querySelector('div.variant-2');
+                        variant2Div.remove(); // Remove variant-2 only
+                    }
+                    
+                    // Decrement the span value only if it's greater than 0
+                    let currentSpanValue = parseInt(span.textContent);
+                    if (currentSpanValue > 0) {
+                        span.textContent = currentSpanValue - 1;
+                    }
+                });
+            });
+        });
+        
+        
+        
+    /*
+        DYNAMIC ATTRIBUTE ======================================================================================
+    */
+        
+        
+
+
 })

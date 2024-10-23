@@ -120,6 +120,27 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+                                <!-- CUSTOM DYNAMIC VARIANT -->
+                                <div class="dynamic_variant_wrapper">
+                                    <button id="add-variation">+ Add Variation (<span>0</span>/2)</button>
+                               
+
+                                    <div class="dyanmic_form">
+                                        <table>
+                                            <tr>
+                                                <th></th>
+                                                <th>Price</th>
+                                                <th>Stock</th>
+                                                <th>SKU</th>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div> 
+
+
+
                                 <button type="submit" class="btn btn-primary mr-2">Submit</button>
                                 <button type="reset"  class="btn btn-light">Cancel</button>
                             </form>

@@ -60,3 +60,15 @@
         margin-bottom: 0 !important;
     }
 }
+
+
+/*CUSTOM DYNAMIC ATTRIBUTE*/
+.dynamic_variant_wrapper{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+.dynamic_variant_wrapper #add-variation{
+    background: #5d795d;
+    color: white;
+    margin-bottom: 20px;
+}
