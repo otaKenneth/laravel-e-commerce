@@ -27,7 +27,7 @@
 
 
                 <div class="collection-wide-banner-image">
-                    <img style="display: block; border-radius: 10px; width: 100%;" src="{{ $getImage("front/images/vendor/owl-carousel/dist/", 'vendor-banner-1.jpg') }}">
+                    <img style="display: block; border-radius: 10px; width: 100%;" src="{{ $getImage("front/images/vendor/owl-carousel/dist/", 'vendor-banner.jpg') }}">
                 </div>
 
 
