@@ -116,10 +116,11 @@
                                         >
                                             <div class="elementor-widget-container">
                                                 <p>
-                                                    <strong>Adidas PH</strong>
+                                                    <strong>{{$activeChat->user->first_name}}</strong>
                                                     <br>
                                                 </p>
                                             </div>
+                                            <div wire:loading wire:target="navigationChatClicked">Loading Messages...</div>
                                         </div>
                                     </div>
                                 </div>
@@ -156,7 +157,7 @@
                                                 <button type="submit" class="elementor-button elementor-size-xs">
                                                     <span>
                                                         <span class="elementor-button-icon"></span>
-                                                        <span class="elementor-button-text">Send</span>
+                                                        <span class="elementor-button-text">Send<span wire:loading wire:target="sendMessage">ing...</span></span>
                                                     </span>
                                                 </button>
                                             </div>

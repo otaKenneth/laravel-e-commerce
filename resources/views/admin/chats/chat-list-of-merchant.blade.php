@@ -11,7 +11,7 @@
             data-element_type="container"
             data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
             href="#!"
-            wire:click="navigationChatClicked('{{$chat->id}}')"
+            wire:click="navigationChatClicked('{{$chat->id}}', '{{$chat->user}}')"
         >
             <div class="e-con-inner">
                 <div
@@ -68,7 +68,7 @@
                         data-widget_type="text-editor.default"
                     >
                         <div class="elementor-widget-container">
-                            <p>Dear valued customer&#8230;</p>
+                            <p>{{$chat->messages->last()->message}}</p>
                         </div>
                     </div>
                 </div>

@@ -16,7 +16,9 @@ class ChatBox extends Component
     {
         $this->chats = Auth::user()->chats;
 
-        $this->activeChat = Auth::user()->chats()->with(['admin'])->latest()->first();
+        $this->activeChat = Auth::user()->chats()->with(['admin' => function ($query) {
+            $query->with('vendorBusiness');
+        }])->latest()->first();
 
         if (is_null($this->activeChat)) {
             $this->activeChat = new Chats;
