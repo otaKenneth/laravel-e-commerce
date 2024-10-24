@@ -32,10 +32,10 @@
                                 decoding="async"
                                 width="300"
                                 height="300"
-                                src="{{ $getImage('./images/', '2023-12-user.png') }}"
+                                src="{{ $getImage('front/images/brand-logos/', $chat->admin->vendorBusiness->shop_logo) }}"
                                 class="attachment-large size-large wp-image-423"
                                 alt=""
-                                srcset="{{ $getImage('./images/', '2023-12-user.png') }}300w, {{ $getImage('./images/', '2023-12-user.png') }} 150w"
+                                srcset="{{ $getImage('front/images/brand-logos/', $chat->admin->vendorBusiness->shop_logo) }} 300w, {{ $getImage('front/images/brand-logos/', $chat->admin->vendorBusiness->shop_logo) }} 150w"
                                 sizes="(max-width: 300px) 100vw, 300px"
                             >
                         </div>
@@ -56,7 +56,7 @@
                         <div class="elementor-widget-container">
                             <style>/*! elementor - v3.18.0 - 08-12-2023 */ .elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#69727d;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#69727d;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}</style>
                             <p>
-                                <strong>{{$chat->admin->name}}</strong>
+                                <strong>{{$chat->admin->vendorBusiness->shop_name}}</strong>
                                 <br>
                             </p>
                         </div>
@@ -68,7 +68,7 @@
                         data-widget_type="text-editor.default"
                     >
                         <div class="elementor-widget-container">
-                            <p>Dear valued customer&#8230;</p>
+                            <p>{{substr($chat->messages->last()->message, 0, 15)}}</p>
                         </div>
                     </div>
                 </div>
