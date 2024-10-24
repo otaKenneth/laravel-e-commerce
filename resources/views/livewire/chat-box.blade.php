@@ -118,6 +118,7 @@
                                                     <br>
                                                 </p>
                                             </div>
+                                            <div wire:loading wire:target="navigationChatClicked">Loading Messages...</div>
                                         </div>
                                     </div>
                                 </div>
