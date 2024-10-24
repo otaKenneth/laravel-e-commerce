@@ -24,3 +24,4 @@ compose.yaml
 
 /Database - multivendor_ecommerce
 /Postman Collection of API Endpoints
+composer.lock
