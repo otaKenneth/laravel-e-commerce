@@ -98,11 +98,7 @@ class BannersController extends Controller
             $banner->alt    = $data['alt'];
             $banner->status = 1;
 
-            
-            if ($data['type'] == 'Slider') {
-                $width  = '1920';
-                $height = '720';
-            } else if ($data['type'] == 'Fix') {
+            if ($data['type'] == 'Fix') {
                 $width  = '1920';
                 $height = '450';
             }

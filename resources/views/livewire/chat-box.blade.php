@@ -91,10 +91,10 @@
                                                     decoding="async"
                                                     width="300"
                                                     height="300"
-                                                    src="{{ $getImage('./images/', '2023-12-user.png') }}"
+                                                    src="{{ $getImage('front/images/brand-logos/', $activeChat->admin->vendorBusiness->shop_logo) }}"
                                                     class="attachment-large size-large wp-image-423"
                                                     alt=""
-                                                    srcset="{{ $getImage('./images/', '2023-12-user.png') }} 300w, {{ $getImage('./images/', '2023-12-user.png') }} 150w"
+                                                    srcset="{{ $getImage('front/images/brand-logos/', $activeChat->admin->vendorBusiness->shop_logo) }} 300w, {{ $getImage('front/images/brand-logos/', $activeChat->admin->vendorBusiness->shop_logo) }} 150w"
                                                     sizes="(max-width: 300px) 100vw, 300px"
                                                 >
                                             </div>
@@ -114,10 +114,11 @@
                                         >
                                             <div class="elementor-widget-container">
                                                 <p>
-                                                    <strong>Adidas PH</strong>
+                                                    <strong>{{ $activeChat->admin->vendorBusiness->shop_name }}</strong>
                                                     <br>
                                                 </p>
                                             </div>
+                                            <div wire:loading wire:target="navigationChatClicked">Loading Messages...</div>
                                         </div>
                                     </div>
                                 </div>
