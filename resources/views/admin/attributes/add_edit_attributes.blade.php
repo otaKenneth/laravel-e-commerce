@@ -127,14 +127,19 @@
                                     <button id="add-variation">+ Add Variation (<span>0</span>/2)</button>
                                
 
-                                    <div class="dyanmic_form">
+                                    <div class="dynamic_form">
                                         <table>
-                                            <tr>
-                                                <th></th>
-                                                <th>Price</th>
-                                                <th>Stock</th>
-                                                <th>SKU</th>
-                                            </tr>
+                                            <thead>
+                                                <tr>
+                                                    <th class="variant-1"></th> <!-- Change header to reflect the content -->
+                                                    <th>Price</th>
+                                                    <th>Stock</th>
+                                                    <th>SKU</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Dynamic rows will be inserted here -->
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div> 
