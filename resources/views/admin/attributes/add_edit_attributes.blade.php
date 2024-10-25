@@ -125,6 +125,7 @@
                                 <!-- CUSTOM DYNAMIC VARIANT -->
                                 <div class="dynamic_variant_wrapper">
                                     <button id="add-variation">+ Add Variation (<span>0</span>/2)</button>
+                                    <button id="reset-variation" style="display: none">RESET</button>
                                
 
                                     <div class="dynamic_form">
