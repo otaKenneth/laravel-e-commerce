@@ -113,42 +113,22 @@
                                 {{-- Products attributes add//remove input fields dynamically using jQuery --}}
                                 <div class="form-group">
                                     <div class="field_wrapper">
-                                        <div>
-                                            <input type="text" name="attribute[0][color]"  placeholder="Color"  style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
-                                            <input type="text" name="attribute[0][size]"  placeholder="Size"  style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
-                                            <a href="javascript:void(0);" class="add_button" title="Add Attributes">Add</a> {{-- Add another 4 input fields like the former --}}
+                                        <div class="variant-container">
+                                            <input type="text" class="input-variant-name" name="attribute[0][variant][name]"  placeholder="Color" value="Color"  style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
+                                            <div class="variant-attributes-container" data-variant_key="0" style="margin-left: 1.5rem">
+                                                <div class="variant-attributes-container-input"></div>
+                                                <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">Add Variant Attribute</a> {{-- Add another 4 input fields like the former --}}
+                                            </div>
+                                        </div>
+                                        <div class="variant-container">
+                                            <input type="text" class="input-variant-name" name="attribute[1][size]"  placeholder="Size" value="Size" style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
+                                            <div class="variant-attributes-container" data-variant_key="1" style="margin-left: 1.5rem">
+                                                <div class="variant-attributes-container-input"></div>
+                                                <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">Add Variant Attribute</a> {{-- Add another 4 input fields like the former --}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-
-                                <!-- CUSTOM DYNAMIC VARIANT -->
-                                <div class="dynamic_variant_wrapper">
-                                    <button id="add-variation">+ Add Variation (<span>0</span>/2)</button>
-                                    <button id="reset-variation" style="display: none">RESET</button>
-                               
-
-                                    <div class="dynamic_form">
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th class="variant-1"></th> <!-- Change header to reflect the content -->
-                                                    <th>Price</th>
-                                                    <th>Stock</th>
-                                                    <th>SKU</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <!-- Dynamic rows will be inserted here -->
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div> 
-
-
-
-                                <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                                <button type="reset"  class="btn btn-light">Cancel</button>
                             </form>
 
                             <br><br>
@@ -193,7 +173,8 @@
                                                         <a class="updateAttributeStatus" id="attribute-{{ $attribute['id'] }}" attribute_id="{{ $attribute['id'] }}" href="javascript:void(0)"> {{-- Using HTML Custom Attributes. Check admin/js/custom.js --}}
                                                             <i style="font-size: 25px" class="mdi mdi-bookmark-check" status="Active"></i> {{-- Icons from Skydash Admin Panel Template --}}
                                                         </a>
-                                                    @else {{-- if the admin status is inactive --}}
+                                                    @else 
+                                                        {{-- if the admin status is inactive --}}
                                                         <a class="updateAttributeStatus" id="attribute-{{ $attribute['id'] }}" attribute_id="{{ $attribute['id'] }}" href="javascript:void(0)"> {{-- Using HTML Custom Attributes. Check admin/js/custom.js --}}
                                                             <i style="font-size: 25px" class="mdi mdi-bookmark-outline" status="Inactive"></i> {{-- Icons from Skydash Admin Panel Template --}}
                                                         </a>

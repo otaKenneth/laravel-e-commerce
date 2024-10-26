@@ -485,17 +485,23 @@ $(document).ready(function() {
     // Add Remove Input Fields Dynamically using jQuery: https://www.codexworld.com/add-remove-input-fields-dynamically-using-jquery/    
     // Products attributes add//remove input fields dynamically using jQuery
     var maxField = 10; //Input fields increment limitation
-    var addButton = $('.add_button'); //Add button selector
+    var addButton = $('.add_variant_attribute_button'); //Add button selector
     var wrapper = $('.field_wrapper'); //Input field wrapper
-    var fieldHTML = `<div><div style="height:10px"></div><input type="text" name="attribute[${x}][color]" placeholder="Color" style="width:100px">&nbsp;<input type="text" name="attribute[${x}][size]" placeholder="Size" style="width:100px">&nbsp;<a href="javascript:void(0);" class="remove_button">Remove</a></div>'` 
-    var x = 1; //Initial field counter is 1
+    var fieldHTML = (variant_key, attribute_key, placeholder_value) => (`<div>
+        <input type="text" name="attribute[${variant_key}][variant][value][${attribute_key}]" placeholder="${placeholder_value} Attribute" style="width:200px">&nbsp;
+        <a href="javascript:void(0);" class="remove_button">Remove</a>
+    </div>`) 
     
     // Once add button is clicked
     $(addButton).click(function(){
+        wrapper = $(this).closest('.variant-attributes-container')
+        let variant_key = wrapper.data('variant_key')
+        let child_cnt = wrapper.children().length
+        let va_placeholder = $(this).parent().parent().find('.input-variant-name').val()
+        // $(wrapper).closest('variant-container').find('.input-variant-name').val()
         // Check maximum number of input fields
-        if(x < maxField){ 
-            x++; // Increment field counter
-            $(wrapper).append(fieldHTML); //Add field html
+        if(child_cnt < maxField){
+            $(wrapper).find('.variant-attributes-container-input').append(fieldHTML(variant_key, child_cnt, va_placeholder)); //Add field html
         }
     });
     
@@ -503,7 +509,6 @@ $(document).ready(function() {
     $(wrapper).on('click', '.remove_button', function(e){
         e.preventDefault();
         $(this).parent('div').remove(); // Remove field html
-        x--; // Decrement field counter
     });
 
 
