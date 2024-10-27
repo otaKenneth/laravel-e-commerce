@@ -26,6 +26,10 @@ class Product extends Model
         return $this->belongsTo('App\Models\Brand', 'brand_id', 'id'); // 'brand_id' is the foreign key
     }
 
+    public function variants() {
+        return $this->hasMany('App\Models\ProductsVariant');
+    }
+
     // Every product has many attributes
     public function attributes() {
         return $this->hasMany('App\Models\ProductsAttribute');

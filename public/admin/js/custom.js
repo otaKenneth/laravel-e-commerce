@@ -494,14 +494,15 @@ $(document).ready(function() {
     
     // Once add button is clicked
     $(addButton).click(function(){
-        wrapper = $(this).closest('.variant-attributes-container')
-        let variant_key = wrapper.data('variant_key')
+        wrapper = $(this).closest('.variant-attributes-container').find('.variant-attributes-container-input')
+        let variant_key = wrapper.parent().data('variant_key')
         let child_cnt = wrapper.children().length
+        console.log(wrapper, variant_key, child_cnt);
         let va_placeholder = $(this).parent().parent().find('.input-variant-name').val()
         // $(wrapper).closest('variant-container').find('.input-variant-name').val()
         // Check maximum number of input fields
         if(child_cnt < maxField){
-            $(wrapper).find('.variant-attributes-container-input').append(fieldHTML(variant_key, child_cnt, va_placeholder)); //Add field html
+            $(wrapper).append(fieldHTML(variant_key, child_cnt, va_placeholder)); //Add field html
         }
     });
     

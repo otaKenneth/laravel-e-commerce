@@ -121,7 +121,7 @@
                                             </div>
                                         </div>
                                         <div class="variant-container">
-                                            <input type="text" class="input-variant-name" name="attribute[1][size]"  placeholder="Size" value="Size" style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
+                                            <input type="text" class="input-variant-name" name="attribute[1][variant][name]"  placeholder="Size" value="Size" style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
                                             <div class="variant-attributes-container" data-variant_key="1" style="margin-left: 1.5rem">
                                                 <div class="variant-attributes-container-input"></div>
                                                 <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">Add Variant Attribute</a> {{-- Add another 4 input fields like the former --}}
@@ -129,10 +129,14 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                                <button type="reset"  class="btn btn-light">Cancel</button>
                             </form>
 
                             <br><br>
                             
+                            @if (count($product['variants']) > 0)
                             <h4 class="card-title">Product Attributes</h4>
 
                             <form method="post" action="{{ url('admin/edit-attributes/' . $product['id']) }}" style="width: 100%; overflow: auto">
@@ -142,9 +146,9 @@
                                 <table id="products" class="table table-bordered"> {{-- using the id here for the DataTable --}}
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Color</th>
-                                            <th>Size</th>
+                                            @foreach ($product['variants'] as $prod_variant)
+                                                <th>{{$prod_variant['variant_name']}}</th>
+                                            @endforeach
                                             <th>SKU</th>
                                             <th>Price</th>
                                             <th>Stock</th>
@@ -156,7 +160,6 @@
                                             {{--  <input type="hidden" name="attributeId[]" value="{{ $attribute['id'] }}">  --}} {{-- A hidden input field --}} {{-- IMPORTANT NOTE: DIDN'T WORK INSIDE FOR LOOP!! MUST BE OUSTSIDE IT IN ORDER TO WORK! --}}
                                             <input style="display: none" type="text" name="attributeId[]" value="{{ $attribute['id'] }}"> {{-- A hidden input field --}}
                                             <tr>
-                                                <td>{{ $attribute['id'] }}</td>
                                                 <td>{{ $attribute['color'] }}</td>
                                                 <td>{{ $attribute['size'] }}</td>
                                                 <td>
@@ -186,6 +189,7 @@
                                 </table>
                                 <button type="submit" class="btn btn-primary">Update Attributes</button>
                             </form>
+                            @endif
                         </div>
                     </div>
                 </div>
