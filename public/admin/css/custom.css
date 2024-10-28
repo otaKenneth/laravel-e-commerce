@@ -60,3 +60,64 @@
         margin-bottom: 0 !important;
     }
 }
+
+
+/*CUSTOM DYNAMIC ATTRIBUTE*/
+.dynamic_variant{
+    margin-top: 20px;
+    padding: 20px 30px;
+    box-shadow: none;
+}
+.dynamic_variant .card-title{
+    margin-bottom: 10px;
+}
+.dynamic_variant .add_variant_attribute_button{
+    width: fit-content;
+    background: #617a61;
+    color: white !important;
+    padding: 6px 20px;
+    display: block;
+    border-radius: 10px;
+    margin-top: 10px;
+    box-shadow: 0 0 0 black;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    font-size: 15px;
+}
+.dynamic_variant .add_variant_attribute_button:hover{
+    text-decoration: none;
+    box-shadow: 0 0 20px 0px #0000004d;
+}
+.dynamic_variant input{
+    max-width: 200px;
+    height: 35px;
+    border-radius: 10px;
+    border: 2px solid #666;
+}
+.variant-attributes-container-input > div{
+    margin: 10px 20px;
+}
+.variant-attributes-container-input .remove_button{
+    color: #f33939;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+    margin-left: 20px;
+    transition: all 0.3s ease;
+}
+.variant-attributes-container-input .remove_button:hover{
+    text-underline-offset: 7px;
+}
+.variant-attributes-container-input svg{
+    width: 18px;
+    height: auto;
+    color: #f33939;
+    margin-left: 5px;
+}
+.variant-attributes-container-input svg path{
+    fill: #f33939;
+}

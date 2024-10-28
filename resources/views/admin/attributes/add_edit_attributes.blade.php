@@ -10,6 +10,9 @@
                 <div class="col-md-12 grid-margin">
                     <div class="row">
                         <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                            <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                                <span class="icon-menu"></span>
+                            </button>
                             <h4 class="card-title">Attributes</h4> {{-- meaning Product attributes --}}
                         </div>
                         <div class="col-12 col-xl-4">
@@ -113,19 +116,32 @@
                                 {{-- Products attributes add//remove input fields dynamically using jQuery --}}
                                 <div class="form-group">
                                     <div class="field_wrapper">
-                                        <div>
-                                            <input type="text" name="attribute[0][color]"  placeholder="Color"  style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
-                                            <input type="text" name="attribute[0][size]"  placeholder="Size"  style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
-                                            <a href="javascript:void(0);" class="add_button" title="Add Attributes">Add</a> {{-- Add another 4 input fields like the former --}}
+                                        <div class="variant-container dynamic_variant card">
+                                            <h4 class="card-title">Variant Name 1</h4>
+                                            <input type="text" class="input-variant-name" name="attribute[0][variant][name]"  placeholder="Color" value="Color" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
+                                            <div class="variant-attributes-container" data-variant_key="0">
+                                                <div class="variant-attributes-container-input"></div>
+                                                <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">+ VARIANT OPTION</a> {{-- Add another 4 input fields like the former --}}
+                                            </div>
+                                        </div>
+                                        <div class="variant-container dynamic_variant card">
+                                            <h4 class="card-title">Variant Name 2</h4>
+                                            <input type="text" class="input-variant-name" name="attribute[1][variant][name]"  placeholder="Size" value="Size" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
+                                            <div class="variant-attributes-container" data-variant_key="1">
+                                                <div class="variant-attributes-container-input"></div>
+                                                <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">+ VARIANT OPTION</a> {{-- Add another 4 input fields like the former --}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <button type="submit" class="btn btn-primary mr-2">Submit</button>
                                 <button type="reset"  class="btn btn-light">Cancel</button>
                             </form>
 
                             <br><br>
                             
+                            @if (count($product['variants']) > 0)
                             <h4 class="card-title">Product Attributes</h4>
 
                             <form method="post" action="{{ url('admin/edit-attributes/' . $product['id']) }}" style="width: 100%; overflow: auto">
@@ -135,9 +151,9 @@
                                 <table id="products" class="table table-bordered"> {{-- using the id here for the DataTable --}}
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Color</th>
-                                            <th>Size</th>
+                                            @foreach ($product['variants'] as $prod_variant)
+                                                <th>{{$prod_variant['variant_name']}}</th>
+                                            @endforeach
                                             <th>SKU</th>
                                             <th>Price</th>
                                             <th>Stock</th>
@@ -149,7 +165,6 @@
                                             {{--  <input type="hidden" name="attributeId[]" value="{{ $attribute['id'] }}">  --}} {{-- A hidden input field --}} {{-- IMPORTANT NOTE: DIDN'T WORK INSIDE FOR LOOP!! MUST BE OUSTSIDE IT IN ORDER TO WORK! --}}
                                             <input style="display: none" type="text" name="attributeId[]" value="{{ $attribute['id'] }}"> {{-- A hidden input field --}}
                                             <tr>
-                                                <td>{{ $attribute['id'] }}</td>
                                                 <td>{{ $attribute['color'] }}</td>
                                                 <td>{{ $attribute['size'] }}</td>
                                                 <td>
@@ -166,7 +181,8 @@
                                                         <a class="updateAttributeStatus" id="attribute-{{ $attribute['id'] }}" attribute_id="{{ $attribute['id'] }}" href="javascript:void(0)"> {{-- Using HTML Custom Attributes. Check admin/js/custom.js --}}
                                                             <i style="font-size: 25px" class="mdi mdi-bookmark-check" status="Active"></i> {{-- Icons from Skydash Admin Panel Template --}}
                                                         </a>
-                                                    @else {{-- if the admin status is inactive --}}
+                                                    @else 
+                                                        {{-- if the admin status is inactive --}}
                                                         <a class="updateAttributeStatus" id="attribute-{{ $attribute['id'] }}" attribute_id="{{ $attribute['id'] }}" href="javascript:void(0)"> {{-- Using HTML Custom Attributes. Check admin/js/custom.js --}}
                                                             <i style="font-size: 25px" class="mdi mdi-bookmark-outline" status="Inactive"></i> {{-- Icons from Skydash Admin Panel Template --}}
                                                         </a>
@@ -178,6 +194,7 @@
                                 </table>
                                 <button type="submit" class="btn btn-primary">Update Attributes</button>
                             </form>
+                            @endif
                         </div>
                     </div>
                 </div>

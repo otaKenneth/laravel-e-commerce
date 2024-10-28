@@ -485,17 +485,34 @@ $(document).ready(function() {
     // Add Remove Input Fields Dynamically using jQuery: https://www.codexworld.com/add-remove-input-fields-dynamically-using-jquery/    
     // Products attributes add//remove input fields dynamically using jQuery
     var maxField = 10; //Input fields increment limitation
-    var addButton = $('.add_button'); //Add button selector
+    var addButton = $('.add_variant_attribute_button'); //Add button selector
     var wrapper = $('.field_wrapper'); //Input field wrapper
-    var fieldHTML = `<div><div style="height:10px"></div><input type="text" name="attribute[${x}][color]" placeholder="Color" style="width:100px">&nbsp;<input type="text" name="attribute[${x}][size]" placeholder="Size" style="width:100px">&nbsp;<a href="javascript:void(0);" class="remove_button">Remove</a></div>'` 
-    var x = 1; //Initial field counter is 1
+    var fieldHTML = (variant_key, attribute_key, placeholder_value) => (`<div>
+        <input type="text" name="attribute[${variant_key}][variant][value][${attribute_key}]" placeholder="${placeholder_value} Attribute" style="width:200px">&nbsp;
+        <a href="javascript:void(0);" class="remove_button">REMOVE
+            <svg width="800px" height="800px" viewBox="0 -0.5 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">                                             
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Dribbble-Light-Preview" transform="translate(-179.000000, -360.000000)" fill="#000000">
+                        <g id="icons" transform="translate(56.000000, 160.000000)">
+                            <path d="M130.35,216 L132.45,216 L132.45,208 L130.35,208 L130.35,216 Z M134.55,216 L136.65,216 L136.65,208 L134.55,208 L134.55,216 Z M128.25,218 L138.75,218 L138.75,206 L128.25,206 L128.25,218 Z M130.35,204 L136.65,204 L136.65,202 L130.35,202 L130.35,204 Z M138.75,204 L138.75,200 L128.25,200 L128.25,204 L123,204 L123,206 L126.15,206 L126.15,220 L140.85,220 L140.85,206 L144,206 L144,204 L138.75,204 Z" id="delete-[#1487]"></path>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        </a>
+    </div>`) 
     
     // Once add button is clicked
     $(addButton).click(function(){
+        wrapper = $(this).closest('.variant-attributes-container').find('.variant-attributes-container-input')
+        let variant_key = wrapper.parent().data('variant_key')
+        let child_cnt = wrapper.children().length
+        console.log(wrapper, variant_key, child_cnt);
+        let va_placeholder = $(this).parent().parent().find('.input-variant-name').val()
+        // $(wrapper).closest('variant-container').find('.input-variant-name').val()
         // Check maximum number of input fields
-        if(x < maxField){ 
-            x++; // Increment field counter
-            $(wrapper).append(fieldHTML); //Add field html
+        if(child_cnt < maxField){
+            $(wrapper).append(fieldHTML(variant_key, child_cnt, va_placeholder)); //Add field html
         }
     });
     
@@ -503,7 +520,6 @@ $(document).ready(function() {
     $(wrapper).on('click', '.remove_button', function(e){
         e.preventDefault();
         $(this).parent('div').remove(); // Remove field html
-        x--; // Decrement field counter
     });
 
 
@@ -960,6 +976,395 @@ $(document).ready(function() {
             error  : function(err) {alert(err.response.message);}
         });
     });
+
+
+
+
+    /*
+        DYNAMIC ATTIBUTE =======================================================================================
+    */
+
+    
+        document.getElementById("add-variation").addEventListener("click", function() {
+            // Select the span inside the button
+            let span = this.querySelector("span");
+        
+            // Get the current value inside the span and convert it to a number
+            let currentValue = parseInt(span.textContent);
+        
+            // Increment only if the current value is less than 2
+            if (currentValue < 2) {
+                let newValue = currentValue + 1;
+                span.textContent = newValue;
+
+                let reset_variants = document.querySelector('#reset-variation');
+        
+                // Get the dynamic form table body
+                let table = document.querySelector('.dynamic_form table');
+                let tableBody = table.querySelector('tbody'); 
+        
+                if (newValue === 1) {
+                    // Dynamically create and populate variant-1
+                    let variant1Div = document.createElement('div');
+                    variant1Div.classList.add('variant-1');
+                    variant1Div.innerHTML = `
+                        <label>Variant Name1</label>
+                        <input name="variant-name-1" placeholder="Variant Name">
+                        <h3>Options</h3>
+                        <div class="options">
+                            <input type="text" name="variant-1-option-1" placeholder="Please type">
+                            <button class="add-option" data-variant="1">Add Option</button>
+                            <button class="remove-option" data-variant="1" style="display: none;">Remove Option</button>
+                        </div>
+                    `;
+                    document.querySelector('#add-variation').after(variant1Div); // Insert after the button
+        
+                    // Insert new row in the table for variant-1
+                    let newRow1 = document.createElement('tr');
+                    newRow1.innerHTML = `
+                        <td rowspan="1" class="name-variant-1-option-1"></td>
+                        <td><input type="text" name="price-variant-1-option-1"></td>
+                        <td><input type="text" name="stock-variant-1-option-1"></td>
+                        <td><input type="text" name="sku-variant-1-option-1"></td>
+                    `;
+                    tableBody.appendChild(newRow1); // Append new row to the table
+
+                    // Attach event listener to update the header when input changes
+                    const variantNameInput = variant1Div.querySelector('input[name="variant-name-1"]');
+                    variantNameInput.addEventListener('input', function() {
+                        const variantHeader = table.querySelector('th.variant-1');
+                        variantHeader.textContent = variantNameInput.value.trim() || '';
+                    });
+
+
+                    let optionsDiv = variant1Div.querySelector('.options');
+                    let optionInputs = optionsDiv.querySelectorAll('input[type="text"]');
+
+                    optionInputs.forEach((optionInput, index) => {
+                        optionInput.addEventListener('input', function() {
+                            const variantNameOptionValue = table.querySelector(`td.name-variant-1-option-${index + 1}`);
+                            variantNameOptionValue.textContent = optionInput.value.trim() || '';
+                        });
+                    });
+        
+                    // Attach event listener to the Add Option and Remove Option buttons for variant 1
+                    attachAddOptionListener(variant1Div.querySelector('.add-option'));
+                    attachRemoveOptionListener(variant1Div.querySelector('.remove-option'));
+
+                    reset_variants.style.display = "block";
+        
+                } 
+                else if (newValue === 2) {
+                    // Dynamically create and populate variant-2
+                    let variant2Div = document.createElement('div');
+                    variant2Div.classList.add('variant-2');
+                    variant2Div.innerHTML = `
+                        <label>Variant Name2</label>
+                        <input name="variant-name-2" placeholder="Variant Name">
+                        <h3>Options</h3>
+                        <div class="options">
+                            <input type="text" name="variant-2-option-1" placeholder="Please type">
+                            <button class="add-option" data-variant="2">Add Option</button>
+                            <button class="remove-option" data-variant="2" style="display: none;">Remove Option</button>
+                        </div>
+                    `;
+                    document.querySelector('.variant-1').after(variant2Div);  // Insert after the variant-1 div
+                
+                    // Update the table to add variant-2 column
+                    let table = document.querySelector('.dynamic_form table');
+                    let tableBody = table.querySelector('tbody');
+                    let tableHeaderRow = table.querySelector('thead tr');
+                
+                    // Add new header cell for variant-2 next to variant-1
+                    let variant1Header = tableHeaderRow.querySelector('th.variant-1');
+                    let variant2Header = document.createElement('th');
+                    variant2Header.classList.add('variant-2');
+                    variant2Header.textContent = ''; // Customize the header text
+                    variant1Header.after(variant2Header); // Insert next to variant-1 header
+                
+                    // Iterate through each row and add a blank <td> cell in the existing row, followed by a new row with 4 blank cells
+                    let existingRows = tableBody.querySelectorAll('tr');
+                    existingRows.forEach((row, index) => {
+                    
+                
+                        // Add a blank cell after the variant-1 option cell
+                        let variant1OptionCell = row.querySelector(`td.name-variant-1-option-${index + 1}`);
+                        if (variant1OptionCell) {
+                            let blankCell = document.createElement('td');
+                            blankCell.className = `name-variant-2-option-1`;
+                            row.insertBefore(blankCell, variant1OptionCell.nextSibling); // Insert after the current variant-1 option cell
+                        }
+
+              
+                
+                    });
+                
+                    // Attach event listener to update the header when input changes
+                    const variantNameInput2 = variant2Div.querySelector('input[name="variant-name-2"]');
+                    variantNameInput2.addEventListener('input', function () {
+                        const variantHeader2 = table.querySelector('th.variant-2');
+                        variantHeader2.textContent = variantNameInput2.value.trim() || '';
+                    });
+                
+                    let optionsDiv2 = variant2Div.querySelector('.options');
+                    let optionInputs2 = optionsDiv2.querySelectorAll('input[type="text"]');
+                
+                    optionInputs2.forEach((optionInput, index) => {
+                        optionInput.addEventListener('input', function () {
+                            const variantNameOptionValue2 = table.querySelector(`td.name-variant-2-option-${index + 1}`);
+                            variantNameOptionValue2.textContent = optionInput.value.trim() || '';
+                        });
+                    });
+                
+                    // Attach event listener to the Add Option and Remove Option buttons for variant 2
+                    attachAddOptionListener(variant2Div.querySelector('.add-option'));
+                    attachRemoveOptionListener(variant2Div.querySelector('.remove-option'));
+                
+                    reset_variants.style.display = "block";
+                }
+                
+                
+                
+                
+                
+            }
+
+        
+            /*
+            // Attach event listeners to remove buttons
+            document.querySelectorAll('.remove-variant').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    let variantNumber = this.getAttribute('data-variant');
+                    let tableBody = document.querySelector('.dynamic_form table tbody'); 
+                    let table = document.querySelector('.dynamic_form table');
+                    const variantHeader = table.querySelector('th.variant-1');
+        
+                    if (variantNumber == 1) {
+                        let variant1Div = document.querySelector('.variant-1');
+                        let variant2Div = document.querySelector('.variant-2');
+        
+                        if (variant2Div) {
+                            // Change variant-2 to variant-1
+                            variant2Div.classList.remove('variant-2');
+                            variant2Div.classList.add('variant-1');
+                            variant2Div.querySelector('label').textContent = 'Variant Name1';
+                            variant2Div.querySelector('input[name="variant-name-2"]').name = 'variant-name-1';
+        
+                            // Update the options in variant-2 to match variant-1 format
+                            let variant2Options = variant2Div.querySelectorAll('.options input');
+                            variant2Options.forEach((input, index) => {
+                                input.name = `variant-1-option-${index + 1}`;
+                                input.placeholder = "Please type"; // Optional: update placeholder if needed
+                            });
+        
+                            variant2Div.querySelector('.add-option').setAttribute('data-variant', '1');
+                            variant2Div.querySelector('.remove-variant').setAttribute('data-variant', '1');
+                            variant2Div.querySelector('.remove-option').setAttribute('data-variant', '1');
+        
+                            // Remove corresponding row for variant 1
+                            if (tableBody.rows.length > 0) {
+                                tableBody.deleteRow(0);
+                            }
+                            setInterval(function () {
+                                variant1Div.remove();
+                            }, 10);
+                        } else {
+                            // Remove variant-1 container if variant-2 doesn't exist
+                            variant1Div.remove();
+                            if (tableBody.rows.length > 0) {
+                                tableBody.deleteRow(0);
+                            }
+
+                            
+                                variantHeader.textContent = '';
+                     
+
+                        }
+                    } else if (variantNumber == 2) {
+                        let variant2Div = document.querySelector('.variant-2');
+                        if (variant2Div) {
+                            variant2Div.remove(); // Remove variant-2 only
+                            // Also remove corresponding row from the table
+                            let rowToRemove = Array.from(tableBody.rows).find(row => row.querySelector('span.variant-2-name'));
+                            if (rowToRemove) {
+                                rowToRemove.remove();
+                            }
+                        }
+                    }
+        
+                    // Recalculate the span value after the removal process
+                    let variant1Exists = document.querySelector('div.variant-1') !== null;
+                    let variant2Exists = document.querySelector('div.variant-2') !== null;
+                    let newSpanValue = (variant1Exists ? 1 : 0) + (variant2Exists ? 1 : 0);
+        
+                    // Update the span only after all operations
+                    span.textContent = newSpanValue;
+                });
+            });
+            */
+
+
+
+        });
+        
+
+
+        function attachAddOptionListener(addButton) {
+            addButton.addEventListener('click', function() {
+                let variantNumber = this.getAttribute('data-variant');
+                let optionsDiv = this.parentNode; // The options container
+                let optionCount = optionsDiv.querySelectorAll('input[type="text"]').length; // Current option count
+                let newOptionIndex = optionCount + 1; // New index for the option
+        
+                // Create new input box
+                let newInput = document.createElement('input');
+                newInput.type = 'text';
+                newInput.name = `variant-${variantNumber}-option-${newOptionIndex}`;
+                newInput.placeholder = "Please type";
+        
+                // Insert new input box before the Add Option button
+                optionsDiv.insertBefore(newInput, this);
+        
+                // Show the Remove Option button if more than one option exists
+                if (newOptionIndex > 1) {
+                    optionsDiv.querySelector('.remove-option').style.display = 'inline-block';
+                }
+        
+                // Insert new row in the table for the added option
+                let table = document.querySelector('.dynamic_form table');
+                let tableBody = table.querySelector('tbody'); 
+
+        
+                // Create a new row for the added option
+                let newRow = document.createElement('tr');
+
+                if (variantNumber == 1){
+                    newRow.innerHTML = `
+                        <td rowspan="1" class="name-variant-${variantNumber}-option-${newOptionIndex}"></td>
+                        <td><input type="text" name="price-variant-${variantNumber}-option-${newOptionIndex}"></td>
+                        <td><input type="text" name="stock-variant-${variantNumber}-option-${newOptionIndex}"></td>
+                        <td><input type="text" name="sku-variant-${variantNumber}-option-${newOptionIndex}"></td>
+                    `;
+                }
+                else{
+                    newRow.innerHTML = `
+                        <td class="name-variant-${variantNumber}-option-${newOptionIndex}"></td>
+                        <td><input type="text" name="price-variant-${variantNumber}-option-${newOptionIndex}"></td>
+                        <td><input type="text" name="stock-variant-${variantNumber}-option-${newOptionIndex}"></td>
+                        <td><input type="text" name="sku-variant-${variantNumber}-option-${newOptionIndex}"></td>
+                    `;
+                }
+
+                
+
+
+                tableBody.appendChild(newRow); // Append new row to the table
+        
+        
+
+
+                let optionInputs = optionsDiv.querySelectorAll('input[type="text"]');
+
+                optionInputs.forEach((optionInput, index) => {
+                    optionInput.addEventListener('input', function() {
+                        const variantNameOptionValue = table.querySelector(`td.name-variant-1-option-${index + 1}`);
+                        variantNameOptionValue.textContent = optionInput.value.trim() || '';
+                    });
+                });
+
+
+
+                let optionInputs2 = optionsDiv.querySelectorAll('input[type="text"]');
+
+                optionInputs2.forEach((optionInput, index) => {
+                    optionInputs2.addEventListener('input', function() {
+                        const variantNameOptionValue2 = table.querySelector(`td.name-variant-2-option-${index + 1}`);
+                        variantNameOptionValue2.textContent = optionInputs2.value.trim() || '';
+                    });
+                });
+
+            });
+        }
+        
+
+
+        
+       // Function to attach remove option listener
+        function attachRemoveOptionListener(removeButton) {
+            removeButton.addEventListener('click', function() {
+                let variantNumber = this.getAttribute('data-variant');
+                let optionsDiv = this.parentNode; // The options container
+                let optionInputs = optionsDiv.querySelectorAll('input[type="text"]'); // All option inputs
+                let optionCount = optionInputs.length; // Current option count
+
+                // Remove the last option input
+                if (optionCount > 1) {
+                    // Identify the last option's index to find the corresponding row in the table
+                    let lastOptionIndex = optionCount;
+
+                    // Remove the last input field in the options container
+                    optionInputs[lastOptionIndex - 1].remove();
+
+                    // Find and remove the corresponding row in the table
+                    let table = document.querySelector('.dynamic_form table');
+                    let tableBody = table.querySelector('tbody');
+                    let rowToRemove = tableBody.querySelector(`tr td.name-variant-${variantNumber}-option-${lastOptionIndex}`).parentElement.parentElement;
+
+                    if (rowToRemove) {
+                        rowToRemove.remove();
+                    }
+
+                    // Hide the Remove Option button if only one option remains
+                    if (optionCount - 1 === 1) {
+                        this.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+         
+
+        document.getElementById("reset-variation").addEventListener("click", function() {
+            // Clear the table body
+            let tableBody = document.querySelector('.dynamic_form table tbody');
+            tableBody.innerHTML = "";
+        
+            // Blank the inner HTML of <th class="variant-1">
+            let variant1Header = document.querySelector('th.variant-1');
+            if (variant1Header) {
+                variant1Header.innerHTML = "";
+            }
+
+            // Remove <th class="variant-2"> if it exists
+            let variant2Header = document.querySelector('th.variant-2');
+            if (variant2Header) {
+                variant2Header.remove();
+            }
+
+        
+            // Optionally remove variant divs
+            let variant1Div = document.querySelector('.variant-1');
+            let variant2Div = document.querySelector('.variant-2');
+            if (variant1Div) variant1Div.remove();
+            if (variant2Div) variant2Div.remove();
+        
+            // Reset the span value in #add-variation button to 0
+            let addVariationButton = document.getElementById("add-variation");
+            let span = addVariationButton.querySelector("span");
+            span.textContent = "0";
+        
+            // Hide the reset button itself
+            this.style.display = "none";
+        });
+        
+        
+        
+        
+    /*
+        DYNAMIC ATTRIBUTE ======================================================================================
+    */
+        
+        
 
 
 })
