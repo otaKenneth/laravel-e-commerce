@@ -437,10 +437,9 @@ class ProductsController extends Controller
             $attributes_variants = $attributes->pluck('variant.name')->toArray();
             $attributes_values = $attributes->pluck('variant.value');
             $attributes_matrix = collect($attributes_values[0])->crossJoin($attributes_values[1]);
-            // dd($attributes_matrix);
-
-            foreach ($attributes_variants as $attrs_variant_value) {
-                if ($product->variants()->whereNot('variant_name', $attrs_variant_value)->count() == 0) {
+            
+            if ($product->variants()->whereIn('variant_name', $attributes_variants)->count() == 0) {
+                foreach ($attributes_variants as $attrs_variant_value) {
                     $product->variants()->create([
                         'variant_name' => $attrs_variant_value
                     ]);
@@ -454,7 +453,7 @@ class ProductsController extends Controller
                     ->where('size', $attrs_matrix_value['1'])
                     ->count();
                 if ($is_unique > 0) {
-                    return redirect()->back()->with('error_message', 'This attribute already exists!');
+                    continue;
                 }
                 
                 $product->attributes()->create([
