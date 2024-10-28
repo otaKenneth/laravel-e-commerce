@@ -171,7 +171,7 @@
                                                     <input type="text" name="sku[]" value="{{ $attribute['sku'] }}" placeholder="SKU" style="width:150px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="price[]" value="{{ $attribute['price'] }}" required style="width: 130px"> {{-- !! Note the "name" HTML attribute SQUARE BRACKETS [] !! --}}
+                                                    <input type="number" name="price[]" step="0.01" value="{{ $attribute['price'] }}" required style="width: 130px"> {{-- !! Note the "name" HTML attribute SQUARE BRACKETS [] !! --}}
                                                 </td>
                                                 <td>
                                                     <input type="number" name="stock[]" value="{{ $attribute['stock'] }}" required style="width: 60px"> {{-- !! Note the "name" HTML attribute SQUARE BRACKETS [] !! --}}
