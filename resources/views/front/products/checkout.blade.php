@@ -138,22 +138,11 @@
                                     <div class="elementor-widget-container">
                                         <div class="payment-gateway">
                                             <input
-                                                checked
-                                                type="radio"
-                                                id="COD"
-                                                name="payment_gateway"
-                                                value="COD"
-                                            >
-                                            <label for="COD" style="cursor:pointer;">
-                                                <b>COD</b>
-                                            </label>
-                                        </div>
-                                        <div class="payment-gateway">
-                                            <input
                                                 type="radio"
                                                 id="paymongo"
                                                 name="payment_gateway"
                                                 value="paymongo"
+                                                selected
                                             >
                                             <label for="paymongo" style="cursor:pointer;">
                                                 <b>Secure Payment via PayMongo</b>
