@@ -10,6 +10,9 @@
                 <div class="col-md-12 grid-margin">
                     <div class="row">
                         <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                            <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                                <span class="icon-menu"></span>
+                            </button>
                             <h4 class="card-title">Attributes</h4> {{-- meaning Product attributes --}}
                         </div>
                         <div class="col-12 col-xl-4">
@@ -113,18 +116,20 @@
                                 {{-- Products attributes add//remove input fields dynamically using jQuery --}}
                                 <div class="form-group">
                                     <div class="field_wrapper">
-                                        <div class="variant-container">
-                                            <input type="text" class="input-variant-name" name="attribute[0][variant][name]"  placeholder="Color" value="Color"  style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
-                                            <div class="variant-attributes-container" data-variant_key="0" style="margin-left: 1.5rem">
+                                        <div class="variant-container dynamic_variant card">
+                                            <h4 class="card-title">Variant Name 1</h4>
+                                            <input type="text" class="input-variant-name" name="attribute[0][variant][name]"  placeholder="Color" value="Color" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
+                                            <div class="variant-attributes-container" data-variant_key="0">
                                                 <div class="variant-attributes-container-input"></div>
-                                                <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">Add Variant Attribute</a> {{-- Add another 4 input fields like the former --}}
+                                                <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">+ VARIANT OPTION</a> {{-- Add another 4 input fields like the former --}}
                                             </div>
                                         </div>
-                                        <div class="variant-container">
-                                            <input type="text" class="input-variant-name" name="attribute[1][variant][name]"  placeholder="Size" value="Size" style="width:100px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
-                                            <div class="variant-attributes-container" data-variant_key="1" style="margin-left: 1.5rem">
+                                        <div class="variant-container dynamic_variant card">
+                                            <h4 class="card-title">Variant Name 2</h4>
+                                            <input type="text" class="input-variant-name" name="attribute[1][variant][name]"  placeholder="Size" value="Size" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
+                                            <div class="variant-attributes-container" data-variant_key="1">
                                                 <div class="variant-attributes-container-input"></div>
-                                                <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">Add Variant Attribute</a> {{-- Add another 4 input fields like the former --}}
+                                                <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">+ VARIANT OPTION</a> {{-- Add another 4 input fields like the former --}}
                                             </div>
                                         </div>
                                     </div>
