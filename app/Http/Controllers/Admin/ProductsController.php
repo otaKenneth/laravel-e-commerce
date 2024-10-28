@@ -415,10 +415,16 @@ class ProductsController extends Controller
         Session::put('page', 'products');
 
         if ($request->isMethod('post')) {
-            // dd($request->attribute);
             $this->validate($request, [
-                'attribute.*.color' => 'required|string',
-                'attribute.*.size' => 'required|string'
+                'attribute' => 'required|array',
+                'attribute.*.variant.name' => 'required|string',
+                'attribute.*.variant.value' => 'required|array',
+                'attribute.*.variant.value.*' => 'required|string'
+            ], [
+                'attribute.required' => 'Product Attribute is required',
+                'attribute.*.variant.name.required' => 'Variant Name is required',
+                'attribute.*.variant.value.required' => 'Variant Attribute is required.',
+                'attribute.*.variant.value.*.required' => 'Variant Attribute is required.'
             ]);
     
             $data = $request->all();
@@ -426,21 +432,34 @@ class ProductsController extends Controller
             if (!isset($data['attribute'])) {
                 return back()->with('error', 'No attributes provided');
             }
+
+            $attributes = collect($data['attribute']);
+            $attributes_variants = $attributes->pluck('variant.name')->toArray();
+            $attributes_values = $attributes->pluck('variant.value');
+            $attributes_matrix = collect($attributes_values[0])->crossJoin($attributes_values[1]);
+            
+            if ($product->variants()->whereIn('variant_name', $attributes_variants)->count() == 0) {
+                foreach ($attributes_variants as $attrs_variant_value) {
+                    $product->variants()->create([
+                        'variant_name' => $attrs_variant_value
+                    ]);
+                }
+            }
     
-            foreach ($data['attribute'] as $key => $attributes) {
+            foreach ($attributes_matrix as $key => $attrs_matrix_value) {
     
                 $is_unique = $product->attributes()
-                    ->where('color', $attributes['color'])
-                    ->where('size', $attributes['size'])
+                    ->where('color', $attrs_matrix_value['0'])
+                    ->where('size', $attrs_matrix_value['1'])
                     ->count();
                 if ($is_unique > 0) {
-                    return redirect()->back()->with('error_message', 'This attribute already exists!');
+                    continue;
                 }
                 
                 $product->attributes()->create([
                     'sku' => \App\Models\Product::generateSku($product),
-                    'color' => Str::title($attributes['color']),
-                    'size' => $attributes['size'],
+                    'color' => Str::title($attrs_matrix_value['0']),
+                    'size' => $attrs_matrix_value['1'],
                     'price' => 0.00,
                     'stock' => 0,
                     'status' => 1,
