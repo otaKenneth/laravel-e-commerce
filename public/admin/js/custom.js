@@ -501,6 +501,21 @@ $(document).ready(function() {
             </svg>
         </a>
     </div>`) 
+
+    $('#add-variant').click((ev) => {
+        let wrapper = $(ev.target).closest('.field_wrapper')
+        let clone = wrapper.find('.variant-container').clone()
+        clone.find('.card-title').text('Variant Name 2')
+        clone.find('.input-variant-name').attr('name','attribute[1][variant][name]')
+        clone.addClass('clone')
+        clone.prepend(`<button id="remove-variant" type="button">X Variant</button>`)
+        wrapper.append(clone)
+        
+        $('#remove-variant').click((ev) => {
+            $(ev.target).closest('.variant-container.clone').remove()
+        })
+    })
+
     
     // Once add button is clicked
     $(addButton).click(function(){
