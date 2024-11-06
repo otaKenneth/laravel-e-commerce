@@ -508,7 +508,7 @@ $(document).ready(function() {
         clone.find('.card-title').text('Variant Name 2')
         clone.find('.input-variant-name').attr('name','attribute[1][variant][name]')
         clone.addClass('clone')
-        clone.prepend(`<button id="remove-variant" type="button">X Variant</button>`)
+        clone.append(`<button id="remove-variant" type="button">DELETE THIS VARIANT</button>`)
         wrapper.append(clone)
         
         $('#remove-variant').click((ev) => {
