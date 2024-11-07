@@ -121,3 +121,59 @@
 .variant-attributes-container-input svg path{
     fill: #f33939;
 }
+
+#add-variant{
+    width: fit-content;
+    background: #617a61;
+    color: white !important;
+    padding: 6px 20px;
+    display: block;
+    border-radius: 10px;
+    margin-top: 10px;
+    box-shadow: 0 0 0 black;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 30px;
+    margin-bottom: 60px;
+}
+.dynamic_variant {
+    background: white !important;
+    border: 1.5px dashed black !important;
+}
+#remove-variant{
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    text-align: right;
+    background: #f33939;
+    color: white;
+    border-radius: 10px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: 0;
+    padding: 10px 50px;
+}
+#remove-variant:hover{
+    background: #bf0000;
+
+}
+
+@media (max-width: 749px){
+    #remove-variant{
+        position: relative;
+        bottom: 0;
+        right: 0;
+        margin-top: 10px;
+        margin-right: auto;
+        margin-left: auto;
+        padding: 10px;
+        width: 100%;
+        text-align: center;
+    }
+}

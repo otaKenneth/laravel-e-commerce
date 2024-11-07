@@ -501,13 +501,29 @@ $(document).ready(function() {
             </svg>
         </a>
     </div>`) 
+
+    $('#add-variant').click((ev) => {
+        let wrapper = $(ev.target).closest('.field_wrapper')
+        let clone = wrapper.find('.variant-container').clone()
+        clone.find('.card-title').text('Variant Name 2')
+        clone.find('.input-variant-name').attr('name','attribute[1][variant][name]')
+        clone.find('.input-variant-name').val('')
+        clone.addClass('clone')
+        clone.append(`<button id="remove-variant" type="button">DELETE THIS VARIANT</button>`)
+        wrapper.append(clone)
+        
+        $('#remove-variant').click((ev) => {
+            $(ev.target).closest('.variant-container.clone').remove()
+        })
+    })
+
     
     // Once add button is clicked
     $(addButton).click(function(){
         wrapper = $(this).closest('.variant-attributes-container').find('.variant-attributes-container-input')
         let variant_key = wrapper.parent().data('variant_key')
         let child_cnt = wrapper.children().length
-        console.log(wrapper, variant_key, child_cnt);
+        
         let va_placeholder = $(this).parent().parent().find('.input-variant-name').val()
         // $(wrapper).closest('variant-container').find('.input-variant-name').val()
         // Check maximum number of input fields
