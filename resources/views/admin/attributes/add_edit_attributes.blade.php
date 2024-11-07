@@ -162,7 +162,9 @@
                                             <input style="display: none" type="text" name="attributeId[]" value="{{ $attribute['id'] }}"> {{-- A hidden input field --}}
                                             <tr>
                                                 <td>{{ $attribute['color'] }}</td>
+                                                @if ($attribute['size'] !== '')
                                                 <td>{{ $attribute['size'] }}</td>
+                                                @endif
                                                 <td>
                                                     <input type="text" name="sku[]" value="{{ $attribute['sku'] }}" placeholder="SKU" style="width:150px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
                                                 </td>

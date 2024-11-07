@@ -436,7 +436,10 @@ class ProductsController extends Controller
             $attributes = collect($data['attribute']);
             $attributes_variants = $attributes->pluck('variant.name')->toArray();
             $attributes_values = $attributes->pluck('variant.value');
-            $attributes_matrix = collect($attributes_values[0])->crossJoin($attributes_values[1]);
+            if (!isset($attributes_values[1])) {
+                $attributes_values[1] = [''];
+                $attributes_matrix = collect($attributes_values[0])->crossJoin($attributes_values[1]);
+            }
             
             if ($product->variants()->whereIn('variant_name', $attributes_variants)->count() == 0) {
                 foreach ($attributes_variants as $attrs_variant_value) {
@@ -460,7 +463,7 @@ class ProductsController extends Controller
                     'sku' => \App\Models\Product::generateSku($product),
                     'color' => Str::title($attrs_matrix_value['0']),
                     'size' => $attrs_matrix_value['1'],
-                    'price' => 0.00,
+                    'price' => floatval($product->product_price),
                     'stock' => 0,
                     'status' => 1,
                 ]);
