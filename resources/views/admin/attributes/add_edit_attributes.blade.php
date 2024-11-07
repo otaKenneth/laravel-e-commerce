@@ -114,24 +114,20 @@
 
                                 {{-- Add Remove Input Fields Dynamically using jQuery: https://www.codexworld.com/add-remove-input-fields-dynamically-using-jquery/ --}} 
                                 {{-- Products attributes add//remove input fields dynamically using jQuery --}}
+                                @php
+                                $variants_cnt = count($product['variants']);
+                                @endphp
                                 <div class="form-group">
                                     <div class="field_wrapper">
                                         <div class="variant-container dynamic_variant card">
                                             <h4 class="card-title">Variant Name 1</h4>
-                                            <input type="text" class="input-variant-name" name="attribute[0][variant][name]"  placeholder="Color" value="Color" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
+                                            <input type="text" class="input-variant-name" name="attribute[0][variant][name]"  placeholder="Color" value="{{ $variants_cnt > 0 ? $product['variants'][0]['variant_name']:'' }}" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
                                             <div class="variant-attributes-container" data-variant_key="0">
                                                 <div class="variant-attributes-container-input"></div>
-                                                <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">+ VARIANT OPTION</a> {{-- Add another 4 input fields like the former --}}
+                                                <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">+ OPTION</a> {{-- Add another 4 input fields like the former --}}
                                             </div>
                                         </div>
-                                        <div class="variant-container dynamic_variant card">
-                                            <h4 class="card-title">Variant Name 2</h4>
-                                            <input type="text" class="input-variant-name" name="attribute[1][variant][name]"  placeholder="Size" value="Size" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
-                                            <div class="variant-attributes-container" data-variant_key="1">
-                                                <div class="variant-attributes-container-input"></div>
-                                                <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">+ VARIANT OPTION</a> {{-- Add another 4 input fields like the former --}}
-                                            </div>
-                                        </div>
+                                        <button id="add-variant" type="button">ADD VARIANT</button>
                                     </div>
                                 </div>
 
@@ -166,7 +162,9 @@
                                             <input style="display: none" type="text" name="attributeId[]" value="{{ $attribute['id'] }}"> {{-- A hidden input field --}}
                                             <tr>
                                                 <td>{{ $attribute['color'] }}</td>
+                                                @if ($attribute['size'] !== '')
                                                 <td>{{ $attribute['size'] }}</td>
+                                                @endif
                                                 <td>
                                                     <input type="text" name="sku[]" value="{{ $attribute['sku'] }}" placeholder="SKU" style="width:150px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
                                                 </td>
