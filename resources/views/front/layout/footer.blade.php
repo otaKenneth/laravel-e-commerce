@@ -91,6 +91,7 @@
                             alt=""
                             srcset="{{ $getImage('front/images/banner_images/', 'Kapiton - Markus Box.png') }} 692w, {{ $getImage('front/images/banner_images/', 'Kapiton - Markus Box.png') }} 203w, {{ $getImage('front/images/banner_images/', 'Kapiton - Markus Box.png') }} 716w"
                             sizes="(max-width: 692px) 100vw, 692px"
+                            style=" -webkit-filter: drop-shadow(5px 5px 50px #0000003d);filter: drop-shadow(5px 5px 50px #0000003d);"
                         >
                     </div>
                 </div>
