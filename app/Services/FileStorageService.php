@@ -48,7 +48,7 @@ class FileStorageService
     {
         $file = Image::make($file);
         if ($size) {
-            $file = $file->resize($size['width'], $size['height']);
+            $file = $file->resize($size['width'], $size['height'])->encode('jpg', 75);
         }
 
         return $file->save($path);
@@ -86,7 +86,7 @@ class FileStorageService
             if ($size) {
                 $file = $file->resize($size['width'], $size['height']);
             }
-            $file_content = $file->encode()->__tostring();
+            $file_content = $file->encode('jpg', 75)->__tostring();
             $success = $bucket->upload($file_content, [
                 'name' => $path
             ]);
