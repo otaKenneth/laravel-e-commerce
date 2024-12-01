@@ -29,34 +29,39 @@ class ProductsController extends Controller
         $type = $request->type;
         $name = $request->name;
         $pageTitle = $name;
-        switch ($type) {
-            case 'collection':
-                $result = $this->getCollectionBySection($name, $request->all());
-                break;
-            case 'category':
-                $result = $this->getCollectionByCategory($name, $request->all());
-                break;
-            case 'vendor':
-                $vendor = Vendor::find($name);
-                $pageTitle = "{$vendor->vendorbusinessdetails->shop_name} Shop";
-                $result = $this->vendorListing($vendor, $request->all());
-                break;
-            case 'search':
-                $result = $this->filter($request->all());
-                break;
-            
-            default:
-                # code...
-                break;
+
+        try {
+            switch ($type) {
+                case 'collection':
+                    $result = $this->getCollectionBySection($name, $request->all());
+                    break;
+                case 'category':
+                    $result = $this->getCollectionByCategory($name, $request->all());
+                    break;
+                case 'vendor':
+                    $vendor = Vendor::find($name);
+                    $pageTitle = "{$vendor->vendorbusinessdetails->shop_name} Shop";
+                    $result = $this->vendorListing($vendor, $request->all());
+                    break;
+                case 'search':
+                    $result = $this->filter($request->all());
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+    
+            // collection, filters, categoryDetails, meta_title, meta_description, meta_keywords
+            if (is_array($result)) extract($result);
+            else return redirect('/products/collection/all');
+    
+            $collection = $collection->paginate(12);
+            // dd($filters);
+            return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords'));
+        } catch (\Exception $e) {
+            return redirect('/products/collection/all');
         }
-
-        // collection, filters, categoryDetails, meta_title, meta_description, meta_keywords
-        if (is_array($result)) extract($result);
-        else return redirect('/products/collection/all');
-
-        $collection = $collection->paginate(12);
-        // dd($filters);
-        return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords'));
     }
 
     public function filter($data) {
