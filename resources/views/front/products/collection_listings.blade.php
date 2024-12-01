@@ -61,6 +61,9 @@
                         <div class="elementor-widget-container">
                             <h6 style="margin-bottom: 4px; font-size: 12px;">Sort by:</h6>
                             <form id="form-collection-sortby" method="get">
+                                @isset($_GET['search'])
+                                <input type="hidden" name="search" value="{{ $_GET['search'] }}">
+                                @endisset
                                 <select id="sort_by" name="sortby">
                                     <option value="date-1">Date, new to old</option>
                                     <option value="date-2">Date, old to new</option>
