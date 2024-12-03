@@ -79,21 +79,23 @@ class Product extends Model
         $productDetails = \App\Models\Product::select('product_price', 'product_discount', 'category_id')->where('id', $product_id)->first();
         $productDetails = json_decode(json_encode($productDetails), true); // convert the object to an array    
 
-        // Get the product category discount `category_discount` from `categories` table using its `category_id` in `products` table
-        $categoryDetails = \App\Models\Category::select('category_discount')->where('id', $productDetails['category_id'])->first();
-        $categoryDetails = json_decode(json_encode($categoryDetails), true); // convert the object to an array    
-
-        
-        if ($productDetails['product_discount'] > 0) { // if there's a 'product_discount' (in `products` table) (i.e. discount is not zero 0)
-            // if there's a PRODUCT discount on the product itself
-            $discounted_price = $productDetails['product_price'] - ($productDetails['product_price'] * $productDetails['product_discount'] / 100);
-        } else if ($categoryDetails['category_discount'] > 0) { // if there's a `category_discount` (in `categories` table) (i.e. discount is not zero 0) (if there's a discount on the whole category of that product)
-            // if there's NO a PRODUCT discount, but there's a CATEGORY discount
-            $discounted_price = $productDetails['product_price'] - ($productDetails['product_price'] * $categoryDetails['category_discount'] / 100);
-        } else { // there's no discount on neither `product_discount` (in `products` table) nor `category_discount` (in `categories` table)
-            $discounted_price = 0;
+        $discounted_price = 0;
+        if (isset($productDetails['category_id'])) {
+            // Get the product category discount `category_discount` from `categories` table using its `category_id` in `products` table
+            $categoryDetails = \App\Models\Category::select('category_discount')->where('id', $productDetails['category_id'])->first();
+            $categoryDetails = json_decode(json_encode($categoryDetails), true); // convert the object to an array    
+    
+            
+            if ($productDetails['product_discount'] > 0) { // if there's a 'product_discount' (in `products` table) (i.e. discount is not zero 0)
+                // if there's a PRODUCT discount on the product itself
+                $discounted_price = $productDetails['product_price'] - ($productDetails['product_price'] * $productDetails['product_discount'] / 100);
+            } else if ($categoryDetails['category_discount'] > 0) { // if there's a `category_discount` (in `categories` table) (i.e. discount is not zero 0) (if there's a discount on the whole category of that product)
+                // if there's NO a PRODUCT discount, but there's a CATEGORY discount
+                $discounted_price = $productDetails['product_price'] - ($productDetails['product_price'] * $categoryDetails['category_discount'] / 100);
+            } else { // there's no discount on neither `product_discount` (in `products` table) nor `category_discount` (in `categories` table)
+                $discounted_price = 0;
+            }
         }
-
 
         return number_format($discounted_price, 2);
     }
