@@ -41,7 +41,7 @@ class VendorController extends Controller
                 'firstname' => 'required',
                 'lastname' => 'required',
                 'email' => 'required|email|unique:admins|unique:vendors',
-                'mobile' => 'required|min:10|numeric|unique:admins|unique:vendors',
+                'mobile' => 'required|min:10|numeric',
                 // 'personal.address' => 'required',
                 // 'personal.city' => 'required',
                 // 'personal.state' => 'required',
