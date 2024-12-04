@@ -153,7 +153,7 @@
                                                         required="required"
                                                         aria-required="true"
                                                     >
-                                                    <label for="form-field-field_e55c601-0">Accept Our Terms and Conditions</label>
+                                                    <label for="form-field-field_e55c601-0">Accept Our <a targe="_blank" style="color: #121212 !important; text-decoration: underline;" href="{{ url('terms-and-conditions') }}">Terms and Conditions</a></label>
                                                 </span>
                                             </div>
                                         </div>
