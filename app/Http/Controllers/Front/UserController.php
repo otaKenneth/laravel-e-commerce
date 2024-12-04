@@ -167,7 +167,7 @@ class UserController extends Controller
                     // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request
                     return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
                         'type'    => 'incorrect',
-                        'message' => 'Incorrect Email or Password! Wrong Credentials!'
+                        'message' => 'Incorrect Email or Password. Please try again.'
                     ]);
                 }
 

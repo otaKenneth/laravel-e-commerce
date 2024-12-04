@@ -330,8 +330,14 @@ $(document).ready(function() {
                     // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'    
                     $('.loader').hide();
 
-                    $('#register-success').attr('style', 'color: green'); // I already did this in the HTML page in the <p> tags in the HTML in front/users/login_register.blade.php (    <p id="login-name" style="color: red"></p>    )    // This is the same as:    $('#login-' + i).css('color', 'green');    // Change the CSS color of the <p> tags
+                    $('#register-success').attr('style', 'color: green; display: flex'); // I already did this in the HTML page in the <p> tags in the HTML in front/users/login_register.blade.php (    <p id="login-name" style="color: red"></p>    )    // This is the same as:    $('#login-' + i).css('color', 'green');    // Change the CSS color of the <p> tags
                     $('#register-success').html(resp.message); // replace the <p> tags that we created inside the user registration <form> in front/users/login_register.blade.php depending on x in their 'id' HTML attributes 'login-x' (e.g. login-mobile, login-email, ...)
+
+                    setTimeout(() => {
+                        $('#register-success').css({
+                            display: 'none'
+                        });
+                    }, 3000)
                 }
             },
             error  : function() { // if the AJAX request is unsuccessful
@@ -520,9 +526,7 @@ $(document).ready(function() {
                         $('#account-success').css({
                             'display': 'none'
                         });
-                        setTimeout(function() {
-                            windows.location.reload();
-                        }, 500);
+                        $("#edit_info").click()
                     }, 3000);
                 }
             },
@@ -554,8 +558,7 @@ $(document).ready(function() {
             data   : formdata, // Sending name/value pairs to server with the AJAX request (AJAX call)
             success: function(resp) { // if the AJAX request is successful
 
-
-
+                document.getElementById('passwordForm').reset()
                 // Showing Validation Errors in the view (from the backend/server response of our AJAX request):
                 if (resp.type == 'error') { // if there're Validation Errors (login fails), show the Validation Error Messages (each of them under its respective <input> field)    // 'type' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the userAccount() method in Front/UserController.php
                     // Hide our Preloader/Loader/Loading Page/Preloading Screen when there's an error    
@@ -857,6 +860,7 @@ $(document).ready(function() {
         event.preventDefault(); 
     
         // Toggle the class "edit_active" on ".customer_information"
+        let profileInfoState = $(".customer_information").hasClass('edit_active');
         $(".customer_information").toggleClass("edit_active");
     
         // Find ".elementor-button-text" inside "#edit_info"
@@ -867,6 +871,20 @@ $(document).ready(function() {
             buttonText.text("Cancel");
         } else {
             buttonText.text("Edit information");
+        }
+
+        if (!profileInfoState) {
+            let userStateFieldContainer = $('#accountForm #user-state').parent().parent().parent().parent()
+            
+            userStateFieldContainer.css({
+                backgroundColor: '#e8392c'
+            })
+    
+            setTimeout(() => {
+                userStateFieldContainer.css({
+                    backgroundColor: '#FFFFFF'
+                })
+            }, 800)
         }
     });
 
