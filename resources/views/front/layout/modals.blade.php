@@ -218,6 +218,21 @@
 </div>
 <!-- Quick-view-Modal /- -->
 
+<div id="success-modal" class="modal_added_to_cart modal_success_container modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 18vw;">
+        <div class="modal-content bg-success">
+            <div class="modal-header">
+            <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+            <dotlottie-player src="https://lottie.host/7f1632d0-2129-4c9e-9e5e-e9f3e410adc7/HMZoURsO4Z.lottie" background="transparent" speed="1" style="width: 170px; height: 170px" loop autoplay></dotlottie-player>
+                <h5 class="modal-title" id="successModalLabel">ITEM ADDED TO YOUR CART</h5>
+            </div>
+            <div class="modal-body"><p class="message"></p></div>
+        </div>
+    </div>
+</div>
+
+<!--
 <div id="success-modal" class="modal_success_container modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document" style="width: 18vw;">
@@ -229,6 +244,7 @@
         </div>
     </div>
 </div>
+-->
 
 <div id="error-modal" class="modal_error_container modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
     aria-hidden="true">

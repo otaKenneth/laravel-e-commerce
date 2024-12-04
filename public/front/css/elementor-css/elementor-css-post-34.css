@@ -192,3 +192,36 @@
 	}
 }
 /*SUCCESS ADD TO CART TOAST LAYOUT*/
+
+/*ADDED TO CART NOTIF*/
+.modal_added_to_cart .modal-title
+.modal_added_to_cart .p{
+	color: #1f1f22 !important;
+}
+.modal_added_to_cart .message a{
+    display: block;
+    font-family: "Lexend", Sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    border-radius: 100px 100px 100px 100px;
+    border: none;
+    text-decoration: none !important;
+    color: white !important;
+    background: #1f1f22;
+    padding: 8px;
+    margin-top: 20px;
+}
+.modal_added_to_cart .bg-success{
+	background: #86cdbe !important;
+}
+.modal_added_to_cart .modal-dialog{
+	min-width: 420px !important;
+}
+.modal_added_to_cart .modal-header{
+    flex-direction: column !important;
+	align-items: center !important;
+}
+.modal_added_to_cart dotlottie-player{
+	margin-top: 10px;
+    margin-bottom: 10px;
+}

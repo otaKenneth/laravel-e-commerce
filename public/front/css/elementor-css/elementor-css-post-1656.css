@@ -25,7 +25,13 @@
         font-size: 32px;
         text-align: center;
     }
-    .elementor-1656 .elementor-element.elementor-element-5f0d9zz p{
+    .elementor-1656 .elementor-element.elementor-element-5f0d9zz p,
+    .elementor-1656 .elementor-element.elementor-element-5f0d9ad h2,
+    .elementor-1656 .elementor-element.elementor-element-b6714eb p,
+    .elementor-1656 .elementor-element.elementor-element-6407a17 h2,
+    .elementor-1656 .elementor-element.elementor-element-4b9ac2a p,
+    .elementor-1656 .elementor-element.elementor-element-d7a1eed h2,
+    .elementor-1656 .elementor-element.elementor-element-c35a06c p{
         text-align: center;
     }
 }
