@@ -110,17 +110,22 @@
 
 
 /* NINO FELICIANO CUSTOM CSS */
-#elementor-popup-modal-1720 .dialog-message{
+#elementor-popup-modal-1720 .dialog-message,
+#elementor-popup-modal-1731 .dialog-message,
+#elementor-popup-modal-1734 .dialog-message,
+#elementor-popup-modal-1737 .dialog-message,
+#elementor-popup-modal-1740 .dialog-message{
 	max-height: 90vh !important;
 	overflow: hidden !important;
 }
 #elementor-popup-modal-1720 #ks-about-us-management-kat,
-#elementor-popup-modal-1720 #ks-about-us-management-ejl,
-#elementor-popup-modal-1720 #ks-about-us-management-vmg,
-#elementor-popup-modal-1720 #ks-about-us-management-mfm,
-#elementor-popup-modal-1720 #ks-about-us-management-rridb{
+#elementor-popup-modal-1731 #ks-about-us-management-ejl,
+#elementor-popup-modal-1734 #ks-about-us-management-vmg,
+#elementor-popup-modal-1737 #ks-about-us-management-mfm,
+#elementor-popup-modal-1740 #ks-about-us-management-rridb{
 	max-height: 230px !important;
     overflow: hidden scroll !important;
 	scrollbar-color: #87cbb9 #5f7a61;
 	scrollbar-width: thin;
 }
+

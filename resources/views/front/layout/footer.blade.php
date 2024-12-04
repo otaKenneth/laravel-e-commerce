@@ -149,7 +149,7 @@
                             </span>
                             <br>
                             <span style="color: #ffffff;">
-                                <a style="color: #ffffff;" href="#">Careers</a>
+                                <a style="color: #ffffff;" href="{{ url('careers') }}">Careers</a>
                             </span>
                             <br>
                             <span style="color: #ffffff;">
@@ -178,11 +178,11 @@
                     <div class="elementor-widget-container">
                         <p>
                             <span style="color: #ffffff;">
-                                <a style="color: #ffffff;" href="#">FAQs</a>
+                                <a style="color: #ffffff;" href="{{ url('faq') }}">FAQs</a>
                             </span>
                             <br>
                             <span style="color: #ffffff;">
-                                <a style="color: #ffffff;" href="#">Shipping &amp; Returns</a>
+                                <a style="color: #ffffff;" href="{{ url('shipping-and-returns') }}">Shipping &amp; Returns</a>
                             </span>
                         </p>
                     </div>

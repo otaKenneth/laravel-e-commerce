@@ -30,37 +30,7 @@
         data-core-v316-plus="true"
     >
         <div class="e-con-inner">
-            <div
-                class="elementor-element elementor-element-1740bb2 elementor-widget elementor-widget-heading"
-                data-id="1740bb2"
-                data-element_type="widget"
-                data-widget_type="heading.default"
-            >
-                <div class="elementor-widget-container">
-                    <h5 class="elementor-heading-title elementor-size-default">ABOUT US</h5>
-                </div>
-            </div>
-            <div
-                class="elementor-element elementor-element-2f98377 elementor-view-default elementor-widget elementor-widget-icon"
-                data-id="2f98377"
-                data-element_type="widget"
-                data-widget_type="icon.default"
-            >
-                <div class="elementor-widget-container">
-                    <div class="elementor-icon-wrapper">
-                        <div class="elementor-icon">
-                            <svg
-                                aria-hidden="true"
-                                class="e-font-icon-svg e-fas-chevron-right"
-                                viewbox="0 0 320 512"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
+         
             <div
                 class="elementor-element elementor-element-ee00d6e elementor-widget elementor-widget-heading"
                 data-id="ee00d6e"
