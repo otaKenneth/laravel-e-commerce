@@ -61,6 +61,11 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
     Route::get('become-merchant', 'VendorController@becomeMerchant')->name('front.become-merchant');
 
+    Route::get('careers', 'IndexController@careersPage')->name('front.user.careers');
+    Route::get('faq', 'IndexController@faqPage')->name('front.user.faq');
+    Route::get('shipping-and-returns', 'IndexController@shippingAndReturns')->name('front.user.shipping-and-returns');
+    
+
 
 
 

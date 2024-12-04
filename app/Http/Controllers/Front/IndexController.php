@@ -47,6 +47,17 @@ class IndexController extends Controller
         return view('front.pages.terms-and-conditions');
     }
 
+    public function careersPage() {
+        return view('front.pages.careers');
+    }
+    public function faqPage() {
+        return view('front.pages.faq');
+    }
+    public function shippingAndReturns() {
+        return view('front.pages.shipping-and-returns');
+    }
+    
+
     public function getKSContainerContent(Request $request) {
         if (isset($request->page)) {
             return PlatformContent::where('page', $request->page)->orWhere('page', '')->orWhere('page', '/')->get();
