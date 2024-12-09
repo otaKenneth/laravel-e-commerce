@@ -115,10 +115,10 @@ $(document).ready(function() {
                 if (resp.status == false) { // if    'status' => 'false'    is sent from as a response from the backend, show the message    // 'status' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
                     alert(resp.message);
                 } else {
-                    $('#success-modal').modal('toggle');
-                    $("#success-modal .modal-body .message").html(resp.message);
+                    $('#success-modal.modal_added_to_cart').modal('toggle');
+                    $("#success-modal.modal_added_to_cart .modal-body .message").html(resp.message);
                     setTimeout(() => {
-                        $('#success-modal').modal('toggle');
+                        $('#success-modal.modal_added_to_cart').modal('toggle');
                     }, 2500);
                 }
 
@@ -330,14 +330,13 @@ $(document).ready(function() {
                     // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'    
                     $('.loader').hide();
 
-                    $('#register-success').attr('style', 'color: green; display: flex'); // I already did this in the HTML page in the <p> tags in the HTML in front/users/login_register.blade.php (    <p id="login-name" style="color: red"></p>    )    // This is the same as:    $('#login-' + i).css('color', 'green');    // Change the CSS color of the <p> tags
-                    $('#register-success').html(resp.message); // replace the <p> tags that we created inside the user registration <form> in front/users/login_register.blade.php depending on x in their 'id' HTML attributes 'login-x' (e.g. login-mobile, login-email, ...)
-
+                    $('#e-success-modal').modal('toggle');
+                    $("#e-success-modal .modal-body .message").text(resp.message);
                     setTimeout(() => {
-                        $('#register-success').css({
-                            display: 'none'
-                        });
-                    }, 3000)
+                        $('#e-success-modal').modal('toggle');
+                        document.getElementById('registerForm').reset()
+                        window.location.href = '';
+                    }, 3500);
                 }
             },
             error  : function() { // if the AJAX request is unsuccessful
@@ -455,10 +454,10 @@ $(document).ready(function() {
                     // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'    
                     $('.loader').hide();
 
-                    $('#success-modal').modal('toggle');
-                    $("#success-modal .modal-body .message").text(resp.message);
+                    $('#e-success-modal').modal('toggle');
+                    $("#e-success-modal .modal-body .message").text(resp.message);
                     setTimeout(() => {
-                        $('#success-modal').modal('toggle');
+                        $('#e-success-modal').modal('toggle');
                     }, 2500);
                 }
             },
@@ -933,10 +932,10 @@ $(document).ready(function() {
             success: function (resp) {
                 $('.popup_review_order.elementor-491 .close_image_review_popup').click();
                 if (resp && resp.success) {
-                    $('#success-modal').modal('toggle');
-                    $("#success-modal .modal-body .message").text(resp.message);
+                    $('#e-success-modal').modal('toggle');
+                    $("#e-success-modal .modal-body .message").text(resp.message);
                     setTimeout(() => {
-                        $('#success-modal').modal('toggle');
+                        $('#e-success-modal').modal('toggle');
                     }, 1500);
                 } else {
                     $('#error-modal').modal('toggle');
@@ -1141,10 +1140,10 @@ $(document).ready(function() {
             success: function (resp) {
                 $('.popup_review_order.elementor-491 .close_image_review_popup').click();
                 if (resp && resp.success) {
-                    $('#success-modal').modal('toggle');
-                    $("#success-modal .modal-body .message").text(resp.message);
+                    $('#e-success-modal').modal('toggle');
+                    $("#e-success-modal .modal-body .message").text(resp.message);
                     setTimeout(() => {
-                        $('#success-modal').modal('toggle');
+                        $('#e-success-modal').modal('toggle');
                     }, 3000);
                 } else {
                     $('#error-modal').modal('toggle');
@@ -1194,10 +1193,10 @@ $(document).ready(function() {
             },
             success: function (resp) {
                 if (resp && resp.success) {
-                    $('#success-modal').modal('toggle');
-                    $("#success-modal .modal-body .message").text(resp.message);
+                    $('#e-success-modal').modal('toggle');
+                    $("#e-success-modal .modal-body .message").text(resp.message);
                     setTimeout(() => {
-                        $('#success-modal').modal('toggle');
+                        $('#e-success-modal').modal('toggle');
                     }, 2500);
                 } else {
                     $('#error-modal').modal('toggle');
@@ -1225,10 +1224,10 @@ $(document).ready(function() {
                 type: "POST",
                 success: function (resp) {
                     if (resp && resp.success) {
-                        $('#success-modal').modal('toggle');
-                        $("#success-modal .modal-body .message").text(resp.message);
+                        $('#e-success-modal').modal('toggle');
+                        $("#e-success-modal .modal-body .message").text(resp.message);
                         setTimeout(() => {
-                            $('#success-modal').modal('toggle');
+                            $('#e-success-modal').modal('toggle');
                         }, 2500);
                     } else {
                         $('#error-modal').modal('toggle');
