@@ -19,7 +19,7 @@
 
 <dotlottie-player src="https://lottie.host/c80730db-e87e-4f4c-aa13-a7850d40f604/1geJ53SjpY.json" background="transparent" speed="1" style="width: 300px; height: 200px;" loop autoplay></dotlottie-player>
     <p>{{$productDetails['product_name']}} added to your wishlist.</p>
-    <a class="button btn" href="/wishlist">View my wishlist</a>
+    <a class="button btn" href="/user/wishlist">View my wishlist</a>
     </div>
     <a href="#" class="close_image_review_popup">X</a>
 </div>
