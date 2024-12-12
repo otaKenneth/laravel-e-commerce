@@ -736,6 +736,7 @@
                                                 max="{{ $curStock }}"
                                                 value="1"
                                             >
+                                            <span style="position: absolute; top: 31px; right: 15px;">/ {{ $curStock }}</span>
                                         </div>
 
                                         <div style="height: 0; margin-bottom: 0;" class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_bcf74c7 elementor-col-100">
