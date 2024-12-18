@@ -547,7 +547,15 @@
 .chat_vendor_btn:hover{
     cursor: pointer;
 }
-
+.stock--label{
+    display: block;
+    width: 100%;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 0.6;
+    margin-bottom: 20px;
+}
 
 @media (max-width: 767px){
     #form-productReview .alert ul{
