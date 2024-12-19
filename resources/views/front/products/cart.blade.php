@@ -45,7 +45,7 @@
                 >
                     <div class="elementor-widget-container">
                         <div class="elementor-button-wrapper">
-                            <a class="elementor-button elementor-button-link elementor-size-sm" href="{{ url('') }}">
+                            <a class="elementor-button elementor-button-link elementor-size-sm" href="{{ url('products/collection/all') }}">
                                 <span class="elementor-button-content-wrapper">
                                     <span class="elementor-button-icon elementor-align-icon-left">
                                         <svg
