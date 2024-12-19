@@ -502,12 +502,12 @@ class ProductsController extends Controller
             // dd($data);
 
             foreach ($data['attributeId'] as $key => $attribute) {
-                if (!empty($attribute)) {
-                    \App\Models\ProductsAttribute::where([
+                if (!empty($attribute) && isset($data['price'][$attribute]) && isset($data['stock'][$attribute])) {
+                    ProductsAttribute::where([
                         'id' => $data['attributeId'][$key]
                     ])->update([
-                        'price' => $data['price'][$key],
-                        'stock' => $data['stock'][$key]
+                        'price' => $data['price'][$attribute],
+                        'stock' => $data['stock'][$attribute]
                     ]);
                 }
             }
