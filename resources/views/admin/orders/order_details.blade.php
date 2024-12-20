@@ -124,7 +124,10 @@
                                     <label>₱{{ $orderDetails['coupon_amount'] }}</label>
                                 </div>                                
                             @endif
-
+                            <div class="form-group" style="height: 15px">
+                                <label style="font-weight: 550">Shipping Method: </label>
+                                <label>{{ strtoupper($orderDetails['shipping_method']) }}</label>
+                            </div>
                             <div class="form-group" style="height: 15px">
                                 <label style="font-weight: 550">Payment Method: </label>
                                 <label>{{ $orderDetails['payment_method'] }}</label>

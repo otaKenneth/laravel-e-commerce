@@ -787,7 +787,7 @@ class ProductsController extends Controller
 
         if ($request->isMethod('post')) { // if the <form> in front/products/checkout.blade.php is submitted (the HTML Form that the user submits to submit their Delivery Address and Payment Method)
             $data = $request->all();
-
+            $data['payment_gateway'] = 'COD';
             // Website Security
             // Note: We need to prevent orders (upon checkout and payment) of the 'disabled' products (`status` = 0), where the product ITSELF can be disabled in admin/products/products.blade.php (by checking the `products` database table) or a product's attribute (`stock`) can be disabled in 'admin/attributes/add_edit_attributes.blade.php' (by checking the `products_attributes` database table). We also prevent orders of the out of stock / sold-out products (by checking the `products_attributes` database table)
             foreach ($getCartItems as $item) {
@@ -854,6 +854,16 @@ class ProductsController extends Controller
                 $message = 'Please select Delivery Address!';
 
                 // return redirect()->back()->with('error_message', $message);
+                return response()->json([
+                    'success' => false,
+                    'message' => $message
+                ]);
+            }
+
+            // Shipping Method Validation
+            if (empty($data['shipping_method'])) {
+                $message = 'Please select Shipping Method!';
+
                 return response()->json([
                     'success' => false,
                     'message' => $message
@@ -951,6 +961,7 @@ class ProductsController extends Controller
             $order->coupon_code      = Session::get('couponCode');   // it was set inside applyCoupon() method
             $order->coupon_amount    = Session::get('couponAmount'); // it was set inside applyCoupon() method
             $order->order_status     = $order_status;
+            $order->shipping_method  = $data['shipping_method'];
             $order->payment_method   = $payment_method;
             $order->payment_gateway  = $data['payment_gateway'];
             $order->grand_total      = $grand_total;
