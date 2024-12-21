@@ -191,6 +191,50 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on('click', '.wishlist-item-remove', function (v) {
+        var data = {
+            product_id: $(v.currentTarget).data('product')
+        };
+
+        // wishlist/{item}
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            url    : '/user/wishlist/' + data.product_id, // check this route in web.php
+            type   : 'delete',
+            success: function(resp) {
+                $('.totalCartItems').html(resp.totalCartItems); // totalCartItems() function is in our custom Helpers/Helper.php file that we have registered in 'composer.json' file    // We created the CSS class 'totalCartItems' in front/layout/header.blade.php to use it in front/js/custom.js to update the total cart items via AJAX, because in pages that we originally use AJAX to update the cart items (such as when we delete a cart item in http://127.0.0.1:8000/cart using AJAX), the number doesn't change in the header automatically because AJAX is already used and no page reload/refresh has occurred
+
+                if (resp.status == false) { // if    'status' => 'false'    is sent from as a response from the backend, show the message    // 'status' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
+                    $('#e-error-modal').modal('toggle');
+                    $("#e-error-modal .modal-body .message").text(resp.message);
+                    setTimeout(() => {
+                        $('#e-error-modal').modal('toggle');
+                    }, 3500);
+                } else {
+                    $('#e-success-modal').modal('toggle');
+                    $("#e-success-modal .modal-body .message").text(resp.message);
+                    setTimeout(() => {
+                        $('#e-success-modal').modal('toggle');
+                    }, 3500);
+                }
+
+                // console.log(resp.view);
+                // console.log(resp.headerview);
+
+                $('#append-wishlist-items').html(resp.view); 
+                // 'view' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
+            },
+            error  : function() {
+                $('#e-error-modal').modal('toggle');
+                $("#e-error-modal .modal-body .message").text("There has been an error please contact you admin.");
+                setTimeout(() => {
+                    $('#e-error-modal').modal('toggle');
+                }, 3500);
+            }
+        });
+    })
+
     // Update Cart Item Quantity in front/products/cart_items.blade.php (which is 'include'-ed by front/products/cart.blade.php)     
     $(document).on('click', '.qty-cart', function() {
         // alert('test');
