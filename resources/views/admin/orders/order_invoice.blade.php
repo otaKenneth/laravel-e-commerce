@@ -60,6 +60,12 @@
     			</div>
     		</div>
     		<div class="row">
+            <div class="col-xs-6">
+    				<address>
+    					<strong>Shipping Method:</strong><br>
+                        {{ strtoupper($orderDetails['shipping_method']) }}
+    				</address>
+    			</div>
     			<div class="col-xs-6">
     				<address>
     					<strong>Payment Method:</strong><br>
