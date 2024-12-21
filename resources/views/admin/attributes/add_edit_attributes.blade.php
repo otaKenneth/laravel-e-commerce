@@ -124,7 +124,7 @@
                                             <input type="text" class="input-variant-name" name="attribute[0][variant][name]"  placeholder="Color" value="{{ $variants_cnt > 0 ? $product['variants'][0]['variant_name']:'' }}" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}
                                             <div class="variant-attributes-container" data-variant_key="0">
                                                 <div class="variant-attributes-container-input"></div>
-                                                <a href="javascript:void(0);" class="add_variant_attribute_button" title="Add Variant Attributes">+ OPTION</a> {{-- Add another 4 input fields like the former --}}
+                                                <button href="javascript:void(0);" type="button" class="add_variant_attribute_button" title="Add Variant Attributes">+ OPTION</button> {{-- Add another 4 input fields like the former --}}
                                             </div>
                                         </div>
                                         <button id="add-variant" type="button">ADD VARIANT</button>

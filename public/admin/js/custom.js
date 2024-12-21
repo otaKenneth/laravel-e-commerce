@@ -504,22 +504,28 @@ $(document).ready(function() {
 
     $('#add-variant').click((ev) => {
         let wrapper = $(ev.target).closest('.field_wrapper')
-        let clone = wrapper.find('.variant-container').clone()
-        clone.find('.card-title').text('Variant Name 2')
-        clone.find('.input-variant-name').attr('name','attribute[1][variant][name]')
-        clone.find('.input-variant-name').val('')
-        clone.addClass('clone')
-        clone.append(`<button id="remove-variant" type="button">DELETE THIS VARIANT</button>`)
-        wrapper.append(clone)
-        
-        $('#remove-variant').click((ev) => {
-            $(ev.target).closest('.variant-container.clone').remove()
-        })
+        if (wrapper.find('.variant-container').length < 2) {
+            let clone = wrapper.find('.variant-container').clone()
+            clone.find('.card-title').text('Variant Name 2')
+            clone.find('.input-variant-name').attr('name','attribute[1][variant][name]')
+            clone.find('.input-variant-name').val('')
+            clone.addClass('clone')
+            clone.append(`<button class="remove-variant" type="button">DELETE THIS VARIANT</button>`)
+            wrapper.append(clone)
+
+            $(ev.target).css({
+                'background-color': '#c4c4c4'
+            })
+        }
     })
 
+    // Event delegation for dynamically added remove-variant buttons
+    $(document).on('click', '.remove-variant', function (ev) {
+        $(ev.target).closest('.variant-container.clone').remove();
+    });
     
     // Once add button is clicked
-    $(addButton).click(function(){
+    $(document).on('click', '.add_variant_attribute_button', function(){
         wrapper = $(this).closest('.variant-attributes-container').find('.variant-attributes-container-input')
         let variant_key = wrapper.parent().data('variant_key')
         let child_cnt = wrapper.children().length

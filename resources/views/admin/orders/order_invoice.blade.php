@@ -27,7 +27,7 @@
     			<div class="col-xs-6">
     				<address>
     				    <strong>Billed To:</strong><br>
-    					{{ $userDetails['name'] }}<br>
+    					{{ $userDetails['first_name'] }} {{ $userDetails['last_name'] }}<br>
 
                         @if (!empty($userDetails['address']))
                             {{ $userDetails['address'] }}<br>
