@@ -1,41 +1,42 @@
-// Assuming 'data.json' is your JSON file
-const jsonFile = "/front/js/dialingcodes.json";
-var dialingcodes = [];
-
-// Fetch the JSON file
-fetch(jsonFile)
-    .then((response) => {
-        // Check if the response status is OK (200)
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        // Parse the JSON from the response
-        return response.json();
-    })
-    .then((data) => {
-        // Handle the JSON data
-        dialingcodes = data;
-    })
-    .catch((error) => {
-        // Handle errors
-        console.error("Error fetching JSON:", error);
-    });
-
 $(document).ready(function () {
-    function setMobileDialingCodes () {
-        var html_dialingcodes_options = dialingcodes.map(dc => {
-            let newOption = $("<option>", {
-                id: "mdc-"+dc.name,
-                value: dc.dial_code,
-                text: `${dc.dial_code} - ${dc.name}`,
-                class: "added-through-api",
-            });
-    
-            return newOption;
-        })
+    // Assuming 'data.json' is your JSON file
+    const jsonFile = "/front/js/dialingcodes.json";
+    let dialingcodes = [];
 
-        $('.mobile-dialing-codes[name*="mobile-dialing-code"]').append(html_dialingcodes_options);
-    }
+    // Fetch the JSON file
+    fetch(jsonFile)
+        .then((response) => {
+            // Check if the response status is OK (200)
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // Parse the JSON from the response
+            return response.json();
+        })
+        .then((data) => {
+            // Handle the JSON data
+            dialingcodes = data;
+            setMobileDialingCodes();
+        })
+        .catch((error) => {
+            // Handle errors
+            console.error("Error fetching JSON:", error);
+        });
+
+        function setMobileDialingCodes () {
+            let html_dialingcodes_options = dialingcodes.map(dc => {
+                let newOption = $("<option>", {
+                    id: "mdc-"+dc.name,
+                    value: dc.dial_code,
+                    text: `${dc.dial_code} - ${dc.name}`,
+                    class: "added-through-api",
+                });
+        
+                return newOption;
+            });
+
+            $('.mobile-dialing-codes[name*="mobile-dialing-code"]').append(html_dialingcodes_options);
+        }
 
     // Edit Delivery Addresses via AJAX (Page refresh and fill in the <input> fields with the authenticated/logged in user Delivery Addresses details from the `delivery_addresses` database table when clicking on the Edit button) in front/products/delivery_addresses.blade.php (which is 'include'-ed in front/products/checkout.blade.php) via AJAX, check front/js/custom.js
     $(document).on("click", ".editAddress", function () {
@@ -111,9 +112,8 @@ $(document).ready(function () {
 
     // Save Delivery Addresses via AJAX (save the delivery addresses of the authenticated/logged-in user in `delivery_addresses` database table when submitting the HTML Form) in front/products/delivery_addresses.blade.php (which is 'include'-ed in front/products/checkout.blade.php) via AJAX, check front/js/custom.js
     $(document).on("submit", "#form-editAddress, #form-checkoutNewDeliveryAddress", function (el) {
-        console.log(el.currentTarget);
         // var formdata = $(this).serialize(); // serialize() method comes in handy when submitting an HTML Form using an AJAX request / Ajax call, as it collects all the name/value pairs from the HTML Form input fields like: <input>, <textarea>, <select><option>, ... HTML elements of the <form> (instead of the heavy work of assigning an identifier/handle for every <input> and <textarea>, ... using an HTML 'id' or CSS 'class', and then getting the value for every one of them like this:    $('#username).val();    )    // serialize() jQuery method: https://www.w3schools.com/jquery/ajax_serialize.asp
-        var formdata = $("#form-editAddress").serialize(); // serialize() method comes in handy when submitting an HTML Form using an AJAX request / Ajax call, as it collects all the name/value pairs from the HTML Form input fields like: <input>, <textarea>, <select><option>, ... HTML elements of the <form> (instead of the heavy work of assigning an identifier/handle for every <input> and <textarea>, ... using an HTML 'id' or CSS 'class', and then getting the value for every one of them like this:    $('#username).val();    )    // serialize() jQuery method: https://www.w3schools.com/jquery/ajax_serialize.asp
+        let formdata = $(this).serialize(); // serialize() method comes in handy when submitting an HTML Form using an AJAX request / Ajax call, as it collects all the name/value pairs from the HTML Form input fields like: <input>, <textarea>, <select><option>, ... HTML elements of the <form> (instead of the heavy work of assigning an identifier/handle for every <input> and <textarea>, ... using an HTML 'id' or CSS 'class', and then getting the value for every one of them like this:    $('#username).val();    )    // serialize() jQuery method: https://www.w3schools.com/jquery/ajax_serialize.asp
 
         $.ajax({
             headers: {
@@ -156,7 +156,6 @@ $(document).ready(function () {
     });
 
     var my_form = "";
-    setMobileDialingCodes();
     var countryElement = $('#form-checkoutNewDeliveryAddress .address-field[name*="delivery_country"]');
     
     // Check if the element has a value
@@ -543,7 +542,7 @@ $(document).ready(function() {
       $('#form-checkoutNewDeliveryAddress .address-field[name*="delivery_country"]').change((el) => {
         let countryAdd = $(el.currentTarget).val();
 
-        var settingsAdd = {
+        let settingsAdd = {
             "url": 'https://countriesnow.space/api/v0.1/countries/states',
             "method": "POST",
             data: {
@@ -566,7 +565,7 @@ $(document).ready(function() {
                     return newOptionAdd;
                 });
                 
-                $('#form-editAddress .address-field[name*="delivery_state"]').append(statesAdd);
+                //$('#form-editAddress .address-field[name*="delivery_state"]').append(statesAdd);
             }
         });
     })
@@ -574,11 +573,11 @@ $(document).ready(function() {
     /**
      * On change of state get cities
      */
-    $('#form-checkoutNewDeliveryAddress .address-field[name*="deliver_state"]').change((el) => {
+    $('#form-checkoutNewDeliveryAddress .address-field[name*="delivery_state"]').change((el) => {
         let country = $('.address-field[name*="delivery_country"]').val();
         let state = $(el.currentTarget).val();
 
-        var settings = {
+        let settings = {
             "url": 'https://countriesnow.space/api/v0.1/countries/state/cities',
             "method": "POST",
             data: {

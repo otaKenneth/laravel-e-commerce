@@ -196,6 +196,8 @@
                                 <div class="elementor-widget-container">
                                     <p>Placed on
                                         <strong>{{date_format(date_create($order->created_at), 'M d, Y h:i a')}}</strong>
+                                        <br>Shipping Method
+                                        <strong>{{strtoupper($order->shipping_method)}}</strong>
                                         <br>Payment Method
                                         <strong>{{$order->payment_method}}
                                             <br>
