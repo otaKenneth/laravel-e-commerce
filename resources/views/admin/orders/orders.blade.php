@@ -28,6 +28,7 @@
                                             <th>Ordered Products</th>
                                             <th>Order Amount</th>
                                             <th>Order Status</th>
+                                            <th>Shipping Method</th>
                                             <th>Payment Method</th>
                                             <th>Actions</th>
                                         </tr>
@@ -52,6 +53,7 @@
                                                     </td>
                                                     <td>₱&nbsp;{{ number_format($order['grand_total'], 2) }}</td>
                                                     <td>{{ $order['order_status'] }}</td>
+                                                    <td>{{ strtoupper($order['shipping_method']) }}</td>
                                                     <td>{{ $order['payment_method'] }}</td>
                                                     <td>
                                                         <a title="View Order Details" href="{{ url('admin/orders/' . $order['id']) }}">

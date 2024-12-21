@@ -747,6 +747,7 @@ $(document).ready(function() {
     $('button#checkout-submit-btn').on('click', function () {
         let data = {
             'address_id': $('.checkout-form input[name^="preferred_address"]:checked').val(),
+            'shipping_method': $('.checkout-form input[name^="shipping_method"]:checked').val(),
             'payment_gateway': $('.checkout-form input[name^="payment_gateway"]:checked').val(),
             'accept': true
         };

@@ -77,6 +77,10 @@
                     @endif
 
                     <tr>
+                        <td>Shipping Method</td>
+                        <td>{{ strtoupper($orderDetails['shipping_method']) }}</td>
+                    </tr>
+                    <tr>
                         <td>Payment Method</td>
                         <td>{{ $orderDetails['payment_method'] }}</td>
                     </tr>

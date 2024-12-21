@@ -126,6 +126,48 @@
                                     data-widget_type="heading.default"
                                 >
                                     <div class="elementor-widget-container">
+                                        <h6 class="elementor-heading-title elementor-size-default">SHIPPING METHOD</h6>
+                                    </div>
+                                </div>
+                                <div
+                                    class="checkout-form elementor-element elementor-element-52dbad4 elementor-widget elementor-widget-html"
+                                    data-id="52dbad4"
+                                    data-element_type="widget"
+                                    data-widget_type="html.default"
+                                >
+                                    <div class="elementor-widget-container">
+                                        <div class="shipping-method">
+                                            <input
+                                                type="radio"
+                                                id="lalamove"
+                                                name="shipping_method"
+                                                value="lalamove"
+                                                selected
+                                            >
+                                            <label for="lalamove" style="cursor:pointer;">
+                                                <strong>Lalamove</strong>
+                                            </label>
+                                            <br/>
+                                            <input
+                                                type="radio"
+                                                id="jnt"
+                                                name="shipping_method"
+                                                value="j&t"
+                                                selected
+                                            >
+                                            <label for="jnt" style="cursor:pointer;">
+                                                <strong>J&T</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="elementor-element elementor-element-79e7f6d elementor-widget elementor-widget-heading"
+                                    data-id="79e7f6d"
+                                    data-element_type="widget"
+                                    data-widget_type="heading.default"
+                                >
+                                    <div class="elementor-widget-container">
                                         <h6 class="elementor-heading-title elementor-size-default">PAYMENT METHOD</h6>
                                     </div>
                                 </div>
