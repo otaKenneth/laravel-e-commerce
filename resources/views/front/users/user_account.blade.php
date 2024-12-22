@@ -170,7 +170,7 @@
                         >
                             <div class="elementor-widget-container">
                                 <h5 class="elementor-heading-title elementor-size-default">{{ $user->state }}</h5>
-                                <select class="text-field address-field state-edit" id="user-state" name="state" style="color: #495057">
+                                <select class="text-field address-field state-edit" id="user-state" name="state" style="color: #495057" data-state_value="{{$user->state}}">
                                     <option value="">Select State</option>
                                 </select>
                             </div>
