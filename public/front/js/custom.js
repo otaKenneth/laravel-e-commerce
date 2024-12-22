@@ -918,17 +918,8 @@ $(document).ready(function() {
         }
 
         if (!profileInfoState) {
-            let userStateFieldContainer = $('#accountForm #user-state').parent().parent().parent().parent()
-            
-            userStateFieldContainer.css({
-                backgroundColor: '#e8392c'
-            })
-    
-            setTimeout(() => {
-                userStateFieldContainer.css({
-                    backgroundColor: '#FFFFFF'
-                })
-            }, 800)
+            let state_value = $('#accountForm #user-state').data('state_value')
+            $('#accountForm #user-state').val(state_value)
         }
     });
 
