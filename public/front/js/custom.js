@@ -175,7 +175,11 @@ $(document).ready(function() {
                 if (resp.status == false) { // if    'status' => 'false'    is sent from as a response from the backend, show the message    // 'status' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
                     alert(resp.message);
                 } else {
-                    alert(resp.message);
+                    $('#success-modal.modal_added_to_cart').modal('toggle');
+                    $("#success-modal.modal_added_to_cart .modal-body .message").html(resp.message);
+                    setTimeout(() => {
+                        $('#success-modal.modal_added_to_cart').modal('toggle');
+                    }, 2500);
                 }
 
                 // console.log(resp.view);
