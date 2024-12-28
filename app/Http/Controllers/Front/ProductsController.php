@@ -315,7 +315,8 @@ class ProductsController extends Controller
             }
 
             if (!isset($data['variation'])) {
-                $prod_attribute = ProductsAttribute::where('product_id', $data['product_id'])->first();
+                $prod_attribute = ProductsAttribute::where('product_id', $data['product_id'])
+                    ->where('price', '>', '0')->first();
                 $getProductStock = $prod_attribute->stock;
                 
                 $data['color'] = $prod_attribute->color;
@@ -330,7 +331,10 @@ class ProductsController extends Controller
             }
 
             if ($getProductStock < $data['quantity']) { // if the `stock` available (in `products_attributes` table) is less than the ordered quantity by user (the quantity that the user desires)
-                return redirect()->back()->with('error_message', 'Required Quantity is not available!');
+                return response()->json([
+                    'success' => false,
+                    'message' => "Item doesn't have stock."
+                ], 400);
             }
 
 
