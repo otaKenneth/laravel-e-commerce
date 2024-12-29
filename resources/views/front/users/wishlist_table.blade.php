@@ -12,7 +12,7 @@
                     <th>PRICE</th>
                     <th class="align-right"></th>
                 </tr>
-                @foreach ($wishlist as $product)
+                @foreach ($mapped_wishlists as $product)
                 <tr>
                     <td>
                         <div class="prod-wishlist">
@@ -25,9 +25,9 @@
                             </div>
                         </div>
                     </td>
-                    <td>                 ₱{{$product['product']['product_price']}}</td>
+                    <td>                 ₱{{$product['price']}}</td>
                     <td style="text-align: right;">
-                        <button class="item-addCart button btn" data-product="{{$product['product_id']}}">Add to cart</button>
+                        <button class="item-addCart button btn" data-product="{{$product['product_id']}}" data-color="{{$product['attribute_one']}}" data-size="{{$product['attribute_two']}}">Add to cart</button>
                         <button class="wishlist-item-remove button btn button--secondary" data-product="{{$product['id']}}">remove</button>
                     </td>
                 </tr>

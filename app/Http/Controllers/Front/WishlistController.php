@@ -12,8 +12,21 @@ class WishlistController extends Controller
 {
     
     public function wishlist() {
-        $wishlist = Wishlist::where('user_id', Auth::user()->id)->with('product')->paginate(10);
-        return view('front.users.wishlist')->with(compact('wishlist'));
+        $wishlist = Wishlist::where('user_id', Auth::user()->id)
+            ->with(['product' => function ($query) {
+                $query->select('id','product_name', 'product_image', 'description', 'product_price');
+            }, 'product.attributes' => function ($query) {
+                $query->select('product_id', 'color', 'size', 'price');
+            }])
+            ->paginate(10);
+
+        $mapped_wishlists = $wishlist->map(function ($item, $key) {
+            $temp_price = $item->product->attributes->where('color', $item->attribute_one)->where('size', $item->attribute_two)->first();
+            $item->price = empty($temp_price) ? $item->product->product_price:$temp_price->price;
+            return $item;
+        });
+
+        return view('front.users.wishlist')->with(compact('mapped_wishlists'));
     }
 
     public function wishlistItemDelete(Request $request, $item) {

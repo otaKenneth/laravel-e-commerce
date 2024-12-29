@@ -16,6 +16,8 @@ return new class extends Migration
             
             $table->integer('user_id')->nullable(); // to allow user to Add to Cart WITHOUT LOGIN, then later when user logins, we'll use their `user_id`
             $table->integer('product_id');
+            $table->string('attribute_one')->nullable();
+            $table->string('attribute_two')->nullable();
             $table->timestamps();
         });
     }
