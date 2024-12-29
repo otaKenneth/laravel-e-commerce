@@ -315,8 +315,15 @@ class ProductsController extends Controller
             }
 
             if (!isset($data['variation'])) {
-                $prod_attribute = ProductsAttribute::where('product_id', $data['product_id'])
-                    ->where('price', '>', '0')->first();
+                if (isset($data['color']) && isset($data['size'])) {
+                    $prod_attribute = ProductsAttribute::where('product_id', $data['product_id'])
+                        ->where('color', '=', $data['color'])
+                        ->where('size', '=', $data['size'])
+                        ->where('price', '>', '0')->first();  
+                } else {
+                    $prod_attribute = ProductsAttribute::where('product_id', $data['product_id'])
+                        ->where('price', '>', '0')->first();
+                }
                 $getProductStock = $prod_attribute->stock;
                 
                 $data['color'] = $prod_attribute->color;
@@ -403,6 +410,7 @@ class ProductsController extends Controller
                 'success' => true,
                 'message' => 'Product has been added in Cart! <a href="/cart">View Cart</a>',
                 'view' => (String) \Illuminate\Support\Facades\View::make('front.layout.header_cart_items')->with(compact('getCartItems')),
+                'headerview' => (String) \Illuminate\Support\Facades\View::make('front.layout.header_cart_items')->with(compact('getCartItems')),
             ]);
             // return redirect()->back()->with('success_message', 'Product has been added in Cart! <a href="/cart" style="text-decoration: underline !important">View Cart</a>');
         }
@@ -1429,6 +1437,7 @@ class ProductsController extends Controller
     public function wishlistAdd(Request $request) {
         if ($request->isMethod('post')) {
             $data = $request->all();
+            \Log::info($data);
             
             $request->validate([
                 'product_id' => 'required|exists:products,id',
@@ -1440,10 +1449,19 @@ class ProductsController extends Controller
                     'product_id' => $request->product_id
                 ])->count();
 
+                $product_attribute = null;
+                if (isset($data['variation'])) {
+                    $product_attribute = ProductsAttribute::where('id', $data['variation'])
+                        ->where('product_id', $data['product_id'])->first();
+                }
+
                 if ($wishlist == 0) {
+                    \Log::info($product_attribute);
                     $wishlist = Wishlist::create([
                         'user_id' => Auth::id(),
                         'product_id' => $request->product_id,
+                        'attribute_one' => $product_attribute === null ? NULL : $product_attribute->color,
+                        'attribute_two' => $product_attribute === null ? NULL : $product_attribute->size,
                     ]);
                 }
 

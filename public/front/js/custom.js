@@ -161,6 +161,8 @@ $(document).ready(function() {
         // cart/add
         var data = {
             product_id: $(v.currentTarget).data('product'),
+            color: $(v.currentTarget).data('color'),
+            size: $(v.currentTarget).data('size'),
             quantity: 1
         };
 
