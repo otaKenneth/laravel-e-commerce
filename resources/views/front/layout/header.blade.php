@@ -100,7 +100,7 @@ $sections = \App\Models\Section::sections();
                                             tabindex="-1">HOME</a>
                                     </li>
                                     <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-39">
-                                        <a href="{{ url('collection/all') }}" class="elementor-item" tabindex="-1">PRODUCTS</a>
+                                        <a href="{{ url('products/collection/all') }}" class="elementor-item" tabindex="-1">PRODUCTS</a>
                                     </li>
                                     <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-40">
                                         <a href="{{ url('merchants') }}" class="elementor-item" tabindex="-1">MERCHANTS</a>
