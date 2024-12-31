@@ -1445,7 +1445,9 @@ class ProductsController extends Controller
             if (Auth::check()) {
                 $wishlist = Wishlist::where([
                     'user_id' => Auth::id(),
-                    'product_id' => $request->product_id
+                    'product_id' => $request->product_id,
+                    'attribute_one' => $request->color,
+                    'attribute_two' => $request->size,
                 ])->count();
 
                 $product_attribute = null;
