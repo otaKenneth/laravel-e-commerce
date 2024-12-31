@@ -1437,7 +1437,6 @@ class ProductsController extends Controller
     public function wishlistAdd(Request $request) {
         if ($request->isMethod('post')) {
             $data = $request->all();
-            \Log::info($data);
             
             $request->validate([
                 'product_id' => 'required|exists:products,id',
@@ -1456,7 +1455,6 @@ class ProductsController extends Controller
                 }
 
                 if ($wishlist == 0) {
-                    \Log::info($product_attribute);
                     $wishlist = Wishlist::create([
                         'user_id' => Auth::id(),
                         'product_id' => $request->product_id,
