@@ -35,13 +35,23 @@ class WishlistController extends Controller
             $wishlist_item->delete();
     
             $wishlist = Wishlist::where('user_id', Auth::user()->id)
-                ->with('product')
+                ->with(['product' => function ($query) {
+                    $query->select('id','product_name', 'product_image', 'description', 'product_price');
+                }, 'product.attributes' => function ($query) {
+                    $query->select('product_id', 'color', 'size', 'price');
+                }])
                 ->paginate(10);
-            
+
+            $mapped_wishlists = $wishlist->map(function ($item, $key) {
+                $temp_price = $item->product->attributes->where('color', $item->attribute_one)->where('size', $item->attribute_two)->first();
+                $item->price = empty($temp_price) ? $item->product->product_price:$temp_price->price;
+                return $item;
+            });
+
             return response()->json([
                 'message' => "Item from wishlist successfully removed.",
                 'view' => (string) \Illuminate\Support\Facades\View::make('front.users.wishlist_table')
-                    ->with(compact('wishlist'))
+                    ->with(compact('mapped_wishlists'))
             ]);
         } catch (\Exception $e) {
             return response()->json([
