@@ -438,8 +438,8 @@ class ProductsController extends Controller
             $attributes_values = $attributes->pluck('variant.value');
             if (!isset($attributes_values[1])) {
                 $attributes_values[1] = [''];
-                $attributes_matrix = collect($attributes_values[0])->crossJoin($attributes_values[1]);
             }
+            $attributes_matrix = collect($attributes_values[0])->crossJoin($attributes_values[1]);
             
             if ($product->variants()->whereIn('variant_name', $attributes_variants)->count() == 0) {
                 foreach ($attributes_variants as $attrs_variant_value) {

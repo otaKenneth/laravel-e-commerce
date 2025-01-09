@@ -510,6 +510,9 @@ $(document).ready(function() {
             clone.find('.input-variant-name').attr('name','attribute[1][variant][name]')
             clone.find('.input-variant-name').val('')
             clone.addClass('clone')
+            var variant_key = clone.find('.variant-attributes-container').data('variant_key')
+            clone.find('.variant-attributes-container').data('variant_key', variant_key+1)
+            clone.find('.variant-attributes-container-input').empty()
             clone.append(`<button class="remove-variant" type="button">DELETE THIS VARIANT</button>`)
             wrapper.append(clone)
 
