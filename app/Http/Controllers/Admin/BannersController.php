@@ -7,6 +7,7 @@ use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
+use Illuminate\Validation\Rules\File;
 
 class BannersController extends Controller
 {
@@ -89,7 +90,8 @@ class BannersController extends Controller
                 'type' => 'required|string',
                 'link' => 'required|string',
                 'title' => 'required|string',
-                'alt' => 'required|string'
+                'alt' => 'required|string',
+                'image' => ['required', File::types(['jpg', 'png'])->max(1024 * 12)]
             ]);
 
             $banner->type   = $data['type'];
@@ -97,11 +99,6 @@ class BannersController extends Controller
             $banner->title  = $data['title'];
             $banner->alt    = $data['alt'];
             $banner->status = 1;
-
-            if ($data['type'] == 'Fix') {
-                $width  = '1920';
-                $height = '450';
-            }
 
             // Uploading Banner Image    // Using the Intervention package for uploading images
             if ($request->hasFile('image')) { // the HTML name attribute    name="admin_name"    in update_admin_details.blade.php
@@ -119,10 +116,7 @@ class BannersController extends Controller
                     // Upload the image using the 'Intervention' package and save it in our path inside the 'public' folder
                     // Image::make($image_tmp)->resize(1920, 720)->save($imagePath); // '\Image' is the Intervention package
                     $fileStorageService = new FileStorageService;
-                    $fileStorageService->storeFile($image_tmp, $imagePath, [
-                        'width' => $width,
-                        'height' => $height
-                    ]);
+                    $fileStorageService->storeFile($image_tmp, $imagePath);
 
                     // Insert the image name in the database table
                     $banner->image = $imageName;
