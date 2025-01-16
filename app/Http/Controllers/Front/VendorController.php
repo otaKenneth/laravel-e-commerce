@@ -111,110 +111,114 @@ class VendorController extends Controller
 
             // Create Vendor Account (Save the submitted data in BOTH `vendors` and `admins` tables)
 
-            // Note: !!DATABASE TRANSACTION!! Firstly, we'll save the vendor in the `vendors` table, then take the newly generated vendor `id` to use it as a `vendor_id` column value to save the vendor in `admins` table, then we send the Confirmation Mail to the vendor using Mailtrap    
-            // Database Transactions: https://laravel.com/docs/9.x/database#database-transactions
-            DB::beginTransaction();
-
-            
-            $vendor = new \App\Models\Vendor; // Vendor.php model which models (represents) the `vendors` database table
-
-            $vendor->name   = $data['firstname'] . " " . $data['lastname'];
-            $vendor->mobile = $data['mobile'];
-            $vendor->email  = $data['email'];
-            $vendor->status = 0; // Note: After a new vendor registers a new account, they will remain inactive/disabled (`status` is 0), untill the confirmation email arrives for them and they click the link, and they complete filling their vendor details, then the admin APPROVES them (then status becomes 1)
-            // $vendor->address = $data['business']['address'];
-            // $vendor->city = $data['personal']['city'];
-            // $vendor->state = $data['personal']['state'];
-            // $vendor->country = $data['personal']['country'];
-            // $vendor->pincode = $data['personal']['postal'];
-            $vendor->wdyfu = $data['business']['wdyfu'];
-
-            // Set Laravel's default timezone to Manila's (to enter correct `created_at` and `updated_at` records in the database tables) instead of UTC
-            date_default_timezone_set('Asia/Manila'); // https://www.php.net/manual/en/timezones.php and https://www.php.net/manual/en/timezones.africa.php
-            $vendor->created_at = date('Y-m-d H:i:s'); // enter `created_at` MANUALLY!    // Formatting the date for MySQL: https://www.php.net/manual/en/function.date.php
-            $vendor->updated_at = date('Y-m-d H:i:s'); // enter `updated_at` MANUALLY!
-
-            $vendor->save();
-
-            // Get the `id` of the new vendor that we have just saved in the `vendors` table to use it as a value for the `vendor_id` column of the `admins` table to store the new vendor in the `admins` table too
-            $vendor_id = DB::getPdo()->lastInsertId(); // get the vendor `id` of the `vendors` table (which has just been inserted) to insert it in the `vendor_id` column of the `admins` table    
-
-            // Secondly, use the vendor `id` of the `vendors` table to serve a value of the `vendor_id` column in the `admins` table and save the new vendor in the `admins` table
-            $admin = new \App\Models\Admin; // Admin.php model which models (represents) the `admins` database table
-
-            $admin->type      = 'vendor';
-            $admin->vendor_id = $vendor_id; // take the generated `id` of the `vendors` table to store it a `vendor_id` in the `admins` table
-            $admin->name      = $data['firstname'] . " " . $data['lastname'];
-            $admin->mobile    = $data['mobile'];
-            $admin->email     = $data['email'];
-
-            $initial_password = Str::random(12);
-            $admin->password  = bcrypt($initial_password); // hashing the password to store the hashed password in the table (NOT THE PASSWORD ITSELF!!)
-            $admin->status    = 0; // Note: After a new vendor registers a new account, they will remain inactive/disabled (`status` is 0), untill the confirmation email arrives for them and they click the link, and they complete filling their vendor details, then the admin APPROVES them (then status becomes 1)
-
-            // Set Laravel's default timezone to Manila's (to enter correct `created_at` and `updated_at` records in the database tables) instead of UTC
-            date_default_timezone_set('Asia/Manila'); // https://www.php.net/manual/en/timezones.php and https://www.php.net/manual/en/timezones.africa.php
-            $admin->created_at = date('Y-m-d H:i:s'); // enter `created_at` MANUALLY!    // Formatting the date for MySQL: https://www.php.net/manual/en/function.date.php
-            $admin->updated_at = date('Y-m-d H:i:s'); // enter `updated_at` MANUALLY!
-
-            $admin->save();
-            
-            $business_details = new \App\Models\VendorsBusinessDetail;
-
-            $business_details->vendor_id = $vendor_id;
-            $business_details->shop_name = $data['business']['shop_name'];
-            // $business_details->shop_mobile = $data['business']['shop_mobile'];
-            // $business_details->shop_email = $data['business']['shop_email'];
-            // $business_details->shop_address = $data['business']['address'];
-            // $business_details->shop_city = $data['business']['city'];
-            // $business_details->shop_state = $data['business']['state'];
-            // $business_details->shop_country = $data['business']['country'];
-            // $business_details->shop_pincode = $data['business']['postal'];
-            
-            // $business_details->shop_website = $data['business']['website'];
-
-            // $license_filepath = null; $business_proof_filepath = null;
-            // if ($request->hasFile('business_license')) {
-            //     if ($request->file('business_license')->isValid()) {
-            //         $license_filepath = $request->file('business_license')->store('public/images');
-            //         $business_details->license_image = Storage::url($license_filepath);
-            //     }
-            // }
-            
-            // if ($request->hasFile('business_proof')) {
-            //     if ($request->file('business_proof')->isValid()) {
-            //         $business_proof_filepath = $request->file('business_proof')->store('public/images');
-            //         $business_details->business_proof_image = Storage::url($business_proof_filepath);
-            //     }
-            // }
-
-            $business_details->save();
-
-            // Send the Confirmation Email to the new vendor who has just registered    
-            $email = $data['email']; // the vendor's email
-
-            // The email message data/variables that will be passed in to the email view
-            $messageData = [
-                'email' => $data['email'],
-                'name'  => $data['firstname'] . " " . $data['lastname'],
-                'initial_password' => $initial_password,
-                'code'  => base64_encode($data['email']) // We base64 code the vendor $email and send it as a Route Parameter from vendor_confirmation.blade.php to the 'vendor/confirm/{code}' route in web.php, then it gets base64 decoded again in confirmVendor() method in Front/VendorController.php    // we will use the opposite: base64_decode() in the confirmVendor() method (encode X decode)
-            ];
-
-            \Illuminate\Support\Facades\Mail::send('emails.vendor_confirmation', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.vendor_confirmation' is the vendor_confirmation.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that vendor_confirmation.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
-                $message->to($email)->subject('Confirm your Vendor Account');
-            });
-
-            DB::commit(); // commit the Database Transaction
-
-            // if (is_null($license_filepath) || is_null($business_proof_filepath)) {
-            //     DB::rollback();
-            //     return redirect()->back()->with('success_message', "Changes did not saved because of some error.");
-            // }
-
-            // Redirect the vendor back with a success message
-            $message = 'Thanks for registering as Vendor. Please confirm your email to have your account in-line for admin approval.';
-            return redirect()->back()->with('success_message', $message);
+            try {
+                // Note: !!DATABASE TRANSACTION!! Firstly, we'll save the vendor in the `vendors` table, then take the newly generated vendor `id` to use it as a `vendor_id` column value to save the vendor in `admins` table, then we send the Confirmation Mail to the vendor using Mailtrap    
+                // Database Transactions: https://laravel.com/docs/9.x/database#database-transactions
+                DB::beginTransaction();
+    
+                
+                $vendor = new \App\Models\Vendor; // Vendor.php model which models (represents) the `vendors` database table
+    
+                $vendor->name   = $data['firstname'] . " " . $data['lastname'];
+                $vendor->mobile = $data['mobile'];
+                $vendor->email  = $data['email'];
+                $vendor->status = 0; // Note: After a new vendor registers a new account, they will remain inactive/disabled (`status` is 0), untill the confirmation email arrives for them and they click the link, and they complete filling their vendor details, then the admin APPROVES them (then status becomes 1)
+                // $vendor->address = $data['business']['address'];
+                // $vendor->city = $data['personal']['city'];
+                // $vendor->state = $data['personal']['state'];
+                // $vendor->country = $data['personal']['country'];
+                // $vendor->pincode = $data['personal']['postal'];
+                $vendor->wdyfu = $data['business']['wdyfu'];
+    
+                // Set Laravel's default timezone to Manila's (to enter correct `created_at` and `updated_at` records in the database tables) instead of UTC
+                date_default_timezone_set('Asia/Manila'); // https://www.php.net/manual/en/timezones.php and https://www.php.net/manual/en/timezones.africa.php
+                $vendor->created_at = date('Y-m-d H:i:s'); // enter `created_at` MANUALLY!    // Formatting the date for MySQL: https://www.php.net/manual/en/function.date.php
+                $vendor->updated_at = date('Y-m-d H:i:s'); // enter `updated_at` MANUALLY!
+    
+                $vendor->save();
+    
+                // Get the `id` of the new vendor that we have just saved in the `vendors` table to use it as a value for the `vendor_id` column of the `admins` table to store the new vendor in the `admins` table too
+                $vendor_id = DB::getPdo()->lastInsertId(); // get the vendor `id` of the `vendors` table (which has just been inserted) to insert it in the `vendor_id` column of the `admins` table    
+    
+                // Secondly, use the vendor `id` of the `vendors` table to serve a value of the `vendor_id` column in the `admins` table and save the new vendor in the `admins` table
+                $admin = new \App\Models\Admin; // Admin.php model which models (represents) the `admins` database table
+    
+                $admin->type      = 'vendor';
+                $admin->vendor_id = $vendor_id; // take the generated `id` of the `vendors` table to store it a `vendor_id` in the `admins` table
+                $admin->name      = $data['firstname'] . " " . $data['lastname'];
+                $admin->mobile    = $data['mobile'];
+                $admin->email     = $data['email'];
+    
+                $initial_password = Str::random(12);
+                $admin->password  = bcrypt($initial_password); // hashing the password to store the hashed password in the table (NOT THE PASSWORD ITSELF!!)
+                $admin->status    = 0; // Note: After a new vendor registers a new account, they will remain inactive/disabled (`status` is 0), untill the confirmation email arrives for them and they click the link, and they complete filling their vendor details, then the admin APPROVES them (then status becomes 1)
+    
+                // Set Laravel's default timezone to Manila's (to enter correct `created_at` and `updated_at` records in the database tables) instead of UTC
+                date_default_timezone_set('Asia/Manila'); // https://www.php.net/manual/en/timezones.php and https://www.php.net/manual/en/timezones.africa.php
+                $admin->created_at = date('Y-m-d H:i:s'); // enter `created_at` MANUALLY!    // Formatting the date for MySQL: https://www.php.net/manual/en/function.date.php
+                $admin->updated_at = date('Y-m-d H:i:s'); // enter `updated_at` MANUALLY!
+    
+                $admin->save();
+                
+                $business_details = new \App\Models\VendorsBusinessDetail;
+    
+                $business_details->vendor_id = $vendor_id;
+                $business_details->shop_name = $data['business']['shop_name'];
+                // $business_details->shop_mobile = $data['business']['shop_mobile'];
+                // $business_details->shop_email = $data['business']['shop_email'];
+                // $business_details->shop_address = $data['business']['address'];
+                // $business_details->shop_city = $data['business']['city'];
+                // $business_details->shop_state = $data['business']['state'];
+                // $business_details->shop_country = $data['business']['country'];
+                // $business_details->shop_pincode = $data['business']['postal'];
+                
+                // $business_details->shop_website = $data['business']['website'];
+    
+                // $license_filepath = null; $business_proof_filepath = null;
+                // if ($request->hasFile('business_license')) {
+                //     if ($request->file('business_license')->isValid()) {
+                //         $license_filepath = $request->file('business_license')->store('public/images');
+                //         $business_details->license_image = Storage::url($license_filepath);
+                //     }
+                // }
+                
+                // if ($request->hasFile('business_proof')) {
+                //     if ($request->file('business_proof')->isValid()) {
+                //         $business_proof_filepath = $request->file('business_proof')->store('public/images');
+                //         $business_details->business_proof_image = Storage::url($business_proof_filepath);
+                //     }
+                // }
+    
+                $business_details->save();
+    
+                // Send the Confirmation Email to the new vendor who has just registered    
+                $email = $data['email']; // the vendor's email
+    
+                // The email message data/variables that will be passed in to the email view
+                $messageData = [
+                    'email' => $data['email'],
+                    'name'  => $data['firstname'] . " " . $data['lastname'],
+                    'initial_password' => $initial_password,
+                    'code'  => base64_encode($data['email']) // We base64 code the vendor $email and send it as a Route Parameter from vendor_confirmation.blade.php to the 'vendor/confirm/{code}' route in web.php, then it gets base64 decoded again in confirmVendor() method in Front/VendorController.php    // we will use the opposite: base64_decode() in the confirmVendor() method (encode X decode)
+                ];
+    
+                \Illuminate\Support\Facades\Mail::send('emails.vendor_confirmation', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.vendor_confirmation' is the vendor_confirmation.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that vendor_confirmation.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                    $message->to($email)->subject('Confirm your Vendor Account');
+                });
+    
+                DB::commit(); // commit the Database Transaction
+    
+                // if (is_null($license_filepath) || is_null($business_proof_filepath)) {
+                //     DB::rollback();
+                //     return redirect()->back()->with('success_message', "Changes did not saved because of some error.");
+                // }
+    
+                // Redirect the vendor back with a success message
+                $message = 'Thanks for registering as Vendor. Please confirm your email to have your account in-line for admin approval.';
+                return redirect()->back()->with('success_message', $message);
+            } catch (\Exception $e) {
+                return redirect()->back()->withErrors([$e->getMessage()]);
+            }
         }
     }
 

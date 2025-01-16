@@ -74,8 +74,8 @@ $(document).ready(function() {
                     $('#admin-' + admin_id).html('<i style="font-size: 25px" class="mdi mdi-bookmark-check" status="Active"></i>');
                 }
             },
-            error  : function() {
-                alert('Error');
+            error  : function(err) {
+                alert(err.message);
             }
         });
     });

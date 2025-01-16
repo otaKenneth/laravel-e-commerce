@@ -638,7 +638,7 @@ class AdminController extends Controller
                         $message->to($email)->subject('Vendor Account is Approved');
                     });
                 } else {
-                    \Illuminate\Support\Facades\Mail::send('emails.vendor_disabled', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.vendor_approved' is the vendor_approved.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that vendor_approved.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                    \Illuminate\Support\Facades\Mail::send('emails.vendor_disable', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.vendor_approved' is the vendor_approved.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that vendor_approved.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
                         $message->to($email)->subject('Vendor Account Deactivate');
                     });
                 }
