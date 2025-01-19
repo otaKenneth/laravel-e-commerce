@@ -36,6 +36,9 @@ class ProductsController extends Controller
             },
             'category' => function($query) { // the 'category' relationship method in Product.php Model
                 $query->select('id', 'category_name'); // Important Note: It's a MUST to select 'id' even if you don't need it, because the relationship Foreign Key `product_id` depends on it, or else the `product` relationship would give you 'null'!
+            },
+            'vendor' => function ($query) {
+                $query->select('id', 'name');
             }
         ]);
 
