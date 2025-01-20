@@ -721,6 +721,10 @@ $(document).ready(function() {
         });
     });
 
+    $('input[name="shipping_method"]').on('click change', function (e) {
+        $('input[name^="preferred_address"]').trigger('change');
+    });
+
     // Calculate the Grand Total, Shipping Charges and Coupon Amount and displaying them depending on the chosen Delivery Address in front/products/checkout.blade.php
     $('input[name^="preferred_address"]').bind('change', function() {
 
@@ -728,7 +732,11 @@ $(document).ready(function() {
         var total_price      = $(this).attr('total_price');      // using Custom HTML data attributes (data-*)
         var coupon_amount    = $(this).attr('coupon_amount');    // using Custom HTML data attributes (data-*)
         // alert(shipping_charges);
+        var shipping_method = $('input[name="shipping_method"]:checked').val();
 
+        if (shipping_method == 'j&t') {
+            shipping_charges = '150.00';
+        }
         // Display the Shipping Charges
         $('.shipping_charges').html('₱ ' + shipping_charges);
 
