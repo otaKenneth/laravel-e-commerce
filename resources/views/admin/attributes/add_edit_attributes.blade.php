@@ -162,7 +162,7 @@
                                             <input style="display: none" type="text" name="attributeId[]" value="{{ $attribute['id'] }}"> {{-- A hidden input field --}}
                                             <tr>
                                                 <td>{{ $attribute['color'] }}</td>
-                                                @if ($attribute['size'] !== '')
+                                                @if (count($product['variants']) > 0)
                                                 <td>{{ $attribute['size'] }}</td>
                                                 @endif
                                                 <td>
