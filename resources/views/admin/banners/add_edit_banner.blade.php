@@ -96,14 +96,9 @@
                                 <div class="form-group">
                                     <label for="image">Banner Image</label>
                                     <input type="file" class="form-control" id="image" name="image">
-                                    {{-- Show the admin image if exists --}}
-                                        <a target="_blank" href="{{ url('admin/images/photos/' . Auth::guard('admin')->user()->image) }}">View Image</a> {{-- Accessing Specific Guard Instances: https://laravel.com/docs/9.x/authentication#accessing-specific-guard-instances --}} <!-- We used    target="_blank"    to open the image in another separate page -->
-                                        <input type="hidden" name="current_banner_image" value="{{ Auth::guard('admin')->user()->image }}"> <!-- to send the current admin image url all the time with all the requests --> {{-- Accessing Specific Guard Instances: https://laravel.com/docs/9.x/authentication#accessing-specific-guard-instances --}}
-
-
                                     {{-- Show the banner image, if any (if exits) --}}
                                     @if (!empty($banner['image']))
-                                        <a target="_blank" href="{{ url('front/images/banner_images/' . $banner['image']) }}">View Banner Image</a>
+                                        <a target="_blank" href="{{ url($getImage('front/images/banner_images/', $banner['image'])) }}">View Banner Image</a>
                                     @endif
                                 </div>
                                 <div class="form-group">
