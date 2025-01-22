@@ -338,6 +338,10 @@
                                     <div class="elementor-widget-container">
                                         <table>
                                             <tr>
+                                                <td>Coupon discount</td>
+                                                <td class="align-right">₱{{number_format(Session::get('couponAmount'), 2)}}</td>
+                                            </tr>
+                                            <tr>
                                                 <td>Sub total</td>
                                                 <td class="align-right">₱{{$sub_total}}</td>
                                             </tr>
@@ -349,10 +353,6 @@
                                                 <td>Estimated Transaction Fee</td>
                                                 <td class="align-right">₱ {{number_format($est_transaction_fee, 2)}}</td>
                                             </tr>
-                                            <!-- <tr>
-                                                <td>Coupon discount</td>
-                                                <td class="align-right">₱150.00</td>
-                                            </tr> -->
                                             <tr>
                                                 <td style="padding-top: 40px">
                                                     <b>GRAND TOTAL</b>
