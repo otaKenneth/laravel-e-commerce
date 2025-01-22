@@ -799,7 +799,7 @@ class ProductsController extends Controller
 
         if ($request->isMethod('post')) { // if the <form> in front/products/checkout.blade.php is submitted (the HTML Form that the user submits to submit their Delivery Address and Payment Method)
             $data = $request->all();
-            $data['payment_gateway'] = 'COD';
+
             // Website Security
             // Note: We need to prevent orders (upon checkout and payment) of the 'disabled' products (`status` = 0), where the product ITSELF can be disabled in admin/products/products.blade.php (by checking the `products` database table) or a product's attribute (`stock`) can be disabled in 'admin/attributes/add_edit_attributes.blade.php' (by checking the `products_attributes` database table). We also prevent orders of the out of stock / sold-out products (by checking the `products_attributes` database table)
             foreach ($getCartItems as $item) {
@@ -880,6 +880,10 @@ class ProductsController extends Controller
                     'success' => false,
                     'message' => $message
                 ]);
+            } else {
+                if ($data['shipping_method'] == 'j&t') {
+                    $data['payment_gateway'] = 'COD';
+                }
             }
 
             // Payment Method Validation
@@ -1141,6 +1145,7 @@ class ProductsController extends Controller
             ]; // redirect to front/products/thanks.blade.php page
         }
 
+        $total_price -= Session::get('couponAmount');
         $sub_total = number_format($total_price, 2);
         $delivery_fee = $shipping_charges;
         $total_price += $delivery_fee;
