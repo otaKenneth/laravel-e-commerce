@@ -1,4 +1,4 @@
-{{-- This is the user Placing Order Confirmation email file using Mailtrap --}} {{-- All the variables (like $name, $mobile, $email, ...) used here are passed in from the checkout() method in Front/ProductsController.php --}}
+{{-- This is the User Forgot Password E-mail using Mailtrap --}} {{-- All the variables (like $name, $mobile, $email, $code, ...) used here are passed in from the forgotPassword() method in Front/UserController.php --}}
 
 
 
@@ -9,8 +9,6 @@
         <title></title>
     </head>
     <body>
-
-
 
     <style>
         .email_template{
@@ -126,12 +124,11 @@
     </style>
 
     <div class="email_template">
-        <!--EMAIL SUBJECT: Order Created - Order#{{-- $ --}}-->
+        <!--EMAIL SUBJECT: New Order - Order#{{-- $ --}}-->
 
-        <p class="greet">Dear Von Miles Gacutan<?php /* {{-- $name --}} */ ?>,</p>
-        <p>Thank you for shopping with Von's Car Accessories<?php /* {{-- $ --}} */ ?>! Below are the details of your order</p>
-        
-        
+        <p class="greet">Dear Von's Car Accessories<?php /* {{-- $business_name --}} */ ?>,</p>
+        <p>You have received a new order on Kapiton! Here are the details:</p>
+        <p>You may update your order via our seller center or accessing this direct <a href="#<?php /* seller center link */ ?>">link</a></p>
         <hr>
             <h3 class="heading">Order Summary:</h3>
             <p><span class="bold">Order Number: </span>32133<?php /* {{-- $ --}} */ ?></p>
@@ -170,7 +167,7 @@
                             <td></td>
                             <td></td>
                             <td style="border-left: 1px solid #1f1f22;">Shipping Charges:</td>
-                            <td style="border-right: 1px solid #1f1f22;">PHP - 231.00<?php /* {{ $orderDetails['shipping_charges'] }} */ ?></td>
+                            <td style="border-right: 1px solid #1f1f22;">PHP - 231.00</td>
                         </tr>
                         <tr class="tablefoot">
                             <td></td>
@@ -178,7 +175,7 @@
                             <td></td>
                             <td></td>
                             <td style="border-left: 1px solid #1f1f22;">Coupon Discount:</td>
-                            <td style="border-right: 1px solid #1f1f22;">PHP - 0<?php /* {{ $orderDetails['coupon_amount'] }} */ ?></td>
+                            <td style="border-right: 1px solid #1f1f22;">PHP - 0</td>
                         </tr>
                         <tr class="tablefoot grandtotal">
                             <td></td>
@@ -186,7 +183,7 @@
                             <td></td>
                             <td></td>
                             <td style="border-left: 1px solid #1f1f22; background: #1f1f22; color: white">Grand Total:</td>
-                            <td style="border-right: 1px solid #1f1f22; background: #1f1f22; color: white">PHP - 42,231.32<?php /* {{ $orderDetails['grand_total'] }} */ ?></td>
+                            <td style="border-right: 1px solid #1f1f22; background: #1f1f22; color: white">PHP - 42,231.32</td>
                         </tr>
                     </tfoot>
 
@@ -203,14 +200,9 @@
             <li>Email: vonmiles@gmail.com<?php /* {{-- $ --}} */ ?></li>
         </ul>
         <hr>
-        <br>
-        <p><span class="bold">Download Your Invoice.</span><br>
-        Click <a href="#<?php /* {{-- $ --}} */ ?>">here</a> to download your order invoice.</p>
+        <p>Please ensure the order is prepared and shipped promptly according to the customer's chosen delivery timeline. Don't forget to update the order status through your merchant dashboard once shipped.</p>
+        <p>For any questions or assistance, feel free to contact our support team at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
         
-        
-        <p>For any questions or assistance, feel free to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
-        
-
         <br>
         <p>--</p>
         <p class="end">Best Regards,</p>
@@ -223,107 +215,19 @@
         </div>
     </div>
 
-
-
     <?php /*
-        <table style="width: 700px">
+        <table>
+            <tr><td>Dear {{ $name }},</td></tr>
             <tr><td>&nbsp;</td></tr>
-            <tr><td><img src="{{ asset('front/images/main-logo/main-logo.png') }}"></td></tr>
+            <tr><td>You requested to change your password. New Password is as below:-</td></tr>
             <tr><td>&nbsp;</td></tr>
-            <tr><td>Hello {{ $name }}</td></tr>
-            <tr><td>&nbsp;<br></td></tr>
-            <tr><td>Thank you for shopping with us. Your order details are as below:-</td></tr>
+            <tr><td>Email: {{ $email }}</td></tr> {{-- $email is passed in from forgotPassword() method in UserController.php --}}
             <tr><td>&nbsp;</td></tr>
-            <tr><td>Order no. {{ $order_id }}</td></tr>
+            <tr><td>Password: {{ $password }}</td></tr> {{-- $password is passed in from forgotPassword() method in UserController.php --}}
             <tr><td>&nbsp;</td></tr>
-            <tr><td>
-                <table style="width: 95%" cellpadding="5" cellspacing="5" bgcolor="#f7f4f4">
-                    <tr bgcolor="#cccccc">
-                        <td>Product Name</td>
-                        <td>Product Code</td>
-                        <td>Product Size</td>
-                        <td>Product Color</td>
-                        <td>Product Quantity</td>
-                        <td>Product Price</td>
-                    </tr>
-                    @foreach ($orderDetails['orders_products'] as $order)
-                        <tr bgcolor="#f9f9f9">
-                            <td>{{ $order['product_name'] }}</td>
-                            <td>{{ $order['product_code'] }}</td>
-                            <td>{{ $order['product_size'] }}</td>
-                            <td>{{ $order['product_color'] }}</td>
-                            <td>{{ $order['product_qty'] }}</td>
-                            <td>{{ $order['product_price'] }}</td>
-                        </tr>
-                    @endforeach
-                        <tr>
-                            <td colspan="5" align="right">Shipping Charges</td>
-                            <td>PHP {{ $orderDetails['shipping_charges'] }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="5" align="right">Coupon Discount</td>
-                            <td>
-                                PHP
-                                @if ($orderDetails['coupon_amount'] > 0)
-                                    {{ $orderDetails['coupon_amount'] }}
-                                @else
-                                    0
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="5" align="right">Grand Total</td>
-                            <td>PHP {{ $orderDetails['grand_total'] }}</td>
-                        </tr>
-                </table>    
-            </td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>
-                <table>
-                    <tr>
-                        <td><strong>Delivery Address:</strong></td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['name'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['address'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['city'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['state'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['country'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['pincode'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['mobile'] }}</td>
-                    </tr>
-                </table>    
-            </td></tr>
-            <tr><td>&nbsp;</td></tr>
-
-            {{-- PDF Invoice download link --}}
-            <tr>
-                <td>
-                    <a href="{{ url('orders/invoice/download/' . $orderDetails['id']) }}">Click here to Download Order Invoice</a>
-                    <br>
-                    (Copy & Paste link to open if it doesn't work!)
-                </td>
-            </tr>
-
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>For any queries, you can contact us at <a href="mailto:info@MultiVendorEcommerceApplication.com.eg">info@MultiVendorEcommerceApplication.com.eg</a></td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Regards,<br>Team Kapiton</td></tr>
-            <tr><td>&nbsp;</td></tr>
+            <tr><td>Thanks & Regards,</td></tr>
+            <tr><td>Kapiton</td></tr>
         </table>
-
     */ ?>
 
 

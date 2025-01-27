@@ -1,4 +1,4 @@
-{{-- This is the user Placing Order Confirmation email file using Mailtrap --}} {{-- All the variables (like $name, $mobile, $email, ...) used here are passed in from the checkout() method in Front/ProductsController.php --}}
+{{-- This is the order "Update Order Status" by 'admin' email file using Mailtrap --}} {{-- All the variables (like $name, $mobile, $email, ...) used here are passed in from the updateOrderStatus() method in Admin/OrderController.php --}}
 
 
 
@@ -126,12 +126,13 @@
     </style>
 
     <div class="email_template">
-        <!--EMAIL SUBJECT: Order Created - Order#{{-- $ --}}-->
+        <!--EMAIL SUBJECT: Order Cancelled - Order#{{-- $ --}}-->
 
         <p class="greet">Dear Von Miles Gacutan<?php /* {{-- $name --}} */ ?>,</p>
-        <p>Thank you for shopping with Von's Car Accessories<?php /* {{-- $ --}} */ ?>! Below are the details of your order</p>
-        
-        
+        <p>We've received your request to cancel <span class="bold">order #</span></span>32133<?php /* {{-- $ --}} */ ?> with Von's Car Accessories<?php /* {{-- $business_name --}} */ ?>. The cancellation has been successfully processed.</p>
+
+        <p>Your refund will be initiated within 30 days and sent back to your chosen payment method. Once the refund is completed, we'll send you a confirmation email.</p>
+       
         <hr>
             <h3 class="heading">Order Summary:</h3>
             <p><span class="bold">Order Number: </span>32133<?php /* {{-- $ --}} */ ?></p>
@@ -195,20 +196,9 @@
             </div>
         <hr>
         <br>
-        <p><span class="bold">Delivery Details:</p>
-        <ul>
-            <li>Name: Von Miles Gacutan<?php /* {{-- $ --}} */ ?></li>
-            <li>Address: #325 Sampaguita St., San Pablo, Laguna<?php /* {{-- $ --}} */ ?></li>
-            <li>Phone: +63 943 321 5412<?php /* {{-- $ --}} */ ?></li>
-            <li>Email: vonmiles@gmail.com<?php /* {{-- $ --}} */ ?></li>
-        </ul>
-        <hr>
-        <br>
-        <p><span class="bold">Download Your Invoice.</span><br>
-        Click <a href="#<?php /* {{-- $ --}} */ ?>">here</a> to download your order invoice.</p>
-        
-        
-        <p>For any questions or assistance, feel free to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
+      
+    
+        <p>We're sorry to see this order go, but we home to serve you again soon. If there's anything we can do to assist or improve your experience, please don't hesitate to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
         
 
         <br>
@@ -226,36 +216,38 @@
 
 
     <?php /*
-        <table style="width: 700px">
-            <tr><td>&nbsp;</td></tr>
-            <tr><td><img src="{{ asset('front/images/main-logo/main-logo.png') }}"></td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Hello {{ $name }}</td></tr>
-            <tr><td>&nbsp;<br></td></tr>
-            <tr><td>Thank you for shopping with us. Your order details are as below:-</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Order no. {{ $order_id }}</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>
-                <table style="width: 95%" cellpadding="5" cellspacing="5" bgcolor="#f7f4f4">
-                    <tr bgcolor="#cccccc">
-                        <td>Product Name</td>
-                        <td>Product Code</td>
-                        <td>Product Size</td>
-                        <td>Product Color</td>
-                        <td>Product Quantity</td>
-                        <td>Product Price</td>
-                    </tr>
-                    @foreach ($orderDetails['orders_products'] as $order)
-                        <tr bgcolor="#f9f9f9">
-                            <td>{{ $order['product_name'] }}</td>
-                            <td>{{ $order['product_code'] }}</td>
-                            <td>{{ $order['product_size'] }}</td>
-                            <td>{{ $order['product_color'] }}</td>
-                            <td>{{ $order['product_qty'] }}</td>
-                            <td>{{ $order['product_price'] }}</td>
+        <div>
+            <table style="width: 700px">
+                <tr><td>&nbsp;</td></tr>
+                <tr><td><img src="{{ asset('front/images/main-logo/main-logo.png') }}"></td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td>Hello {{ $name }}</td></tr>
+                <tr><td>&nbsp;<br></td></tr>
+                <tr><td>Your Order #{{ $order_id }} status has been updated to {{ $order_status }}</td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td>For reason: {{$reason}}</td></tr>
+                <tr><td>Your Order details are as below:</td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td>
+                    <table style="width: 95%" cellpadding="5" cellspacing="5" bgcolor="#f7f4f4">
+                        <tr bgcolor="#cccccc">
+                            <td>Product Name</td>
+                            <td>Product Code</td>
+                            <td>Product Size</td>
+                            <td>Product Color</td>
+                            <td>Product Quantity</td>
+                            <td>Product Price</td>
                         </tr>
-                    @endforeach
+                        @foreach ($orderDetails['orders_products'] as $order)
+                            <tr bgcolor="#f9f9f9">
+                                <td>{{ $order['product_name'] }}</td>
+                                <td>{{ $order['product_code'] }}</td>
+                                <td>{{ $order['product_size'] }}</td>
+                                <td>{{ $order['product_color'] }}</td>
+                                <td>{{ $order['product_qty'] }}</td>
+                                <td>{{ $order['product_price'] }}</td>
+                            </tr>
+                        @endforeach
                         <tr>
                             <td colspan="5" align="right">Shipping Charges</td>
                             <td>PHP {{ $orderDetails['shipping_charges'] }}</td>
@@ -275,57 +267,21 @@
                             <td colspan="5" align="right">Grand Total</td>
                             <td>PHP {{ $orderDetails['grand_total'] }}</td>
                         </tr>
-                </table>    
-            </td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>
-                <table>
-                    <tr>
-                        <td><strong>Delivery Address:</strong></td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['name'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['address'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['city'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['state'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['country'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['pincode'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ $orderDetails['mobile'] }}</td>
-                    </tr>
-                </table>    
-            </td></tr>
-            <tr><td>&nbsp;</td></tr>
-
-            {{-- PDF Invoice download link --}}
-            <tr>
-                <td>
-                    <a href="{{ url('orders/invoice/download/' . $orderDetails['id']) }}">Click here to Download Order Invoice</a>
-                    <br>
-                    (Copy & Paste link to open if it doesn't work!)
-                </td>
-            </tr>
-
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>For any queries, you can contact us at <a href="mailto:info@MultiVendorEcommerceApplication.com.eg">info@MultiVendorEcommerceApplication.com.eg</a></td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Regards,<br>Team Kapiton</td></tr>
-            <tr><td>&nbsp;</td></tr>
-        </table>
-
+                    </table>
+                </td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td>For any queries, you can contact us at <a href="mailto:info@kapiton.com">info@kapiton.com</a></td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td>Regards,<br>Team Kapiton</td></tr>
+                <tr><td>&nbsp;</td></tr>
+            </table>
+        </div>
     */ ?>
 
 
     </body>
 </html>
+   
+   
+   

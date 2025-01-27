@@ -1,14 +1,17 @@
-{{-- This is the User Welcome E-mail after Registration file using Mailtrap --}} {{-- All the variables (like $name, $mobile, $email, ...) used here are passed in from the userRegister() method in Front/UserController.php --}}
-
+{{-- This is the vendor confirmation/registration Success Mail file using Mailtrap --}} {{-- All the variables (like
+$name, $mobile, $email, ...) used here are passed in from the vendorRegister() method in Front/VendorController.php --}}
 
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-    <body>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body>
+
 
     <style>
         .email_template{
@@ -76,17 +79,18 @@
     </style>
 
     <div class="email_template">
-        <!--EMAIL SUBJECT: Welcome to Kapiton - Your Account is Ready! -->
-        <p class="greet">Dear Von Miles Gacutan<?php /* {{-- $name --}} */ ?>,</p>
-        <p>Welcome to Kapiton! We're thrilled to have you on board. Your account has been successfully created with the following details:</p>
+        <!--EMAIL SUBJECT: Your New Password - Kapiton -->
+        <p class="greet">Dear Von's Car Accessories<?php /* {{-- $business_name --}} */ ?>,</p>
+        <p>We received your request to reset your password. Here are your updated login details</p>
         <ul>
-            <li>Name: Von Miles Gacutan<?php /* {{-- $name --}} */ ?></li>
-            <li>Mobile: (+63) 917 170 6796<?php /* {{-- $mobile --}} */ ?></li>
             <li>Email: voncaraccessories@gmail.com<?php /* {{-- $email --}} */ ?></li>
+            <li>Temporary Password: x/!s412Avgh<?php /* {{-- $password --}} */ ?></li>
         </ul>
-        <p>For your security, your password is hidden: *******. If you ever forget it, you can easily reset it using the "Forgot Password" option on our platform.</p>
-        <p>If you have any questions or need assistance, feel free to reach out.</p>
-    
+        <p>For your security, we strongly recommend changing your password immediately after logging in. <br>You can do this by navigating to</p>
+            <p class="indented bold">My Account > User Management</p>
+        <p>If you did not request this password reset or need further assistance, please contact us right away.</p>
+        
+        
 
         
         <br>
@@ -102,26 +106,6 @@
     </div>
 
 
-    <?php /*
-        <table>
-            <tr><td>Dear {{ $name }},</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Welcome to Kapiton. Your account has been successfully created with below information:</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Name: {{ $name }}</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Mobile: {{ $mobile }}</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Email: {{ $email }}</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Password: ****** (as chosen by you)</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Thanks & Regards,</td></tr>
-            <tr><td>Kapiton</td></tr>
-        </table>
-    */ ?>
+</body>
 
-
-    </body>
 </html>
