@@ -58,51 +58,51 @@ class IndexController extends Controller
     }
 
 
-    public function emailVendorConfirmation() {
-        return view('emails.vendor_confirmation');
-    }
-    public function emailVendorConfirmed() {
-        return view('emails.vendor_confirmed');
-    }
-    public function emailVendorForgetPassword() {
-        return view('emails.vendor_forget_password');
-    }
-    public function emailUserConfirmation() {
-        return view('emails.confirmation');
-    }
-    public function emailUserConfirmed() {
-        return view('emails.register');
-    }
-    public function emailUserForgetPassword() {
-        return view('emails.user_forgot_password');
-    }
-    public function emailVendorOrderPlaced() {
-        return view('emails.vendor_order_placed');
-    }
-    public function emailVendorOrderDelivered() {
-        return view('emails.vendor_order_delivered');
-    }
-    public function emailVendorOrderCancelledStart() {
-        return view('emails.vendor_order_cancelled_start');
-    }
-    public function emailVendorOrderCancelledEnd() {
-        return view('emails.vendor_order_cancelled_end');
-    }
-    public function emailCustomerOrderPlaced() {
-        return view('emails.order');
-    }
-    public function emailCustomerOrderStatusOTW() {
-        return view('emails.order_status');
-    }
-    public function emailCustomerOrderStatusDelivered() {
-        return view('emails.order_status_delivered');
-    }
-    public function emailCustomerOrderCancelledStart() {
-        return view('emails.order_product_refund_request');
-    }
-    public function emailCustomerOrderCancelledEnd() {
-        return view('emails.order_product_refund_request_success');
-    }
+    // public function emailVendorConfirmation() {
+    //     return view('emails.vendor_confirmation');
+    // }
+    // public function emailVendorConfirmed() {
+    //     return view('emails.vendor_confirmed');
+    // }
+    // public function emailVendorForgetPassword() {
+    //     return view('emails.vendor_forget_password');
+    // }
+    // public function emailUserConfirmation() {
+    //     return view('emails.confirmation');
+    // }
+    // public function emailUserConfirmed() {
+    //     return view('emails.register');
+    // }
+    // public function emailUserForgetPassword() {
+    //     return view('emails.user_forgot_password');
+    // }
+    // public function emailVendorOrderPlaced() {
+    //     return view('emails.vendor_order_placed');
+    // }
+    // public function emailVendorOrderDelivered() {
+    //     return view('emails.vendor_order_delivered');
+    // }
+    // public function emailVendorOrderCancelledStart() {
+    //     return view('emails.vendor_order_cancelled_start');
+    // }
+    // public function emailVendorOrderCancelledEnd() {
+    //     return view('emails.vendor_order_cancelled_end');
+    // }
+    // public function emailCustomerOrderPlaced() {
+    //     return view('emails.order');
+    // }
+    // public function emailCustomerOrderStatusOTW() {
+    //     return view('emails.order_status');
+    // }
+    // public function emailCustomerOrderStatusDelivered() {
+    //     return view('emails.order_status_delivered');
+    // }
+    // public function emailCustomerOrderCancelledStart() {
+    //     return view('emails.order_product_refund_request');
+    // }
+    // public function emailCustomerOrderCancelledEnd() {
+    //     return view('emails.order_product_refund_request_success');
+    // }
     
 
     public function getKSContainerContent(Request $request) {
