@@ -79,11 +79,11 @@
 
     <div class="email_template">
         <!--EMAIL SUBJECT: Your New Password - Kapiton -->
-        <p class="greet">Dear Von Miles Gacutan<?php /* {{-- $name --}} */ ?>,</p>
+        <p class="greet">Dear {{ $name }},</p>
         <p>We've received your request to reset your password. Below are your updated login details:</p>
         <ul>
-            <li>Email: voncaraccessories@gmail.com<?php /* {{-- $email --}} */ ?></li>
-            <li>Temporary Password: x/!s412Avgh<?php /* {{-- $password --}} */ ?></li>
+            <li>Email: {{$email}}</li>
+            <li>Temporary Password: {{$password}}</li>
         </ul>
 
         <p>For your security, we strongly recommend updating your password immediately after logging in. <br>You can do so by:</p>
@@ -103,21 +103,6 @@
             <p class="small-text"><a target="_blank" href="https://kapiton.store/">WEBSITE</a><span>|</span><a target="_blank" href="https://www.facebook.com/kapiton.store">FACEBOOK</a><span>|</span><a target="_blank" href="https://www.instagram.com/kapiton.store/">INSTAGRAM</a></p>
         </div>
     </div>
-
-    <?php /*
-        <table>
-            <tr><td>Dear {{ $name }},</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>You requested to change your password. New Password is as below:-</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Email: {{ $email }}</td></tr> {{-- $email is passed in from forgotPassword() method in UserController.php --}}
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Password: {{ $password }}</td></tr> {{-- $password is passed in from forgotPassword() method in UserController.php --}}
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Thanks & Regards,</td></tr>
-            <tr><td>Kapiton</td></tr>
-        </table>
-    */ ?>
 
 
     </body>
