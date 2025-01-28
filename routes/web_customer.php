@@ -68,21 +68,21 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
 
     //EMAILS ROUTE FOR TESTING
-    Route::get('email-vendor-confirmation', 'IndexController@emailVendorConfirmation');
-    Route::get('email-vendor-confirmed', 'IndexController@emailVendorConfirmed');
-    Route::get('email-vendor-forget-password', 'IndexController@emailVendorForgetPassword');
-    Route::get('email-user-confirmation', 'IndexController@emailUserConfirmation');
-    Route::get('email-user-confirmed', 'IndexController@emailUserConfirmed');
-    Route::get('email-user-forget-password', 'IndexController@emailUserForgetPassword');
-    Route::get('email-vendor-order-placed', 'IndexController@emailVendorOrderPlaced');
-    Route::get('email-vendor-order-delivered', 'IndexController@emailVendorOrderDelivered');
-    Route::get('email-vendor-order-cancelled-start', 'IndexController@emailVendorOrderCancelledStart');
-    Route::get('email-vendor-order-cancelled-end', 'IndexController@emailVendorOrderCancelledEnd');
-    Route::get('email-customer-order-placed', 'IndexController@emailCustomerOrderPlaced');
-    Route::get('email-customer-order-status-otw', 'IndexController@emailCustomerOrderStatusOTW');
-    Route::get('email-customer-order-status-delivered', 'IndexController@emailCustomerOrderStatusDelivered');
-    Route::get('email-customer-order-cancelled-start', 'IndexController@emailCustomerOrderCancelledStart');
-    Route::get('email-customer-order-cancelled-end', 'IndexController@emailCustomerOrderCancelledEnd');
+    // Route::get('email-vendor-confirmation', 'IndexController@emailVendorConfirmation');
+    // Route::get('email-vendor-confirmed', 'IndexController@emailVendorConfirmed');
+    // Route::get('email-vendor-forget-password', 'IndexController@emailVendorForgetPassword');
+    // Route::get('email-user-confirmation', 'IndexController@emailUserConfirmation');
+    // Route::get('email-user-confirmed', 'IndexController@emailUserConfirmed');
+    // Route::get('email-user-forget-password', 'IndexController@emailUserForgetPassword');
+    // Route::get('email-vendor-order-placed', 'IndexController@emailVendorOrderPlaced');
+    // Route::get('email-vendor-order-delivered', 'IndexController@emailVendorOrderDelivered');
+    // Route::get('email-vendor-order-cancelled-start', 'IndexController@emailVendorOrderCancelledStart');
+    // Route::get('email-vendor-order-cancelled-end', 'IndexController@emailVendorOrderCancelledEnd');
+    // Route::get('email-customer-order-placed', 'IndexController@emailCustomerOrderPlaced');
+    // Route::get('email-customer-order-status-otw', 'IndexController@emailCustomerOrderStatusOTW');
+    // Route::get('email-customer-order-status-delivered', 'IndexController@emailCustomerOrderStatusDelivered');
+    // Route::get('email-customer-order-cancelled-start', 'IndexController@emailCustomerOrderCancelledStart');
+    // Route::get('email-customer-order-cancelled-end', 'IndexController@emailCustomerOrderCancelledEnd');
     
     // Render User Login/Register page (front/users/login_register.blade.php)
     Route::get('user/login-register', ['as' => 'login', 'uses' => 'UserController@loginRegister']); // 'as' => 'login'    is Giving this route a name 'login' route in order for the 'auth' middleware ('auth' middleware is the Authenticate.php) to redirect to the right page
