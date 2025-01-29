@@ -128,14 +128,15 @@
     <div class="email_template">
         <!--EMAIL SUBJECT: Order Cancelled - Order#{{-- $ --}}-->
 
-        <p class="greet">Dear Von Miles Gacutan<?php /* {{-- $name --}} */ ?>,</p>
-        <p>We're sorry to inform you that your <span class="bold">order #</span></span>32133<?php /* {{-- $ --}} */ ?> with Von's Car Accessories<?php /* {{-- $business_name --}} */ ?> has been canceled.</p>
+        <p class="greet">Dear {{ $name }},</p>
+        <p style="margin-bottom: 2px;">Your <span class="bold">order #</span>{{$order_id}} with {{ $business_name }} has been requested for Refund for your reason(s) as below:</p>
+        <p style="background-color: #f0f0f0; border-radius: 5px; padding: 3px 2px;">{{$reason}}</p>
 
         <p>Rest assured, your refund will be processed within 30 days and returned to your selected payment method. You'll receive a confirmation email once the refund has been completed.</p>
        
         <hr>
             <h3 class="heading">Order Summary:</h3>
-            <p><span class="bold">Order Number: </span>32133<?php /* {{-- $ --}} */ ?></p>
+            <p><span class="bold">Order Number: </span>{{$order_id}}</p>
             <div class="table-wrapper">
                 <table>
                     <tbody>
@@ -147,22 +148,16 @@
                             <th>Quantity</th>
                             <th>Price</th>
                         </tr>
-                        <tr>
-                            <td>Rays Wheels TE37</td>
-                            <td>TE37V-PRO</td>
-                            <td>Silver</td>
-                            <td>15inch</td>
-                            <td>4</td>
-                            <td>PHP 42,000.32</td>
-                        </tr>
-                        <tr>
-                            <td>Rays Wheels TE37</td>
-                            <td>TE37V-PRO</td>
-                            <td>Silver</td>
-                            <td>15inch</td>
-                            <td>4</td>
-                            <td>PHP 42,000.32</td>
-                        </tr>
+                        @foreach ($orderDetails['orders_products'] as $order)
+                            <tr bgcolor="#f9f9f9">
+                                <td>{{ $order['product_name'] }}</td>
+                                <td>{{ $order['product_code'] }}</td>
+                                <td>{{ $order['product_size'] }}</td>
+                                <td>{{ $order['product_color'] }}</td>
+                                <td>{{ $order['product_qty'] }}</td>
+                                <td>{{ $order['product_price'] }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr class="tablefoot">
@@ -171,7 +166,7 @@
                             <td></td>
                             <td></td>
                             <td style="border-left: 1px solid #1f1f22;">Shipping Charges:</td>
-                            <td style="border-right: 1px solid #1f1f22;">PHP - 231.00<?php /* {{ $orderDetails['shipping_charges'] }} */ ?></td>
+                            <td style="border-right: 1px solid #1f1f22;">PHP {{ $orderDetails['shipping_charges'] }}</td>
                         </tr>
                         <tr class="tablefoot">
                             <td></td>
@@ -179,7 +174,13 @@
                             <td></td>
                             <td></td>
                             <td style="border-left: 1px solid #1f1f22;">Coupon Discount:</td>
-                            <td style="border-right: 1px solid #1f1f22;">PHP - 0<?php /* {{ $orderDetails['coupon_amount'] }} */ ?></td>
+                            <td style="border-right: 1px solid #1f1f22;">PHP 
+                                @if ($orderDetails['coupon_amount'] > 0)
+                                    {{ $orderDetails['coupon_amount'] }}
+                                @else
+                                    0
+                                @endif
+                            </td>
                         </tr>
                         <tr class="tablefoot grandtotal">
                             <td></td>
@@ -187,7 +188,7 @@
                             <td></td>
                             <td></td>
                             <td style="border-left: 1px solid #1f1f22; background: #1f1f22; color: white">Grand Total:</td>
-                            <td style="border-right: 1px solid #1f1f22; background: #1f1f22; color: white">PHP - 42,231.32<?php /* {{ $orderDetails['grand_total'] }} */ ?></td>
+                            <td style="border-right: 1px solid #1f1f22; background: #1f1f22; color: white">PHP {{ $orderDetails['grand_total'] }}</td>
                         </tr>
                     </tfoot>
 
@@ -198,15 +199,15 @@
         <br>
         <p><span class="bold">Delivery Details:</p>
         <ul>
-            <li>Name: Von Miles Gacutan<?php /* {{-- $ --}} */ ?></li>
-            <li>Address: #325 Sampaguita St., San Pablo, Laguna<?php /* {{-- $ --}} */ ?></li>
-            <li>Phone: +63 943 321 5412<?php /* {{-- $ --}} */ ?></li>
-            <li>Email: vonmiles@gmail.com<?php /* {{-- $ --}} */ ?></li>
+            <li>Name: {{ $orderDetails['name'] }}</li>
+            <li>Address: {{ $orderDetails['address'] }}, {{ $orderDetails['city'] }}, {{ $orderDetails['state'] }}, {{ $orderDetails['country'] }}, {{ $orderDetails['pincode'] }}</li>
+            <li>Phone: {{ $orderDetails['mobile'] }}</li>
+            <li>Email: {{ $email }}</li>
         </ul>
         <hr>
     
         <br>
-        <p>We're sorry to see this order go, but we home to serve you again soon. If there's anything we can do to assist or improve your experience, please don't hesitate to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
+        <p>We're sorry to see this order go, but we hope to serve you again soon. If there's anything we can do to assist or improve your experience, please don't hesitate to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
         
 
         <br>
@@ -223,69 +224,6 @@
 
 
 
-    <?php /*
-        <div>
-            <table style="width: 700px">
-                <tr><td>&nbsp;</td></tr>
-                <tr><td><img src="{{ asset('front/images/main-logo/main-logo.png') }}"></td></tr>
-                <tr><td>&nbsp;</td></tr>
-                <tr><td>Hello {{ $name }}</td></tr>
-                <tr><td>&nbsp;<br></td></tr>
-                <tr><td>Your Order #{{ $order_id }} status has been updated to {{ $order_status }}</td></tr>
-                <tr><td>&nbsp;</td></tr>
-                <tr><td>For reason: {{$reason}}</td></tr>
-                <tr><td>Your Order details are as below:</td></tr>
-                <tr><td>&nbsp;</td></tr>
-                <tr><td>
-                    <table style="width: 95%" cellpadding="5" cellspacing="5" bgcolor="#f7f4f4">
-                        <tr bgcolor="#cccccc">
-                            <td>Product Name</td>
-                            <td>Product Code</td>
-                            <td>Product Size</td>
-                            <td>Product Color</td>
-                            <td>Product Quantity</td>
-                            <td>Product Price</td>
-                        </tr>
-                        @foreach ($orderDetails['orders_products'] as $order)
-                            <tr bgcolor="#f9f9f9">
-                                <td>{{ $order['product_name'] }}</td>
-                                <td>{{ $order['product_code'] }}</td>
-                                <td>{{ $order['product_size'] }}</td>
-                                <td>{{ $order['product_color'] }}</td>
-                                <td>{{ $order['product_qty'] }}</td>
-                                <td>{{ $order['product_price'] }}</td>
-                            </tr>
-                        @endforeach
-                        <tr>
-                            <td colspan="5" align="right">Shipping Charges</td>
-                            <td>PHP {{ $orderDetails['shipping_charges'] }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="5" align="right">Coupon Discount</td>
-                            <td>
-                                PHP
-                                @if ($orderDetails['coupon_amount'] > 0)
-                                    {{ $orderDetails['coupon_amount'] }}
-                                @else
-                                    0
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="5" align="right">Grand Total</td>
-                            <td>PHP {{ $orderDetails['grand_total'] }}</td>
-                        </tr>
-                    </table>
-                </td></tr>
-                <tr><td>&nbsp;</td></tr>
-                <tr><td>&nbsp;</td></tr>
-                <tr><td>For any queries, you can contact us at <a href="mailto:info@kapiton.com">info@kapiton.com</a></td></tr>
-                <tr><td>&nbsp;</td></tr>
-                <tr><td>Regards,<br>Team Kapiton</td></tr>
-                <tr><td>&nbsp;</td></tr>
-            </table>
-        </div>
-    */ ?>
 
 
     </body>

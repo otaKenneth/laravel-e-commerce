@@ -126,9 +126,9 @@
     <div class="email_template">
         <!--EMAIL SUBJECT: New Order - Order#{{-- $ --}}-->
 
-        <p class="greet">Dear Von's Car Accessories<?php /* {{-- $business_name --}} */ ?>,</p>
+        <p class="greet">Dear {{ $business_name }},</p>
         <p>You have received a new order on Kapiton! Here are the details:</p>
-        <p>You may update your order via our seller center or accessing this direct <a href="#<?php /* seller center link */ ?>">link</a></p>
+        <p>You may update your order via our seller center or accessing this direct <a href="{{ env('APP_SELLER_URL') }}">link</a></p>
         <hr>
             <h3 class="heading">Order Summary:</h3>
             <p><span class="bold">Order Number: </span>32133<?php /* {{-- $ --}} */ ?></p>

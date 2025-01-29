@@ -132,9 +132,8 @@
         @if($order_status == 'Delivered')
         <p>Great news! Your <span class="bold">order#</span>{{ $order_id }} has been delivered to the provided address. We hope you're thrilled with your purchase!</p>
         @elseif($order_status == 'Cancelled')
-        <p>We regret to inform you that <b>order #</b>{{ $order_id }} has been canceled at the customer's request.</p>
-        <p>We understand cancellations can be dissapointing, but we encourage you to continue providing the exceptional service that keeps customer returning to <span class="bold">Kapiton</span>.</p>
-        <p>If you have any questions or require further assistance regarding this cancellation, please don't hesitate to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
+        <p>We want to confirm that <b>order #</b>{{ $order_id }} has been successfully canceled as per your request.</p>
+        <p>If the customer has already made a payment, the refund process will be initiated and the amount will be returned to their chosen payment method within 30 days. Please ensure to keep records of this transaction for your reference.</p>
         <p>Thank you for your understanding and for being valued partner on our platform. We look forward to support your future sales!</p>
         @else
         <p>The Order #{{ $order_id }} status has been updated to {{ $order_status }}.</p>
@@ -207,8 +206,8 @@
         <ul>
             <li>Name: {{ $orderDetails['name'] }}</li>
             <li>Address: {{ $orderDetails['address'] }}, {{ $orderDetails['city'] }}, {{ $orderDetails['state'] }}, {{ $orderDetails['country'] }}, {{ $orderDetails['pincode'] }}</li>
-            <li>Phone: {{ $orderDetails['mobile'] }}<?php /* {{-- $ --}} */ ?></li>
-            <li>Email: {{ $email }}<?php /* {{-- $ --}} */ ?></li>
+            <li>Phone: {{ $orderDetails['mobile'] }}</li>
+            <li>Email: {{ $email }}</li>
         </ul>
         <hr>
         <br>
