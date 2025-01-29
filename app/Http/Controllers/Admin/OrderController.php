@@ -331,7 +331,7 @@ class OrderController extends Controller
     private function paymongoRefundOrder($orderId) {
         $order = \App\Models\Order::find($orderId)->first();
         $payment = \App\Models\Payment::where('order_id', $order->id)->first();
-        $refund = \App\Models\Refunds::where('order_id', $order->id)->where('payment_id', $payment->id)->first();
+        $refund = Refunds::where('order_id', $order->id)->where('payment_id', $payment->id)->first();
         $refundHelper = new \App\Helpers\PaymongoRefundAPIHelper;
         // should create paymongo refund data
         $resp = $refundHelper->set('amount', $payment->amount)->setAmount()

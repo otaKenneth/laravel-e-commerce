@@ -753,9 +753,13 @@ class ProductsController extends Controller
 
 
             // Get Pickup Address
-            array_push($pickupAddresses, $vendor_model->where('id', $item['product']['vendor_id'])->with(['vendorbusinessdetails' => function ($q) {
-                $q->select('vendor_id', 'shop_name', 'shop_mobile', 'lat', 'long')->selectRaw("CONCAT(shop_address, ', ', shop_city, ', ', shop_state, ', ', shop_country, ', ', shop_pincode) AS shop_fulladdress");
-            }])->first()->toArray()['vendorbusinessdetails']);
+            array_push($pickupAddresses, $vendor_model
+                ->where('id', $item['product']['vendor_id'])
+                ->with(['vendorbusinessdetails' => function ($q) {
+                    $q->select('vendor_id', 'shop_name', 'shop_mobile', 'shop_email', 'lat', 'long')->selectRaw("CONCAT(shop_address, ', ', shop_city, ', ', shop_state, ', ', shop_country, ', ', shop_pincode) AS shop_fulladdress");
+                }])->first()
+                ->toArray()['vendorbusinessdetails']
+            );
             
             $product_weight = $item['product']['product_weight'];
             $total_weight = $total_weight + ($product_weight * $item['quantity']);
@@ -880,10 +884,6 @@ class ProductsController extends Controller
                     'success' => false,
                     'message' => $message
                 ]);
-            } else {
-                if ($data['shipping_method'] == 'j&t') {
-                    $data['payment_gateway'] = 'COD';
-                }
             }
 
             // Payment Method Validation
@@ -1064,7 +1064,7 @@ class ProductsController extends Controller
                 // The email message data/variables that will be passed in to the email view
                 $messageData = [
                     'email'        => $email,
-                    'name'         => Auth::user()->name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+                    'name'         => Auth::user()->first_name . " " . Auth::user()->last_name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
                     'order_id'     => $order_id,
                     'orderDetails' => $orderDetails
                 ];
@@ -1132,11 +1132,33 @@ class ProductsController extends Controller
                     $return_respose['status'] = "failed";
                 }
 
+                $email = Auth::user()->email;
+                $messageData = [
+                    'email'        => $email,
+                    'name'         => Auth::user()->name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+                    'order_id'     => $order_id,
+                    'orderDetails' => $orderDetails
+                ];
+                \Illuminate\Support\Facades\Mail::send('emails.order', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order' is the order.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                    $message->to($email)->subject('Order Placed - Kapiton Store');
+                });
+
                 return response()->json($return_respose);
 
                 // iyzico Payment Gateway integration in/with Laravel    
             } else { // if the `payment_gateway` selected by the user is not 'COD', meaning it's like PayPal, Prepaid, ... (in front/products/checkout.blade.php), we send the placing the order confirmation email and SMS after the user makes the payment
-                echo 'Other Prepaid payment methods coming soon';
+                $return_respose['message'] = "Other Prepaid payment methods coming soon";
+            }
+                
+            foreach ($pickupAddresses as $vendor_details) {
+                $messageData['business_name'] = $vendor_details['shop_name'];
+                \Illuminate\Support\Facades\Mail::send('emails.vendor_order_placed', $messageData, function ($message) use ($email, $order_id) { 
+                    // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    
+                    // 'emails.order' is the order.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    
+                    // We pass in all the variables that order.blade.php will use    
+                    // https://www.php.net/manual/en/functions.anonymous.php
+                    $message->to($email)->subject('New Order - Order #' . $order_id);
+                });
             }
 
 
@@ -1145,8 +1167,8 @@ class ProductsController extends Controller
             ]; // redirect to front/products/thanks.blade.php page
         }
 
-        $total_price -= Session::get('couponAmount');
         $sub_total = number_format($total_price, 2);
+        $total_price = $sub_total - Session::get('couponAmount');
         $delivery_fee = $shipping_charges;
         $total_price += $delivery_fee;
         $est_transaction_fee = $total_price * 0.05;

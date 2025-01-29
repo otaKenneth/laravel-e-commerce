@@ -128,18 +128,17 @@
     <div class="email_template">
         <!--EMAIL SUBJECT: Order Cancelled - Order#{{-- $ --}}-->
 
-        <p class="greet">Dear {{ $name }},</p>
-        <p style="margin-bottom: 2px;">Your <span class="bold">order #</span>{{$order_id}} with {{ $business_name }} has been requested for Refund for your reason(s) as below:</p>
-        <p style="background-color: #f0f0f0; border-radius: 5px; padding: 3px 2px;">{{$reason}}</p>
+        <p class="greet">Dear Von Miles Gacutan {{ $name }},</p>
+        <p>We've received your request to cancel <span class="bold">order #</span></span>{{$order_id}} with {{ $business_name }}. The cancellation has been successfully processed.</p>
 
-        <p>Rest assured, your refund will be processed within 30 days and returned to your selected payment method. You'll receive a confirmation email once the refund has been completed.</p>
+        <p>Your refund will be initiated within 30 days and sent back to your chosen payment method. Once the refund is completed, we'll send you a confirmation email.</p>
        
         <hr>
             <h3 class="heading">Order Summary:</h3>
-            <p><span class="bold">Order Number: </span>{{$order_id}}</p>
+            <p><span class="bold">Order Number: </span>{{ $order_id }}</p>
             <div class="table-wrapper">
                 <table>
-                    <tbody>
+                    <thead>
                         <tr class="headtr">
                             <th>Item</th>
                             <th>Product Code</th>
@@ -148,6 +147,8 @@
                             <th>Quantity</th>
                             <th>Price</th>
                         </tr>
+                    </thead>
+                    <tbody>
                         @foreach ($orderDetails['orders_products'] as $order)
                             <tr bgcolor="#f9f9f9">
                                 <td>{{ $order['product_name'] }}</td>
@@ -174,13 +175,7 @@
                             <td></td>
                             <td></td>
                             <td style="border-left: 1px solid #1f1f22;">Coupon Discount:</td>
-                            <td style="border-right: 1px solid #1f1f22;">PHP 
-                                @if ($orderDetails['coupon_amount'] > 0)
-                                    {{ $orderDetails['coupon_amount'] }}
-                                @else
-                                    0
-                                @endif
-                            </td>
+                            <td style="border-right: 1px solid #1f1f22;">PHP {{ $orderDetails['coupon_amount'] }}</td>
                         </tr>
                         <tr class="tablefoot grandtotal">
                             <td></td>
@@ -197,17 +192,9 @@
             </div>
         <hr>
         <br>
-        <p><span class="bold">Delivery Details:</p>
-        <ul>
-            <li>Name: {{ $orderDetails['name'] }}</li>
-            <li>Address: {{ $orderDetails['address'] }}, {{ $orderDetails['city'] }}, {{ $orderDetails['state'] }}, {{ $orderDetails['country'] }}, {{ $orderDetails['pincode'] }}</li>
-            <li>Phone: {{ $orderDetails['mobile'] }}</li>
-            <li>Email: {{ $email }}</li>
-        </ul>
-        <hr>
+      
     
-        <br>
-        <p>We're sorry to see this order go, but we hope to serve you again soon. If there's anything we can do to assist or improve your experience, please don't hesitate to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
+        <p>We're sorry to see this order go, but we home to serve you again soon. If there's anything we can do to assist or improve your experience, please don't hesitate to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
         
 
         <br>
@@ -221,11 +208,6 @@
             <p class="small-text"><a target="_blank" href="https://kapiton.store/">WEBSITE</a><span>|</span><a target="_blank" href="https://www.facebook.com/kapiton.store">FACEBOOK</a><span>|</span><a target="_blank" href="https://www.instagram.com/kapiton.store/">INSTAGRAM</a></p>
         </div>
     </div>
-
-
-
-
-
     </body>
 </html>
    
