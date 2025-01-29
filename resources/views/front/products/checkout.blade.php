@@ -190,6 +190,18 @@
                                                 <b>Secure Payment via PayMongo</b>
                                             </label>
                                         </div>
+                                        <div class="payment-gateway">
+                                            <input
+                                                type="radio"
+                                                id="COD"
+                                                name="payment_gateway"
+                                                value="COD"
+                                                selected
+                                            >
+                                            <label for="COD" style="cursor:pointer;">
+                                                <b>COD</b>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div
@@ -338,12 +350,12 @@
                                     <div class="elementor-widget-container">
                                         <table>
                                             <tr>
-                                                <td>Coupon discount</td>
-                                                <td class="align-right">₱{{number_format(Session::get('couponAmount'), 2)}}</td>
-                                            </tr>
-                                            <tr>
                                                 <td>Sub total</td>
                                                 <td class="align-right">₱{{$sub_total}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Coupon discount</td>
+                                                <td class="align-right">- ₱{{number_format(Session::get('couponAmount'), 2)}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Delivery Fee</td>

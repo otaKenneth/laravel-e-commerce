@@ -134,7 +134,7 @@
             <p><span class="bold">Order Number: </span>32133<?php /* {{-- $ --}} */ ?></p>
             <div class="table-wrapper">
                 <table>
-                    <tbody>
+                    <thead>
                         <tr class="headtr">
                             <th>Item</th>
                             <th>Product Code</th>
@@ -143,22 +143,18 @@
                             <th>Quantity</th>
                             <th>Price</th>
                         </tr>
-                        <tr>
-                            <td>Rays Wheels TE37</td>
-                            <td>TE37V-PRO</td>
-                            <td>Silver</td>
-                            <td>15inch</td>
-                            <td>4</td>
-                            <td>PHP 42,000.32</td>
-                        </tr>
-                        <tr>
-                            <td>Rays Wheels TE37</td>
-                            <td>TE37V-PRO</td>
-                            <td>Silver</td>
-                            <td>15inch</td>
-                            <td>4</td>
-                            <td>PHP 42,000.32</td>
-                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($orderDetails['orders_products'] as $order)
+                            <tr bgcolor="#f9f9f9">
+                                <td>{{ $order['product_name'] }}</td>
+                                <td>{{ $order['product_code'] }}</td>
+                                <td>{{ $order['product_size'] }}</td>
+                                <td>{{ $order['product_color'] }}</td>
+                                <td>{{ $order['product_qty'] }}</td>
+                                <td>{{ $order['product_price'] }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr class="tablefoot">
@@ -167,7 +163,7 @@
                             <td></td>
                             <td></td>
                             <td style="border-left: 1px solid #1f1f22;">Shipping Charges:</td>
-                            <td style="border-right: 1px solid #1f1f22;">PHP - 231.00</td>
+                            <td style="border-right: 1px solid #1f1f22;">PHP {{ $orderDetails['shipping_charges'] }}</td>
                         </tr>
                         <tr class="tablefoot">
                             <td></td>
@@ -175,7 +171,7 @@
                             <td></td>
                             <td></td>
                             <td style="border-left: 1px solid #1f1f22;">Coupon Discount:</td>
-                            <td style="border-right: 1px solid #1f1f22;">PHP - 0</td>
+                            <td style="border-right: 1px solid #1f1f22;">PHP {{ $orderDetails['coupon_amount'] }}</td>
                         </tr>
                         <tr class="tablefoot grandtotal">
                             <td></td>
@@ -183,7 +179,7 @@
                             <td></td>
                             <td></td>
                             <td style="border-left: 1px solid #1f1f22; background: #1f1f22; color: white">Grand Total:</td>
-                            <td style="border-right: 1px solid #1f1f22; background: #1f1f22; color: white">PHP - 42,231.32</td>
+                            <td style="border-right: 1px solid #1f1f22; background: #1f1f22; color: white">PHP {{ $orderDetails['grand_total'] }}</td>
                         </tr>
                     </tfoot>
 
@@ -194,10 +190,10 @@
         <br>
         <p><span class="bold">Delivery Details:</p>
         <ul>
-            <li>Name: Von Miles Gacutan<?php /* {{-- $ --}} */ ?></li>
-            <li>Address: #325 Sampaguita St., San Pablo, Laguna<?php /* {{-- $ --}} */ ?></li>
-            <li>Phone: +63 943 321 5412<?php /* {{-- $ --}} */ ?></li>
-            <li>Email: vonmiles@gmail.com<?php /* {{-- $ --}} */ ?></li>
+            <li>Name: {{ $orderDetails['name'] }}</li>
+            <li>Address: {{ $orderDetails['address'] }}, {{ $orderDetails['city'] }}, {{ $orderDetails['state'] }}, {{ $orderDetails['country'] }}, {{ $orderDetails['pincode'] }}</li>
+            <li>Phone: {{ $orderDetails['mobile'] }}</li>
+            <li>Email: {{ $email }}</li>
         </ul>
         <hr>
         <p>Please ensure the order is prepared and shipped promptly according to the customer's chosen delivery timeline. Don't forget to update the order status through your merchant dashboard once shipped.</p>
@@ -214,21 +210,6 @@
             <p class="small-text"><a target="_blank" href="https://kapiton.store/">WEBSITE</a><span>|</span><a target="_blank" href="https://www.facebook.com/kapiton.store">FACEBOOK</a><span>|</span><a target="_blank" href="https://www.instagram.com/kapiton.store/">INSTAGRAM</a></p>
         </div>
     </div>
-
-    <?php /*
-        <table>
-            <tr><td>Dear {{ $name }},</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>You requested to change your password. New Password is as below:-</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Email: {{ $email }}</td></tr> {{-- $email is passed in from forgotPassword() method in UserController.php --}}
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Password: {{ $password }}</td></tr> {{-- $password is passed in from forgotPassword() method in UserController.php --}}
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Thanks & Regards,</td></tr>
-            <tr><td>Kapiton</td></tr>
-        </table>
-    */ ?>
 
 
     </body>
