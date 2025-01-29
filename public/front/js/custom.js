@@ -705,14 +705,20 @@ $(document).ready(function() {
 
                 
                 if (resp.couponAmount > 0) { // if there's a coupon code submitted and it's valid        // 'couponAmount' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php
-                    $('.couponAmount').text('EGP' + resp.couponAmount); // 'couponAmount' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php    
+                    $('.couponAmount').text(Number(resp.couponAmount).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })); // 'couponAmount' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php    
                 } else {
-                    $('.couponAmount').text('EGP 0');
+                    $('.couponAmount').text('0.00');
                 }
 
                 
                 if (resp.grand_total > 0) { // if there's a coupon code submitted and it's valid        // 'grand_total' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php
-                    $('.grand_total').text('EGP' + resp.grand_total); // 'grand_total' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php    
+                    $('.grand_total').text(Number(resp.grand_total).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })); // 'grand_total' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php    
                 }
             },
             error  : function() { // if the AJAX request is unsuccessful
