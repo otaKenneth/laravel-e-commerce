@@ -1152,6 +1152,9 @@ class ProductsController extends Controller
                 
             foreach ($pickupAddresses as $vendor_details) {
                 $messageData['business_name'] = $vendor_details['shop_name'];
+                $messageData['orderDetails'] = \App\Models\Order::with(['orders_products' => function ($query) use ($vendor_details) {
+                    $query->where('vendor_id', $vendor_details['vendor_id']);
+                }])->where('id', $order_id)->first()->toArray();
                 \Illuminate\Support\Facades\Mail::send('emails.vendor_order_placed', $messageData, function ($message) use ($email, $order_id) { 
                     // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    
                     // 'emails.order' is the order.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    
@@ -1168,7 +1171,7 @@ class ProductsController extends Controller
         }
 
         $sub_total = number_format($total_price, 2);
-        $total_price = $sub_total - Session::get('couponAmount');
+        $total_price -= floatval(Session::get('couponAmount'));
         $delivery_fee = $shipping_charges;
         $total_price += $delivery_fee;
         $est_transaction_fee = $total_price * 0.05;
