@@ -754,7 +754,7 @@ class ProductsController extends Controller
 
             // Get Pickup Address
             array_push($pickupAddresses, $vendor_model->where('id', $item['product']['vendor_id'])->with(['vendorbusinessdetails' => function ($q) {
-                $q->select('vendor_id', 'shop_name', 'shop_mobile', 'lat', 'long')->selectRaw("CONCAT(shop_address, ', ', shop_city, ', ', shop_state, ', ', shop_country, ', ', shop_pincode) AS shop_fulladdress");
+                $q->select('vendor_id', 'shop_name', 'shop_mobile', 'shop_email', 'lat', 'long')->selectRaw("CONCAT(shop_address, ', ', shop_city, ', ', shop_state, ', ', shop_country, ', ', shop_pincode) AS shop_fulladdress");
             }])->first()->toArray()['vendorbusinessdetails']);
 
             $product_weight = $item['product']['product_weight'];
@@ -1069,7 +1069,7 @@ class ProductsController extends Controller
                 // The email message data/variables that will be passed in to the email view
                 $messageData = [
                     'email'        => $email,
-                    'name'         => Auth::user()->name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+                    'name'         => Auth::user()->first_name . " " . Auth::user()->last_name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
                     'order_id'     => $order_id,
                     'orderDetails' => $orderDetails
                 ];
