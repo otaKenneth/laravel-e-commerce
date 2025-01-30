@@ -355,7 +355,7 @@
                                 </div>
                                 @endforeach
                                 <div
-                                    class="elementor-element elementor-element-a05a04e elementor-widget elementor-widget-html"
+                                    class="elementor-element elementor-element-a05a04e elementor-widget elementor-widget-html e-flex e-con"
                                     data-id="a05a04e"
                                     data-element_type="widget"
                                     data-widget_type="html.default"
@@ -365,10 +365,6 @@
                                             <tr>
                                                 <td>Sub total</td>
                                                 <td class="align-right">₱ {{$sub_total}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Coupon discount</td>
-                                                <td class="align-right">- ₱{{number_format(Session::get('couponAmount'), 2)}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Delivery Fee</td>

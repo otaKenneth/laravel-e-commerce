@@ -744,8 +744,8 @@ $(document).ready(function() {
             shipping_charges = 73;
             est_transaction_fee = (parseFloat(total_price) +  (shipping_charges)) * 0.05;
 
-            $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add, #paymentMethodLabel, #paymentMethodList').removeClass('hidden');
-            $('#paymongo').attr('checked', true);
+            $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add').removeClass('hidden');
+            $('#paymongo, #paymongoLabel').attr('disabled', false);
             $('#checkoutBtn').html('PAY NOW');
         }
 
@@ -754,8 +754,9 @@ $(document).ready(function() {
             est_transaction_fee = 0;
 
             $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add').removeClass('hidden');
-            $('#paymentMethodLabel, #paymentMethodList').addClass('hidden');
-            $('#paymongo').attr('checked', false);
+            $('#paymongo').attr('disabled', true).attr('checked', false);
+            $('#paymongoLabel').attr('disabled', true);
+            $('#COD').attr('checked', true);
             $('#checkoutBtn').html('CHECKOUT');
         }
 
@@ -764,9 +765,11 @@ $(document).ready(function() {
             shipping_charges = 0;
             est_transaction_fee = 0;
 
-            $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add, #paymentMethodLabel, #paymentMethodList').addClass('hidden');
+            $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add').addClass('hidden');
             $('#ship-to-different-address-form').removeClass('display-add');
-            $('#paymongo').attr('checked', false);
+            $('#paymongo').attr('disabled', true).attr('checked', false);
+            $('#paymongoLabel').attr('disabled', true);
+            $('#COD').attr('checked', true);
             $('#checkoutBtn').html('CHECKOUT');
         }
 
