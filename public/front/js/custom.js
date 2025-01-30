@@ -1,6 +1,6 @@
 // Using jQuery for the website FRONT section:
 
-// We used TWO ways to operate the Dynamic Filters: statically for every filter using jQuery and dynamically from Admin Panel. Here we use the first way (for the 'fabric' filter):    
+// We used TWO ways to operate the Dynamic Filters: statically for every filter using jQuery and dynamically from Admin Panel. Here we use the first way (for the 'fabric' filter):
 // Get all the filter values that the user have checked in the checkboxes <input>-s in filters.blade.php
 function get_filter(class_name) { // get the filter values of a certain filter (e.g. the filter values of the 'fabric' filter which will be an array like    ['cotton', 'polyester', ...]    ) in filters.blade.php
     var filter = []; // get the filter values and store them in the array. Example: for the 'fabric' filter, store 'cotton', 'polyester'
@@ -13,7 +13,7 @@ function get_filter(class_name) { // get the filter values of a certain filter (
     return filter; // filter is an array
 }
 
-// Add a Newsletter Subscriber email HTML Form Submission in front/layout/footer.blade.php when clicking on the Submit button (using an AJAX Request/Call)    
+// Add a Newsletter Subscriber email HTML Form Submission in front/layout/footer.blade.php when clicking on the Submit button (using an AJAX Request/Call)
 function addSubscriber() {
     // alert('test');
 
@@ -33,7 +33,7 @@ function addSubscriber() {
 
 
     $.ajax({
-        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
         url    : '/add-subscriber-email', // check this route in web.php
         type   : 'post',
         data   : {subscriber_email: subscriber_email}, // Sending name/value pairs to server with the AJAX request (AJAX call)
@@ -57,7 +57,7 @@ function addSubscriber() {
 
 // jQuery
 $(document).ready(function() {
-    // Show our Preloader/Loader/Loading Page/Preloading Screen ALL THE TIME FOR TESTING!    
+    // Show our Preloader/Loader/Loading Page/Preloading Screen ALL THE TIME FOR TESTING!
     // $('.loader').show();
 
 
@@ -70,7 +70,7 @@ $(document).ready(function() {
 
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             url    : '/get-product-price', // check this route in web.php
             type   : 'post',
             data   : {size: size, product_id: product_id}, // Sending name/value pairs to server with the AJAX request (AJAX call)
@@ -103,7 +103,7 @@ $(document).ready(function() {
         let form = new FormData(v.target);
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             data   : form, // Sending name/value pairs to server with the AJAX request (AJAX call)
             url    : '/cart/add', // check this route in web.php
             type   : 'post',
@@ -127,7 +127,7 @@ $(document).ready(function() {
 
                 /// $('#appendCartItems').html(resp.view); // 'view' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
 
-                $('#appendHeaderCartItems').html(resp.view); // 'headerview' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php    
+                $('#appendHeaderCartItems').html(resp.view); // 'headerview' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
             },
             error  : function() {
                 alert('Error');
@@ -137,16 +137,16 @@ $(document).ready(function() {
 
     $('#product-detail-add-to-cart-form #add-to-wishlist').click(function (v) {
         let form = new FormData($('#product-detail-add-to-cart-form')[0]);
-        
+
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             data   : form, // Sending name/value pairs to server with the AJAX request (AJAX call)
             url    : '/wishlist/add', // check this route in web.php
             type   : 'post',
             processData: false,
             contentType: false,
             success: function(resp) {
-                
+
                 if (resp.success){
                     $('#wishlist-container').addClass('active');
                 }
@@ -167,7 +167,7 @@ $(document).ready(function() {
         };
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             data   : data, // Sending name/value pairs to server with the AJAX request (AJAX call)
             url    : '/cart/add', // check this route in web.php
             type   : 'post',
@@ -189,7 +189,7 @@ $(document).ready(function() {
 
                 $('#appendCartItems').html(resp.view); // 'view' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
 
-                $('#appendHeaderCartItems').html(resp.headerview); // 'headerview' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php    
+                $('#appendHeaderCartItems').html(resp.headerview); // 'headerview' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
             },
             error  : function() {
                 alert('Error');
@@ -205,7 +205,7 @@ $(document).ready(function() {
         // wishlist/{item}
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             url    : '/user/wishlist/' + data.product_id, // check this route in web.php
             type   : 'delete',
             success: function(resp) {
@@ -228,7 +228,7 @@ $(document).ready(function() {
                 // console.log(resp.view);
                 // console.log(resp.headerview);
 
-                $('#append-wishlist-items').html(resp.view); 
+                $('#append-wishlist-items').html(resp.view);
                 // 'view' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
             },
             error  : function() {
@@ -241,7 +241,7 @@ $(document).ready(function() {
         });
     })
 
-    // Update Cart Item Quantity in front/products/cart_items.blade.php (which is 'include'-ed by front/products/cart.blade.php)     
+    // Update Cart Item Quantity in front/products/cart_items.blade.php (which is 'include'-ed by front/products/cart.blade.php)
     $(document).on('click', '.qty-cart', function() {
         // alert('test');
         if ($(this).hasClass('add')) { // if this clicked <a> tag has the CSS class 'plus-a', this means increase quantity by 1
@@ -268,7 +268,7 @@ $(document).ready(function() {
 
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             data   : {cartid: cartid, qty: new_qty}, // Sending name/value pairs to server with the AJAX request (AJAX call)
             url    : '/cart/update', // check this route in web.php
             type   : 'post',
@@ -284,7 +284,7 @@ $(document).ready(function() {
 
                 $('#appendCartItems').html(resp.view); // 'view' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
 
-                $('#appendHeaderCartItems').html(resp.headerview); // 'headerview' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php    
+                $('#appendHeaderCartItems').html(resp.headerview); // 'headerview' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
             },
             error  : function() {
                 alert('Error');
@@ -294,7 +294,7 @@ $(document).ready(function() {
 
 
 
-    // Delete a Cart Item in front/products/cart_items.blade.php (which is 'include'-ed by front/products/cart.blade.php)     
+    // Delete a Cart Item in front/products/cart_items.blade.php (which is 'include'-ed by front/products/cart.blade.php)
     $(document).on('click', '.deleteCartItem', function() {
         var cartid = $(this).attr('data-cartItemId'); // using Custom HTML Attributes (data-*)
         // alert(cartid);
@@ -304,14 +304,14 @@ $(document).ready(function() {
         var result = confirm('Are you sure you want to delete this Cart Item?'); // confirm() method returns a Boolean
         if (result) { // if user confirms deletion ('true' is return-ed from confirm() method), do the delete AJAX call, if not ('false' is return-ed from confirm() method), don't do anything
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
                 data   : {cartid: cartid}, // Sending name/value pairs to server with the AJAX request (AJAX call)
                 url    : '/cart/delete', // check this route in web.php
                 type   : 'post',
                 success: function(resp) {
                     $('.totalCartItems').html(resp.totalCartItems); // totalCartItems() function is in our custom Helpers/Helper.php file that we have registered in 'composer.json' file    // We created the CSS class 'totalCartItems' in front/layout/header.blade.php to use it in front/js/custom.js to update the total cart items via AJAX, because in pages that we originally use AJAX to update the cart items (such as when we delete a cart item in http://127.0.0.1:8000/cart using AJAX), the number doesn't change in the header automatically because AJAX is already used and no page reload/refresh has occurred
                     $('#appendCartItems').html(resp.view); // 'view' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
-                    $('#appendHeaderCartItems').html(resp.headerview); // 'headerview' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php    
+                    $('#appendHeaderCartItems').html(resp.headerview); // 'headerview' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
                 },
                 error  : function() {
                     alert('Error');
@@ -324,16 +324,16 @@ $(document).ready(function() {
 
     // Show our Preloader/Loader/Loading Page/Preloading Screen while the placing order <form> is submitted using the    id="placeOrder"    HTML attribute in front/products/checkout.blade.php
     $(document).on('click', '#placeOrder', function() {
-        // Show our Preloader/Loader/Loading Page/Preloading Screen while the <form> is submitted    
+        // Show our Preloader/Loader/Loading Page/Preloading Screen while the <form> is submitted
         $('.loader').show();
     });
 
 
 
-    // User Registration <form> submission (in front/users/login_register.blade.php)    
+    // User Registration <form> submission (in front/users/login_register.blade.php)
     $('#registerForm').submit(function() { // When the registration <form> is submitted
 
-        // Show our Preloader/Loader/Loading Page/Preloading Screen while the <form> is submitted    
+        // Show our Preloader/Loader/Loading Page/Preloading Screen while the <form> is submitted
         $('.loader').show();
 
 
@@ -345,15 +345,15 @@ $(document).ready(function() {
 
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             url    : '/user/register', // check this route in web.php
             type   : 'POST',
             data   : formdata, // Sending name/value pairs to server with the AJAX request (AJAX call)
             success: function(resp) { // if the AJAX request is successful
                 // Showing Validation Errors in the view (from the backend/server response of our AJAX request):
-                
+
                 if (resp.type == 'error') { // if there're Validation Errors (login fails), show the Validation Error Messages (each of them under its respective <input> field)    // 'type' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the userRegister() method in Front/UserController.php
-                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when there's an error    
+                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when there's an error
                     $('.loader').hide();
 
 
@@ -377,7 +377,7 @@ $(document).ready(function() {
                     });
 
                 } else if (resp.type == 'success') { // if there're no validation errors (login is successful), redirect to the Cart page    // 'type' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the userRegister() method in Front/UserController.php
-                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'    
+                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'
                     $('.loader').hide();
 
                     $('#e-success-modal').modal('toggle');
@@ -397,7 +397,7 @@ $(document).ready(function() {
 
 
 
-    // User Login <form> submission (in front/users/login_register.blade.php)    
+    // User Login <form> submission (in front/users/login_register.blade.php)
     $('#loginForm').submit(function() { // When the login <form> is submitted
         var formdata = $(this).serialize(); // serialize() method comes in handy when submitting an HTML Form using an AJAX request / Ajax call, as it collects all the name/value pairs from the HTML Form input fields like: <input>, <textarea>, <select><option>, ... HTML elements of the <form> (instead of the heavy work of assigning an identifier/handle for every <input> and <textarea>, ... using an HTML 'id' or CSS 'class', and then getting the value for every one of them like this:    $('#username).val();    )    // serialize() jQuery method: https://www.w3schools.com/jquery/ajax_serialize.asp
 
@@ -406,7 +406,7 @@ $(document).ready(function() {
 
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             url    : '/user/login', // check this route in web.php
             type   : 'POST',
             data   : formdata, // Sending name/value pairs to server with the AJAX request (AJAX call)
@@ -456,10 +456,10 @@ $(document).ready(function() {
 
 
 
-    // User Forgot Password Functionality (this route is accessed from the <a> tag in front/users/login_register.blade.php through a 'GET' request, and through a 'POST' request when the HTML Form is submitted in front/users/forgot_password.blade.php))    
+    // User Forgot Password Functionality (this route is accessed from the <a> tag in front/users/login_register.blade.php through a 'GET' request, and through a 'POST' request when the HTML Form is submitted in front/users/forgot_password.blade.php))
     $('#forgotForm').submit(function() { // When the forgot password <form> (in front/users/forgot_password.blade.php) is submitted
 
-        // Show our Preloader/Loader/Loading Page/Preloading Screen while the <form> is submitted    
+        // Show our Preloader/Loader/Loading Page/Preloading Screen while the <form> is submitted
         $('.loader').show();
 
 
@@ -471,15 +471,15 @@ $(document).ready(function() {
 
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             url    : '/user/forgot-password', // check this route in web.php
             type   : 'POST',
             data   : formdata, // Sending name/value pairs to server with the AJAX request (AJAX call)
             success: function(resp) { // if the AJAX request is successful
                 // Showing Validation Errors in the view (from the backend/server response of our AJAX request):
-                
+
                 if (resp.type == 'error') { // if there're Validation Errors (login fails), show the Validation Error Messages (each of them under its respective <input> field)    // 'type' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the userRegister() method in Front/UserController.php
-                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when there's an error    
+                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when there's an error
                     $('.loader').hide();
 
 
@@ -501,7 +501,7 @@ $(document).ready(function() {
                     });
 
                 } else if (resp.type == 'success') { // if there're no validation errors (login is successful), redirect to the Cart page    // 'type' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the userRegister() method in Front/UserController.php
-                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'    
+                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'
                     $('.loader').hide();
 
                     $('#e-success-modal').modal('toggle');
@@ -519,10 +519,10 @@ $(document).ready(function() {
 
 
 
-    // User Update Details HTML Form submission (in front/users/user_account.blade.php)    
+    // User Update Details HTML Form submission (in front/users/user_account.blade.php)
     $('#accountForm').submit(function() { // When the registration <form> is submitted
 
-        // Show our Preloader/Loader/Loading Page/Preloading Screen while the <form> is submitted    
+        // Show our Preloader/Loader/Loading Page/Preloading Screen while the <form> is submitted
         $('.loader').show();
 
         var formdata = $(this).serialize(); // serialize() method comes in handy when submitting an HTML Form using an AJAX request / Ajax call, as it collects all the name/value pairs from the HTML Form input fields like: <input>, <textarea>, <select><option>, ... HTML elements of the <form> (instead of the heavy work of assigning an identifier/handle for every <input> and <textarea>, ... using an HTML 'id' or CSS 'class', and then getting the value for every one of them like this:    $('#username).val();    )    // serialize() jQuery method: https://www.w3schools.com/jquery/ajax_serialize.asp
@@ -532,37 +532,37 @@ $(document).ready(function() {
 
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             url    : '/user/account', // check this route in web.php
             type   : 'POST',
             data   : formdata, // Sending name/value pairs to server with the AJAX request (AJAX call)
             success: function(resp) { // if the AJAX request is successful
                 // Showing Validation Errors in the view (from the backend/server response of our AJAX request):
                 if (resp.type == 'error') { // if there're Validation Errors (login fails), show the Validation Error Messages (each of them under its respective <input> field)    // 'type' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the userAccount() method in Front/UserController.php
-                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when there's an error    
+                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when there's an error
                     $('.loader').hide();
 
 
                     // Note: in HTML in front/users/user_account.blade.php, to conveniently display the errors by jQuery loop, the pattern must be like: account-x (e.g. account-mobile, regitster-email, ... in order for the jQuery loop to work. And x must be identical to the 'name' HTML attributes (e.g. the <input> with the    name='mobile'    HTML attribute must have a <p> with an id HTML attribute    id="account-mobile"    ) so that when the vaildation errors array are sent as a response to the AJAX request, they could conveniently/easily handled by the jQuery $.each() loop)
                     var errorList = '<ul>'; // Initialize error list outside the loop
-                    $.each(resp.errors, function(i, error) { 
+                    $.each(resp.errors, function(i, error) {
                         errorList += '<li>' + error + '</li>'; // Append each error message to the list
                     });
 
                     errorList += '</ul>'; // Close the list after all errors have been added
 
-                    $('#account-error').attr('style', 'color: red; display: flex'); 
-                    $('#account-error').html(errorList); 
+                    $('#account-error').attr('style', 'color: red; display: flex');
+                    $('#account-error').html(errorList);
 
                     setTimeout(function() {
                         $('#account-error').css({
                             'display': 'none'
                         });
                     }, 3000);
-                    
+
 
                 } else if (resp.type == 'success') { // if there're no validation errors (login is successful), redirect to the Cart page    // 'type' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the userAccount() method in Front/UserController.php
-                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'    
+                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'
                     $('.loader').hide();
 
 
@@ -587,10 +587,10 @@ $(document).ready(function() {
 
 
 
-    // User Update Password HTML Form submission (in front/users/user_account.blade.php)    
+    // User Update Password HTML Form submission (in front/users/user_account.blade.php)
     $('#passwordForm').submit(function() { // When the registration <form> is submitted
 
-        // Show our Preloader/Loader/Loading Page/Preloading Screen while the <form> is submitted    
+        // Show our Preloader/Loader/Loading Page/Preloading Screen while the <form> is submitted
         $('.loader').show();
 
 
@@ -601,7 +601,7 @@ $(document).ready(function() {
 
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             url    : '/user/update-password', // check this route in web.php
             type   : 'POST',
             data   : formdata, // Sending name/value pairs to server with the AJAX request (AJAX call)
@@ -610,29 +610,29 @@ $(document).ready(function() {
                 document.getElementById('passwordForm').reset()
                 // Showing Validation Errors in the view (from the backend/server response of our AJAX request):
                 if (resp.type == 'error') { // if there're Validation Errors (login fails), show the Validation Error Messages (each of them under its respective <input> field)    // 'type' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the userAccount() method in Front/UserController.php
-                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when there's an error    
+                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when there's an error
                     $('.loader').hide();
 
                     // Note: in HTML in front/users/user_account.blade.php, to conveniently display the errors by jQuery loop, the pattern must be like: account-x (e.g. account-mobile, regitster-email, ... in order for the jQuery loop to work. And x must be identical to the 'name' HTML attributes (e.g. the <input> with the    name='mobile'    HTML attribute must have a <p> with an id HTML attribute    id="account-mobile"    ) so that when the vaildation errors array are sent as a response to the AJAX request, they could conveniently/easily handled by the jQuery $.each() loop)
                     var errorList = '<ul>'; // Initialize error list outside the loop
-                    $.each(resp.errors, function(i, error) { 
+                    $.each(resp.errors, function(i, error) {
                         errorList += '<li>' + error + '</li>'; // Append each error message to the list
                     });
 
                     errorList += '</ul>'; // Close the list after all errors have been added
 
-                    $('#password-error').attr('style', 'color: red; display: flex'); 
-                    $('#password-error').html(errorList); 
+                    $('#password-error').attr('style', 'color: red; display: flex');
+                    $('#password-error').html(errorList);
 
                     setTimeout(function() {
                         $('#password-error').css({
                             'display': 'none'
                         });
                     }, 3000);
-                 
+
 
                 } else if (resp.type == 'incorrect') { // if the entered current password is incorrect/wrong    // 'type' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the userUpdatePassword() method in Front/UserController.php
-                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'    
+                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'
                     $('.loader').hide();
 
                     $('#password-error-current').attr('style', 'color: red; display: flex'); // I already did this in the HTML page in the <p> tags in the HTML in front/users/user_account.blade.php (    <p id="password-name" style="color: red"></p>    )    // This is the same as:    $('#password-' + i).css('color', 'red');    // Change the CSS color of the <p> tags
@@ -646,7 +646,7 @@ $(document).ready(function() {
                     }, 3000);
 
                 } else if (resp.type == 'success') { // if there're no validation errors (login is successful), redirect to the Cart page    // 'type' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the userAccount() method in Front/UserController.php
-                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'    
+                    // Hide our Preloader/Loader/Loading Page/Preloading Screen when the response is 'success'
                     $('.loader').hide();
 
                     $('#password-success').attr('style', 'color: green; display: flex'); // I already did this in the HTML page in the <p> tags in the HTML in front/users/user_account.blade.php (    <p id="password-name" style="color: red"></p>    )    // This is the same as:    $('#password-' + i).css('color', 'green');    // Change the CSS color of the <p> tags
@@ -668,7 +668,7 @@ $(document).ready(function() {
 
 
 
-    // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission in front/products/cart_items.blade.php    
+    // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission in front/products/cart_items.blade.php
     // Note: For Coupons, user must be logged in (authenticated) to be able to redeem them. Both 'admins' and 'vendors' can add Coupons. Coupons added by 'vendor' will be available for their products ONLY, but ones added by 'admins' will be available for ALL products.
     $('#applyCoupon').submit(function() { // When the Coupon <form> is submitted
         var user = $(this).attr('user');
@@ -688,7 +688,7 @@ $(document).ready(function() {
 
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             url    : '/apply-coupon', // check this route in web.php
             type   : 'post',
             data   : {code: code}, // Sending name/value pairs to server with the AJAX request (AJAX call)
@@ -698,27 +698,27 @@ $(document).ready(function() {
                 if (resp.message != '') {
                     alert(resp.message);
                 }
-    
+
                 $('.totalCartItems').html(resp.totalCartItems); // totalCartItems() function is in our custom Helpers/Helper.php file that we have registered in 'composer.json' file    // We created the CSS class 'totalCartItems' in front/layout/header.blade.php to use it in front/js/custom.js to update the total cart items via AJAX, because in pages that we originally use AJAX to update the cart items (such as when we delete a cart item in http://127.0.0.1:8000/cart using AJAX), the number doesn't change in the header automatically because AJAX is already used and no page reload/refresh has occurred
                 $('#appendCartItems').html(resp.view); // 'view' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php
-                $('#appendHeaderCartItems').html(resp.headerview); // 'headerview' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php    
+                $('#appendHeaderCartItems').html(resp.headerview); // 'headerview' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php
 
-                
+
                 if (resp.couponAmount > 0) { // if there's a coupon code submitted and it's valid        // 'couponAmount' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php
                     $('.couponAmount').text(Number(resp.couponAmount).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
-                    })); // 'couponAmount' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php    
+                    })); // 'couponAmount' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php
                 } else {
                     $('.couponAmount').text('0.00');
                 }
 
-                
+
                 if (resp.grand_total > 0) { // if there's a coupon code submitted and it's valid        // 'grand_total' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php
                     $('.grand_total').text(Number(resp.grand_total).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
-                    })); // 'grand_total' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php    
+                    })); // 'grand_total' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php
                 }
             },
             error  : function() { // if the AJAX request is unsuccessful
@@ -737,16 +737,47 @@ $(document).ready(function() {
         var shipping_charges = $(this).attr('shipping_charges'); // using Custom HTML data attributes (data-*)
         var total_price      = $(this).attr('total_price');      // using Custom HTML data attributes (data-*)
         var coupon_amount    = $(this).attr('coupon_amount');    // using Custom HTML data attributes (data-*)
-        // alert(shipping_charges);
+        var est_transaction_fee = $(this).attr('est_transaction_fee');    // using Custom HTML data attributes (data-*)
         var shipping_method = $('input[name="shipping_method"]:checked').val();
 
-        if (shipping_method == 'j&t') {
-            shipping_charges = '150.00';
+        if (shipping_method == 'lalamove') {
+            shipping_charges = 73;
+            est_transaction_fee = (parseFloat(total_price) +  (shipping_charges)) * 0.05;
         }
-        // Display the Shipping Charges
-        $('.shipping_charges').html('₱ ' + shipping_charges);
 
-        // Show the right Payment Methods radio buttons in front/products/checkout.blade.php based on Getting the results of checking if both the COD and Prepaid PIN codes of the user's Delviery Address exist in our both `cod_pincodes` and `prepaid_pincodes` database tables. Check the checkout() method in Front/ProductsController.php and front/products/checkout.blade.php    
+        if (shipping_method == 'j&t') {
+            shipping_charges = 150;
+            est_transaction_fee = (parseFloat(total_price) +  (shipping_charges)) * 0.05;
+        }
+
+        // If the user chooses the Pickup Shipping Method, the Shipping Charges will be 0.00
+        if (shipping_method == 'pickup') {
+            shipping_charges = 0;
+            est_transaction_fee = 0;
+
+            $('#shipToLabel').addClass('disable');
+            $('#addressesList').addClass('hidden');
+            $('#delivery-addresses').addClass('hidden');
+            $('#ship-to-different-address').addClass('hidden');
+            $('#ship-to-different-address-add').addClass('hidden');
+            $('#ship-to-different-address-form').removeClass('display-add');
+            $('#paymongo').attr('checked', false);
+            $('#checkoutBtn').html('CHECKOUT');
+        } else {
+            $('#shipToLabel').removeClass('hidden');
+            $('#addressesList').removeClass('hidden');
+            $('#delivery-addresses').removeClass('hidden');
+            $('#ship-to-different-address').removeClass('hidden');
+            $('#ship-to-different-address-add').removeClass('hidden');
+            $('#paymongo').attr('checked', true);
+            $('#checkoutBtn').html('PAY NOW');
+        }
+
+        // Display the Shipping Charges
+        $('.shipping_charges').html('₱ ' + shipping_charges.toFixed(2));
+        $('.est_transaction_fee').html('₱ ' + est_transaction_fee.toFixed(2));
+
+        // Show the right Payment Methods radio buttons in front/products/checkout.blade.php based on Getting the results of checking if both the COD and Prepaid PIN codes of the user's Delviery Address exist in our both `cod_pincodes` and `prepaid_pincodes` database tables. Check the checkout() method in Front/ProductsController.php and front/products/checkout.blade.php
         var codpincodeCount     = $(this).attr('codpincodeCount');     // using Custom HTML data attributes (data-*)
         var prepaidpincodeCount = $(this).attr('prepaidpincodeCount'); // using Custom HTML data attributes (data-*)
         if (codpincodeCount > 0) {
@@ -769,14 +800,14 @@ $(document).ready(function() {
         $('.couponAmount').html('₱ ' + coupon_amount);
 
         // Calculate the Grand Total
-        var grand_total = parseFloat(total_price) + parseFloat(shipping_charges) - parseFloat(coupon_amount);
+        var grand_total = parseFloat(total_price) + parseFloat(shipping_charges) + parseFloat(est_transaction_fee) - parseFloat(coupon_amount);
         // alert(grand_total);
 
         // Display the Grand Total
-        $('.grand_total').html('₱ ' + grand_total.toLocaleString('en-US'));
+        $('.grand_total').html('₱ ' + grand_total.toFixed(2).toLocaleString('en-US'));
     });
 
-    // PIN code Availability Check: check if the PIN code of the user's Delivery Address exists in our database (in both `cod_pincodes` and `prepaid_pincodes`) or not in front/products/detail.blade.php via AJAX    
+    // PIN code Availability Check: check if the PIN code of the user's Delivery Address exists in our database (in both `cod_pincodes` and `prepaid_pincodes`) or not in front/products/detail.blade.php via AJAX
     $('#checkPincode').click(function() {
         // alert('test');
 
@@ -791,7 +822,7 @@ $(document).ready(function() {
 
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             url    : '/check-pincode', // check this route in web.php
             type   : 'post',
             data   : {pincode: pincode}, // Sending name/value pairs to server with the AJAX request (AJAX call)
@@ -803,7 +834,7 @@ $(document).ready(function() {
             }
         });
 
-    });    
+    });
 
     /**
      * Submit checkout
@@ -817,7 +848,7 @@ $(document).ready(function() {
         };
 
         $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             url    : '/checkout', // check this route in web.php
             type   : 'post',
             contentType: 'application/json',
@@ -863,7 +894,7 @@ $(document).ready(function() {
                 "country": country
             }
         };
-          
+
 
         $.ajax(settings).done(function (response) {
             if (!response.error) {
@@ -878,7 +909,7 @@ $(document).ready(function() {
 
                     return newOption;
                 });
-                
+
                 $('.address-field[name=state]').append(states);
             }
         });
@@ -903,7 +934,7 @@ $(document).ready(function() {
         $.ajax(settings).done(function (response) {
             if (!response.error) {
                 $('.address-field[name=city] .added-through-api').remove();
-                
+
                 let cities = response.data.map((city) => {
                     let newOption = $('<option>', {
                         value: city,
@@ -913,7 +944,7 @@ $(document).ready(function() {
 
                     return newOption;
                 });
-                
+
                 $('.address-field[name=city]').append(cities);
             }
         });
@@ -921,15 +952,15 @@ $(document).ready(function() {
 
     // Customer Profile edit information
     $("#edit_info").click(function(event) {
-        event.preventDefault(); 
-    
+        event.preventDefault();
+
         // Toggle the class "edit_active" on ".customer_information"
         let profileInfoState = $(".customer_information").hasClass('edit_active');
         $(".customer_information").toggleClass("edit_active");
-    
+
         // Find ".elementor-button-text" inside "#edit_info"
         var buttonText = $("#edit_info .elementor-button-text");
-    
+
         // Check the current text and toggle between "Cancel" and "Edit information"
         if (buttonText.text() === "Edit information") {
             buttonText.text("Cancel");
@@ -944,7 +975,7 @@ $(document).ready(function() {
     });
 
     $(".add-address a").click(function(event) {
-        event.preventDefault(); 
+        event.preventDefault();
         $(".add-address-form").toggleClass("display-add");
     });
 
@@ -1102,9 +1133,9 @@ $(document).ready(function() {
             passfield.attr("type", "password");
         }
     })
-    
-      
-    $('#anonymousCheckbox').on('change', function() {        
+
+
+    $('#anonymousCheckbox').on('change', function() {
         if ($(this).prop('checked')) {
             $('#form-field-field_009055d').val('Anonymous').prop('disabled', true).css('opacity', '0.4');
         } else {
@@ -1140,7 +1171,7 @@ $(document).ready(function() {
     // Page Contents
     $('.management-popup-info a').click((ev) => {
         let popupid = $(ev.currentTarget).data('popup-id');
-        
+
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url: "/getKSContainerContent",
@@ -1271,7 +1302,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         var order_id = $(e.target).closest('.order-container-outer').data('order_id');
-        
+
         var result = confirm(`Are you sure you want to cancel this order ${order_id}?`);
         if (result) {
             $.ajax({

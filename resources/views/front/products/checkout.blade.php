@@ -76,6 +76,7 @@
                         >
                             <div class="e-con-inner">
                                 <div
+                                    id="shipToLabel"
                                     class="elementor-element elementor-element-4d22d4f elementor-widget elementor-widget-heading"
                                     data-id="4d22d4f"
                                     data-element_type="widget"
@@ -86,6 +87,7 @@
                                     </div>
                                 </div>
                                 <div
+                                    id="addressesList"
                                     class="checkout-form elementor-element elementor-element-4605a74 elementor-widget elementor-widget-html"
                                     data-id="4605a74"
                                     data-element_type="widget"
@@ -142,7 +144,7 @@
                                                 id="lalamove"
                                                 name="shipping_method"
                                                 value="lalamove"
-                                                selected
+                                                checked
                                             >
                                             <label for="lalamove" style="cursor:pointer;">
                                                 <strong>Lalamove</strong>
@@ -153,10 +155,19 @@
                                                 id="jnt"
                                                 name="shipping_method"
                                                 value="j&t"
-                                                selected
                                             >
                                             <label for="jnt" style="cursor:pointer;">
                                                 <strong>J&T</strong>
+                                            </label>
+                                            <br />
+                                            <input
+                                                type="radio"
+                                                id="pickup"
+                                                name="shipping_method"
+                                                value="pickup"
+                                            >
+                                            <label for="pickup" style="cursor:pointer;">
+                                                <strong>Pick up at De La Salle University - Manila</strong>
                                             </label>
                                         </div>
                                     </div>
@@ -184,7 +195,7 @@
                                                 id="paymongo"
                                                 name="payment_gateway"
                                                 value="paymongo"
-                                                selected
+                                                checked
                                             >
                                             <label for="paymongo" style="cursor:pointer;">
                                                 <b>Secure Payment via PayMongo</b>
@@ -209,7 +220,7 @@
                                                 <div class="elementor-button-wrapper">
                                                     <button id="checkout-submit-btn" class="elementor-button elementor-button-link elementor-size-sm" type="button">
                                                         <span class="elementor-button-content-wrapper">
-                                                            <span class="elementor-button-text">PAY NOW</span>
+                                                            <span id="checkoutBtn" class="elementor-button-text">PAY NOW</span>
                                                         </span>
                                                     </button>
                                                 </div>
@@ -338,12 +349,8 @@
                                     <div class="elementor-widget-container">
                                         <table>
                                             <tr>
-                                                <td>Coupon discount</td>
-                                                <td class="align-right">₱{{number_format(Session::get('couponAmount'), 2)}}</td>
-                                            </tr>
-                                            <tr>
                                                 <td>Sub total</td>
-                                                <td class="align-right">₱{{$sub_total}}</td>
+                                                <td class="align-right">₱ {{$sub_total}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Delivery Fee</td>
@@ -351,7 +358,11 @@
                                             </tr>
                                             <tr>
                                                 <td>Estimated Transaction Fee</td>
-                                                <td class="align-right">₱ {{number_format($est_transaction_fee, 2)}}</td>
+                                                <td class="est_transaction_fee align-right">₱ {{number_format($est_transaction_fee, 2)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Coupon discount</td>
+                                                <td class="align-right">- ₱ {{number_format(Session::get('couponAmount'), 2)}}</td>
                                             </tr>
                                             <tr>
                                                 <td style="padding-top: 40px">
