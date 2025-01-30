@@ -743,11 +743,20 @@ $(document).ready(function() {
         if (shipping_method == 'lalamove') {
             shipping_charges = 73;
             est_transaction_fee = (parseFloat(total_price) +  (shipping_charges)) * 0.05;
+
+            $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add, #paymentMethodLabel, #paymentMethodList').removeClass('hidden');
+            $('#paymongo').attr('checked', true);
+            $('#checkoutBtn').html('PAY NOW');
         }
 
         if (shipping_method == 'j&t') {
             shipping_charges = 150;
-            est_transaction_fee = (parseFloat(total_price) +  (shipping_charges)) * 0.05;
+            est_transaction_fee = 0;
+
+            $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add').removeClass('hidden');
+            $('#paymentMethodLabel, #paymentMethodList').addClass('hidden');
+            $('#paymongo').attr('checked', false);
+            $('#checkoutBtn').html('CHECKOUT');
         }
 
         // If the user chooses the Pickup Shipping Method, the Shipping Charges will be 0.00
@@ -755,22 +764,10 @@ $(document).ready(function() {
             shipping_charges = 0;
             est_transaction_fee = 0;
 
-            $('#shipToLabel').addClass('disable');
-            $('#addressesList').addClass('hidden');
-            $('#delivery-addresses').addClass('hidden');
-            $('#ship-to-different-address').addClass('hidden');
-            $('#ship-to-different-address-add').addClass('hidden');
+            $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add, #paymentMethodLabel, #paymentMethodList').addClass('hidden');
             $('#ship-to-different-address-form').removeClass('display-add');
             $('#paymongo').attr('checked', false);
             $('#checkoutBtn').html('CHECKOUT');
-        } else {
-            $('#shipToLabel').removeClass('hidden');
-            $('#addressesList').removeClass('hidden');
-            $('#delivery-addresses').removeClass('hidden');
-            $('#ship-to-different-address').removeClass('hidden');
-            $('#ship-to-different-address-add').removeClass('hidden');
-            $('#paymongo').attr('checked', true);
-            $('#checkoutBtn').html('PAY NOW');
         }
 
         // Display the Shipping Charges

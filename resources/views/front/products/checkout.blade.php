@@ -173,6 +173,7 @@
                                     </div>
                                 </div>
                                 <div
+                                    id="paymentMethodLabel"
                                     class="elementor-element elementor-element-79e7f6d elementor-widget elementor-widget-heading"
                                     data-id="79e7f6d"
                                     data-element_type="widget"
@@ -183,6 +184,7 @@
                                     </div>
                                 </div>
                                 <div
+                                    id="paymentMethodList"
                                     class="checkout-form elementor-element elementor-element-52dbad4 elementor-widget elementor-widget-html"
                                     data-id="52dbad4"
                                     data-element_type="widget"
