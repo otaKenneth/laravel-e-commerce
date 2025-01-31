@@ -185,6 +185,10 @@
                                                             <i style="font-size: 25px" class="mdi mdi-bookmark-outline" status="Inactive"></i> {{-- Icons from Skydash Admin Panel Template --}}
                                                         </a>
                                                     @endif
+
+                                                    <a title="Delete Attribute" href="JavaScript:void(0)" class="confirmDelete" module="attribute" moduleid="{{ $attribute['id'] }}"> {{-- Check admin/js/custom.js and web.php (routes) --}}
+                                                        <i style="font-size: 25px; color: red" class="mdi mdi-file-excel-box"></i> {{-- Icons from Skydash Admin Panel Template --}}
+                                                    </a>
                                                 </td>
                                             </tr>
                                         @endforeach

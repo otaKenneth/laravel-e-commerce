@@ -519,6 +519,13 @@ class ProductsController extends Controller
         }
     }
 
+    public function deleteAttribute($id)
+    {
+        ProductsAttribute::destroy($id);
+
+        return redirect()->back()->with('success_message', 'Product attribute has been deleted successfully!');
+    }
+
     public function addImages(Request $request, $id) { // $id is the URL Paramter (slug) passed from the URL
         Session::put('page', 'products');
 
