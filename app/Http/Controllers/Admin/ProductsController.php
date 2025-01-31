@@ -18,10 +18,10 @@ class ProductsController extends Controller
         Session::put('page', 'products');
 
 
-        // Modify the last $products variable so that ONLY products that BELONG TO the 'vendor' show up in (not ALL products show up) in products.blade.php, and also make sure that the 'vendor' account is active/enabled/approved (`status` is 1) before they can access the products page    
+        // Modify the last $products variable so that ONLY products that BELONG TO the 'vendor' show up in (not ALL products show up) in products.blade.php, and also make sure that the 'vendor' account is active/enabled/approved (`status` is 1) before they can access the products page
         $adminType = Auth::guard('admin')->user()->type;      // `type`      is the column in `admins` table    // Accessing Specific Guard Instances: https://laravel.com/docs/9.x/authentication#accessing-specific-guard-instances    // Retrieving The Authenticated User and getting their `type`      column in `admins` table    // https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
         $vendor_id = Auth::guard('admin')->user()->vendor_id; // `vendor_id` is the column in `admins` table    // Accessing Specific Guard Instances: https://laravel.com/docs/9.x/authentication#accessing-specific-guard-instances    // Retrieving The Authenticated User and getting their `vendor_id` column in `admins` table    // https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
-        
+
         if ($adminType == 'vendor') { // if the authenticated user (the logged in user) is 'vendor', check his `status`
             $vendorStatus = Auth::guard('admin')->user()->status; // `status` is the column in `admins` table    // Accessing Specific Guard Instances: https://laravel.com/docs/9.x/authentication#accessing-specific-guard-instances    // Retrieving The Authenticated User and getting their `status` column in `admins` table    // https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
             if ($vendorStatus == 0) { // if the 'vendor' is inactive/disabled
@@ -56,7 +56,7 @@ class ProductsController extends Controller
         }
         return view('admin.products.products')->with(compact('products','search_value')); // render products.blade.php page, and pass $products variable to the view
     }
-    
+
     public function updateProductStatus(Request $request) { // Update Product Status using AJAX in products.blade.php
         if ($request->ajax()) { // if the request is coming via an AJAX call
             $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call)
@@ -81,13 +81,13 @@ class ProductsController extends Controller
 
     public function deleteProduct($id) {
         \App\Models\Product::where('id', $id)->delete();
-        
+
         $message = 'Product has been deleted successfully!';
-        
+
         return redirect()->back()->with('success_message', $message);
     }
 
-    public function addEditProduct(Request $request, $id = null) { // If the $id is not passed, this means 'Add a Product', if not, this means 'Edit the Product'    
+    public function addEditProduct(Request $request, $id = null) { // If the $id is not passed, this means 'Add a Product', if not, this means 'Edit the Product'
         // Correcting issues in the Skydash Admin Panel Sidebar using Session
         Session::put('page', 'products');
 
@@ -155,7 +155,7 @@ class ProductsController extends Controller
                                 'width' => 1000,
                                 'height' => 1000,
                             ]
-                        ], // 'large'  images folder 
+                        ], // 'large'  images folder
                         [
                             'path' => 'front/images/product_images/medium/' . $imageName,
                             'size' => [
@@ -175,7 +175,7 @@ class ProductsController extends Controller
                     foreach ($arr_filePaths as $key => $path) {
                         $fileStorageService->storeFile($image_tmp, $path['path'], $path['size']);
                     }
-                
+
                     // Insert the image name in the database table
                     $product->product_image = $imageName;
                 }
@@ -190,7 +190,7 @@ class ProductsController extends Controller
                 if ($video_tmp->isValid()) { // Validating Successful Uploads: https://laravel.com/docs/9.x/requests#validating-successful-uploads
                     // Upload video
                     $extension  = $video_tmp->getClientOriginalExtension();
-                    
+
                     // Generate a new random name for the uploaded video (to avoid that the video might get overwritten if its name is repeated)
                     $videoName = rand() . '.' . $extension; // e.g.    75935.mp4
 
@@ -216,7 +216,7 @@ class ProductsController extends Controller
             $product->brand_id    = $data['brand_id'];
             $product->group_code  = $data['group_code']; // Managing Product Colors (in front/products/detail.blade.php)
 
-            
+
             // Saving the selected filter for a product
             $features = [];
             $productFilters = \App\Models\ProductsFilter::productFilters(); // Get ALL the (enabled/active) Filters
@@ -301,38 +301,38 @@ class ProductsController extends Controller
             if (is_null($id)) {
                 $adminModel = new \App\Models\Admin;
                 $admins_emails = $adminModel->whereIn('type', ['admin', 'superadmin', 'subadmin'])->get()->pluck('email')->toArray();
-    
+
                 $vendorModel = new \App\Models\Vendor;
                 $vendorDetails = $vendorModel->find($product->vendor_id)->first();
-    
+
                 $messageData = [
                     'product_id' => $product->id,
                     'vendor' => $vendorDetails,
                     'product_code' => $product->product_code,
                     'category' => $categoryDetails
                 ];
-    
+
                 \Illuminate\Support\Facades\Mail::send('emails.new_product', $messageData, function ($message) use ($admins_emails) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.vendor_approved' is the vendor_approved.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that vendor_approved.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
                     $message->to($admins_emails)->subject('Product for Review');
                 });
             }
-            
+
             if ($request->hasFile('product_image') && !is_null($product->product_image)) {
                 // Insert the image name in the database table `products_images`
                 $image = new \App\Models\ProductsImage;
-    
+
                 $image->image      = $product->product_image;
                 $image->product_id = $product->id;
                 $image->status     = 1;
-    
+
                 $image->save();
             }
-            
+
             return redirect('admin/products')->with('success_message', $message);
         }
 
 
-        // Get ALL the Sections with their Categories and Subcategories (Get all sections with its categories and subcategories)    // $categories are ALL the `sections` with their (parent) categories (if any (if exist)) and subcategories (if any (if exist))    
+        // Get ALL the Sections with their Categories and Subcategories (Get all sections with its categories and subcategories)    // $categories are ALL the `sections` with their (parent) categories (if any (if exist)) and subcategories (if any (if exist))
         $categories = \App\Models\Section::with('categories')->get()->toArray(); // with('categories') is the relationship method name in the Section.php Model
         // dd($categories);
 
@@ -357,11 +357,11 @@ class ProductsController extends Controller
         return view('admin.products.add_edit_product')->with(compact('title', 'product', 'categories', 'brands', 'breadcrumb'));
     }
 
-    public function deleteProductImage($id) { // AJAX call from admin/js/custom.js    // Delete the product image from BOTH SERVER (FILESYSTEM) & DATABASE    // $id is passed as a Route Parameter    
+    public function deleteProductImage($id) { // AJAX call from admin/js/custom.js    // Delete the product image from BOTH SERVER (FILESYSTEM) & DATABASE    // $id is passed as a Route Parameter
         // Get the product image record stored in the database
         $productImage = \App\Models\Product::select('product_image')->where('id', $id)->first();
         // dd($productImage);
-        
+
         // Get the product image three paths on the server (filesystem) ('small', 'medium' and 'large' folders)
         $small_image_path  = 'front/images/product_images/small/';
         $medium_image_path = 'front/images/product_images/medium/';
@@ -393,11 +393,11 @@ class ProductsController extends Controller
         return redirect()->back()->with('success_message', $message);
     }
 
-    public function deleteProductVideo($id) { // AJAX call from admin/js/custom.js    // Delete the product video from BOTH SERVER (FILESYSTEM) & DATABASE    // $id is passed as a Route Parameter    
+    public function deleteProductVideo($id) { // AJAX call from admin/js/custom.js    // Delete the product video from BOTH SERVER (FILESYSTEM) & DATABASE    // $id is passed as a Route Parameter
         // Get the product video record stored in the database
         $productVideo = \App\Models\Product::select('product_video')->where('id', $id)->first();
         // dd($productVideo);
-        
+
         // Get the product video path on the server (filesystem)
         $product_video_path = 'front/videos/product_videos/';
 
@@ -414,7 +414,7 @@ class ProductsController extends Controller
         return redirect()->back()->with('success_message', $message);
     }
 
-    public function addAttributes(Request $request, \App\Models\Product $product) { // Add/Edit Attributes function    
+    public function addAttributes(Request $request, \App\Models\Product $product) { // Add/Edit Attributes function
         Session::put('page', 'products');
 
         if ($request->isMethod('post')) {
@@ -429,9 +429,9 @@ class ProductsController extends Controller
                 'attribute.*.variant.value.required' => 'Variant Attribute is required.',
                 'attribute.*.variant.value.*.required' => 'Variant Attribute is required.'
             ]);
-    
+
             $data = $request->all();
-    
+
             if (!isset($data['attribute'])) {
                 return back()->with('error', 'No attributes provided');
             }
@@ -443,7 +443,7 @@ class ProductsController extends Controller
                 $attributes_values[1] = [''];
             }
             $attributes_matrix = collect($attributes_values[0])->crossJoin($attributes_values[1]);
-            
+
             if ($product->variants()->whereIn('variant_name', $attributes_variants)->count() == 0) {
                 foreach ($attributes_variants as $attrs_variant_value) {
                     $product->variants()->create([
@@ -451,9 +451,9 @@ class ProductsController extends Controller
                     ]);
                 }
             }
-    
+
             foreach ($attributes_matrix as $key => $attrs_matrix_value) {
-    
+
                 $is_unique = $product->attributes()
                     ->where('color', $attrs_matrix_value['0'])
                     ->where('size', $attrs_matrix_value['1'])
@@ -461,7 +461,7 @@ class ProductsController extends Controller
                 if ($is_unique > 0) {
                     continue;
                 }
-                
+
                 $product->attributes()->create([
                     'sku' => \App\Models\Product::generateSku($product),
                     'color' => Str::title($attrs_matrix_value['0']),
@@ -519,6 +519,13 @@ class ProductsController extends Controller
         }
     }
 
+    public function deleteAttribute($id)
+    {
+        ProductsAttribute::destroy($id);
+
+        return redirect()->back()->with('success_message', 'Product attribute has been deleted successfully!');
+    }
+
     public function addImages(Request $request, $id) { // $id is the URL Paramter (slug) passed from the URL
         Session::put('page', 'products');
 
@@ -557,7 +564,7 @@ class ProductsController extends Controller
                                 'width' => 1000,
                                 'height' => 1000,
                             ]
-                        ], // 'large'  images folder 
+                        ], // 'large'  images folder
                         [
                             'path' => 'front/images/product_images/medium/' . $imageName,
                             'size' => [
@@ -578,7 +585,7 @@ class ProductsController extends Controller
                     foreach ($arr_filePaths as $key => $path) {
                         $fileStorageService->storeFile($image, $path['path'], $path['size']);
                     }
-                
+
                     // Insert the image name in the database table `products_images`
                     $image = new \App\Models\ProductsImage;
 
@@ -618,11 +625,11 @@ class ProductsController extends Controller
         }
     }
 
-    public function deleteImage($id) { // AJAX call from admin/js/custom.js    // Delete the product image from BOTH SERVER (FILESYSTEM) & DATABASE    // $id is passed as a Route Parameter    
+    public function deleteImage($id) { // AJAX call from admin/js/custom.js    // Delete the product image from BOTH SERVER (FILESYSTEM) & DATABASE    // $id is passed as a Route Parameter
         // Get the product image record stored in the database
         $productImage = \App\Models\ProductsImage::select('image')->where('id', $id)->first();
         // dd($productImage);
-        
+
         // Get the product image three paths on the server (filesystem) ('small', 'medium' and 'large' folders)
         $small_image_path  = 'front/images/product_images/small/';
         $medium_image_path = 'front/images/product_images/medium/';

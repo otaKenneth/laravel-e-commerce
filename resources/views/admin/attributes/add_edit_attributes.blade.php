@@ -53,7 +53,7 @@
 
 
 
-                            {{-- Displaying Laravel Validation Errors: https://laravel.com/docs/9.x/validation#quick-displaying-the-validation-errors --}}    
+                            {{-- Displaying Laravel Validation Errors: https://laravel.com/docs/9.x/validation#quick-displaying-the-validation-errors --}}
                             @if ($errors->any())
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
 
@@ -80,12 +80,12 @@
                                     </button>
                                 </div>
                             @endif
-                
-
-                            
 
 
-                            
+
+
+
+
                             <form class="forms-sample" action="{{ url('admin/add-edit-attributes/' . $product['id']) }}" method="post">
                                 @csrf
 
@@ -110,9 +110,9 @@
                                     @endif
                                 </div>
 
-                
 
-                                {{-- Add Remove Input Fields Dynamically using jQuery: https://www.codexworld.com/add-remove-input-fields-dynamically-using-jquery/ --}} 
+
+                                {{-- Add Remove Input Fields Dynamically using jQuery: https://www.codexworld.com/add-remove-input-fields-dynamically-using-jquery/ --}}
                                 {{-- Products attributes add//remove input fields dynamically using jQuery --}}
                                 @php
                                 $variants_cnt = count($product['variants']);
@@ -136,7 +136,7 @@
                             </form>
 
                             <br><br>
-                            
+
                             @if (count($product['variants']) > 0)
                             <h4 class="card-title">Product Attributes</h4>
 
@@ -172,19 +172,22 @@
                                                     <input type="number" name="price[{{$attribute['id']}}]" step="0.01" value="{{ $attribute['price'] }}" required style="width: 130px"> {{-- !! Note the "name" HTML attribute SQUARE BRACKETS [] !! --}}
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="stock[{{$attribute['id']}}]" value="{{ $attribute['stock'] }}" required style="width: 60px"> {{-- !! Note the "name" HTML attribute SQUARE BRACKETS [] !! --}}
+                                                    <input type="number" name="stock[{{$attribute['id']}}]" value="{{ $attribute['stock'] }}" required style="width: 100px"> {{-- !! Note the "name" HTML attribute SQUARE BRACKETS [] !! --}}
                                                 </td>
                                                 <td>
                                                     @if ($attribute['status'] == 1)
                                                         <a class="updateAttributeStatus" id="attribute-{{ $attribute['id'] }}" attribute_id="{{ $attribute['id'] }}" href="javascript:void(0)"> {{-- Using HTML Custom Attributes. Check admin/js/custom.js --}}
                                                             <i style="font-size: 25px" class="mdi mdi-bookmark-check" status="Active"></i> {{-- Icons from Skydash Admin Panel Template --}}
                                                         </a>
-                                                    @else 
+                                                    @else
                                                         {{-- if the admin status is inactive --}}
                                                         <a class="updateAttributeStatus" id="attribute-{{ $attribute['id'] }}" attribute_id="{{ $attribute['id'] }}" href="javascript:void(0)"> {{-- Using HTML Custom Attributes. Check admin/js/custom.js --}}
                                                             <i style="font-size: 25px" class="mdi mdi-bookmark-outline" status="Inactive"></i> {{-- Icons from Skydash Admin Panel Template --}}
                                                         </a>
                                                     @endif
+                                                    <a title="Delete Attribute" href="JavaScript:void(0)" class="confirmDelete" module="attribute" moduleid="{{ $attribute['id'] }}"> {{-- Check admin/js/custom.js and web.php (routes) --}}
+                                                        <i style="font-size: 25px; color: red" class="mdi mdi-file-excel-box"></i> {{-- Icons from Skydash Admin Panel Template --}}
+                                                    </a>
                                                 </td>
                                             </tr>
                                         @endforeach
