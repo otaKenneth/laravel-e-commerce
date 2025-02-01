@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\ProductsAttribute;
-use App\Services\FileStorageService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\ProductsVariant;
+use App\Models\ProductsAttribute;
+use App\Http\Controllers\Controller;
+use App\Services\FileStorageService;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Session;
 
 
 class ProductsController extends Controller
@@ -524,6 +526,17 @@ class ProductsController extends Controller
         ProductsAttribute::destroy($id);
 
         return redirect()->back()->with('success_message', 'Product attribute has been deleted successfully!');
+    }
+    
+    public function updateVariant(Request $request)
+    {
+        $data = $request->all();
+        
+        ProductsVariant::where('id', $data['variant-id'])->update([
+            'variant_name' => $data['new-variant-name']
+        ]);
+            
+        return redirect()->back()->with('success_message', 'Product variant has been updated successfully!');
     }
 
     public function addImages(Request $request, $id) { // $id is the URL Paramter (slug) passed from the URL
