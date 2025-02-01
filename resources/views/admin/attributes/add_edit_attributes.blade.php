@@ -134,9 +134,42 @@
                                 <button type="submit" class="btn btn-primary mr-2">Submit</button>
                                 <button type="reset"  class="btn btn-light">Cancel</button>
                             </form>
-
+                            
                             <br><br>
                             
+                            {{-- Edit Variant name --}}
+                            <div class="accordion" id="variantAccordion">
+                                <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseVariant" aria-expanded="true" aria-controls="collapseVariant">
+                                    Edit Variant
+                                </button>
+                                <br><br>
+                                <div class="card">
+                                    <div id="collapseVariant" class="collapse" aria-labelledby="headerVariant" data-parent="#variantAccordion">
+                                        <div class="card-body">
+                                            <form action="{{ url('admin/update-variant') }}" method="post">
+                                                @csrf
+                                                <div class="form-group row">
+                                                    <div class="col-sm-4">
+                                                        <select id="variant-id" name="variant-id" required>
+                                                            <option value="" selected>Select a Variant</option>
+                                                            @foreach ($product['variants'] as $item)
+                                                                <option value="{{ $item['id'] }}">{{ $item['variant_name'] }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" id="new-variant-name" name="new-variant-name" placeholder="Edit variant name" required>
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Update Variant</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
                             @if (count($product['variants']) > 0)
                             <h4 class="card-title">Product Attributes</h4>
 
