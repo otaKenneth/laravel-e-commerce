@@ -487,8 +487,7 @@
                     class="elementor-element elementor-element-8305131 e-con-full e-flex e-con e-child"
                     data-id="8305131"
                     data-element_type="container"
-                    data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;container_type&quot;:&quot;flex&quot;}"
-                >
+                    data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;container_type&quot;:&quot;flex&quot;}">
                     <div
                         class="elementor-element elementor-element-c850d33 e-con-full e-flex e-con e-child"
                         data-id="c850d33"
@@ -497,27 +496,7 @@
                     >
 
 
-                        @auth
-                        <div
-                            class="elementor-element elementor-element-8b97798 elementor-widget elementor-widget-image"
-                            data-id="8b97798"
-                            data-element_type="widget"
-                            data-widget_type="image.default">
-                            <div class="elementor-widget-container">
-                                <img
-                                    loading="lazy"
-                                    decoding="async"
-                                    width="300"
-                                    height="300"
-                                    src="{{ $getImage('front/images/brand-logos/', 'chatpng2.png') }}"
-                                    class="attachment-large size-large wp-image-423 chat_vendor_btn"
-                                    alt=""
-                                    srcset="{{ $getImage('front/images/brand-logos/', 'chatpng2.png') }} 300w, {{ $getImage('front/images/brand-logos/', 'chatpng2.png') }} 150w"
-                                    sizes="(max-width: 300px) 100vw, 300px"
-                                >
-                            </div>
-                        </div>
-                        @endauth
+                        
 
                         @php
                             $vendor_profile_image = null;
@@ -610,6 +589,29 @@
                         </div>
                     </div>
                 </div>
+
+                @auth
+                    <div
+                        class="chat-with-vendor elementor-element elementor-element-8b97700 elementor-widget elementor-widget-image"
+                        data-id="8b97700"
+                        data-element_type="widget"
+                        data-widget_type="image.default">
+                        <div class="elementor-widget-container chat_vendor_btn">
+                            <span>CHAT WITH VENDOR</span>
+                            <img
+                                loading="lazy"
+                                decoding="async"
+                                width="300"
+                                height="300"
+                                src="{{ $getImage('front/images/brand-logos/', 'chatpngwhite.png') }}"
+                                class="attachment-large size-large wp-image-423"
+                                alt=""
+                                srcset="{{ $getImage('front/images/brand-logos/', 'chatpngwhite.png') }} 300w, {{ $getImage('front/images/brand-logos/', 'chatpngwhite.png') }} 150w"
+                                sizes="(max-width: 300px) 100vw, 300px"
+                            >
+                        </div>
+                    </div>
+                @endauth
 
                 @php $getDiscountPrice = \App\Models\Product::getDiscountPrice($productDetails['id']) @endphp
 
@@ -753,8 +755,16 @@
                                             </button>
                                         </div>
                                         @else
-                                        <div>No Stock</div>
+                                        <div style=" 
+                                            height: 39px;
+                                            display: flex;
+                                            align-items: center;
+                                            margin-right: 10px">
+                                            No Stock
+                                        </div>
                                         @endif
+
+
                                         @if (Auth::check())
                                         <div class="wishlist-btn">
                                             <div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-25 e-form__buttons elementor-md-60">
@@ -767,7 +777,7 @@
                                             </div>
                                         </div>
                                         @endif
-
+                                        
 
 
                                     </div>

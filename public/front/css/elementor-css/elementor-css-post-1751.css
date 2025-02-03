@@ -47,4 +47,13 @@
 	font-display: auto;
 	src: url(./../../fonts/Lexend-Medium.ttf) format('truetype');
 }
+.elementor-1751 .elementor-element.elementor-element-0d99fff .e-con-inner{
+    flex-direction: column-reverse !important;
+	gap: 5px;
+    margin-top: 10px;
+	margin-bottom: 10px;
+}
+.elementor-1751 .elementor-element.elementor-element-70dd1ff p{
+	margin-bottom: 5px;
+}
 /* End Custom Fonts CSS */

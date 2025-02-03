@@ -229,6 +229,7 @@ class OrderController extends Controller
                     return $query->where('id', $order_product->id);
                 }])->toArray(),
                 'order_status' => $order_product->item_status,
+                'business_name' => $vendor->vendorbusinessdetails->business_name,
                 'reason'       => $request->reason,
             ];
 
@@ -244,7 +245,7 @@ class OrderController extends Controller
             array_push($ccEmails, $vendor->vendorbusinessdetails->shop_email);
 
             \Illuminate\Support\Facades\Mail::send('emails.vendor_order_product_refund', $messageData, function ($message) use ($email, $ccEmails) {
-                $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
+                $message->to($email)->subject('Order Request For Refund - ' . env('APP_URL'));
 
                 // Adding CC emails
                 foreach ($ccEmails as $ccEmail) {
