@@ -24,7 +24,7 @@ use App\Helpers\LalamoveAPIBodyHelper;
 class ProductsController extends Controller
 {
     private $lalamoveAPI_Helper;
-    // match() method is used for the HTTP 'GET' requests to render listing.blade.php page and the HTTP 'POST' method for the AJAX request of the Sorting Filter or the HTML Form submission and jQuery for the Sorting Filter WITHOUT AJAX, AND ALSO for submitting the Search Form in listing.blade.php    // e.g.    /men    or    /computers    
+    // match() method is used for the HTTP 'GET' requests to render listing.blade.php page and the HTTP 'POST' method for the AJAX request of the Sorting Filter or the HTML Form submission and jQuery for the Sorting Filter WITHOUT AJAX, AND ALSO for submitting the Search Form in listing.blade.php    // e.g.    /men    or    /computers
     public function listing(Request $request) { // using the Dynamic Routes with the foreach loop
         $type = $request->type;
         $name = $request->name;
@@ -46,16 +46,16 @@ class ProductsController extends Controller
                 case 'search':
                     $result = $this->filter($request->all());
                     break;
-                
+
                 default:
                     # code...
                     break;
             }
-    
+
             // collection, filters, categoryDetails, meta_title, meta_description, meta_keywords
             if (is_array($result)) extract($result);
             else return redirect('/products/collection/all');
-    
+
             $collection = $collection->paginate(12);
             // dd($filters);
             return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords'));
@@ -91,9 +91,9 @@ class ProductsController extends Controller
             'catIds' => $catIds,
             'categoryDetails' => $catDetails
         ];
-        
+
         $meta_title       = "Search {$search_product}";
-        
+
         $meta_descriptions = $collection->get()->pluck('meta_description');
         $meta_description = implode($meta_descriptions->toArray());
 
@@ -103,14 +103,14 @@ class ProductsController extends Controller
         $filters = $this->getAvailableFilters($catDetails, $collection);
         $collection = $this->processFilters($collection, $data);
 
-        return ["collection" => $collection, "filters" => $filters, "categoryDetails" => $categoryDetails, 
+        return ["collection" => $collection, "filters" => $filters, "categoryDetails" => $categoryDetails,
             "meta_title" => $meta_title, "meta_description" => $meta_description, "meta_keywords" => $meta_keywords,
         ];
     }
 
 
 
-    // Render Single Product Detail Page in front/products/detail.blade.php    
+    // Render Single Product Detail Page in front/products/detail.blade.php
     public function detail($id) { // Required Parameters: https://laravel.com/docs/9.x/routing#required-parameters
         $productDetails = \App\Models\Product::with([
             'section', 'category', 'brand', 'attributes' => function($query) { // Constraining Eager Loads: https://laravel.com/docs/9.x/eloquent-relationships#constraining-eager-loads    // Subquery Where Clauses: https://laravel.com/docs/9.x/queries#subquery-where-clauses    // Advanced Subqueries: https://laravel.com/docs/9.x/eloquent#advanced-subqueries    // 'section', 'category', 'brand', 'attributes', 'images', 'vendor' are the relationship method names in Product.php model which are being Eager Loaded (Eager Loading)
@@ -120,9 +120,9 @@ class ProductsController extends Controller
 
 
         $categoryDetails = \App\Models\Category::categoryDetails($productDetails['category']['url']); // to get the Breadcrumb links (which is HTML) to show them in front/products/detail.blade.php
-        
 
-        // Get similar products (or related products) (functionality) by getting other products from THE SAME CATEGORY    
+
+        // Get similar products (or related products) (functionality) by getting other products from THE SAME CATEGORY
         $similarProducts = \App\Models\Product::with('vendor','brand')->where('category_id', $productDetails['category']['id'])->where('id', '!=', $id)->where('admin_type', 'vendor')->limit(4)->inRandomOrder()->get()->toArray(); // where('id', '!=', $id)    means get all similar products (of the same category) EXCEPT (exclude) the currently viewed product (to not be repeated (to prevent repetition))    // limit(4)->inRandomOrder()    means show only 4 similar products but IN RANDOM ORDER
 
 
@@ -160,7 +160,7 @@ class ProductsController extends Controller
 
 
 
-        // Managing Product Colors (in front/products/detail.blade.php)    
+        // Managing Product Colors (in front/products/detail.blade.php)
         // Get Group Code Products `group_code` column in `products` table (get the `group_code` of the product, if exists (if any))
         $groupProducts = array();
         if (!empty($productDetails['group_code'])) { // if the product has a `group_code`
@@ -172,7 +172,7 @@ class ProductsController extends Controller
         }
 
 
-        // Show Ratings & Reviews in front/products/detail.blade.php    
+        // Show Ratings & Reviews in front/products/detail.blade.php
         $ratings = \App\Models\Rating::with('user')->where([ // Eager Loading: https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'user' is the relationship method name in Rating.php model
             'product_id' => $id,
             'status'     => 1
@@ -233,7 +233,7 @@ class ProductsController extends Controller
         $totalStock = \App\Models\ProductsAttribute::where('product_id', $id)->sum('stock'); // sum() the `stock` column of the `products_attributes` table    // sum(): https://laravel.com/docs/9.x/collections#method-sum
 
 
-        // Dynamic SEO (HTML meta tags): Check the HTML <meta> tags and <title> tag in front/layout/layout.blade.php    
+        // Dynamic SEO (HTML meta tags): Check the HTML <meta> tags and <title> tag in front/layout/layout.blade.php
         $meta_title       = $productDetails['meta_title'];
         $meta_description = $productDetails['meta_description'];
         $meta_keywords    = $productDetails['meta_keywords'];
@@ -242,11 +242,11 @@ class ProductsController extends Controller
         return view('front.products.detail')->with(compact('productDetails', 'categoryDetails', 'totalStock', 'similarProducts', 'recentlyViewedProducts', 'groupProducts', 'meta_title', 'meta_description', 'meta_keywords', 'ratings', 'avgRating', 'avgStarRating', 'ratingOneStarCount', 'ratingTwoStarCount', 'ratingThreeStarCount', 'ratingFourStarCount', 'ratingFiveStarCount'));
     }
 
-    // The AJAX call from front/js/custom.js file, to show the the correct related `price` and `stock` depending on the selected `size` (from the `products_attributes` table)) by clicking the size <select> box in front/products/detail.blade.php    
+    // The AJAX call from front/js/custom.js file, to show the the correct related `price` and `stock` depending on the selected `size` (from the `products_attributes` table)) by clicking the size <select> box in front/products/detail.blade.php
     public function getProductPrice(Request $request) {
         if ($request->ajax()) { // if the request is coming via an AJAX call
             $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call)
-            
+
             $getDiscountAttributePrice = Product::getDiscountAttributePrice($data['product_id'], $data['color'], $data['size']); // $data['product_id'] and $data['size'] come from the 'data' object inside the $.ajax() method in front/js/custom.js file
 
 
@@ -254,7 +254,7 @@ class ProductsController extends Controller
         }
     }
 
-    // Show all Vendor products in front/products/vendor_listing.blade.php    // This route is accessed from the <a> HTML element in front/products/vendor_listing.blade.php    
+    // Show all Vendor products in front/products/vendor_listing.blade.php    // This route is accessed from the <a> HTML element in front/products/vendor_listing.blade.php
     public function vendorListing(Vendor $vendor, $data) { // Required Parameters: https://laravel.com/docs/9.x/routing#required-parameters
         // Get vendor shop name
         $getVendorShop = Vendor::getVendorShop($vendor->id);
@@ -263,7 +263,7 @@ class ProductsController extends Controller
         // $collection = Product::with('brand', 'vendor', 'attributes')->where('vendor_id', $vendor->id)->where('status', 1); // Eager Loading (using with() method): https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'brand' is the relationship method name in Product.php model that is being Eager Loaded
 
         $collection = $vendor->products();
-        
+
         $catIds = $vendor->products()->pluck('category_id');
         $catDetails = Category::whereIn('id', $catIds)->where([
             'parent_id' => 0,
@@ -276,35 +276,35 @@ class ProductsController extends Controller
             $catDetails = $catDetails->toArray();
         }
 
-        
+
         $categoryDetails = [
             'catIds' => $catIds,
             'categoryDetails' => $catDetails,
         ];
-        
-        // Dynamic SEO (HTML meta tags): Check the HTML <meta> tags and <title> tag in front/layout/layout.blade.php    
+
+        // Dynamic SEO (HTML meta tags): Check the HTML <meta> tags and <title> tag in front/layout/layout.blade.php
         $meta_title       = "Kapiton {$vendor->name} Products";
         $meta_descriptions = $collection->get()->pluck('meta_description');
         $meta_description = implode($meta_descriptions->toArray());
 
         $meta_keywordss = $collection->get()->pluck('meta_keywords');
         $meta_keywords    = implode($meta_keywordss->toArray());
-        
-        $filters = $this->getAvailableFilters($catDetails, $collection);
-        $collection = $this->processFilters($collection, $data);        
 
-        return ["collection" => $collection, "filters" => $filters, "categoryDetails" => $categoryDetails, 
+        $filters = $this->getAvailableFilters($catDetails, $collection);
+        $collection = $this->processFilters($collection, $data);
+
+        return ["collection" => $collection, "filters" => $filters, "categoryDetails" => $categoryDetails,
             "meta_title" => $meta_title, "meta_description" => $meta_description, "meta_keywords" => $meta_keywords,
         ];
     }
 
-    // Add to Cart <form> submission in front/products/detail.blade.php    
+    // Add to Cart <form> submission in front/products/detail.blade.php
     public function cartAdd(Request $request) {
         if ($request->isMethod('post')) { // if the Add to Cart <form> is submitted
             $data = $request->all();
 
             // Correcting an issue with Coupon Codes when adding an item to the Cart which already has items in it (added before)
-            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart    
+            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart
             Session::forget('couponAmount'); // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
             Session::forget('couponCode');   // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
 
@@ -319,13 +319,13 @@ class ProductsController extends Controller
                     $prod_attribute = ProductsAttribute::where('product_id', $data['product_id'])
                         ->where('color', '=', $data['color'])
                         ->where('size', '=', $data['size'])
-                        ->where('price', '>', '0')->first();  
+                        ->where('price', '>', '0')->first();
                 } else {
                     $prod_attribute = ProductsAttribute::where('product_id', $data['product_id'])
                         ->where('price', '>', '0')->first();
                 }
                 $getProductStock = $prod_attribute->stock;
-                
+
                 $data['color'] = $prod_attribute->color;
                 $data['size'] = $prod_attribute->size;
             } else {
@@ -345,14 +345,14 @@ class ProductsController extends Controller
             }
 
 
-            // Note: If the user is not authenticated/logged in (guest), we'll use their `session_id` to enable users to Add to Cart (in `carts` table) WITHOUT LOGIN, then after that, once the user logins/gets authenticated, we'll use their `user_id` (NOT their #session_id) in `carts` table    // When user logins, their `user_id` gets updated (check userLogin() method in UserController.php)    
+            // Note: If the user is not authenticated/logged in (guest), we'll use their `session_id` to enable users to Add to Cart (in `carts` table) WITHOUT LOGIN, then after that, once the user logins/gets authenticated, we'll use their `user_id` (NOT their #session_id) in `carts` table    // When user logins, their `user_id` gets updated (check userLogin() method in UserController.php)
             // More explanation: We'll use Laravel's default Authentication Guard 'web' Guard (check config/auth.php)
             // Generate a $session_id if it doesn't exist:
             // Generate a session
             $session_id = Session::get('session_id'); // if the $session_id already exists
             if (empty($session_id)) { // if the session is empty (user is not logged in), create a random session id (for the 'Guest' user)    // https://laravel.com/docs/9.x/authentication#ecosystem-overview    // Determining If An Item Exists In The Session: https://laravel.com/docs/9.x/session#determining-if-an-item-exists-in-the-session
                 $session_id = Session::getId(); // Get the current session ID    // https://laravel.com/api/9.x/Illuminate/Contracts/Session/Session.html
-                Session::put('session_id', $session_id);  // Store the current $session_id in the Session of the user    // Storing Data: https://laravel.com/docs/9.x/session#storing-data    
+                Session::put('session_id', $session_id);  // Store the current $session_id in the Session of the user    // Storing Data: https://laravel.com/docs/9.x/session#storing-data
             }
 
             // Get $user_id and $countProducts in two cases. Check if the same product `product_id` with the same `size` already exists (was ordered by the same user depending on `user_id` or `session_id`) in Cart `carts` table in TWO cases: firstly, the user is authenticated/logged in, and secondly, the user is NOT logged in i.e. guest
@@ -370,8 +370,8 @@ class ProductsController extends Controller
 
             } else { // if the user is NOT logged in (guest)
                 // Check if that guest or NOT logged in user has already THE SAME products `product_id` with THE SAME `size` (in `carts` table) in the Cart i.e. the `carts` table    // When user logins, their `user_id` gets updated (check userLogin() method in UserController.php)
-                $user_id = 0; // is the same as    $user_id = null;    // When user logins, their `user_id` gets updated (check userLogin() method in UserController.php)    // this is because that the use is NOT authenticated / NOT logged in i.e. guest 
-                $countProducts = \App\Models\Cart::where([ // We get the count (number) of that specific product `product_id` with that specific `size` to prevent repetition in the `carts` table 
+                $user_id = 0; // is the same as    $user_id = null;    // When user logins, their `user_id` gets updated (check userLogin() method in UserController.php)    // this is because that the use is NOT authenticated / NOT logged in i.e. guest
+                $countProducts = \App\Models\Cart::where([ // We get the count (number) of that specific product `product_id` with that specific `size` to prevent repetition in the `carts` table
                     'session_id' => $session_id, // THAT EXACT NON-authenticated/NOT logged or Guest user (using their `session_id` because they're NOT authenticated/NOT logged in or Guest)
                     'product_id' => $data['product_id'],
                     'color'       => $data['color'],
@@ -416,12 +416,12 @@ class ProductsController extends Controller
         }
     }
 
-    // Render Cart page (front/products/cart.blade.php)    
+    // Render Cart page (front/products/cart.blade.php)
     public function cart() {
-        // Get the Cart Items of a cerain user (using their `user_id` if they're authenticated/logged in or their `session_id` if they're not authenticated/not logged in (guest))    
+        // Get the Cart Items of a cerain user (using their `user_id` if they're authenticated/logged in or their `session_id` if they're not authenticated/not logged in (guest))
         $getCartItems = \App\Models\Cart::getCartItems();
 
-        // Static SEO (HTML meta tags): Check the HTML <meta> tags and <title> tag in front/layout/layout.blade.php    
+        // Static SEO (HTML meta tags): Check the HTML <meta> tags and <title> tag in front/layout/layout.blade.php
         $meta_title       = 'Shopping Cart - Kapiton';
         $meta_keywords    = 'shopping cart, kapiton cart, kapiton e-commerce';
 
@@ -436,13 +436,13 @@ class ProductsController extends Controller
 
 
             // Correcting an issue with Coupon Codes when adding an item to the Cart which already has items in it (added before)
-            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart    
+            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart
             Session::forget('couponAmount'); // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
             Session::forget('couponCode');   // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
-        
 
 
-            // Apply some conditions (and showing them in the view!) before Update-ing the Cart Item Quantity (making sure that the desired quantity is not more than (doesn't exceed) the available `stock` in `products_attributes` table, and that the desired product `size` is not disabled/inactive (`status` is not zero 0) in `products_attributes` table)    
+
+            // Apply some conditions (and showing them in the view!) before Update-ing the Cart Item Quantity (making sure that the desired quantity is not more than (doesn't exceed) the available `stock` in `products_attributes` table, and that the desired product `size` is not disabled/inactive (`status` is not zero 0) in `products_attributes` table)
             // Get user's Cart details
             $cartDetails = \App\Models\Cart::find($data['cartid']); // $data['cartid'] comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
 
@@ -461,7 +461,7 @@ class ProductsController extends Controller
                     'status'     => false,
                     'message'    => 'Product Stock is not available',
                     // We'll use that array key 'view' as a JavaScript 'response' property to render the view (    $('#appendCartItems').html(resp.view);    ). Check front/js/custom.js
-                    'view'       => (String) \Illuminate\Support\Facades\View::make('front.products.cart_items')->with(compact('getCartItems')), // View Responses: https://laravel.com/docs/9.x/responses#view-responses    
+                    'view'       => (String) \Illuminate\Support\Facades\View::make('front.products.cart_items')->with(compact('getCartItems')), // View Responses: https://laravel.com/docs/9.x/responses#view-responses
 
                     // We added this view later (Mini Cart Widget) (separate file)
                     'headerview' => (String) \Illuminate\Support\Facades\View::make('front.layout.header_cart_items')->with(compact('getCartItems')) // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
@@ -503,7 +503,7 @@ class ProductsController extends Controller
 
 
 
-            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart    
+            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart
             Session::forget('couponAmount'); // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
             Session::forget('couponCode');   // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
 
@@ -519,10 +519,10 @@ class ProductsController extends Controller
         }
     }
 
-    // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js    
+    // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
     public function cartDelete(Request $request) {
         if ($request->ajax()) { // if the request is coming via an AJAX call
-            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart    
+            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart
             Session::forget('couponAmount'); // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
             Session::forget('couponCode');   // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
 
@@ -552,13 +552,13 @@ class ProductsController extends Controller
 
 
     // Note: For Coupons module, user must be logged in (authenticated) to be able to redeem them. Both 'admins' and 'vendors' can add Coupons. Coupons added by 'vendor' will be available for their products ONLY, but ones added by 'admins' will be available for ALL products.
-    // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission via AJAX in front/products/cart_items.blade.php, check front/js/custom.js    
+    // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission via AJAX in front/products/cart_items.blade.php, check front/js/custom.js
     public function applyCoupon(Request $request) {
         if ($request->ajax()) { // if the request is coming via an AJAX call
             $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call) (through the 'data' object)
 
 
-            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart    
+            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart
             Session::forget('couponAmount'); // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
             Session::forget('couponCode');   // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
 
@@ -596,7 +596,7 @@ class ProductsController extends Controller
                 // Check if the submitted coupon code is expired
                 $expiry_date  = $couponDetails->expiry_date;
                 $current_date = date('Y-m-d'); // this date format is understandable by MySQL
-                
+
                 if ($expiry_date < $current_date) {
                     $message = 'The coupon is expired!';
                 }
@@ -619,7 +619,7 @@ class ProductsController extends Controller
                 // Check if the submitted coupon code belongs to the correct relevant selected categories and subcategories of the coupon in the Admin Panel (for example, if the coupon is for Smartphones Category, user can't use it while buying T-shirts)
                 // Get the coupon's categories and subcategories (if any)
                 $catArr = explode(',', $couponDetails->categories);
-                
+
                 $total_amount = 0;
 
                 foreach ($getCartItems as $key => $item) {
@@ -627,7 +627,7 @@ class ProductsController extends Controller
                         $message = 'This coupon code selected categories is not for one of the selected products category!';
                     }
 
-                    
+
                     $attrPrice = Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']);
                     $total_amount = $total_amount + ($attrPrice['final_price'] * $item['quantity']);
                 }
@@ -636,7 +636,7 @@ class ProductsController extends Controller
                 // Check if the coupon code submitted by user is not available for that user (in case the coupon is already selected for certain specific users selected by 'admin' or 'vendor' in the Coupons tab in Admin Panel, and it's not available for all users)
                 // Get the coupon's selected users
                 if (isset($couponDetails->users) && !empty($couponDetails->users)) {
-                    $usersArr = explode(',', $couponDetails->users);    
+                    $usersArr = explode(',', $couponDetails->users);
                     // Check if the submitted coupon code is available ONLY for some specific users (from the Coupons tab in Admin Panel in 'Select User (by email):') and check if the coupon is available or not for the user submitting the coupon code
                     if (count($usersArr)) { // if there's at least a one specific selected user for the coupon
                         // Get user ids of all the selected users that the coupon code are available for them
@@ -644,7 +644,7 @@ class ProductsController extends Controller
                             $getUserId = \App\Models\User::select('id')->where('email', $user)->first()->toArray();
                             $usersId[] = $getUserId['id'];
                         }
-    
+
                         foreach ($getCartItems as $item) {
                             if (!in_array($item['user_id'], $usersId)) { // if the user id of one of the products in the Cart doesn't belong to the Coupon's specifically selected users (to check if the submitted coupon code is available to the user submitting it or not)
                                 $message = 'This coupon code is not available for you! Try again with a valid coupon code! (The coupon code is available only for certain selected users!)';
@@ -676,12 +676,12 @@ class ProductsController extends Controller
                         'message'        => $message,
                         // We'll use that array key 'view' as a JavaScript 'response' property to render the view (    $('#appendCartItems').html(resp.view);    ). Check front/js/custom.js
                         'view'           => (String) \Illuminate\Support\Facades\View::make('front.products.cart_items')->with(compact('getCartItems')), // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-                        
+
                         'headerview'     => (String) \Illuminate\Support\Facades\View::make('front.layout.header_cart_items')->with(compact('getCartItems')) // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
                     ]);
 
                 } else { // if the submitted coupon code is correct and passes the previous coupon code validation and passes all the previous if conditions (free of errors)
-                    
+
 
                     // Check if the submitted Coupon code Amount Type is 'Fixed' or 'Percentage'
                     if ($couponDetails->amount_type == 'Fixed') { // if the submitted coupon code Amount Type is 'Fixed'
@@ -718,18 +718,18 @@ class ProductsController extends Controller
 
 
 
-    // Checkout page (using match() method for the 'GET' request for rendering the front/products/checkout.blade.php page or the 'POST' request for the HTML Form submission in the same page) (for submitting the user's Delivery Address and Payment Method))    
+    // Checkout page (using match() method for the 'GET' request for rendering the front/products/checkout.blade.php page or the 'POST' request for the HTML Form submission in the same page) (for submitting the user's Delivery Address and Payment Method))
     public function checkout(Request $request) {
         $this->lalamoveAPI_Helper = new LalamoveAPIBodyHelper;
         $paymongo = new PaymongoAPIHelper;
 
         // Fetch all of the world countries from the database table `countries`
         $countries = \App\Models\Country::where('status', 1)->get()->toArray(); // get the countries which have status = 1 (to ignore the blacklisted countries, in case)
-        
-        // Get the Cart Items of a cerain user (using their `user_id` if they're authenticated/logged in or their `session_id` if they're not authenticated/not logged in (guest))    
+
+        // Get the Cart Items of a cerain user (using their `user_id` if they're authenticated/logged in or their `session_id` if they're not authenticated/not logged in (guest))
         $getCartItems = \App\Models\Cart::getCartItems();
 
-        // If the Cart is empty (If there're no Cart Items), don't allow opening/accessing the Checkout page (checkout.blade.php)    
+        // If the Cart is empty (If there're no Cart Items), don't allow opening/accessing the Checkout page (checkout.blade.php)
         if (count($getCartItems) == 0) {
             $message = 'Shopping Cart is empty! Please add products to your Cart to checkout';
 
@@ -739,7 +739,7 @@ class ProductsController extends Controller
         $vendor_model = new Vendor;
         $pickupAddresses = [];
         $categories = [];
-        // Calculate the total price    
+        // Calculate the total price
         $total_price  = 0;
         $total_weight = 0;
         $total_qty = 0;
@@ -754,9 +754,9 @@ class ProductsController extends Controller
 
             // Get Pickup Address
             array_push($pickupAddresses, $vendor_model->where('id', $item['product']['vendor_id'])->with(['vendorbusinessdetails' => function ($q) {
-                $q->select('vendor_id', 'shop_name', 'shop_mobile', 'lat', 'long')->selectRaw("CONCAT(shop_address, ', ', shop_city, ', ', shop_state, ', ', shop_country, ', ', shop_pincode) AS shop_fulladdress");
+                $q->select('vendor_id', 'shop_name', 'shop_mobile', 'shop_email', 'lat', 'long')->selectRaw("CONCAT(shop_address, ', ', shop_city, ', ', shop_state, ', ', shop_country, ', ', shop_pincode) AS shop_fulladdress");
             }])->first()->toArray()['vendorbusinessdetails']);
-            
+
             $product_weight = $item['product']['product_weight'];
             $total_weight = $total_weight + ($product_weight * $item['quantity']);
         }
@@ -774,7 +774,7 @@ class ProductsController extends Controller
         }
 
         $selectedDeliveryAddress = null; $shipping_charges = 0;
-        // Calculating the Shipping Charges of every one of the user's Delivery Addresses (depending on the 'country' of the Delivery Address)    
+        // Calculating the Shipping Charges of every one of the user's Delivery Addresses (depending on the 'country' of the Delivery Address)
         foreach ($deliveryAddresses as $key => $value) {
             $shippingCharges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $value['country']);
 
@@ -789,11 +789,11 @@ class ProductsController extends Controller
                 if ($key == 0) $shipping_charges = $this->lalamoveAPI_Helper->total_delivery_fee;
             }
 
-            // Checking PIN code availability of BOTH COD and Prepaid PIN codes in BOTH `cod_pincodes` and `prepaid_pincodes` tables    
-            // Check if the COD PIN code of that Delivery Address of the user exists in `cod_pincodes` table    
+            // Checking PIN code availability of BOTH COD and Prepaid PIN codes in BOTH `cod_pincodes` and `prepaid_pincodes` tables
+            // Check if the COD PIN code of that Delivery Address of the user exists in `cod_pincodes` table
             $deliveryAddresses[$key]['codpincodeCount'] = DB::table('cod_pincodes')->where('pincode', $value['pincode'])->count(); // Note that    $value['pincode']    denotes the `pincode` of the `delivery_addresses` table
 
-            // Check if the Prepaid PIN code of that Delivery Address of the user exists in `prepaid_pincodes` table    
+            // Check if the Prepaid PIN code of that Delivery Address of the user exists in `prepaid_pincodes` table
             $deliveryAddresses[$key]['prepaidpincodeCount'] = DB::table('prepaid_pincodes')->where('pincode', $value['pincode'])->count(); // Note that    $value['pincode']    denotes the `pincode` of the `delivery_addresses` table
         }
 
@@ -881,7 +881,7 @@ class ProductsController extends Controller
                     'message' => $message
                 ]);
             } else {
-                if ($data['shipping_method'] == 'j&t') {
+                if (in_array($data['shipping_method'], ['j&t', 'pickup'])) {
                     $data['payment_gateway'] = 'COD';
                 }
             }
@@ -915,13 +915,13 @@ class ProductsController extends Controller
             // Note: For the Orders module, we created two database tables: orders and orders_products tables. The first one holds/stores the main information about the orders of a user (e.g. delivery address, coupon code, shipping, payment method, ...etc), and the second one holds/stores the detailed information about the order (the items/products that are bought by the order and product name, code, color, size, price, ...etc). There is a one-to-many relationship between the two tables where one order can have many order products.
 
 
-            // Now, we'll collect the necessary data to fill in the `orders` and `orders_products` database tables    
+            // Now, we'll collect the necessary data to fill in the `orders` and `orders_products` database tables
 
             // Get the Delivery Address from    $data['address_id']
             $deliveryAddress = \App\Models\DeliveryAddress::where('id', $data['address_id'])->first()->toArray();
             // dd($deliveryAddress);
 
-            
+
             // If the selected `payment_gateway` is 'COD', set the `payment_method` as 'COD' too (and `order_status` is 'New'), otherwise it's always 'prepaid' (and `order_status` is 'Pending')
             if ($data['payment_gateway'] == 'COD') {
                 $payment_method = 'COD';
@@ -933,7 +933,7 @@ class ProductsController extends Controller
             }
 
 
-            // Note: !!DATABASE TRANSACTION!! Firstly, we'll save the order in the `orders` table, then take the newly generated order `id` to use it to fill in the `order_id` column in the `orders_products` table, and fill in the `orders_products` table    
+            // Note: !!DATABASE TRANSACTION!! Firstly, we'll save the order in the `orders` table, then take the newly generated order `id` to use it to fill in the `order_id` column in the `orders_products` table, and fill in the `orders_products` table
             // Database Transactions: https://laravel.com/docs/9.x/database#database-transactions
             DB::beginTransaction();
 
@@ -947,8 +947,13 @@ class ProductsController extends Controller
             }
 
             // Calculate Shipping Charges `shipping_charges`
-            // Get the Shipping Charge based on the chosen Delivery Address    
+            // Get the Shipping Charge based on the chosen Delivery Address
             $shipping_charges += \App\Models\ShippingCharge::getShippingCharges($total_weight, $deliveryAddress['country']);
+
+            // If the Shipping Method is 'Pickup', the Shipping Charges are 0
+            if ($data['shipping_method'] == 'pickup') {
+                $shipping_charges = 0;
+            }
 
             // Grand Total (`grand_total`)
             $grand_total = $total_price + $shipping_charges - Session::get('couponAmount');
@@ -1003,7 +1008,7 @@ class ProductsController extends Controller
                 $cartItem->admin_id        = $getProductDetails['admin_id'];
                 $cartItem->vendor_id       = $getProductDetails['vendor_id'];
 
-                
+
                 if ($getProductDetails['vendor_id'] > 0) { // if the order product's seller is a 'vendor'
                     $vendorCommission = Vendor::getVendorCommission($getProductDetails['vendor_id']);
                     $cartItem->commission  = $vendorCommission;
@@ -1021,7 +1026,7 @@ class ProductsController extends Controller
                 $item['product']['product_price'] = $getDiscountAttributePrice['final_price'];
 
 
-                
+
                 $getProductStock = ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']);
                 if ($item['quantity'] > $getProductStock) { // if the ordered quantity is greater than the existing stock, cancel the order/opertation
                     $message = $getProductDetails['product_name'] . ' with ' . $item['size'] . ' size stock is not available/enough for your order. Please reduce its quantity and try again!';
@@ -1053,10 +1058,10 @@ class ProductsController extends Controller
 
             DB::commit(); // commit the Database Transaction
 
-            // Send placing an order confirmation email to the user    
+            // Send placing an order confirmation email to the user
             // Note: We send placing an order confirmation email and SMS to the user right away (immediately) if the order is "COD", but if the order payment method is like PayPal or any other payment gateway, we send the order confirmation email and SMS after the user makes the payment
             $orderDetails = \App\Models\Order::with('orders_products')->where('id', $order_id)->first()->toArray(); // Eager Loading: https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'orders_products' is the relationship method name in Order.php model
-            
+
             if ($data['payment_gateway'] == 'COD') { // if the `payment_gateway` selected by the user is 'COD' (in front/products/checkout.blade.php), we send the placing the order confirmation email and SMS immediately
                 // Sending the Order confirmation email
                 $email = Auth::user()->email; // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
@@ -1064,7 +1069,7 @@ class ProductsController extends Controller
                 // The email message data/variables that will be passed in to the email view
                 $messageData = [
                     'email'        => $email,
-                    'name'         => Auth::user()->name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+                    'name'         => Auth::user()->first_name . " " . Auth::user()->last_name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
                     'order_id'     => $order_id,
                     'orderDetails' => $orderDetails
                 ];
@@ -1075,7 +1080,7 @@ class ProductsController extends Controller
 
                 /*
                 // Sending the Order confirmation SMS
-                // Send an SMS using an SMS API and cURL    
+                // Send an SMS using an SMS API and cURL
                 $message = 'Dear Customer, your order ' . $order_id . ' has been placed successfully with MultiVendorEcommerceApplication.com.eg. We will inform you once your order is shipped';
                 // $mobile = $data['mobile']; // the user's mobile that they entered while submitting the registration form
                 $mobile = Auth::user()->moblie; // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
@@ -1103,7 +1108,7 @@ class ProductsController extends Controller
                         "phone" => $deliveryAddress['mobile']
                     ])
                     ->createSession();
-                
+
                 // create response for frontend
                 $return_respose = [
                     'success' => false,
@@ -1117,14 +1122,14 @@ class ProductsController extends Controller
                     $payment->order_id       = $order->id; // 'user_id' was stored in Session inside checkout() method in Front/ProductsController.php    // Interacting With The Session: Retrieving Data: https://laravel.com/docs/9.x/session#retrieving-data    // Comes from our website
                     $payment->user_id        = $order->user_id; // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user    // Comes from our website
                     $payment->payment_id     = $resp['data']['reference_number']; // Comes from Paymongo Checkout Session API (i.e. API / backend)    // Comes from PayPal website (i.e. API / backend)
-                    $payment->payer_email    = $order->email;  
-                    $payment->amount         = $order->grand_total; 
+                    $payment->payer_email    = $order->email;
+                    $payment->amount         = $order->grand_total;
                     $payment->currency       = "PHP";
                     $payment->payment_status = "chargeable";
 
                     $payment->save();
                     // ...
-                    
+
                     $return_respose['status'] = "success";
                     $return_respose['data'] = $resp['data'];
                 } else {
@@ -1132,11 +1137,36 @@ class ProductsController extends Controller
                     $return_respose['status'] = "failed";
                 }
 
+                $email = Auth::user()->email;
+                $messageData = [
+                    'email'        => $email,
+                    'name'         => Auth::user()->name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+                    'order_id'     => $order_id,
+                    'orderDetails' => $orderDetails
+                ];
+                \Illuminate\Support\Facades\Mail::send('emails.order', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order' is the order.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                    $message->to($email)->subject('Order Placed - Kapiton Store');
+                });
+
                 return response()->json($return_respose);
 
-                // iyzico Payment Gateway integration in/with Laravel    
+                // iyzico Payment Gateway integration in/with Laravel
             } else { // if the `payment_gateway` selected by the user is not 'COD', meaning it's like PayPal, Prepaid, ... (in front/products/checkout.blade.php), we send the placing the order confirmation email and SMS after the user makes the payment
-                echo 'Other Prepaid payment methods coming soon';
+                $return_respose['message'] = "Other Prepaid payment methods coming soon";
+            }
+
+            foreach ($pickupAddresses as $vendor_details) {
+                $messageData['business_name'] = $vendor_details['shop_name'];
+                $messageData['orderDetails'] = \App\Models\Order::with(['orders_products' => function ($query) use ($vendor_details) {
+                    $query->where('vendor_id', $vendor_details['vendor_id']);
+                }])->where('id', $order_id)->first()->toArray();
+                \Illuminate\Support\Facades\Mail::send('emails.vendor_order_placed', $messageData, function ($message) use ($email, $order_id) {
+                    // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail
+                    // 'emails.order' is the order.blade.php file inside the 'resources/views/emails' folder that will be sent as an email
+                    // We pass in all the variables that order.blade.php will use
+                    // https://www.php.net/manual/en/functions.anonymous.php
+                    $message->to($email)->subject('New Order - Order #' . $order_id);
+                });
             }
 
 
@@ -1145,18 +1175,18 @@ class ProductsController extends Controller
             ]; // redirect to front/products/thanks.blade.php page
         }
 
-        $total_price -= Session::get('couponAmount');
         $sub_total = number_format($total_price, 2);
+        $total_price -= floatval(Session::get('couponAmount'));
         $delivery_fee = $shipping_charges;
         $total_price += $delivery_fee;
-        $est_transaction_fee = $total_price * 0.05;
+        $est_transaction_fee = number_format($total_price * 0.05, 2);
         $total_price += $est_transaction_fee;
         $total_price = number_format($total_price, 2);
-        
+
         return view('front.products.checkout')->with(compact('deliveryAddresses', 'countries', 'getCartItems', 'sub_total', 'delivery_fee', 'total_price', 'est_transaction_fee'));
     }
 
-    // Rendering Thanks page (after placing an order)    
+    // Rendering Thanks page (after placing an order)
     public function thanks() {
         if (Session::has('order_id')) { // if there's an order has been placed, empty the Cart (remove the order (the cart items/products) from `carts`table)    // 'user_id' was stored in Session inside checkout() method in Front/ProductsController.php
             // We empty the Cart after placing the order
@@ -1171,17 +1201,17 @@ class ProductsController extends Controller
 
 
 
-    // PIN code Availability Check: check if the PIN code of the user's Delivery Address exists in our database (in both `cod_pincodes` and `prepaid_pincodes`) or not in front/products/detail.blade.php via AJAX. Check front/js/custom.js    
+    // PIN code Availability Check: check if the PIN code of the user's Delivery Address exists in our database (in both `cod_pincodes` and `prepaid_pincodes`) or not in front/products/detail.blade.php via AJAX. Check front/js/custom.js
     public function checkPincode(Request $request) {
         if ($request->ajax()) { // if the request is coming via an AJAX call
             $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call)
 
 
-            // Checking PIN code availability of BOTH COD and Prepaid PIN codes in BOTH `cod_pincodes` and `prepaid_pincodes` tables    
-            // Check if the COD PIN code of that Delivery Address of the user exists in `cod_pincodes` table    
+            // Checking PIN code availability of BOTH COD and Prepaid PIN codes in BOTH `cod_pincodes` and `prepaid_pincodes` tables
+            // Check if the COD PIN code of that Delivery Address of the user exists in `cod_pincodes` table
             $codPincodeCount = DB::table('cod_pincodes')->where('pincode', $data['pincode'])->count(); // $data['pincode'] comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-    
-            // Check if the Prepaid PIN code of that Delivery Address of the user exists in `prepaid_pincodes` table    
+
+            // Check if the Prepaid PIN code of that Delivery Address of the user exists in `prepaid_pincodes` table
             $prepaidPincodeCount = DB::table('prepaid_pincodes')->where('pincode', $data['pincode'])->count(); // $data['pincode'] comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
 
             // Check if the entered PIN code exists in BOTH `cod_pincodes` and `prepaid_pincodes` tables
@@ -1197,7 +1227,7 @@ class ProductsController extends Controller
         $sectionModel = new \App\Models\Section;
         if ($section !== "all") {
             $sectionCategories = $sectionModel->whereRaw('LOWER(name) = ?', [strtolower($section)])->where('status', 1);
-            
+
             $collection = Product::getProductsBySectionName($section);
         } else {
             $sectionCategories = $sectionModel->where('status', 1);
@@ -1208,7 +1238,7 @@ class ProductsController extends Controller
         if ($sectionCategories->count() > 0) {
             $catIds = Category::whereIn('id', $sectionCategories->get()->pluck('id')->toArray())->get()->pluck('id')->toArray();
             $catDetails = $sectionCategories->with('categories')->get()->toArray();
-            
+
             $categoryDetails = [
                 'catIds' => $catIds,
                 'categoryDetails' => $catDetails
@@ -1218,7 +1248,7 @@ class ProductsController extends Controller
         }
 
         $meta_title       = "Kapiton $section Collection";
-        
+
         $meta_descriptions = $collection->get()->pluck('meta_description');
         $meta_description = implode($meta_descriptions->toArray());
 
@@ -1229,7 +1259,7 @@ class ProductsController extends Controller
 
         $collection = $this->processFilters($collection, $data);
 
-        return ["collection" => $collection, "filters" => $filters, "categoryDetails" => $categoryDetails, 
+        return ["collection" => $collection, "filters" => $filters, "categoryDetails" => $categoryDetails,
             "meta_title" => $meta_title, "meta_description" => $meta_description, "meta_keywords" => $meta_keywords,
         ];
     }
@@ -1267,12 +1297,12 @@ class ProductsController extends Controller
             $filters = $this->getAvailableFilters($categoryDetails['categoryDetails'], $collection);
             $collection = $this->processFilters($collection, $data);
 
-            // Dynamic SEO (HTML meta tags): Check the HTML <meta> tags and <title> tag in front/layout/layout.blade.php    
+            // Dynamic SEO (HTML meta tags): Check the HTML <meta> tags and <title> tag in front/layout/layout.blade.php
             $meta_title       = $categoryDetails['categoryDetails']['meta_title'];
             $meta_description = $categoryDetails['categoryDetails']['meta_description'];
             $meta_keywords    = $categoryDetails['categoryDetails']['meta_keywords'];
 
-            return ["collection" => $collection, "filters" => $filters, "categoryDetails" => $categoryDetails, 
+            return ["collection" => $collection, "filters" => $filters, "categoryDetails" => $categoryDetails,
                 "meta_title" => $meta_title, "meta_description" => $meta_description, "meta_keywords" => $meta_keywords,
             ];
 
@@ -1284,21 +1314,21 @@ class ProductsController extends Controller
     /**
      * Get Available Filters
      * will return available filters depending on section/category/vendor
-     * 
+     *
      * @return array $filters
      */
     private function getAvailableFilters($categoryDetails, $products) {
-        
+
         $selection = $products->select('*')->with(['brand', 'attributes' => function($query) {
             return $query->select('product_id','size');
         }, 'vendor'])->get()->toArray();
-        
+
         $filters = [];
 
         if (isset($categoryDetails['categories']))
             // check for categories
             $filters['categories'] = $categoryDetails['categories'];
-        elseif (isset($categoryDetails['category_name'])) 
+        elseif (isset($categoryDetails['category_name']))
             $filters['categories'] = [$categoryDetails];
         else {
             $temp = collect($categoryDetails)->pluck('categories')->toArray();
@@ -1308,22 +1338,22 @@ class ProductsController extends Controller
         // dd($filters);
         // check for brands
         $filters['brands'] = collect($selection)->pluck('brand.name')->unique()->toArray();
-        
+
         // check for sizes
         $filters['sizes'] = collect($selection)->pluck('attributes.*.size')->flatten()->unique()->toArray();
 
         // check for color
         $filters['color'] = collect($selection)->pluck('product_color')->unique()->toArray();
-        
+
 
         return $filters;
     }
 
     private function old_processFilters($categoryProducts, $data) {
-        // We used TWO ways to OPERATE the Dynamic Filters (on the left side of the listing.blade.php page): statically for every filter using jQuery and dynamically from Admin Panel. Here we use the first way (for the 'fabric' filter only):    // Check front/js/custom.js    
+        // We used TWO ways to OPERATE the Dynamic Filters (on the left side of the listing.blade.php page): statically for every filter using jQuery and dynamically from Admin Panel. Here we use the first way (for the 'fabric' filter only):    // Check front/js/custom.js
             // Note: the checked checkboxes <input> fields will be submitted as an ARRAY because we used SQUARE BRACKETS [] with the "name" HTML attribute in the checkbox <input> field in filters.blade.php e.g.    'fabric' => ['cotton', 'polyester']    , or else, AJAX is used to send the <input> values WITHOUT submitting the <form> at all    // Sidenote: There are TWO ways to submit a <form> to the backed: firstly, the regular one using the <button type="submit">, secondly, using AJAX by sending the "value" attributes of the <input> fields
 
-            // The second way to operate the Dynamic Filters    
+            // The second way to operate the Dynamic Filters
             // Note: the checked checkboxes <input> fields will be submitted as an ARRAY because we used SQUARE BRACKETS [] with the "name" HTML attribute in the checkbox <input> field in filters.blade.php e.g.    'fabric' => ['cotton', 'polyester']    , or else, AJAX is used to send the <input> values WITHOUT submitting the <form> at all    // Sidenote: There are TWO ways to submit a <form> to the backed: firstly, the regular one using the <button type="submit">, secondly, using AJAX by sending the "value" attributes of the <input> fields
             $productFilters = \App\Models\ProductsFilter::productFilters(); // Get all the (enabled/active) Filters    // (Another way to go is using an AJAX call to get the $productFilters!)
             foreach ($productFilters as $key => $filter) {
@@ -1340,7 +1370,7 @@ class ProductsController extends Controller
                 $categoryProducts->whereIn('products.id', $productIds); // `products.id` means that `products` is the table name (means grab the `id` column of the `products` table)
             }
 
-            
+
             // Size, price, color, brand, … are also Dynamic Filters, but won't be managed like the other Dynamic Filters, but we will manage every filter of them from the suitable respective database table, like the 'size' Filter from the `products_attributes` database table, 'color' Filter and `price` Filter from `products` table, 'brand' Filter from `brands` table
             // Second: the 'color' filter (from `products` database table)
             if (isset($data['color']) && !empty($data['color'])) { // coming from the AJAX call in front/js/custom.js    // example:    $data['color'] = 'Large'
@@ -1364,11 +1394,11 @@ class ProductsController extends Controller
 
                 $productIds = array_unique(\Illuminate\Support\Arr::flatten($productIds)); // Arr::flatten(): https://laravel.com/docs/9.x/helpers#method-array-flatten    // We use array_unique() function to eliminate any repeated product ids
                 $categoryProducts->whereIn('products.id', $productIds);
-            }                    
+            }
 
 
 
-            
+
             // Size, price, color, brand, … are also Dynamic Filters, but won't be managed like the other Dynamic Filters, but we will manage every filter of them from the suitable respective database table, like the 'size' Filter from the `products_attributes` database table, 'color' Filter and `price` Filter from `products` table, 'brand' Filter from `brands` table
             // Fourth: the 'brand' filter (from `products` and `brands` database table)
             if (isset($data['brand']) && !empty($data['brand'])) { // coming from the AJAX call in front/js/custom.js    // example:    $data['brand'] = 'Large'
@@ -1383,19 +1413,19 @@ class ProductsController extends Controller
             if (isset($data['color'])) {
                 $collection->orWhereIn('product_color', $data['color']);
             }
-    
+
             if (isset($data['brands'])) {
                 $brandModel = new Brand;
                 $brandIds = $brandModel->select('id')->whereIn('name', $data['brands'])->get()->pluck('id')->toArray();
                 $collection->orWhereIn('brand_id', $brandIds);
             }
-    
+
             if (isset($data['sizes'])) {
                 $prodAttributeModel = new ProductsAttribute;
                 $attributeIds = $prodAttributeModel->whereIn('size', $data['sizes'])->get()->pluck('product_id')->toArray();
                 $collection->orWhereIn('id', $attributeIds);
             }
-    
+
             // features
             $productFilters = ProductsFilter::productFilters(); // Get all the (enabled/active) Filters    // (Another way to go is using an AJAX call to get the $productFilters!)
             foreach ($productFilters as $key => $filter) {
@@ -1428,7 +1458,7 @@ class ProductsController extends Controller
                     case 'rating':
                         $collection->orderBy('ratings');
                         break;
-                    
+
                     default:
                         # code...
                         break;
@@ -1442,7 +1472,7 @@ class ProductsController extends Controller
     public function wishlistAdd(Request $request) {
         if ($request->isMethod('post')) {
             $data = $request->all();
-            
+
             $request->validate([
                 'product_id' => 'required|exists:products,id',
             ]);
@@ -1476,7 +1506,7 @@ class ProductsController extends Controller
                 'success' => true,
                 'message' => 'Product has been added to Wishlist! <a href="/wishlist" style="text-decoration: underline !important">View Wishlist</a>',
             ]);
-    
+
         }
     }
 }

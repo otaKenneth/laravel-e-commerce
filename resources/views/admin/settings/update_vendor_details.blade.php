@@ -160,7 +160,16 @@
                     <div class="col-md-12 col-lg-10 col-xl-6 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
-                                <img width="250" height="250" src="{{ $getImage('front/images/brand-logos/', $vendorDetails['shop_logo']) }}"/>
+                                <style>
+                                    .vendor-image-logo{
+                                        display: block;
+                                        width: 130px;
+                                        aspect-ratio: 1 / 1;
+                                        margin-bottom: 20px;
+                                        border-radius: 10px;
+                                    }
+                                </style>
+                                <img class="vendor-image-logo" width="250" height="250" src="{{ $getImage('front/images/brand-logos/', $vendorDetails['shop_logo']) }}"/>
                                 <h4 class="card-title">Update Vendor Business Information</h4>
 
 

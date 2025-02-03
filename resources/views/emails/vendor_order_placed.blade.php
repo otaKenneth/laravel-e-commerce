@@ -1,4 +1,4 @@
-{{-- This is the order "Update Order Status" by 'admin' email file using Mailtrap --}} {{-- All the variables (like $name, $mobile, $email, ...) used here are passed in from the updateOrderStatus() method in Admin/OrderController.php --}}
+{{-- This is the User Forgot Password E-mail using Mailtrap --}} {{-- All the variables (like $name, $mobile, $email, $code, ...) used here are passed in from the forgotPassword() method in Front/UserController.php --}}
 
 
 
@@ -9,8 +9,6 @@
         <title></title>
     </head>
     <body>
-
-
 
     <style>
         .email_template{
@@ -126,20 +124,17 @@
     </style>
 
     <div class="email_template">
-        <!--EMAIL SUBJECT: Order Cancelled - Order#{{-- $ --}}-->
+        <!--EMAIL SUBJECT: New Order - Order#{{-- $ --}}-->
 
-        <p class="greet">Dear {{ $name }},</p>
-        <p style="margin-bottom: 2px;">Your <span class="bold">order #</span>{{$order_id}} with {{ $business_name }} has been requested for Refund for your reason(s) as below:</p>
-        <p style="background-color: #f0f0f0; border-radius: 5px; padding: 3px 2px;">{{$reason}}</p>
-
-        <p>Rest assured, your refund will be processed within 30 days and returned to your selected payment method. You'll receive a confirmation email once the refund has been completed.</p>
-       
+        <p class="greet">Dear {{ $business_name }},</p>
+        <p>You have received a new order on Kapiton! Here are the details:</p>
+        <p>You may update your order via our seller center or accessing this direct <a href="{{ env('APP_SELLER_URL') }}">link</a></p>
         <hr>
             <h3 class="heading">Order Summary:</h3>
-            <p><span class="bold">Order Number: </span>{{$order_id}}</p>
+            <p><span class="bold">Order Number: </span>32133<?php /* {{-- $ --}} */ ?></p>
             <div class="table-wrapper">
                 <table>
-                    <tbody>
+                    <thead>
                         <tr class="headtr">
                             <th>Item</th>
                             <th>Product Code</th>
@@ -148,6 +143,8 @@
                             <th>Quantity</th>
                             <th>Price</th>
                         </tr>
+                    </thead>
+                    <tbody>
                         @foreach ($orderDetails['orders_products'] as $order)
                             <tr bgcolor="#f9f9f9">
                                 <td>{{ $order['product_name'] }}</td>
@@ -174,13 +171,7 @@
                             <td></td>
                             <td></td>
                             <td style="border-left: 1px solid #1f1f22;">Coupon Discount:</td>
-                            <td style="border-right: 1px solid #1f1f22;">PHP 
-                                @if ($orderDetails['coupon_amount'] > 0)
-                                    {{ $orderDetails['coupon_amount'] }}
-                                @else
-                                    0
-                                @endif
-                            </td>
+                            <td style="border-right: 1px solid #1f1f22;">PHP {{ $orderDetails['coupon_amount'] }}</td>
                         </tr>
                         <tr class="tablefoot grandtotal">
                             <td></td>
@@ -205,11 +196,9 @@
             <li>Email: {{ $email }}</li>
         </ul>
         <hr>
-    
-        <br>
-        <p>We're sorry to see this order go, but we hope to serve you again soon. If there's anything we can do to assist or improve your experience, please don't hesitate to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
+        <p>Please ensure the order is prepared and shipped promptly according to the customer's chosen delivery timeline. Don't forget to update the order status through your merchant dashboard once shipped.</p>
+        <p>For any questions or assistance, feel free to contact our support team at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
         
-
         <br>
         <p>--</p>
         <p class="end">Best Regards,</p>
@@ -223,11 +212,5 @@
     </div>
 
 
-
-
-
     </body>
 </html>
-   
-   
-   

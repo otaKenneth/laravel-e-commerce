@@ -725,6 +725,11 @@ $(document).ready(function() {
 
     // Trigger the change event on page load to set the initial state
     $('#found_us_select').trigger('change');
+    
+    // Edit Variant Name
+    $("#variant-id").on('change', function() {
+        $('#new-variant-name').val($(this).find('option:selected').text());
+    });
 
 }); // End of $(document).ready()
 
@@ -1389,7 +1394,6 @@ $(document).ready(function() {
         DYNAMIC ATTRIBUTE ======================================================================================
     */
         
-        
-
-
+    // Add new variant
+    
 })

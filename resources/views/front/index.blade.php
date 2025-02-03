@@ -47,17 +47,19 @@
                                             data-element_type="widget"
                                             data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}">
                                             <div class="elementor-widget-container">
-                                                <img
-                                                    fetchpriority="high"
-                                                    decoding="async"
-                                                    width="620"
-                                                    height="620"
-                                                    src="{{ $getImage('front/images/banner_images/', $banner['image']) }}"
-                                                    class="aaaaaaaaaa attachment-large size-large wp-image-258"
-                                                    alt=""
-                                                    srcset="{{ $getImage('front/images/banner_images/', $banner['image']) }} 620w, {{ $getImage('front/images/banners/', $banner['image']) }} 300w, {{ $getImage('front/images/banners/', $banner['image']) }} 150w"
-                                                    sizes="(max-width: 620px) 100vw, 620px"
-                                                >
+                                                <a href="{{ $banner['link'] }}">
+                                                    <img
+                                                        fetchpriority="high"
+                                                        decoding="async"
+                                                        width="620"
+                                                        height="620"
+                                                        src="{{ $getImage('front/images/banner_images/', $banner['image']) }}"
+                                                        class="aaaaaaaaaa attachment-large size-large wp-image-258"
+                                                        alt=""
+                                                        srcset="{{ $getImage('front/images/banner_images/', $banner['image']) }} 620w, {{ $getImage('front/images/banners/', $banner['image']) }} 300w, {{ $getImage('front/images/banners/', $banner['image']) }} 150w"
+                                                        sizes="(max-width: 620px) 100vw, 620px"
+                                                    >
+                                                </a>
                                             </div>
                                         </div>
 
