@@ -2,6 +2,7 @@
 
 @section('user_account_content')
 <div
+    id="delivery-addresses"
     class="elementor-element elementor-element-48758d2 e-con-full e-flex e-con e-child"
     data-id="48758d2"
     data-element_type="container"
@@ -133,7 +134,7 @@
                                         aria-required="true"
                                         pattern="^+63\d{10}$"
                                     >
-                                    
+
                                 </div>
                             </div>
                             <div class="elementor-field-type-textarea elementor-field-group elementor-column elementor-field-group-field_db46221 elementor-col-100 elementor-field-required">
@@ -173,8 +174,8 @@
                                         @foreach ($countries as $country)
                                             {{-- $countries was passed from UserController to view using compact() method --}}
                                             <option value="{{ $country['country_name'] }}"
-                                                @if ($country['country_name'] == \Illuminate\Support\Facades\Auth::user()->country) 
-                                                    selected 
+                                                @if ($country['country_name'] == \Illuminate\Support\Facades\Auth::user()->country)
+                                                    selected
                                                 @endif
                                             >{{ $country['country_name'] }}</option>
                                         @endforeach
@@ -235,7 +236,7 @@
                                 <input type="hidden" id="shipping_address_lat" name="shipping[lat]" value="">
                                 <input type="hidden" id="shipping_address_lng" name="shipping[lng]" value="">
                             </div>
-                            
+
                             <div class="elementor-field-type-html elementor-col-100 elementor-column iframe-map" style="border-radius: 15px !important; overflow: hidden;">
                                 <div id="map-profile" style="min-height: 375px;"></div>
                                 <p></p>
