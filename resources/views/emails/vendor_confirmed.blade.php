@@ -91,7 +91,7 @@ $name, $mobile, $email, ...) used here are passed in from the vendorRegister() m
         <p class="end">Best Regards,</p>
         <div class="company-info">
             <div class="logo">
-                <img src="{{ $getImage('front/images/main-logo/', '2023-12-logo-white-text.png') }}">
+                <img src="{{ asset('front/images/main-logo/2023-12-logo-white-text.png') }}">
             </div>
             <p class="small-text"><b>MOBILE:</b> &nbsp;(+63) 917 170 6796</p>
             <p class="small-text"><a target="_blank" href="https://kapiton.store/">WEBSITE</a><span>|</span><a target="_blank" href="https://www.facebook.com/kapiton.store">FACEBOOK</a><span>|</span><a target="_blank" href="https://www.instagram.com/kapiton.store/">INSTAGRAM</a></p>
