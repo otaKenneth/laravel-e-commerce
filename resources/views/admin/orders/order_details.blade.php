@@ -4,6 +4,21 @@
 
 
 @section('content')
+
+    <style>
+        .form-group{
+            margin-bottom: 21px;
+            display: flex;
+            gap: 10px;
+            height: fit-content !important;
+        }
+        .form-group label{
+            line-height: 130%;
+            margin-bottom: 0;
+        }
+
+    </style>
+
     <div class="main-panel">
         <div class="content-wrapper">
 

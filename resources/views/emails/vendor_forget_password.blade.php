@@ -12,7 +12,7 @@ $name, $mobile, $email, ...) used here are passed in from the vendorRegister() m
 
 <body>
 
-
+<?php /*
     <style>
         .email_template{
             box-sizing: border-box ;
@@ -77,31 +77,29 @@ $name, $mobile, $email, ...) used here are passed in from the vendorRegister() m
             font-weight: bold
         }
     </style>
+*/ ?>
 
-    <div class="email_template">
+    <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
         <!--EMAIL SUBJECT: Your New Password - Kapiton -->
-        <p class="greet">Dear Von's Car Accessories<?php /* {{-- $business_name --}} */ ?>,</p>
-        <p>We received your request to reset your password. Here are your updated login details</p>
-        <ul>
+        <p style="margin: 0 0 20px 0;">Dear Von's Car Accessories<?php /* {{-- $business_name --}} */ ?>,</p>
+        <p style="margin: 0 0 20px 0;">We received your request to reset your password. Here are your updated login details</p>
+        <ul style="margin: 0 0 30px 0;">
             <li>Email: voncaraccessories@gmail.com<?php /* {{-- $email --}} */ ?></li>
             <li>Temporary Password: x/!s412Avgh<?php /* {{-- $password --}} */ ?></li>
         </ul>
-        <p>For your security, we strongly recommend changing your password immediately after logging in. <br>You can do this by navigating to</p>
-            <p class="indented bold">My Account > User Management</p>
-        <p>If you did not request this password reset or need further assistance, please contact us right away.</p>
-        
-        
-
+        <p style="margin: 0 0 20px 0;">For your security, we strongly recommend changing your password immediately after logging in. <br>You can do this by navigating to</p>
+        <p style="padding: 0 20px; font-weight: bold;">My Account > User Management</p>
+        <p style="margin: 0 0 20px 0;">If you did not request this password reset or need further assistance, please contact us right away.</p>
         
         <br>
         <p>--</p>
-        <p class="end">Best Regards,</p>
-        <div class="company-info">
-            <div class="logo">
-                <img src="{{ $getImage('front/images/main-logo/', '2023-12-logo-white-text.png') }}">
+        <p style="font-weight: bold; font-style: italic;"><strong><em>Best Regards,</strong></em></p>
+        <div>
+            <div style="padding: 12px; background: #1f1f22; max-width: 140px; border-radius: 3px; margin-bottom: 15px;">
+                <img style="width: 100%; display: block; margin: 0;" src="{{ asset('front/images/main-logo/2023-12-logo-white-text.png') }}">
             </div>
-            <p class="small-text"><b>MOBILE:</b> &nbsp;(+63) 917 170 6796</p>
-            <p class="small-text"><a target="_blank" href="https://kapiton.store/">WEBSITE</a><span>|</span><a target="_blank" href="https://www.facebook.com/kapiton.store">FACEBOOK</a><span>|</span><a target="_blank" href="https://www.instagram.com/kapiton.store/">INSTAGRAM</a></p>
+            <p style="margin: 0 0 4px 0 !important; font-size: 12px;"><b>MOBILE:</b> &nbsp;(+63) 917 170 6796</p>
+            <p style="margin: 0 0 4px 0 !important; font-size: 12px;"><a target="_blank" href="https://kapiton.store/">WEBSITE</a><span style="margin: 0 4px;">&nbsp;|&nbsp;</span><a target="_blank" href="https://www.facebook.com/kapiton.store">FACEBOOK</a><span style="margin: 0 4px;">&nbsp;|&nbsp;</span><a target="_blank" href="https://www.instagram.com/kapiton.store/">INSTAGRAM</a></p>
         </div>
     </div>
 

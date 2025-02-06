@@ -746,7 +746,7 @@
                                             <br>				
                                         </div>
 
-                                        <div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-25 e-form__buttons elementor-md-60">
+                                        <div class="pdp-min-with-btn elementor-field-group elementor-column elementor-field-type-submit elementor-col-25 e-form__buttons elementor-md-60">
                                             <button type="submit" class="elementor-button elementor-size-sm">
                                                 <span>
                                                     <span class="elementor-button-icon"></span>
@@ -766,7 +766,7 @@
 
 
                                         @if (Auth::check())
-                                        <div class="wishlist-btn">
+                                        <div class="wishlist-btn pdp-min-with-btn">
                                             <div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-25 e-form__buttons elementor-md-60">
                                                 <button id="add-to-wishlist" type="button" class="elementor-button elementor-size-sm">
                                                     <span>

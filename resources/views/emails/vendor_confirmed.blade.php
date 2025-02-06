@@ -13,6 +13,7 @@ $name, $mobile, $email, ...) used here are passed in from the vendorRegister() m
 <body>
 
 
+<?php /*
     <style>
         .email_template{
             box-sizing: border-box ;
@@ -73,28 +74,29 @@ $name, $mobile, $email, ...) used here are passed in from the vendorRegister() m
             color: #0000ee;
         }
     </style>
+*/ ?>
 
-    <div class="email_template">
+    <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
         <!--EMAIL SUBJECT: Your Account is Confirmed -->
-        <p class="greet">Dear Von Miles Gacutan<?php /* {{-- $name --}} */ ?>,</p>
-        <p>We are pleased to confirm the registration of your Vendor Email. Our sales team will contact you shortly with your login details.</p>
-        <p>Below are your registered Vendor Account details for your reference:</p>
-        <ul>
+        <p style="margin: 0 0 20px 0;">Dear Von Miles Gacutan<?php /* {{-- $name --}} */ ?>,</p>
+        <p style="margin: 0 0 20px 0;">We are pleased to confirm the registration of your Vendor Email. Our sales team will contact you shortly with your login details.</p>
+        <p style="margin: 0 0 20px 0;">Below are your registered Vendor Account details for your reference:</p>
+        <ul style="margin: 0 0 30px 0;">
             <li>Name: Von Miles Gacutan<?php /* {{-- $name --}} */ ?></li>
             <li>Business Name: Von's Car Accessories<?php /* {{-- $business_name --}} */ ?></li>
             <li>Mobile: (+63) 917 170 6796<?php /* {{-- $mobile --}} */ ?></li>
             <li>Email: voncaraccessories@gmail.com<?php /* {{-- $email --}} */ ?></li>
         </ul>
-        <p>Thank you for choosing Kapiton. Should you have any question in the meantime, please don't hesitate to reach us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
+        <p style="margin: 0 0 20px 0;">Thank you for choosing Kapiton. Should you have any question in the meantime, please don't hesitate to reach us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
         <br>
         <p>--</p>
-        <p class="end">Best Regards,</p>
-        <div class="company-info">
-            <div class="logo">
-                <img src="{{ $getImage('front/images/main-logo/', '2023-12-logo-white-text.png') }}">
+        <p style="font-weight: bold; font-style: italic;"><strong><em>Best Regards,</strong></em></p>
+        <div>
+            <div style="padding: 12px; background: #1f1f22; max-width: 140px; border-radius: 3px; margin-bottom: 15px;">
+                <img style="width: 100%; display: block; margin: 0;" src="{{ asset('front/images/main-logo/2023-12-logo-white-text.png') }}">
             </div>
-            <p class="small-text"><b>MOBILE:</b> &nbsp;(+63) 917 170 6796</p>
-            <p class="small-text"><a target="_blank" href="https://kapiton.store/">WEBSITE</a><span>|</span><a target="_blank" href="https://www.facebook.com/kapiton.store">FACEBOOK</a><span>|</span><a target="_blank" href="https://www.instagram.com/kapiton.store/">INSTAGRAM</a></p>
+            <p style="margin: 0 0 4px 0 !important; font-size: 12px;"><b>MOBILE:</b> &nbsp;(+63) 917 170 6796</p>
+            <p style="margin: 0 0 4px 0 !important; font-size: 12px;"><a target="_blank" href="https://kapiton.store/">WEBSITE</a><span style="margin: 0 4px;">&nbsp;|&nbsp;</span><a target="_blank" href="https://www.facebook.com/kapiton.store">FACEBOOK</a><span style="margin: 0 4px;">&nbsp;|&nbsp;</span><a target="_blank" href="https://www.instagram.com/kapiton.store/">INSTAGRAM</a></p>
         </div>
     </div>
 
