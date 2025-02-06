@@ -205,7 +205,7 @@
                     </div>
                 </div>
 
-               <?php /*EMAIL FORM HIDE
+            
                 <div
                     class="elementor-element elementor-element-4ed2365 elementor-button-align-stretch elementor-widget elementor-widget-form"
                     data-id="4ed2365"
@@ -254,7 +254,7 @@
                         </form>
                     </div>
                 </div>
-                */ ?>
+              
 
             </div>
             <div

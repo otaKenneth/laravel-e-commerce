@@ -574,6 +574,9 @@
 .chat-with-vendor .chat_vendor_btn img{
     width: 40px;
 }
+.pdp-min-with-btn{
+    min-width: 180px;
+}
 
 @media (max-width: 767px){
     #form-productReview .alert ul{
