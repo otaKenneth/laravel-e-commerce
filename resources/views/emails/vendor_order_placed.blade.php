@@ -133,7 +133,7 @@
         <p style="margin: 0 0 20px 0;">You may update your order via our seller center or accessing this direct <a href="{{ env('APP_SELLER_URL') }}">link</a></p>
         <hr>
             <h3 style="margin: 0 0 20px 0;">Order Summary:</h3>
-            <p style="margin: 0 0 20px 0;"><span style="font-weight: bold;">Order Number: </span>32133<?php /* {{-- $ --}} */ ?></p>
+            <p style="margin: 0 0 20px 0;"><span style="font-weight: bold;">Order Number: </span>{{ $order_id }}</p>
             <div style="width: 100%; max-width: 100vw; overflow: auto; margin-bottom: 30px;">
                 <table style="width:auto; min-width: 100%; border-spacing: 0; border-collapse: collapse;">
                     <thead>

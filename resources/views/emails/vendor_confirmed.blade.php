@@ -78,14 +78,14 @@ $name, $mobile, $email, ...) used here are passed in from the vendorRegister() m
 
     <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
         <!--EMAIL SUBJECT: Your Account is Confirmed -->
-        <p style="margin: 0 0 20px 0;">Dear Von Miles Gacutan<?php /* {{-- $name --}} */ ?>,</p>
+        <p style="margin: 0 0 20px 0;">Dear {{ $name }},</p>
         <p style="margin: 0 0 20px 0;">We are pleased to confirm the registration of your Vendor Email. Our sales team will contact you shortly with your login details.</p>
         <p style="margin: 0 0 20px 0;">Below are your registered Vendor Account details for your reference:</p>
         <ul style="margin: 0 0 30px 0;">
-            <li>Name: Von Miles Gacutan<?php /* {{-- $name --}} */ ?></li>
-            <li>Business Name: Von's Car Accessories<?php /* {{-- $business_name --}} */ ?></li>
-            <li>Mobile: (+63) 917 170 6796<?php /* {{-- $mobile --}} */ ?></li>
-            <li>Email: voncaraccessories@gmail.com<?php /* {{-- $email --}} */ ?></li>
+            <li>Name: {{ $name }}</li>
+            <li>Business Name: {{ $business_name }}</li>
+            <li>Mobile: {{ $mobile }}</li>
+            <li>Email: {{ $email }}</li>
         </ul>
         <p style="margin: 0 0 20px 0;">Thank you for choosing Kapiton. Should you have any question in the meantime, please don't hesitate to reach us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
         <br>
