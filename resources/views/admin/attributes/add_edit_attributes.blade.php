@@ -194,9 +194,12 @@
                                             {{--  <input type="hidden" name="attributeId[]" value="{{ $attribute['id'] }}">  --}} {{-- A hidden input field --}} {{-- IMPORTANT NOTE: DIDN'T WORK INSIDE FOR LOOP!! MUST BE OUSTSIDE IT IN ORDER TO WORK! --}}
                                             <input style="display: none" type="text" name="attributeId[]" value="{{ $attribute['id'] }}"> {{-- A hidden input field --}}
                                             <tr>
-                                                <td>{{ $attribute['color'] }}</td>
                                                 @if (count($product['variants']) > 0)
-                                                <td>{{ $attribute['size'] }}</td>
+                                                    @foreach ($product['variants'] as $prodVariant )
+                                                        @isset($attribute[strtolower($prodVariant['variant_name'])])
+                                                            <td>{{ $attribute[strtolower($prodVariant['variant_name'])] }}</td>
+                                                        @endisset
+                                                    @endforeach
                                                 @endif
                                                 <td>
                                                     <input type="text" name="sku[{{$attribute['id']}}]" value="{{ $attribute['sku'] }}" placeholder="SKU" style="width:150px" required> {{-- !! Note that the "name" HTML attribute is an ARRAY (using SQUARE BRAKETS [] !!) --}}

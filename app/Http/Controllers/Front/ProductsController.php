@@ -29,6 +29,7 @@ class ProductsController extends Controller
         $type = $request->type;
         $name = $request->name;
         $pageTitle = $name;
+        $shopBanner = '';
 
         try {
             switch ($type) {
@@ -40,7 +41,8 @@ class ProductsController extends Controller
                     break;
                 case 'vendor':
                     $vendor = Vendor::find($name);
-                    $pageTitle = "{$vendor->vendorbusinessdetails->shop_name} Shop";
+                    $shopBanner = $vendor->vendorbusinessdetails->shop_banner;
+                    $pageTitle = "{$vendor->vendorbusinessdetails->shop_name}";
                     $result = $this->vendorListing($vendor, $request->all());
                     break;
                 case 'search':
@@ -58,7 +60,7 @@ class ProductsController extends Controller
 
             $collection = $collection->paginate(12);
             // dd($filters);
-            return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords'));
+            return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner'));
         } catch (\Exception $e) {
             return redirect('/products/collection/all');
         }
@@ -263,7 +265,8 @@ class ProductsController extends Controller
         // $collection = Product::with('brand', 'vendor', 'attributes')->where('vendor_id', $vendor->id)->where('status', 1); // Eager Loading (using with() method): https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'brand' is the relationship method name in Product.php model that is being Eager Loaded
 
         $collection = $vendor->products();
-
+                    
+        \Log::info(print_r($vendor->toArray(), true));
         $catIds = $vendor->products()->pluck('category_id');
         $catDetails = Category::whereIn('id', $catIds)->where([
             'parent_id' => 0,
@@ -293,8 +296,13 @@ class ProductsController extends Controller
         $filters = $this->getAvailableFilters($catDetails, $collection);
         $collection = $this->processFilters($collection, $data);
 
-        return ["collection" => $collection, "filters" => $filters, "categoryDetails" => $categoryDetails,
-            "meta_title" => $meta_title, "meta_description" => $meta_description, "meta_keywords" => $meta_keywords,
+        return [
+            "collection" => $collection, 
+            "filters" => $filters, 
+            "categoryDetails" => $categoryDetails,
+            "meta_title" => $meta_title, 
+            "meta_description" => $meta_description, 
+            "meta_keywords" => $meta_keywords,
         ];
     }
 
@@ -880,11 +888,7 @@ class ProductsController extends Controller
                     'success' => false,
                     'message' => $message
                 ]);
-            } else {
-                if (in_array($data['shipping_method'], ['j&t', 'pickup'])) {
-                    $data['payment_gateway'] = 'COD';
-                }
-            }
+            } 
 
             // Payment Method Validation
             if (empty($data['payment_gateway'])) { // if the user doesn't select a Delivery Address
@@ -1179,7 +1183,7 @@ class ProductsController extends Controller
         $total_price -= floatval(Session::get('couponAmount'));
         $delivery_fee = $shipping_charges;
         $total_price += $delivery_fee;
-        $est_transaction_fee = number_format($total_price * 0.05, 2);
+        $est_transaction_fee = 0;
         $total_price += $est_transaction_fee;
         $total_price = number_format($total_price, 2);
 
