@@ -10,6 +10,7 @@
     </head>
     <body>
 
+    <?php /*
     <style>
         .email_template{
             box-sizing: border-box ;
@@ -122,69 +123,68 @@
             text-align: right;
         }
     </style>
+    */ ?>
 
-    <div class="email_template">
+    <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
         <!--EMAIL SUBJECT: Order Cancelled - Order#{{-- $ --}}-->
-
 
         <p style="margin-bottom: 2px;">We regret to inform you that <b>order #</b>{{ $order_id }} has been canceled at the customer's request.</p>
         <p style="background-color: #f0f0f0; border-radius: 5px; padding: 3px 2px;">{{$reason}}</p>
-        <p>We understand cancellations can be dissapointing, but we encourage you to continue providing the exceptional service that keeps customer returning to <span class="bold">Kapiton</span>.</p>
-        <p>If you have any questions or require further assistance regarding this cancellation, please don't hesitate to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
-        <p>Thank you for your understanding and for being valued partner on our platform. We look forward to support your future sales!</p>
-        
+        <p style="margin: 0 0 20px 0;">We understand cancellations can be disappointing, but we encourage you to continue providing the exceptional service that keeps customers returning to <span style="font-weight: bold;">Kapiton</span>.</p>
+        <p style="margin: 0 0 20px 0;">If you have any questions or require further assistance regarding this cancellation, please don't hesitate to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
+        <p style="margin: 0 0 20px 0;">Thank you for your understanding and for being a valued partner on our platform. We look forward to supporting your future sales!</p>
         
         <hr>
-            <h3 class="heading">Order Summary:</h3>
-            <p><span class="bold">Order Number: </span>{{ $order_id }}</p>
-            <div class="table-wrapper">
-                <table>
+            <h3 style="margin: 0 0 20px 0;">Order Summary:</h3>
+            <p style="margin: 0 0 20px 0;"><span style="font-weight: bold;">Order Number: </span>{{ $order_id }}</p>
+            <div style="width: 100%; max-width: 100vw; overflow: auto; margin-bottom: 30px;">
+                <table style="width:auto; min-width: 100%; border-spacing: 0; border-collapse: collapse;">
                     <thead>
-                        <tr class="headtr">
-                            <th>Item</th>
-                            <th>Product Code</th>
-                            <th>Color</th>
-                            <th>Size</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
+                        <tr style="background: #1f1f22;">
+                            <th style="font-size: 14px; padding: 10px 20px; background: #1f1f22; color: white;">Item</th>
+                            <th style="font-size: 14px; padding: 10px 20px; background: #1f1f22; color: white;">Product Code</th>
+                            <th style="font-size: 14px; padding: 10px 20px; background: #1f1f22; color: white;">Color</th>
+                            <th style="font-size: 14px; padding: 10px 20px; background: #1f1f22; color: white;">Size</th>
+                            <th style="font-size: 14px; padding: 10px 20px; background: #1f1f22; color: white;">Quantity</th>
+                            <th style="font-size: 14px; padding: 10px 20px; background: #1f1f22; color: white;">Price</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="border: 1px solid #1f1f22;">
                     @foreach ($orderDetails['orders_products'] as $order)
                         <tr bgcolor="#f9f9f9">
-                            <td>{{ $order['product_name'] }}</td>
-                            <td>{{ $order['product_code'] }}</td>
-                            <td>{{ $order['product_size'] }}</td>
-                            <td>{{ $order['product_color'] }}</td>
-                            <td>{{ $order['product_qty'] }}</td>
-                            <td>{{ $order['product_price'] }}</td>
+                            <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_name'] }}</td>
+                            <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_code'] }}</td>
+                            <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_size'] }}</td>
+                            <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_color'] }}</td>
+                            <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_qty'] }}</td>
+                            <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_price'] }}</td>
                         </tr>
                     @endforeach
                     </tbody>
                     <tfoot>
-                        <tr class="tablefoot">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        <tr>
+                            <td style="font-size: 12px; padding: 10px 20px;"></td>
+                            <td style="font-size: 12px; padding: 10px 20px;"></td>
+                            <td style="font-size: 12px; padding: 10px 20px;"></td>
+                            <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="border-left: 1px solid #1f1f22;">Shipping Charges:</td>
                             <td style="border-right: 1px solid #1f1f22;">PHP - 231.00</td>
                         </tr>
-                        <tr class="tablefoot">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        <tr>
+                            <td style="font-size: 12px; padding: 10px 20px;"></td>
+                            <td style="font-size: 12px; padding: 10px 20px;"></td>
+                            <td style="font-size: 12px; padding: 10px 20px;"></td>
+                            <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="border-left: 1px solid #1f1f22;">Coupon Discount:</td>
                             <td style="border-right: 1px solid #1f1f22;">PHP - 0</td>
                         </tr>
-                        <tr class="tablefoot grandtotal">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td style="border-left: 1px solid #1f1f22; background: #1f1f22; color: white">Grand Total:</td>
-                            <td style="border-right: 1px solid #1f1f22; background: #1f1f22; color: white">PHP - 42,231.32</td>
+                        <tr style="background: #1f1f22; color: white;">
+                            <td style="font-size: 12px; padding: 10px 20px;"></td>
+                            <td style="font-size: 12px; padding: 10px 20px;"></td>
+                            <td style="font-size: 12px; padding: 10px 20px;"></td>
+                            <td style="font-size: 12px; padding: 10px 20px;"></td>
+                            <td style="font-size: 12px; padding: 10px 20px; border-left: 1px solid #1f1f22; background: #1f1f22; color: white">Grand Total:</td>
+                            <td style="font-size: 12px; padding: 10px 20px; border-right: 1px solid #1f1f22; background: #1f1f22; color: white">PHP - 42,231.32</td>
                         </tr>
                     </tfoot>
 
@@ -193,18 +193,18 @@
             </div>
         <hr>
         <br>
-        <p>If there were any issue or specific reasons behind this cancellation that require further assistance, feel free to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
-        <p>Thank you for keeping us updated, and we appreciate your efforts to maintain clear communication with your customers.</p>
+        <p style="margin: 0 0 20px 0;">If there were any issues or specific reasons behind this cancellation that require further assistance, feel free to contact us at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a></p>
+        <p style="margin: 0 0 20px 0;">Thank you for keeping us updated, and we appreciate your efforts to maintain clear communication with your customers.</p>
 
         <br>
         <p>--</p>
-        <p class="end">Best Regards,</p>
-        <div class="company-info">
-            <div class="logo">
-                <img src="{{ asset('front/images/main-logo/2023-12-logo-white-text.png') }}">
+        <p style="font-weight: bold; font-style: italic;"><strong><em>Best Regards,</strong></em></p>
+        <div>
+            <div style="padding: 12px; background: #1f1f22; max-width: 140px; border-radius: 3px; margin-bottom: 15px;">
+                <img style="width: 100%; display: block; margin: 0;" src="{{ asset('front/images/main-logo/2023-12-logo-white-text.png') }}">
             </div>
-            <p class="small-text"><b>MOBILE:</b> &nbsp;(+63) 917 170 6796</p>
-            <p class="small-text"><a target="_blank" href="https://kapiton.store/">WEBSITE</a><span>|</span><a target="_blank" href="https://www.facebook.com/kapiton.store">FACEBOOK</a><span>|</span><a target="_blank" href="https://www.instagram.com/kapiton.store/">INSTAGRAM</a></p>
+            <p style="margin: 0 0 4px 0 !important; font-size: 12px;"><b>MOBILE:</b> &nbsp;(+63) 917 170 6796</p>
+            <p style="margin: 0 0 4px 0 !important; font-size: 12px;"><a target="_blank" href="https://kapiton.store/">WEBSITE</a><span style="margin: 0 4px;">&nbsp;|&nbsp;</span><a target="_blank" href="https://www.facebook.com/kapiton.store">FACEBOOK</a><span style="margin: 0 4px;">&nbsp;|&nbsp;</span><a target="_blank" href="https://www.instagram.com/kapiton.store/">INSTAGRAM</a></p>
         </div>
     </div>
 
