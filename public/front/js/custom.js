@@ -736,46 +736,31 @@ $(document).ready(function() {
 
         var shipping_charges = $(this).attr('shipping_charges'); // using Custom HTML data attributes (data-*)
         var total_price      = $(this).attr('total_price');      // using Custom HTML data attributes (data-*)
-        var coupon_amount    = $(this).attr('coupon_amount');    // using Custom HTML data attributes (data-*)
-        var est_transaction_fee = $(this).attr('est_transaction_fee');    // using Custom HTML data attributes (data-*)
+        var coupon_amount    = $(this).attr('coupon_amount');    // using Custom HTML data attributes (data-*)// using Custom HTML data attributes (data-*)
         var shipping_method = $('input[name="shipping_method"]:checked').val();
 
         if (shipping_method == 'lalamove') {
             shipping_charges = 73;
-            est_transaction_fee = (parseFloat(total_price) +  (shipping_charges)) * 0.05;
 
             $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add').removeClass('hidden');
-            $('#paymongo, #paymongoLabel').attr('disabled', false);
-            $('#checkoutBtn').html('PAY NOW');
         }
 
         if (shipping_method == 'j&t') {
             shipping_charges = 150;
-            est_transaction_fee = 0;
 
             $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add').removeClass('hidden');
-            $('#paymongo').attr('disabled', true).attr('checked', false);
-            $('#paymongoLabel').attr('disabled', true);
-            $('#COD').attr('checked', true);
-            $('#checkoutBtn').html('CHECKOUT');
         }
 
         // If the user chooses the Pickup Shipping Method, the Shipping Charges will be 0.00
         if (shipping_method == 'pickup') {
             shipping_charges = 0;
-            est_transaction_fee = 0;
 
             $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add').addClass('hidden');
             $('#ship-to-different-address-form').removeClass('display-add');
-            $('#paymongo').attr('disabled', true).attr('checked', false);
-            $('#paymongoLabel').attr('disabled', true);
-            $('#COD').attr('checked', true);
-            $('#checkoutBtn').html('CHECKOUT');
         }
 
         // Display the Shipping Charges
         $('.shipping_charges').html('₱ ' + shipping_charges.toFixed(2));
-        $('.est_transaction_fee').html('₱ ' + est_transaction_fee.toFixed(2));
 
         // Show the right Payment Methods radio buttons in front/products/checkout.blade.php based on Getting the results of checking if both the COD and Prepaid PIN codes of the user's Delviery Address exist in our both `cod_pincodes` and `prepaid_pincodes` database tables. Check the checkout() method in Front/ProductsController.php and front/products/checkout.blade.php
         var codpincodeCount     = $(this).attr('codpincodeCount');     // using Custom HTML data attributes (data-*)
@@ -800,7 +785,7 @@ $(document).ready(function() {
         $('.couponAmount').html('₱ ' + coupon_amount);
 
         // Calculate the Grand Total
-        var grand_total = parseFloat(total_price) + parseFloat(shipping_charges) + parseFloat(est_transaction_fee) - parseFloat(coupon_amount);
+        var grand_total = parseFloat(total_price) + parseFloat(shipping_charges) - parseFloat(coupon_amount);
         // alert(grand_total);
 
         // Display the Grand Total

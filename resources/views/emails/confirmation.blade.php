@@ -11,7 +11,7 @@
     <body>
 
 
-
+    <?php /*
     <style>
         .email_template{
             box-sizing: border-box ;
@@ -76,29 +76,32 @@
             font-weight: bold
         }
     </style>
+    */ ?>
 
-    <div class="email_template">
+    <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
         <!--EMAIL SUBJECT: Confirm Your Kapiton Account -->
-        <p class="greet">Dear Von Miles Gacutan<?php /* {{-- $name --}} */ ?>,</p>
-        <p>Thank you for signing up with Kapiton! To complete your registration, please confirm your account by clicking the button below:</p>
-        <a class="btn" href="# <?php /* {{ url('/user/confirm/' . $code) }} */ ?>">📣Confirm Account</a>
-        <p>Once confirmed, you'll be able to access all the features of your new account.</p>
-        <p>If you need assistance or have any questions, feel free to reach out to us.</p>
-        
-
-     
-        
-
+        <p style="margin: 0 0 20px 0;">Dear Von Miles Gacutan<?php /* {{-- $name --}} */ ?>,</p>
+        <p style="margin: 0 0 20px 0;">Thank you for signing up with Kapiton! To complete your registration, please confirm your account by clicking the button below:</p>
+        <a href="# <?php /* {{ url('/user/confirm/' . $code) }} */ ?>" style="font-weight: 500; text-transform: uppercase; border-radius: 100px; border: none; text-decoration: none !important; color: white !important; background: #1f1f22; padding: 8px; margin-top: 20px; display: block; width: fit-content; margin-bottom: 30px;">📣Confirm Account</a>
+        <p style="margin: 0 0 20px 0;">Once confirmed, you'll be able to access all the features of your new account.</p>
+        <p style="margin: 0 0 20px 0;">If you need assistance or have any questions, feel free to reach out to us.</p>
         
         <br>
-        <p>--</p>
-        <p class="end">Best Regards,</p>
-        <div class="company-info">
-            <div class="logo">
-                <img src="{{ $getImage('front/images/main-logo/', '2023-12-logo-white-text.png') }}">
+        <p style="margin: 0 0 20px 0;">--</p>
+        <p style="margin: 0 0 20px 0; font-weight: bold; font-style: italic;"><strong><em>Best Regards,</em></strong></p>
+        
+        <div>
+            <div style="padding: 12px; background: #1f1f22; max-width: 140px; border-radius: 3px; margin-bottom: 15px;">
+                <img src="{{ asset('front/images/main-logo/2023-12-logo-white-text.png') }}" style="width: 100%; display: block; margin: 0;">
             </div>
-            <p class="small-text"><b>MOBILE:</b> &nbsp;(+63) 917 170 6796</p>
-            <p class="small-text"><a target="_blank" href="https://kapiton.store/">WEBSITE</a><span>|</span><a target="_blank" href="https://www.facebook.com/kapiton.store">FACEBOOK</a><span>|</span><a target="_blank" href="https://www.instagram.com/kapiton.store/">INSTAGRAM</a></p>
+            <p style="margin: 0 0 4px 0 !important; font-size: 12px;"><b>MOBILE:</b> &nbsp;(+63) 917 170 6796</p>
+            <p style="margin: 0 0 4px 0 !important; font-size: 12px;">
+                <a target="_blank" href="https://kapiton.store/" style="text-decoration: underline; color: #0000ee;">WEBSITE</a>
+                <span style="margin: 0 4px;">&nbsp;|&nbsp;</span>
+                <a target="_blank" href="https://www.facebook.com/kapiton.store" style="text-decoration: underline; color: #0000ee;">FACEBOOK</a>
+                <span style="margin: 0 4px;">&nbsp;|&nbsp;</span>
+                <a target="_blank" href="https://www.instagram.com/kapiton.store/" style="text-decoration: underline; color: #0000ee;">INSTAGRAM</a>
+            </p>
         </div>
     </div>
 
