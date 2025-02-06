@@ -203,18 +203,6 @@
                                                 <b>Secure Payment via PayMongo</b>
                                             </label>
                                         </div>
-                                        <div class="payment-gateway">
-                                            <input
-                                                type="radio"
-                                                id="COD"
-                                                name="payment_gateway"
-                                                value="COD"
-                                                selected
-                                            >
-                                            <label for="COD" style="cursor:pointer;">
-                                                <b>COD</b>
-                                            </label>
-                                        </div>
                                     </div>
                                 </div>
                                 <div
@@ -370,10 +358,10 @@
                                                 <td>Delivery Fee</td>
                                                 <td class="shipping_charges align-right">₱ {{number_format($delivery_fee, 2)}}</td>
                                             </tr>
-                                            <tr>
+                                            {{-- <tr>
                                                 <td>Estimated Transaction Fee</td>
                                                 <td class="est_transaction_fee align-right">₱ {{number_format($est_transaction_fee, 2)}}</td>
-                                            </tr>
+                                            </tr> --}}
                                             <tr>
                                                 <td>Coupon discount</td>
                                                 <td class="align-right">- ₱ {{number_format(Session::get('couponAmount'), 2)}}</td>

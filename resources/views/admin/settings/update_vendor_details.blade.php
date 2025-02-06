@@ -309,6 +309,15 @@
                                         @endif
                                     </div>
                                     <div class="form-group">
+                                        <label for="shop_banner">Shop Banner</label>
+                                        <input type="file" class="form-control" id="shop_banner" name="shop_banner">
+                                        {{-- Show the admin image if exists --}}
+                                        @if (!empty($vendorDetails['shop_banner']))
+                                            <a target="_blank" href="{{ $getImage('front/images/brand-logos/', $vendorDetails['shop_banner']) }}">View Image</a> <!-- We used    target="_blank"    to open the image in another separate page -->
+                                            <input type="hidden" name="current_shop_banner" value="{{ $vendorDetails['shop_banner'] }}"> <!-- to send the current admin image url all the time with all the requests -->
+                                        @endif
+                                    </div>
+                                    <div class="form-group">
                                         <label for="address_proof">Shop Address Proof</label>
                                         <select class="form-control" name="address_proof" id="address_proof">
                                             <option value="Passport"        @if(isset($vendorDetails['address_proof']) && $vendorDetails['address_proof'] == 'Passport')        selected @endif>Passport</option>
