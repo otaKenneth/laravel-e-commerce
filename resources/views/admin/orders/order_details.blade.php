@@ -287,7 +287,11 @@
                 <div class="col-md-6 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Update Order Status</h4>  {{-- determined by 'admin'-s ONLY, not 'vendor'-s --}}
+                            @if (Auth::guard('admin')->user()->type != 'vendor')
+                                <h4 class="card-title">Update Order Status</h4>
+                            @else
+                                <h4 class="card-title">Order Status History</h4>
+                            @endif
 
                             {{-- Allowing the general "Update Order Status" feature for 'admin'-s ONLY, and restricting it from 'vendor'-s ('vendor'-s can update their Ordered Products item statuses ONLY (at this page bottom)) --}} 
                             @if (Auth::guard('admin')->user()->type != 'vendor') {{-- If the authenticated/logged-in user is 'admin', allow "Update Order Status" feature --}} {{-- Accessing Specific Guard Instances: https://laravel.com/docs/9.x/authentication#accessing-specific-guard-instances --}} {{-- Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user --}}
@@ -377,9 +381,51 @@
                     </div>
                 </div>
 
-                
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Message to Customer: {{ $userDetails['first_name'] }} {{ $userDetails['last_name'] }}</h4>
+                            <div class="form-group">
+                            <form id="orders-message-form" action="javascript:;" name="orders-message-form" method="post">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
+                                    <strong>Success:</strong> <span class="message"></span>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                @csrf
+                                <input type="hidden" name="customer_id" value="{{ $userDetails['id'] }}">
+                                <div class="elementor-form-fields-wrapper elementor-labels-">
+                                    <div class="elementor-field-type-textarea elementor-field-group elementor-column elementor-field-group-name elementor-col-100">
+                                        <label for="form-field-name" class="elementor-field-label elementor-screen-only">Type a message here</label>
+                                        <textarea
+                                            class="elementor-field-textual elementor-field  elementor-size-sm"
+                                            name="message"
+                                            id="form-field-name"
+                                            rows="2"
+                                            placeholder="Type a message here"
+                                        ></textarea>
+                                    </div>
+                                    <div>
+                                        <button type="submit">
+                                            <span>
+                                                <span class="elementor-button-icon"></span>
+                                                <span class="elementor-button-text">Send</span>
+                                            </span>
+                                        </button>
+                                        <div>
+                                            <a href="{{ url('admin/chats') }}">Chats Page</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="refund-detail-modal">
-                    @include('admin.orders.refund_details');
+                    @include('admin.orders.refund_details')
                 </div>
                 
                 <div class="col-md-12 grid-margin stretch-card">
