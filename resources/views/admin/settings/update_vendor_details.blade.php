@@ -313,7 +313,7 @@
                                         <input type="file" class="form-control" id="shop_banner" name="shop_banner">
                                         {{-- Show the admin image if exists --}}
                                         @if (!empty($vendorDetails['shop_banner']))
-                                            <a target="_blank" href="{{ $getImage('front/images/brand-logos/', $vendorDetails['shop_banner']) }}">View Image</a> <!-- We used    target="_blank"    to open the image in another separate page -->
+                                            <a target="_blank" href="{{ $getImage('front/images/vendor/owl-carousel/dist/', $vendorDetails['shop_banner']) }}">View Image</a> <!-- We used    target="_blank"    to open the image in another separate page -->
                                             <input type="hidden" name="current_shop_banner" value="{{ $vendorDetails['shop_banner'] }}"> <!-- to send the current admin image url all the time with all the requests -->
                                         @endif
                                     </div>
