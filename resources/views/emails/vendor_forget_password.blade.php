@@ -81,11 +81,11 @@ $name, $mobile, $email, ...) used here are passed in from the vendorRegister() m
 
     <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
         <!--EMAIL SUBJECT: Your New Password - Kapiton -->
-        <p style="margin: 0 0 20px 0;">Dear Von's Car Accessories<?php /* {{-- $business_name --}} */ ?>,</p>
+        <p style="margin: 0 0 20px 0;">Dear {{$business_name }},</p>
         <p style="margin: 0 0 20px 0;">We received your request to reset your password. Here are your updated login details</p>
         <ul style="margin: 0 0 30px 0;">
-            <li>Email: voncaraccessories@gmail.com<?php /* {{-- $email --}} */ ?></li>
-            <li>Temporary Password: x/!s412Avgh<?php /* {{-- $password --}} */ ?></li>
+            <li>Email: {{ $email }}</li>
+            <li>Temporary Password: {{ $password }}</li>
         </ul>
         <p style="margin: 0 0 20px 0;">For your security, we strongly recommend changing your password immediately after logging in. <br>You can do this by navigating to</p>
         <p style="padding: 0 20px; font-weight: bold;">My Account > User Management</p>
