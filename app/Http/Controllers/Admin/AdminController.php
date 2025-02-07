@@ -477,6 +477,7 @@ class AdminController extends Controller
                         'address_proof'           => $data['address_proof'],
                         'address_proof_image'     => $imageName,
                         'shop_logo'     => $shop_logo_imageName,
+                        'shop_banner' => $shop_banner_imageName,
                     ]);
                 }
 
