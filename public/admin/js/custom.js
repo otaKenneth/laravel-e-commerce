@@ -1,5 +1,37 @@
 // Using jQuery for the website ADMIN section:
 
+$(document).ready(function () {
+    $('#orders-message-form').submit(function (e) {
+        e.preventDefault();
+        var formdata = $(e.currentTarget).serialize();
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "/admin/orders/chat",
+            type: "POST",
+            data: formdata,
+            success: function (resp) {
+                if (resp && resp.success) {
+                    var alert = $('#orders-message-form .alert.alert-success')
+                    alert.toggle();
+                    alert.find('.message').text(resp.message)
+                    $('#orders-message-form textarea[name=message]').text('')
+                    setTimeout(() => {
+                        alert.toggle();
+                    }, 5500);
+                } else {
+                    
+                    setTimeout(() => {
+                        $('#error-modal').modal('toggle');
+                    }, 1500);
+                }
+            }, error: function (err) {
+                console.log(err)
+            }
+        });
+    });
+});
+
 $(document).ready(function() {
 
     // DataTables jQuery library
@@ -1009,12 +1041,14 @@ $(document).ready(function() {
 
 
 
-
     /*
         DYNAMIC ATTIBUTE =======================================================================================
     */
 
-    
+    var variation_el = document.getElementById("add-variation")
+
+    if (variation_el) {
+
         document.getElementById("add-variation").addEventListener("click", function() {
             // Select the span inside the button
             let span = this.querySelector("span");
@@ -1026,7 +1060,7 @@ $(document).ready(function() {
             if (currentValue < 2) {
                 let newValue = currentValue + 1;
                 span.textContent = newValue;
-
+    
                 let reset_variants = document.querySelector('#reset-variation');
         
                 // Get the dynamic form table body
@@ -1058,18 +1092,18 @@ $(document).ready(function() {
                         <td><input type="text" name="sku-variant-1-option-1"></td>
                     `;
                     tableBody.appendChild(newRow1); // Append new row to the table
-
+    
                     // Attach event listener to update the header when input changes
                     const variantNameInput = variant1Div.querySelector('input[name="variant-name-1"]');
                     variantNameInput.addEventListener('input', function() {
                         const variantHeader = table.querySelector('th.variant-1');
                         variantHeader.textContent = variantNameInput.value.trim() || '';
                     });
-
-
+    
+    
                     let optionsDiv = variant1Div.querySelector('.options');
                     let optionInputs = optionsDiv.querySelectorAll('input[type="text"]');
-
+    
                     optionInputs.forEach((optionInput, index) => {
                         optionInput.addEventListener('input', function() {
                             const variantNameOptionValue = table.querySelector(`td.name-variant-1-option-${index + 1}`);
@@ -1080,7 +1114,7 @@ $(document).ready(function() {
                     // Attach event listener to the Add Option and Remove Option buttons for variant 1
                     attachAddOptionListener(variant1Div.querySelector('.add-option'));
                     attachRemoveOptionListener(variant1Div.querySelector('.remove-option'));
-
+    
                     reset_variants.style.display = "block";
         
                 } 
@@ -1124,7 +1158,6 @@ $(document).ready(function() {
                             blankCell.className = `name-variant-2-option-1`;
                             row.insertBefore(blankCell, variant1OptionCell.nextSibling); // Insert after the current variant-1 option cell
                         }
-
               
                 
                     });
@@ -1153,12 +1186,8 @@ $(document).ready(function() {
                     reset_variants.style.display = "block";
                 }
                 
-                
-                
-                
-                
             }
-
+    
         
             /*
             // Attach event listeners to remove buttons
@@ -1204,11 +1233,11 @@ $(document).ready(function() {
                             if (tableBody.rows.length > 0) {
                                 tableBody.deleteRow(0);
                             }
-
+    
                             
                                 variantHeader.textContent = '';
                      
-
+    
                         }
                     } else if (variantNumber == 2) {
                         let variant2Div = document.querySelector('.variant-2');
@@ -1232,10 +1261,11 @@ $(document).ready(function() {
                 });
             });
             */
-
-
-
+    
+    
+    
         });
+    }
         
 
 
@@ -1353,39 +1383,41 @@ $(document).ready(function() {
         }
 
          
-
-        document.getElementById("reset-variation").addEventListener("click", function() {
-            // Clear the table body
-            let tableBody = document.querySelector('.dynamic_form table tbody');
-            tableBody.innerHTML = "";
-        
-            // Blank the inner HTML of <th class="variant-1">
-            let variant1Header = document.querySelector('th.variant-1');
-            if (variant1Header) {
-                variant1Header.innerHTML = "";
-            }
-
-            // Remove <th class="variant-2"> if it exists
-            let variant2Header = document.querySelector('th.variant-2');
-            if (variant2Header) {
-                variant2Header.remove();
-            }
-
-        
-            // Optionally remove variant divs
-            let variant1Div = document.querySelector('.variant-1');
-            let variant2Div = document.querySelector('.variant-2');
-            if (variant1Div) variant1Div.remove();
-            if (variant2Div) variant2Div.remove();
-        
-            // Reset the span value in #add-variation button to 0
-            let addVariationButton = document.getElementById("add-variation");
-            let span = addVariationButton.querySelector("span");
-            span.textContent = "0";
-        
-            // Hide the reset button itself
-            this.style.display = "none";
-        });
+        var resetVariation = document.getElementById("reset-variation")
+        if (resetVariation) {
+            document.getElementById("reset-variation").addEventListener("click", function() {
+                // Clear the table body
+                let tableBody = document.querySelector('.dynamic_form table tbody');
+                tableBody.innerHTML = "";
+            
+                // Blank the inner HTML of <th class="variant-1">
+                let variant1Header = document.querySelector('th.variant-1');
+                if (variant1Header) {
+                    variant1Header.innerHTML = "";
+                }
+    
+                // Remove <th class="variant-2"> if it exists
+                let variant2Header = document.querySelector('th.variant-2');
+                if (variant2Header) {
+                    variant2Header.remove();
+                }
+    
+            
+                // Optionally remove variant divs
+                let variant1Div = document.querySelector('.variant-1');
+                let variant2Div = document.querySelector('.variant-2');
+                if (variant1Div) variant1Div.remove();
+                if (variant2Div) variant2Div.remove();
+            
+                // Reset the span value in #add-variation button to 0
+                let addVariationButton = document.getElementById("add-variation");
+                let span = addVariationButton.querySelector("span");
+                span.textContent = "0";
+            
+                // Hide the reset button itself
+                this.style.display = "none";
+            });
+        }
         
         
         
