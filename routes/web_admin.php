@@ -166,5 +166,7 @@ Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Ad
         });
 
         Route::get('chats', 'ChatsController@index');
+
+        Route::post('orders/chat', 'ChatsController@orderChat');
     });
 });
