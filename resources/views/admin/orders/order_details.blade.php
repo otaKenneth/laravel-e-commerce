@@ -384,6 +384,37 @@
                 <div class="col-md-6 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
+                            <style>
+                                #orders-message-form textarea{
+                                    height: 120px;
+                                }
+                                #orders-message-form,
+                                #orders-message-form .submit-container{
+                                    width: 100%;
+                                }
+                                #orders-message-form button{
+                                    width: 100%;
+                                    background: #1e1f20;
+                                    color: white;
+                                    margin-top: 10px;
+                                    font-family: "Lexend", Sans-serif;
+                                }
+                                #orders-message-form .submit-container div a:hover{
+                                    text-decoration: none;
+                                }
+                                #orders-message-form .submit-container div a{
+                                    padding: 8px 20px;
+                                    width: 100%;
+                                    display: block;
+                                    text-align: center;
+                                    background: #87cdc0;
+                                    color: white;
+                                    margin-top: 6px;
+                                    font-family: "Lexend", Sans-serif;
+                                    border-radius: 3px;
+                                }
+                  
+                            </style>
                             <h4 class="card-title">Message to Customer: {{ $userDetails['first_name'] }} {{ $userDetails['last_name'] }}</h4>
                             <div class="form-group">
                             <form id="orders-message-form" action="javascript:;" name="orders-message-form" method="post">
@@ -406,15 +437,15 @@
                                             placeholder="Type a message here"
                                         ></textarea>
                                     </div>
-                                    <div>
+                                    <div class="submit-container">
                                         <button type="submit">
                                             <span>
                                                 <span class="elementor-button-icon"></span>
-                                                <span class="elementor-button-text">Send</span>
+                                                <span class="elementor-button-text">Send Message</span>
                                             </span>
                                         </button>
                                         <div>
-                                            <a href="{{ url('admin/chats') }}">Chats Page</a>
+                                            <a href="{{ url('admin/chats') }}">Go to Chats</a>
                                         </div>
                                     </div>
                                 </div>
