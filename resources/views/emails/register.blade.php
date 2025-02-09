@@ -79,7 +79,7 @@
 
     <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
         <!--EMAIL SUBJECT: Welcome to Kapiton - Your Account is Ready! -->
-        <p style="margin: 0 0 20px 0;">Dear Von Miles Gacutan<?php /* {{-- $name --}} */ ?>,</p>
+        <p style="margin: 0 0 20px 0;">Dear {{ $name }}<?php /* {{-- $name --}} */ ?>,</p>
         <p style="margin: 0 0 20px 0;">Welcome to Kapiton! We're thrilled to have you on board. Your account has been successfully created with the following details:</p>
         <ul style="margin: 0 0 30px 0;">
             <li>Name: Von Miles Gacutan<?php /* {{-- $name --}} */ ?></li>

@@ -80,7 +80,7 @@
 
     <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
         <!--EMAIL SUBJECT: Confirm Your Kapiton Account -->
-        <p style="margin: 0 0 20px 0;">Dear Von Miles Gacutan<?php /* {{-- $name --}} */ ?>,</p>
+        <p style="margin: 0 0 20px 0;">Dear {{ $name }}<?php /* {{-- $name --}} */ ?>,</p>
         <p style="margin: 0 0 20px 0;">Thank you for signing up with Kapiton! To complete your registration, please confirm your account by clicking the button below:</p>
         <a href="# <?php /* {{ url('/user/confirm/' . $code) }} */ ?>" style="font-weight: 500; text-transform: uppercase; border-radius: 100px; border: none; text-decoration: none !important; color: white !important; background: #1f1f22; padding: 8px; margin-top: 20px; display: block; width: fit-content; margin-bottom: 30px;">📣Confirm Account</a>
         <p style="margin: 0 0 20px 0;">Once confirmed, you'll be able to access all the features of your new account.</p>
