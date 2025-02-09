@@ -19,3 +19,16 @@
     right: 20px;
     cursor: pointer;
 }
+.signin-google .elementor-button-text{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+.elementor-611 .elementor-element.elementor-element-23dcbc3 .e-form__buttons{
+    max-width: 100%;
+}
+.signin-google {
+    width: 100%;
+    padding: 4px 20px;
+}
