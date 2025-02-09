@@ -733,15 +733,12 @@ $(document).ready(function() {
 
     // Calculate the Grand Total, Shipping Charges and Coupon Amount and displaying them depending on the chosen Delivery Address in front/products/checkout.blade.php
     $('input[name^="preferred_address"]').bind('change', function() {
-
-        var shipping_charges = $(this).attr('shipping_charges'); // using Custom HTML data attributes (data-*)
-        var total_price      = $(this).attr('total_price');      // using Custom HTML data attributes (data-*)
-        var coupon_amount    = $(this).attr('coupon_amount');    // using Custom HTML data attributes (data-*)// using Custom HTML data attributes (data-*)
+        var shipping_charges = parseFloat($(this).attr('shipping_charges')); // using Custom HTML data attributes (data-*)
+        var total_price      = parseFloat($(this).attr('total_price'));      // using Custom HTML data attributes (data-*)
+        var coupon_amount    = parseFloat($(this).attr('coupon_amount'));    // using Custom HTML data attributes (data-*)// using Custom HTML data attributes (data-*)
         var shipping_method = $('input[name="shipping_method"]:checked').val();
 
         if (shipping_method == 'lalamove') {
-            shipping_charges = 73;
-
             $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add').removeClass('hidden');
         }
 
@@ -758,9 +755,12 @@ $(document).ready(function() {
             $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add').addClass('hidden');
             $('#ship-to-different-address-form').removeClass('display-add');
         }
-
+        
+        if (typeof shipping_charges === 'undefined') {
+            shipping_charges = 0;
+        }
         // Display the Shipping Charges
-        $('.shipping_charges').html('₱ ' + shipping_charges.toFixed(2));
+        $('.delivery_fee').html('₱ ' + shipping_charges.toFixed(2));
 
         // Show the right Payment Methods radio buttons in front/products/checkout.blade.php based on Getting the results of checking if both the COD and Prepaid PIN codes of the user's Delviery Address exist in our both `cod_pincodes` and `prepaid_pincodes` database tables. Check the checkout() method in Front/ProductsController.php and front/products/checkout.blade.php
         var codpincodeCount     = $(this).attr('codpincodeCount');     // using Custom HTML data attributes (data-*)

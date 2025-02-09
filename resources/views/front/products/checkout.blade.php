@@ -102,8 +102,9 @@
                                                 class="address"
                                                 name="preferred_address-{{$deliveryAddress['user_id']}}"
                                                 value="{{$deliveryAddress['id']}}"
-                                                shipping_charges="{{$deliveryAddress['shipping_charges']}}"
+                                                shipping_charges="{{number_format($deliveryAddress['shipping_charges'], 2)}}"
                                                 total_price="{{str_replace(",", "", $sub_total)}}"
+                                                coupon_amount="{{Session::get('couponAmount')}}"
                                             >
                                             <label for="html">
                                                 <b>{{$deliveryAddress['address']}}, {{$deliveryAddress['city']}}, {{$deliveryAddress['state']}}, {{$deliveryAddress['country']}}
@@ -356,7 +357,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Delivery Fee</td>
-                                                <td class="shipping_charges align-right">₱ {{number_format($delivery_fee, 2)}}</td>
+                                                <td class="delivery_fee align-right">₱ {{number_format($delivery_fee, 2)}}</td>
                                             </tr>
                                             {{-- <tr>
                                                 <td>Estimated Transaction Fee</td>

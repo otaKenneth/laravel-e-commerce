@@ -334,7 +334,7 @@
                     data-widget_type="image.default"
                 >
                     <div class="elementor-widget-container">
-                        <a href="#">
+                        <a href="{{ url('product/'.$product['id']) }}">
                             <img
                                 decoding="async"
                                 width="329"
