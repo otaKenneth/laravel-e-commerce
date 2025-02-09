@@ -765,7 +765,7 @@
                                         @endif
 
 
-                                        @if (Auth::check())
+                                        {{-- @if (Auth::check()) --}}
                                         <div class="wishlist-btn pdp-min-with-btn">
                                             <div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-25 e-form__buttons elementor-md-60">
                                                 <button id="add-to-wishlist" type="button" class="elementor-button elementor-size-sm">
@@ -776,7 +776,7 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        @endif
+                                        {{-- @endif --}}
                                         
 
 

@@ -129,7 +129,7 @@
     <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
         <!--EMAIL SUBJECT: Order Cancelled - Order#{{-- $ --}}-->
 
-        <p style="margin: 0 0 20px 0;">Dear Von Miles Gacutan {{ $name }},</p>
+        <p style="margin: 0 0 20px 0;">Dear {{ $name }},</p>
         <p style="margin: 0 0 20px 0;">We've received your request to cancel <span style="font-weight: bold;">order #</span>{{$order_id}} with {{ $business_name }}. The cancellation has been successfully processed.</p>
 
         <p style="margin: 0 0 20px 0;">Your refund will be initiated within 30 days and sent back to your chosen payment method. Once the refund is completed, we'll send you a confirmation email.</p>
