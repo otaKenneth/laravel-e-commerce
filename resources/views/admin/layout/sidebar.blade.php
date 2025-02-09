@@ -107,7 +107,7 @@
                 </a>
                 <div class="collapse" id="ui-finance">
                     <ul class="nav flex-column sub-menu" style="background: #fff !important; color: #5f7a61 !important">
-                        <li class="nav-item"> <a @if (Session::get('page') == 'update_bank_details')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="#">Bank Details</a></li>
+                        <li class="nav-item"> <a @if (Session::get('page') == 'update_bank_details')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/bank/details') }}">Bank Details</a></li>
                         <li class="nav-item"> <a @if (Session::get('page') == 'income_statement')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="#">Income Statement</a></li>
                         <li class="nav-item"> <a @if (Session::get('page') == 'my_balance')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="#">My Balance - Disbursements</a></li>
                     </ul>
