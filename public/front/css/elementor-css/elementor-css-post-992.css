@@ -153,4 +153,7 @@
 .payment-gateway.paymongo-options input:checked + label{
 	background: #5f7a61 !important;
 }
+.elementor-992 .elementor-element.elementor-element-831ec76 .e-con-inner.checkout-right-align{
+	align-items: flex-end !important;
+}
 /* CUSTOM CSS NINO FELICIANO */
