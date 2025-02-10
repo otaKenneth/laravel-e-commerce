@@ -756,7 +756,7 @@ $(document).ready(function() {
             $('#ship-to-different-address-form').removeClass('display-add');
         }
         
-        if (typeof shipping_charges === 'undefined') {
+        if (shipping_charges === '' || typeof shipping_charges === 'undefined' || isNaN(shipping_charges)) {
             shipping_charges = 0;
         }
         // Display the Shipping Charges
@@ -777,7 +777,7 @@ $(document).ready(function() {
             $('.prepaidMethod').hide();
         }
 
-        if (coupon_amount == '' || typeof(coupon_amount) == 'undefined') {
+        if (coupon_amount == '' || typeof(coupon_amount) == 'undefined' || isNaN(coupon_amount)) {
             coupon_amount = 0;
         }
 
