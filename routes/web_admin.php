@@ -133,7 +133,7 @@ Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Ad
     
         // Newsletter Subscribers module
         // Render admin/subscribers/subscribers.blade.php page (Show all Newsletter subscribers in the Admin Panel)
-        Route::get('subscribers', 'NewsletterController@subscribers');
+        Route::get('newsletter', 'NewsletterController@subscribers');
     
         // Update Subscriber Status (active/inactive) via AJAX in admin/subscribers/subscribers.blade.php, check admin/js/custom.js
         Route::post('update-subscriber-status', 'NewsletterController@updateSubscriberStatus');

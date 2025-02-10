@@ -9,7 +9,7 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Subscribers</h4>
+                            <h4 class="card-title">Newsletter</h4>
                             
 
                             {{-- Export Subscribers (the `newsletter_subscribers` database table) as an Excel file Button --}} 
@@ -37,7 +37,6 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Email</th>
-                                            <th>Subscribed on</th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
@@ -49,9 +48,6 @@
                                             <tr>
                                                 <td>{{ $subscriber['id'] }}</td>
                                                 <td>{{ $subscriber['email'] }}</td>
-                                                <td>
-                                                    {{ date("F j, Y, g:i a", strtotime($subscriber['created_at'])) }} {{-- https://stackoverflow.com/questions/2487921/convert-a-date-format-in-php --}} {{-- https://www.php.net/manual/en/function.date.php#:~:text=date(%22-,F%20j%2C%20Y%2C%20g%3Ai%20a,-%22)%3B%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20//%20March --}} 
-                                                </td>
                                                 <td>
                                                     @if ($subscriber['status'] == 1)
                                                         <a class="updateSubscriberStatus" id="subscriber-{{ $subscriber['id'] }}" subscriber_id="{{ $subscriber['id'] }}" href="javascript:void(0)"> {{-- Using HTML Custom Attributes. Check admin/js/custom.js --}}
