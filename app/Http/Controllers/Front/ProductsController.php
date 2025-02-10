@@ -741,7 +741,14 @@ class ProductsController extends Controller
         if (count($getCartItems) == 0) {
             $message = 'Shopping Cart is empty! Please add products to your Cart to checkout';
 
-            return redirect('cart')->with('error_message', $message); // redirect user to the cart.blade.php page, and show an error message in cart.blade.php
+            return response()->json([
+                'success' => false,
+                'message' => $message,
+                'data' => [
+                    'redirect' => true,
+                    'url' => url('/cart')
+                ]
+            ]);
         }
 
         $vendor_model = new Vendor;
@@ -772,13 +779,27 @@ class ProductsController extends Controller
         $deliveryAddresses = \App\Models\DeliveryAddress::deliveryAddresses(); // the delivery addresses of the currently authenticated/logged in user
 
         if (count($deliveryAddresses) == 0) {
-            return redirect('/user/delivery-addresses')->withErrors("Please add your first address.");
+            return response()->json([
+                'success' => false,
+                'message' => "Please add your first address.",
+                'data' => [
+                    'redirect' => true,
+                    'url' => url('/cart')
+                ]
+            ]);
         }
 
         $deliveryAddresses_countries = array_unique(Arr::pluck($deliveryAddresses, 'country'));
         $delivery_shipping_charges = \App\Models\ShippingCharge::whereIn('country', $deliveryAddresses_countries)->count();
         if ($delivery_shipping_charges < count($deliveryAddresses_countries)) {
-            return redirect('/user/delivery-addresses')->withErrors("One or more selected coutry from your delivery addresses is not yet available for shipping.");
+            return response()->json([
+                'success' => false,
+                'message' => "One or more selected coutry from your delivery addresses is not yet available for shipping.",
+                'data' => [
+                    'redirect' => true,
+                    'url' => url('/cart')
+                ]
+            ]);
         }
 
         $selectedDeliveryAddress = null; $shipping_charges = 0;
@@ -1035,7 +1056,14 @@ class ProductsController extends Controller
                 if ($item['quantity'] > $getProductStock) { // if the ordered quantity is greater than the existing stock, cancel the order/opertation
                     $message = $getProductDetails['product_name'] . ' with ' . $item['size'] . ' size stock is not available/enough for your order. Please reduce its quantity and try again!';
 
-                    return redirect('/cart')->with('error_message', $message); // Redirect to the Cart page with an error message
+                    response()->json([
+                        'success' => false,
+                        'message' => $message,
+                        'data' => [
+                            'redirect' => true,
+                            'url' => url('/cart')
+                        ]
+                    ]);
                 }
 
 
