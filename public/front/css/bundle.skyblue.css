@@ -1986,9 +1986,9 @@ body {
     z-index: 100; }
 
 .superscript-label-new {
-  background: #007bff; }
+  background: #5f7a61; }
   .superscript-label-new:after {
-    border-color: #007bff rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0); }
+    border-color: #5f7a61 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0); }
 
 .superscript-label-hot {
   background: #FF3860; }

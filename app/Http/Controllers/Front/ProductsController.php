@@ -1123,7 +1123,7 @@ class ProductsController extends Controller
                 // PayPal payment gateway integration in Laravel
             } elseif ($data['payment_gateway'] == 'paymongo') {
                 $resp = $paymongo->setItems($getCartItems)
-                    ->setDeliveryFee($shipping_charges)->computeTransactionFee()
+                    ->setDeliveryFee($shipping_charges)
                     ->set("description", "Kapiton Store - " . Auth::user()->email . " bought items with a total of {$grand_total}.")
                     ->set("payment_method_types", ["card", "brankas_bdo", "gcash", "grab_pay", "paymaya"])
                     ->set("billing", [

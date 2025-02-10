@@ -44,7 +44,7 @@
             </li>
 
             <li class="nav-item">
-                <a @if (in_array(Session::get('page'), ['sections','categories','products','brands','filters','coupons'])) style="background: #052CA3 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-catalogue" aria-expanded="false" aria-controls="ui-catalogue">
+                <a @if (in_array(Session::get('page'), ['sections','categories','products','brands','filters','coupons'])) style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-catalogue" aria-expanded="false" aria-controls="ui-catalogue">
                     <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Catalogue Management</span>
                     <i class="menu-arrow"></i>
@@ -72,7 +72,7 @@
             </li>
 
             <li class="nav-item">
-                <a @if (in_array(Session::get('page'), ['campaigns','affiliate_marketing'])) style="background: #052CA3 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-marketing" aria-expanded="false" aria-controls="ui-marketing">
+                <a @if (in_array(Session::get('page'), ['campaigns','affiliate_marketing'])) style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-marketing" aria-expanded="false" aria-controls="ui-marketing">
                     <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Marketing</span>
                     <i class="menu-arrow"></i>
@@ -86,7 +86,7 @@
             </li>
 
             <li class="nav-item">
-                <a @if (in_array(Session::get('page'), ['store_profile'])) style="background: #052CA3 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-store" aria-expanded="false" aria-controls="ui-store">
+                <a @if (in_array(Session::get('page'), ['store_profile'])) style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-store" aria-expanded="false" aria-controls="ui-store">
                     <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Store</span>
                     <i class="menu-arrow"></i>
@@ -100,14 +100,14 @@
             </li>
 
             <li class="nav-item">
-                <a @if (in_array(Session::get('page'), ['update_bank_details', 'income_statement', 'my_balance'])) style="background: #052CA3 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-finance" aria-expanded="false" aria-controls="ui-finance">
+                <a @if (in_array(Session::get('page'), ['update_bank_details', 'income_statement', 'my_balance'])) style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-finance" aria-expanded="false" aria-controls="ui-finance">
                     <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Finance</span>
                     <i class="menu-arrow"></i>
                 </a>
                 <div class="collapse" id="ui-finance">
                     <ul class="nav flex-column sub-menu" style="background: #fff !important; color: #5f7a61 !important">
-                        <li class="nav-item"> <a @if (Session::get('page') == 'update_bank_details')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="#">Bank Details</a></li>
+                        <li class="nav-item"> <a @if (Session::get('page') == 'update_bank_details')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/bank/details') }}">Bank Details</a></li>
                         <li class="nav-item"> <a @if (Session::get('page') == 'income_statement')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="#">Income Statement</a></li>
                         <li class="nav-item"> <a @if (Session::get('page') == 'my_balance')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="#">My Balance - Disbursements</a></li>
                     </ul>
@@ -115,7 +115,7 @@
             </li>
 
             <li class="nav-item">
-                <a @if (in_array(Session::get('page'), ['sales'])) style="background: #052CA3 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-data" aria-expanded="false" aria-controls="ui-data">
+                <a @if (in_array(Session::get('page'), ['sales'])) style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-data" aria-expanded="false" aria-controls="ui-data">
                     <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Data and Reports</span>
                     <i class="menu-arrow"></i>
@@ -131,7 +131,7 @@
             {{-- In case the authenticated user (the logged-in user) (using the 'admin' Authentication Guard in auth.php) type is 'superadmin', or 'admin', or 'subadmin' --}}
             
             <li class="nav-item">
-                <a @if (in_array(Session::get('page'), ['view_admins','view_subadmins','view_vendors','view_all'])) style="background: #052CA3 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-admins" aria-expanded="false" aria-controls="ui-admins">
+                <a @if (in_array(Session::get('page'), ['view_admins','view_subadmins','view_vendors','view_all'])) style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-admins" aria-expanded="false" aria-controls="ui-admins">
                     <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Admin Management</span>
                     <i class="menu-arrow"></i>
@@ -149,7 +149,7 @@
             </li>
 
             <li class="nav-item">
-                <a @if (in_array(Session::get('page'), ['sections','categories','products','brands','filters','coupons'])) style="background: #052CA3 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-catalogue" aria-expanded="false" aria-controls="ui-catalogue">
+                <a @if (in_array(Session::get('page'), ['sections','categories','products','brands','filters','coupons'])) style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-catalogue" aria-expanded="false" aria-controls="ui-catalogue">
                     <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Catalogue Management</span>
                     <i class="menu-arrow"></i>
@@ -239,7 +239,7 @@
             </li>
 
             <li class="nav-item">
-                <a @if (in_array(Session::get('page'), ['update_admin_password','update_admin_details'])) style="background: #052CA3 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-settings" aria-expanded="false" aria-controls="ui-settings">
+                <a @if (in_array(Session::get('page'), ['update_admin_password','update_admin_details'])) style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-settings" aria-expanded="false" aria-controls="ui-settings">
                     <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Settings</span>
                     <i class="menu-arrow"></i>
@@ -253,7 +253,7 @@
             </li>
 
             <li class="nav-item">
-                <a @if (in_array(Session::get('page'), ['platform_management'])) style="background: #052CA3 !important; color: #FFF !important" @endif class="nav-link" href="{{ url('admin/platform-management') }}">
+                <a @if (in_array(Session::get('page'), ['platform_management'])) style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" href="{{ url('admin/platform-management') }}">
                     <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Platform Management</span>
                 </a>

@@ -26,7 +26,9 @@ class Vendor extends Model
         return $this->belongsTo('App\Models\VendorsBusinessDetail', 'id', 'vendor_id'); // 'vendor_id' is the Foreign Key of the Relationship    // Defining The Inverse Of The Relationship: https://laravel.com/docs/9.x/eloquent-relationships#one-to-one-defining-the-inverse-of-the-relationship
     }
 
-
+    public function vendor_bank() {
+        return $this->hasOne('App\Models\VendorsBankDetail');
+    }
 
     
     public static function getVendorShop($vendorid) { // this method is called (used) in vendorListing() method in Front/ProductsController.php
