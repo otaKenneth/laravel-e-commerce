@@ -1056,7 +1056,14 @@ class ProductsController extends Controller
                 if ($item['quantity'] > $getProductStock) { // if the ordered quantity is greater than the existing stock, cancel the order/opertation
                     $message = $getProductDetails['product_name'] . ' with ' . $item['size'] . ' size stock is not available/enough for your order. Please reduce its quantity and try again!';
 
-                    return redirect('/cart')->with('error_message', $message); // Redirect to the Cart page with an error message
+                    response()->json([
+                        'success' => false,
+                        'message' => $message,
+                        'data' => [
+                            'redirect' => true,
+                            'url' => url('/cart')
+                        ]
+                    ]);
                 }
 
 
