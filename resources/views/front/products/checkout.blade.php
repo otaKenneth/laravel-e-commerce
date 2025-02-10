@@ -325,7 +325,7 @@
                                             data-element_type="container"
                                             data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
                                         >
-                                            <div class="e-con-inner">
+                                            <div class="e-con-inner checkout-right-align">
                                                 <div
                                                     class="elementor-element elementor-element-434c9b8 elementor-widget elementor-widget-text-editor"
                                                     data-id="434c9b8"

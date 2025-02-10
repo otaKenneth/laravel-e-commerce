@@ -119,3 +119,9 @@
 .admin-chat #container-chat-list p{
 	color: #1f1f22 !important;
 }
+
+@media (max-width: 767px){
+	.admin-chat .outer-e-con-custom .elementor-element-aca939b{
+		overflow-y: scroll;
+	}
+}

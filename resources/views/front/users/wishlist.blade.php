@@ -2,11 +2,19 @@
 
 
 @section('user_account_content')
+<style>
+    @media (max-width: 767px){
+        .item-addCart{
+            padding: 0px 10px;
+            font-size: 12px;
+        }
+    }
+</style>
 <div
     data-elementor-type="wp-page"
     data-elementor-id="1956"
     class="elementor elementor-1956"
-    data-elementor-post-type="page">
+    data-elementor-post-type="page" style="width: 100%;">
     <div
         class="elementor-element elementor-element-8c4c512 e-flex e-con-boxed e-con e-parent"
         data-id="8c4c512"
@@ -14,7 +22,7 @@
         data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
         data-core-v316-plus="true"
     >
-        <div class="e-con-inner">
+        <div class="e-con-inner" style="padding-top: 0;">
             <div
                 class="elementor-element elementor-element-d1dea40 e-con-full e-flex e-con e-child"
                 data-id="d1dea40"
