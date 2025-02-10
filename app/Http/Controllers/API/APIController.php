@@ -907,12 +907,12 @@ class APIController extends Controller
             $order->load('orders_products');
             $orderDetails = $order;
 
-            $user = User::find($order->user_id);
+            $user = User::where('id', $order->user_id)->first();
 
             $email = $user->email;
             $messageData = [
                 'email'        => $email,
-                'name'         => $user->first_name. " " .$user->last_name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+                'name'         => "{$user->first_name} {$user->last_name}",
                 'order_id'     => $order->id,
                 'orderDetails' => $orderDetails
             ];
