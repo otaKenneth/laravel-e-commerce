@@ -32,7 +32,7 @@
         <!-- inject:css -->
         <link rel="stylesheet" href="{{ url('admin/css/vertical-layout-light/style.css') }}">
         <!-- endinject -->
-        <link rel="shortcut icon" href="{{ url('admin/images/favicon.jpg') }}" />
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
 
         {{-- Elementor --}}
         <style id="wp-emoji-styles-inline-css">  	img.wp-smiley, img.emoji { 		display: inline !important; 		border: none !important; 		box-shadow: none !important; 		height: 1em !important; 		width: 1em !important; 		margin: 0 0.07em !important; 		vertical-align: -0.1em !important; 		background: none !important; 		padding: 0 !important; 	}</style>
