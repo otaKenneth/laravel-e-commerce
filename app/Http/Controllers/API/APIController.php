@@ -912,7 +912,7 @@ class APIController extends Controller
             $email = $user->email;
             $messageData = [
                 'email'        => $email,
-                'name'         => $user->name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+                'name'         => $user->first_name. " " .$user->last_name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
                 'order_id'     => $order->id,
                 'orderDetails' => $orderDetails
             ];
@@ -934,7 +934,7 @@ class APIController extends Controller
 
             foreach ($vendors as $vendor) {
                 $vendor_details = $vendor->vendorbusinessdetails;
-                $email = $vendor_details->shop_email;
+                $email = $vendor_details->shop_email || $vendor->email;
                 $messageData['email'] = $email;
                 $messageData['business_name'] = $vendor_details->shop_name;
                 $order->orders_products->where('vendor_id', $vendor->id);
