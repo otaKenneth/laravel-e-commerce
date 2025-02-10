@@ -1148,36 +1148,11 @@ class ProductsController extends Controller
                     $return_respose['status'] = "failed";
                 }
 
-                $email = Auth::user()->email;
-                $messageData = [
-                    'email'        => $email,
-                    'name'         => Auth::user()->name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
-                    'order_id'     => $order_id,
-                    'orderDetails' => $orderDetails
-                ];
-                \Illuminate\Support\Facades\Mail::send('emails.order', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order' is the order.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
-                    $message->to($email)->subject('Order Placed - Kapiton Store');
-                });
-
                 return response()->json($return_respose);
 
                 // iyzico Payment Gateway integration in/with Laravel
             } else { // if the `payment_gateway` selected by the user is not 'COD', meaning it's like PayPal, Prepaid, ... (in front/products/checkout.blade.php), we send the placing the order confirmation email and SMS after the user makes the payment
                 $return_respose['message'] = "Other Prepaid payment methods coming soon";
-            }
-
-            foreach ($pickupAddresses as $vendor_details) {
-                $messageData['business_name'] = $vendor_details['shop_name'];
-                $messageData['orderDetails'] = \App\Models\Order::with(['orders_products' => function ($query) use ($vendor_details) {
-                    $query->where('vendor_id', $vendor_details['vendor_id']);
-                }])->where('id', $order_id)->first()->toArray();
-                \Illuminate\Support\Facades\Mail::send('emails.vendor_order_placed', $messageData, function ($message) use ($email, $order_id) {
-                    // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail
-                    // 'emails.order' is the order.blade.php file inside the 'resources/views/emails' folder that will be sent as an email
-                    // We pass in all the variables that order.blade.php will use
-                    // https://www.php.net/manual/en/functions.anonymous.php
-                    $message->to($email)->subject('New Order - Order #' . $order_id);
-                });
             }
 
 

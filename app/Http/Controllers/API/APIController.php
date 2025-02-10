@@ -903,6 +903,46 @@ class APIController extends Controller
             $log->order_id     = $order->id;
             $log->order_status = $order->order_status;
             $log->save();
+
+            $order->load('orders_products');
+            $orderDetails = $order;
+
+            $user = User::find($order->user_id);
+
+            $email = $user->email;
+            $messageData = [
+                'email'        => $email,
+                'name'         => $user->name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+                'order_id'     => $order->id,
+                'orderDetails' => $orderDetails
+            ];
+            \Illuminate\Support\Facades\Mail::send('emails.order', $messageData, function ($message) use ($email) {
+                $message->to($email)->subject('Order Placed - Kapiton Store');
+            });
+
+            $vendorIds = $order->orders_products->pluck('vendor_id')->unique();
+
+            $vendors = \App\Models\Vendor::whereIn('id', $vendorIds)
+                ->with(['vendorbusinessdetails' => function ($q) {
+                    $q->select(
+                        'vendor_id', 'shop_name', 'shop_mobile', 'shop_email', 'lat', 'long'
+                    )->selectRaw("
+                        CONCAT(shop_address, ', ', shop_city, ', ', shop_state, ', ', shop_country, ', ', shop_pincode) AS shop_fulladdress
+                    ");
+                }])
+                ->get();
+
+            foreach ($vendors as $vendor) {
+                $vendor_details = $vendor->vendorbusinessdetails;
+                $email = $vendor_details->shop_email;
+                $messageData['email'] = $email;
+                $messageData['business_name'] = $vendor_details->shop_name;
+                $order->orders_products->where('vendor_id', $vendor->id);
+
+                \Illuminate\Support\Facades\Mail::send('emails.vendor_order_placed', $messageData, function ($message) use ($email, $order) {
+                    $message->to($email)->subject('New Order - Order #' . $order->id);
+                });
+            }
         } catch (\Exception $e) {
             \Log::error('Paymongo Update Payment Status' . $e->getMessage());
         }

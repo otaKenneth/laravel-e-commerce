@@ -111,7 +111,8 @@ class AdminController extends Controller
             $admin->password = bcrypt($new_password);
             $admin->update();
 
-            \Illuminate\Support\Facades\Mail::send('emails.user_forgot_password', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_status' is the order_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+            \Illuminate\Support\Facades\Mail::send('emails.user_forgot_password', $messageData, function ($message) use ($email) { 
+                // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail
                 $message->to($email)->subject('New Password - ' . env('APP_URL'));
             });
         }
