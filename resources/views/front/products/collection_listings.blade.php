@@ -27,7 +27,11 @@
 
 
                 <div class="collection-wide-banner-image">
-                    <img style="display: block; border-radius: 10px; width: 100%;" src="{{ $getImage("front/images/vendor/owl-carousel/dist/", $shopBanner) }}">
+                    @if (empty($shopBanner))
+                        <img style="display: block; border-radius: 10px; width: 100%;" src="{{ $getImage("front/images/vendor/owl-carousel/dist/", 'vendor-banner.jpg') }}">
+                    @else
+                        <img style="display: block; border-radius: 10px; width: 100%;" src="{{ $getImage("front/images/vendor/owl-carousel/dist/", $shopBanner) }}">    
+                    @endif
                 </div>
 
 
