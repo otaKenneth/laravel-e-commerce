@@ -112,7 +112,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     // Route::match(['get', 'post'], 'contact', 'CmsController@contact');
 
     // Add a Newsletter Subscriber email HTML Form Submission in front/layout/footer.blade.php when clicking on the Submit button (using an AJAX Request/Call)
-    // Route::post('add-subscriber-email', 'NewsletterController@addSubscriber');
+    Route::post('add-subscriber-email', 'NewsletterController@addSubscriber');
 
     // Protecting the routes of user (user must be authenticated/logged in) (to prevent access to these links while being unauthenticated/not being logged in (logged out))
     Route::group(['middleware' => ['auth']], function() {
