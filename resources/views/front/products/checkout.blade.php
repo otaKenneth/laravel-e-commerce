@@ -115,6 +115,9 @@
                                             <a href="#">Remove</a>
                                         </div>
                                         @endforeach
+                                        <div class="checkout---note">
+                                            Please make sure that the pinned location on your address is correct.
+                                        </div>
                                     </div>
                                 </div>
 
