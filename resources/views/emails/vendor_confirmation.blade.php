@@ -74,7 +74,7 @@
         <!--EMAIL SUBJECT: Confirm Your Vendor Account -->
         <p style="margin: 0 0 20px 0;">Dear {{ $name }},</p>
         <p style="margin: 0 0 20px 0;">Welcome to Kapiton! To activate your vendor account and get started, please click the link below:</p>
-        <a style="font-weight: 500; text-transform: uppercase; border-radius: 100px 100px 100px 100px; border: none; text-decoration: none !important; color: white !important; background: #1f1f22; padding: 8px; margin-top: 20px; display: block; width: fit-content; margin-bottom: 30px;" href="# <?php /* {{ url('vendor/confirm/' . $code) }} */ ?>">📣Confirm Your Account</a>
+        <a style="font-weight: 500; text-transform: uppercase; border-radius: 100px 100px 100px 100px; border: none; text-decoration: none !important; color: white !important; background: #1f1f22; padding: 8px; margin-top: 20px; display: block; width: fit-content; margin-bottom: 30px;" href="{{ url('vendor/confirm/' . $code) }}">📣Confirm Your Account</a>
         <p style="margin: 0 0 20px 0;">Once your account is confirmed, you'll gain access to all vendor tools and features to support your business.</p>
         <p style="margin: 0 0 20px 0;">If you have any questions or need assistance, don't hesitate to contact us.</p>
         <br>
