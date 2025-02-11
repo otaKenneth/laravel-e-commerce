@@ -933,7 +933,7 @@ class ProductsController extends Controller
 
             } else { // if the user selects any `payment_gateway` other than 'COD', this means that the `payment_method` is 'prepaid'  (and `order_status` is 'pending')
                 $payment_method = 'Prepaid';
-                $order_status   = 'Pending'; // And after payment confirmation, `order_status` becomes 'Payment Captured'. (We'll create the API that will convert this to either 'Payment Captured' or 'Canceled')
+                $order_status   = 'Payment Pending'; // And after payment confirmation, `order_status` becomes 'Payment Captured'. (We'll create the API that will convert this to either 'Payment Captured' or 'Canceled')
             }
 
 
@@ -1153,6 +1153,10 @@ class ProductsController extends Controller
                 $return_respose['message'] = "Other Prepaid payment methods coming soon";
             }
 
+            // We empty the Cart after placing the order
+            \App\Models\Cart::where('user_id', Auth::user()->id)->delete(); 
+            // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+
 
             return [
                 'success' => true
@@ -1173,8 +1177,6 @@ class ProductsController extends Controller
     // Rendering Thanks page (after placing an order)
     public function thanks() {
         if (Session::has('order_id')) { // if there's an order has been placed, empty the Cart (remove the order (the cart items/products) from `carts`table)    // 'user_id' was stored in Session inside checkout() method in Front/ProductsController.php
-            // We empty the Cart after placing the order
-            \App\Models\Cart::where('user_id', Auth::user()->id)->delete(); // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
             $order = \App\Models\Order::where('id', Session::get('order_id'));
             $order->load(['orders_products']);
 
@@ -1190,6 +1192,9 @@ class ProductsController extends Controller
                     'size'       => $item['size']
                 ])->update(['stock' => $newStock]);
             }
+
+            $order->order_status = 'New';
+            $order->save();
 
             return view('front.products.thanks');
         } else { // if there's no order has been placed
