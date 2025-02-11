@@ -138,12 +138,12 @@
                 <table style="width:auto; min-width: 100%; border-spacing: 0; border-collapse: collapse;">
                     <thead>
                         <tr style="background: #1f1f22;">
-                            <th style="font-size: 14px; padding: 10px 20px;">Item</th>
-                            <th style="font-size: 14px; padding: 10px 20px;">Product Code</th>
-                            <th style="font-size: 14px; padding: 10px 20px;">Color</th>
-                            <th style="font-size: 14px; padding: 10px 20px;">Size</th>
-                            <th style="font-size: 14px; padding: 10px 20px;">Quantity</th>
-                            <th style="font-size: 14px; padding: 10px 20px;">Price</th>
+                            <th style="font-size: 14px; padding: 10px 20px; color: white;">Item</th>
+                            <th style="font-size: 14px; padding: 10px 20px; color: white;">Product Code</th>
+                            <th style="font-size: 14px; padding: 10px 20px; color: white;">Color</th>
+                            <th style="font-size: 14px; padding: 10px 20px; color: white;">Size</th>
+                            <th style="font-size: 14px; padding: 10px 20px; color: white;">Quantity</th>
+                            <th style="font-size: 14px; padding: 10px 20px; color: white;">Price</th>
                         </tr>
                     </thead>
                     <tbody style="border: 1px solid #1f1f22;">
