@@ -957,6 +957,8 @@ class ProductsController extends Controller
             // If the Shipping Method is 'Pickup', the Shipping Charges are 0
             if ($data['shipping_method'] == 'pickup') {
                 $shipping_charges = 0;
+            } else if ($data['shipping_method'] == 'j&t') {
+                $shipping_charges = 150.00;
             }
 
             // Grand Total (`grand_total`)
@@ -1101,9 +1103,14 @@ class ProductsController extends Controller
 
                 // PayPal payment gateway integration in Laravel
             } elseif ($data['payment_gateway'] == 'paymongo') {
+                $str_total_price = number_format($total_price, 2);
+                $description = "Kapiton Store - " . Auth::user()->email . " bought items with a total of {$str_total_price}. Delivery Fee - {$shipping_charges}. ";
+                if (Session::get('couponAmount') > 0) {
+                    $description .= "Coupon Amount - " . Session::get('couponAmount');
+                }
                 $resp = $paymongo->setItems($getCartItems)
                     ->setDeliveryFee($shipping_charges)
-                    ->set("description", "Kapiton Store - " . Auth::user()->email . " bought items with a total of {$grand_total}.")
+                    ->set("description", $description)
                     ->set("payment_method_types", ["card", "brankas_bdo", "gcash", "grab_pay", "paymaya"])
                     ->set("billing", [
                         'address' => [
