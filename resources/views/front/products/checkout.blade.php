@@ -115,7 +115,7 @@
                                             <a href="#">Remove</a>
                                         </div>
                                         @endforeach
-                                        <div class="checkout---note">
+                                        <div class="checkout---note hide">
                                         Your address is not Pinned! Click edit on your selected address and pin your exact location on the map.
                                         </div>
                                     </div>

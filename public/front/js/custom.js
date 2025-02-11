@@ -790,6 +790,12 @@ $(document).ready(function() {
 
         // Display the Grand Total
         $('.grand_total').html('₱ ' + grand_total.toFixed(2).toLocaleString('en-US'));
+
+        if (shipping_method != 'pickup' && shipping_charges == 0) {
+            $('.checkout---note').removeClass('hide')
+        } else {
+            $('.checkout---note').addClass('hide')
+        }
     });
 
     // PIN code Availability Check: check if the PIN code of the user's Delivery Address exists in our database (in both `cod_pincodes` and `prepaid_pincodes`) or not in front/products/detail.blade.php via AJAX
