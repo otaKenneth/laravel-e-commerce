@@ -1052,15 +1052,6 @@ class ProductsController extends Controller
 
                 $cartItem->save(); // INSERT data INTO the `orders_products` table
 
-
-                // Inventory Management - Reduce inventory/stock when an order gets placed
-                // We wrote the Inventory/Stock Management script in TWO places: in the checkout() method in Front/ProductsController.php and in the success() method in Front/PaypalController.php
-                $getProductStock = ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']); // Get the `stock` of that product `product_id` with that specific `size` from `products_attributes` table
-                $newStock = $getProductStock - $item['quantity']; // The new product `stock` is the original stock reduced by the order `quantity`
-                ProductsAttribute::where([ // Update the new `quantity` in the `products_attributes` table
-                    'product_id' => $item['product_id'],
-                    'size'       => $item['size']
-                ])->update(['stock' => $newStock]);
                 $getCartItems[$cartKey] = $item;
             }
 
@@ -1184,7 +1175,21 @@ class ProductsController extends Controller
         if (Session::has('order_id')) { // if there's an order has been placed, empty the Cart (remove the order (the cart items/products) from `carts`table)    // 'user_id' was stored in Session inside checkout() method in Front/ProductsController.php
             // We empty the Cart after placing the order
             \App\Models\Cart::where('user_id', Auth::user()->id)->delete(); // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+            $order = \App\Models\Order::where('id', Session::get('order_id'));
+            $order->load(['orders_products']);
 
+            foreach ($order->orders_products as $key => $item) {
+                // Inventory Management - Reduce inventory/stock when an order gets placed
+                // We wrote the Inventory/Stock Management script in TWO places: in the checkout() method in Front/ProductsController.php and in the success() method in Front/PaypalController.php
+                $getProductStock = ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']); // Get the `stock` of that product `product_id` with that specific `size` from `products_attributes` table
+                $newStock = $getProductStock - $item['quantity']; 
+                // The new product `stock` is the original stock reduced by the order `quantity`
+                ProductsAttribute::where([ 
+                    // Update the new `quantity` in the `products_attributes` table
+                    'product_id' => $item['product_id'],
+                    'size'       => $item['size']
+                ])->update(['stock' => $newStock]);
+            }
 
             return view('front.products.thanks');
         } else { // if there's no order has been placed
