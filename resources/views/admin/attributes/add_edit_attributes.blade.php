@@ -194,10 +194,10 @@
                                             {{--  <input type="hidden" name="attributeId[]" value="{{ $attribute['id'] }}">  --}} {{-- A hidden input field --}} {{-- IMPORTANT NOTE: DIDN'T WORK INSIDE FOR LOOP!! MUST BE OUSTSIDE IT IN ORDER TO WORK! --}}
                                             <input style="display: none" type="text" name="attributeId[]" value="{{ $attribute['id'] }}"> {{-- A hidden input field --}}
                                             <tr>
-                                                @if (count($product['variants']) == 1)
+                                                @if (count($product['variants']) > 0)
                                                 <td>{{ $attribute['color'] }}</td>
                                                 @endif
-                                                @if(count($product['variants']) == 2)
+                                                @if(count($product['variants']) > 1)
                                                 <td>{{ $attribute['size'] }}</td>
                                                 @endif
                                                 <td>
