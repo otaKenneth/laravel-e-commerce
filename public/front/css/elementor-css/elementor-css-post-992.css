@@ -156,4 +156,15 @@
 .elementor-992 .elementor-element.elementor-element-831ec76 .e-con-inner.checkout-right-align{
 	align-items: flex-end !important;
 }
+.checkout---note{
+	margin-top: 10px;
+    display: block;
+    max-width: 430px;
+    font-weight: bold;
+    color: #808080;
+    line-height: 1rem;
+    font-size: 14px;
+    font-style: italic;
+	text-decoration: underline;
+}
 /* CUSTOM CSS NINO FELICIANO */
