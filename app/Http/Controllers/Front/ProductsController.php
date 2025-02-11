@@ -1187,13 +1187,14 @@ class ProductsController extends Controller
             foreach ($order->orders_products as $key => $item) {
                 // Inventory Management - Reduce inventory/stock when an order gets placed
                 // We wrote the Inventory/Stock Management script in TWO places: in the checkout() method in Front/ProductsController.php and in the success() method in Front/PaypalController.php
-                $getProductStock = ProductsAttribute::getProductStock($item['product_id'], $item['color'], $item['size']); // Get the `stock` of that product `product_id` with that specific `size` from `products_attributes` table
+                $getProductStock = ProductsAttribute::getProductStock($item['product_id'], $item['product_color'], $item['product_size']); // Get the `stock` of that product `product_id` with that specific `size` from `products_attributes` table
                 $newStock = $getProductStock - $item['quantity']; 
                 // The new product `stock` is the original stock reduced by the order `quantity`
                 ProductsAttribute::where([ 
                     // Update the new `quantity` in the `products_attributes` table
                     'product_id' => $item['product_id'],
-                    'size'       => $item['size']
+                    'color'       => $item['product_color'],
+                    'size'       => $item['product_size']
                 ])->update(['stock' => $newStock]);
             }
 
