@@ -728,7 +728,7 @@ $(document).ready(function() {
     });
 
     $('input[name="shipping_method"]').on('click change', function (e) {
-        $('input[name^="preferred_address"]').trigger('change');
+        $('input[name^="preferred_address"]:checked').trigger('change');
     });
 
     // Calculate the Grand Total, Shipping Charges and Coupon Amount and displaying them depending on the chosen Delivery Address in front/products/checkout.blade.php
