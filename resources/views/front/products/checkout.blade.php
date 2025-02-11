@@ -116,7 +116,7 @@
                                         </div>
                                         @endforeach
                                         <div class="checkout---note">
-                                            Please make sure that the pinned location on your address is correct.
+                                        Your address is not Pinned! Click edit on your selected address and pin your exact location on the map.
                                         </div>
                                     </div>
                                 </div>
