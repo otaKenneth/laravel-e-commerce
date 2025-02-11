@@ -1182,8 +1182,7 @@ class ProductsController extends Controller
     // Rendering Thanks page (after placing an order)
     public function thanks() {
         if (Session::has('order_id')) { // if there's an order has been placed, empty the Cart (remove the order (the cart items/products) from `carts`table)    // 'user_id' was stored in Session inside checkout() method in Front/ProductsController.php
-            $order = \App\Models\Order::where('id', Session::get('order_id'));
-            $order->with(['orders_products']);
+            $order = \App\Models\Order::with(['orders_products'])->where('id', Session::get('order_id'));
 
             foreach ($order->orders_products as $key => $item) {
                 // Inventory Management - Reduce inventory/stock when an order gets placed
