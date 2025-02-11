@@ -24,7 +24,8 @@ class ChatBox extends Component
 
     public function render()
     {
-        return view('livewire.admin.chat-box');
+        $view = (isset($this->activeChat->user->first_name)) ? 'livewire.admin.chat-box' : 'livewire.empty-chat-box';
+        return view($view);
     }
 
     public function navigationChatClicked($chat_id)
