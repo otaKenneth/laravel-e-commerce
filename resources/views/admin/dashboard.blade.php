@@ -23,9 +23,9 @@
                 <div class="col-md-6 grid-margin transparent no-mobile-margin-bottom">
 
 
-                    @if (is_null($is_vendor))
-                    <div class="row">
-                        <div class="col-md-6 mb-4 stretch-card transparent">
+                    @if ($is_vendor == 0)
+              
+                        <div class="col-lg-3 col-md-4 mb-4 stretch-card transparent">
                             <div class="card card-tale">
                                 <div class="card-body">
                                     <p class="mb-4">Total Sections</p>
@@ -52,8 +52,8 @@
                                 </div>
                             </div>
                         </div>
-                        @if (is_null($is_vendor))
-                        <div class="col-md-6 mb-4 stretch-card transparent">
+                        @if ($is_vendor == 0)
+                        <div class="col-lg-3 col-md-4 mb-4 stretch-card transparent">
                             <div class="card card-light-danger">
                                 <div class="card-body">
                                     <p class="mb-4">Total Brands</p>
@@ -88,10 +88,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    @if (is_null($is_vendor))
-                    <div class="row">
-                        <div class="col-md-6 mb-4 stretch-card transparent mobile-no-margin">
+             
+                    @if ($is_vendor == 0)
+        
+                        <div class="col-lg-3 col-md-4 mb-4 stretch-card transparent mobile-no-margin">
                             <div class="card card-light-blue">
                                 <div class="card-body">
                                     <p class="mb-4">Total Users</p>
