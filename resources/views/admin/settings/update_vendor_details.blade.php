@@ -130,7 +130,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-12 col-md-6">
-                                                <label for="vendor_pincode">Pincode</label>
+                                                <label for="vendor_pincode">Zipcode</label>
                                                 <input type="text" class="form-control" id="vendor_pincode" placeholder="Enter Pincode" name="vendor_pincode" value="{{ $vendorDetails['pincode'] }}"> {{-- $vendorDetails was passed from AdminController --}}
                                             </div>
                                         </div>
@@ -289,7 +289,7 @@
                                     </div>                                    
                                     <div class="form-group">
                                         <label for="shop_mobile">Shop Mobile</label>
-                                        <input type="text" class="form-control" id="shop_mobile" placeholder="Enter 10 Digit Shop Mobile Number" name="shop_mobile"  @if (isset($vendorDetails['shop_mobile'])) value="{{ $vendorDetails['shop_mobile'] }}" @endif maxlength="15" minlength="11">
+                                        <input type="text" class="form-control" id="shop_mobile" placeholder="Enter 11 Digit Shop Mobile Number" name="shop_mobile"  @if (isset($vendorDetails['shop_mobile'])) value="{{ $vendorDetails['shop_mobile'] }}" @endif maxlength="15" minlength="11">
                                     </div>
                                     <div class="form-group">
                                         <label for="shop_mobile">Shop Website</label>

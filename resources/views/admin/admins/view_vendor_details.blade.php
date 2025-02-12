@@ -59,7 +59,7 @@
                                 <input type="text" class="form-control" value="{{ $vendorDetails['vendor_personal']['country'] }}" readonly> {{-- $vendorDetails was passed from AdminController --}}
                             </div>
                             <div class="form-group">
-                                <label for="vendor_pincode">Pincode</label>
+                                <label for="vendor_pincode">Zipcode</label>
                                 <input type="text" class="form-control" value="{{ $vendorDetails['vendor_personal']['pincode'] }}" readonly> {{-- $vendorDetails was passed from AdminController --}}
                             </div>
                             <div class="form-group">
@@ -119,7 +119,7 @@
                                 <input type="text" class="form-control"  @if (isset($vendorDetails['vendor_business']['shop_country'])) value="{{ $vendorDetails['vendor_business']['shop_country'] }}" @endif readonly> {{-- $vendorDetails was passed from AdminController --}}
                             </div>
                             <div class="form-group">
-                                <label for="vendor_pincode">Shop Pincode</label>
+                                <label for="vendor_pincode">Shop Zipcode</label>
                                 <input type="text" class="form-control"  @if (isset($vendorDetails['vendor_business']['shop_pincode'])) value="{{ $vendorDetails['vendor_business']['shop_pincode'] }}" @endif  readonly> {{-- $vendorDetails was passed from AdminController --}}
                             </div>
                             <div class="form-group">
