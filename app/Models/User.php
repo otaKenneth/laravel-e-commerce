@@ -25,7 +25,9 @@ class User extends Authenticatable
         'email',
         'email_verified_at',
         'password',
-        'status'
+        'status',
+        'mobile', 'city', 
+        'state', 'country', 'pincode', 'address'
     ];
 
     protected $with = ['deliveryAddress'];

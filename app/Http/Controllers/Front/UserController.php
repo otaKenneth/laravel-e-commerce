@@ -339,15 +339,18 @@ class UserController extends Controller
 
             if ($validator->passes()) { // if validation passes (is successful), register (INSERT) the new user into the database `users` table, and log the user in IMMEDIATELY and AUTOMATICALLY and DIRECTLY, and redirect them to the Cart cart.blade.php page
                 // Update user details in `users` table
-                \App\Models\User::where('id', Auth::user()->id)->update([ // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
-                    'first_name'    => $data['first_name'],    // $data['name']       comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                    'last_name'    => $data['last_name'],    // $data['name']       comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                    'mobile'  => $data['mobile'],  // $data['mobile']     comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                    'city'    => $data['city'],    // $data['city']       comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                    'state'   => $data['state'],   // $data['state']      comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                    'country' => $data['country'], // $data['country']    comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                    'pincode' => $data['pincode'], // $data['pincode']    comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                    'address' => $data['address'], // $data['address']    comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
+                $countries = \App\Models\Country::where('status', 1)->get()->toArray(); // get the countries which have status = 1 (to ignore the blacklisted countries, in case)
+                // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+                $user = \App\Models\User::where('id', Auth::user()->id)->first();
+                $user->update([
+                    'first_name'    => $data['first_name'],
+                    'last_name'    => $data['last_name'],
+                    'mobile'  => $data['mobile'],
+                    'city'    => $data['city'],
+                    'state'   => $data['state'],
+                    'country' => $data['country'],
+                    'pincode' => $data['pincode'],
+                    'address' => $data['address'],
                 ]);
 
                 // Redirect user back with a success message
@@ -355,7 +358,8 @@ class UserController extends Controller
                 return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
                     'type'    => 'success',
                     // 'url'     => $redirectTo, // redirect user to the Cart cart.blade.php page
-                    'message' => 'Your contact/billing details successfully updated!'
+                    'message' => 'Your contact/billing details successfully updated!',
+                    'view' => (string) \Illuminate\Support\Facades\View::make('front.users.user_account')->with(compact('countries', 'user'))
                 ]);
 
             } else { // if validation fails (is unsuccessful), send the Validation Error Messages

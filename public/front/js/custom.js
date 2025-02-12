@@ -520,7 +520,7 @@ $(document).ready(function() {
 
 
     // User Update Details HTML Form submission (in front/users/user_account.blade.php)
-    $('#accountForm').submit(function() { // When the registration <form> is submitted
+    $('#accountForm').submit(function(e) { // When the registration <form> is submitted
 
         // Show our Preloader/Loader/Loading Page/Preloading Screen while the <form> is submitted
         $('.loader').show();
@@ -576,6 +576,8 @@ $(document).ready(function() {
                             'display': 'none'
                         });
                         $("#edit_info").click()
+                        var account_form_html = $(resp.view).find('#accountForm').html();
+                        $(e.currentTarget).html(account_form_html)
                     }, 3000);
                 }
             },
