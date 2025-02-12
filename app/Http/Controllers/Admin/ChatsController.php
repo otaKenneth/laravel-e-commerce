@@ -30,10 +30,10 @@ class ChatsController extends Controller
         if (empty($hasChat)) {
             $chat = Chats::create();
             $chat->chatUser()->create([
-                'admin_id' => Auth::guard('admin')->user()->id
+                'user_id' => $user->id
             ]);
             $chat->chatAdmin()->create([
-                'user_id' => $user->id
+                'admin_id' => Auth::guard('admin')->user()->id
             ]);
             $chat->messages()->create([
                 'user_id' => $user->id,
@@ -58,10 +58,5 @@ class ChatsController extends Controller
                 'message' => "Your message has been sent to {$user->first_name} {$user->last_name}. Visit the Chat Page to continue the conversation with this customer."
             ]);
         }
-        
-        return response()->json([
-            'success' => true,
-            'chat' => $chat
-        ]);
     }
 }
