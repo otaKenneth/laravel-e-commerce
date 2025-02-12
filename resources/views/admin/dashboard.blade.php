@@ -20,12 +20,12 @@
             <div class="row">
 
                 
-                <div class="col-md-6 grid-margin transparent no-mobile-margin-bottom">
+          
 
 
                     @if (is_null($is_vendor))
-                    <div class="row">
-                        <div class="col-md-6 mb-4 stretch-card transparent">
+              
+                        <div class="col-lg-3 col-md-4 mb-4 stretch-card transparent">
                             <div class="card card-tale">
                                 <div class="card-body">
                                     <p class="mb-4">Total Sections</p>
@@ -33,7 +33,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="col-lg-3 col-md-4 mb-4 stretch-card transparent">
                             <div class="card card-dark-blue">
                                 <div class="card-body">
                                     <p class="mb-4">Total Categories</p>
@@ -41,10 +41,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+              
                     @endif
-                    <div class="row">
-                        <div class="col-md-6 mb-4 stretch-card transparent">
+            
+                        <div class="col-lg-3 col-md-4 mb-4 stretch-card transparent">
                             <div class="card card-light-blue">
                                 <div class="card-body">
                                     <p class="mb-4">Total Products</p>
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         @if (is_null($is_vendor))
-                        <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="col-lg-3 col-md-4 mb-4 stretch-card transparent">
                             <div class="card card-light-danger">
                                 <div class="card-body">
                                     <p class="mb-4">Total Brands</p>
@@ -62,25 +62,24 @@
                             </div>
                         </div>
                         @endif
-                    </div>
+               
 
                 
                     
-                </div>
+               
 
 
-                
-                <div class="col-md-6 grid-margin transparent">
-                    <div class="row">
-                        <div class="col-md-6 mb-4 stretch-card transparent">
-                            <div class="card card-tale">
-                                <div class="card-body">
-                                    <p class="mb-4">Total Orders</p>
-                                    <p class="fs-30 mb-2">{{ $ordersCount }}</p>
-                                </div>
-                            </div>
+          
+       
+                <div class="col-lg-3 col-md-4 mb-4 stretch-card transparent">
+                    <div class="card card-tale">
+                        <div class="card-body">
+                            <p class="mb-4">Total Orders</p>
+                            <p class="fs-30 mb-2">{{ $ordersCount }}</p>
                         </div>
-                        <div class="col-md-6 mb-4 stretch-card transparent">
+                    </div>
+                </div>
+                        <div class="col-lg-3 col-md-4 mb-4 stretch-card transparent">
                             <div class="card card-dark-blue">
                                 <div class="card-body">
                                     <p class="mb-4">Total Coupons</p>
@@ -88,10 +87,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+             
                     @if (is_null($is_vendor))
-                    <div class="row">
-                        <div class="col-md-6 mb-4 stretch-card transparent mobile-no-margin">
+        
+                        <div class="col-lg-3 col-md-4 mb-4 stretch-card transparent mobile-no-margin">
                             <div class="card card-light-blue">
                                 <div class="card-body">
                                     <p class="mb-4">Total Users</p>
@@ -99,7 +98,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-4 stretch-card transparent">
+                        <div class="col-lg-3 col-md-4 mb-4 stretch-card transparent">
                             <div class="card card-light-blue">
                                 <div class="card-body">
                                 <p class="mb-4">Vendors found us on</p>
@@ -123,10 +122,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                 
                     @endif
                 
-                </div>
+        
             </div>
         </div>
         <!-- content-wrapper ends -->
