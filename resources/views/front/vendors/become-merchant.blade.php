@@ -8,6 +8,11 @@
         data-id="936e4ce" data-element_type="container"
         data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
         data-core-v316-plus="true">
+        @if (session('success_message'))
+            <div class="alert alert-success show">
+                {{ session('success_message') }}
+            </div>
+        @endif
         <div class="e-con-inner">
             <div id="lets-talk-merchant-register" class="elementor-element elementor-element-e0cba95 e-flex e-con-boxed e-con e-child"
                 data-id="e0cba95" data-element_type="container"
