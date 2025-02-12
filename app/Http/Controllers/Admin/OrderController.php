@@ -247,7 +247,9 @@ class OrderController extends Controller
                 $this->paymongoRefundOrder($getOrderId); 
             } elseif ($data['order_item_status'] === "For Delivery" && 
                 (empty($data['item_courier_name']) && empty($data['item_tracking_number']))) {
-                $this->productForDelivery($data);
+                    if ($orderDetails['shipping_method'] == 'lalamove') {
+                        $this->productForDelivery($data);
+                    }
             } elseif (!empty($data['item_courier_name']) && !empty($data['item_tracking_number'])) { // if a 'vendor' or 'admin' Updates the Order "Item Status" to 'Shipped' in admin/orders/order_details.blade.php, and submits both Courier Name and Tracking Number HTML input fields, include the Courier Name and Tracking Nubmer data in the email (send them with the email)
                 $email = $deliveryDetails['email'];
 

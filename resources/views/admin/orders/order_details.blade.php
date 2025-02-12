@@ -352,7 +352,11 @@
                                         @if (!empty($getItemDetails['courier_name']))
                                             <br>
                                             <span>Courier Name: 
+                                                @if ($orderDetails['shipping_method'] == 'lalamove')
                                                 <label><a href="{{ $getItemDetails['courier_name'] }}" target="_blank" >Lalamove</a></label>
+                                                @else
+                                                <label>{{ $getItemDetails['courier_name'] }}</label>
+                                                @endif
                                             </span>
                                         @endif
 
