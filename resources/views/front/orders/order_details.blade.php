@@ -152,7 +152,7 @@
                         <td>{{ $orderDetails['country'] }}</td>
                     </tr>
                     <tr>
-                        <td>Pincode</td>
+                        <td>Zipcode</td>
                         <td>{{ $orderDetails['pincode'] }}</td>
                     </tr>
                     <tr>

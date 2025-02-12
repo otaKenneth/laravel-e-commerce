@@ -193,7 +193,7 @@
                             
                             @if (!empty($userDetails['pincode']))
                                 <div class="form-group" style="height: 15px">
-                                    <label style="font-weight: 550">Pincode: </label>
+                                    <label style="font-weight: 550">Zipcode: </label>
                                     <label>{{ $userDetails['pincode'] }}</label>
                                 </div>
                             @endif
@@ -248,7 +248,7 @@
                             
                             @if (!empty($orderDetails['pincode']))
                                 <div class="form-group" style="height: 15px">
-                                    <label style="font-weight: 550">Pincode: </label>
+                                    <label style="font-weight: 550">Zipcode: </label>
                                     <label>{{ $orderDetails['pincode'] }}</label>
                                 </div>
                             @endif
