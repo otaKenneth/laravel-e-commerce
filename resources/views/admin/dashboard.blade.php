@@ -23,6 +23,7 @@
                 <div class="col-md-6 grid-margin transparent no-mobile-margin-bottom">
 
 
+                    @if (is_null($is_vendor))
                     <div class="row">
                         <div class="col-md-6 mb-4 stretch-card transparent">
                             <div class="card card-tale">
@@ -41,6 +42,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     <div class="row">
                         <div class="col-md-6 mb-4 stretch-card transparent">
                             <div class="card card-light-blue">
@@ -50,6 +52,7 @@
                                 </div>
                             </div>
                         </div>
+                        @if (is_null($is_vendor))
                         <div class="col-md-6 mb-4 stretch-card transparent">
                             <div class="card card-light-danger">
                                 <div class="card-body">
@@ -58,6 +61,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
 
                 
@@ -85,6 +89,7 @@
                             </div>
                         </div>
                     </div>
+                    @if (is_null($is_vendor))
                     <div class="row">
                         <div class="col-md-6 mb-4 stretch-card transparent mobile-no-margin">
                             <div class="card card-light-blue">
@@ -119,20 +124,9 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 
                 </div>
-
-
-
-
-          
-
-             
-
-
-
-
-                
             </div>
         </div>
         <!-- content-wrapper ends -->
