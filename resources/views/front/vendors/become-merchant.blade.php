@@ -8,11 +8,7 @@
         data-id="936e4ce" data-element_type="container"
         data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
         data-core-v316-plus="true">
-        @if (session('success_message'))
-            <div class="alert alert-success show">
-                {{ session('success_message') }}
-            </div>
-        @endif
+        
         <div class="e-con-inner">
             <div id="lets-talk-merchant-register" class="elementor-element elementor-element-e0cba95 e-flex e-con-boxed e-con e-child"
                 data-id="e0cba95" data-element_type="container"
@@ -32,6 +28,15 @@
                     <div class="elementor-element elementor-element-ab8286e e-con-full e-flex e-con e-child"
                         data-id="ab8286e" data-element_type="container"
                         data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;container_type&quot;:&quot;flex&quot;}">
+
+                        <div>
+                            @if (session('success_message'))
+                                <div class="alert alert-success show">
+                                    {{ session('success_message') }}
+                                </div>
+                            @endif
+                        </div>
+
                         <div class="elementor-element elementor-element-3b64faf elementor-invisible elementor-widget elementor-widget-image"
                             data-id="3b64faf" data-element_type="widget"
                             data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}"
