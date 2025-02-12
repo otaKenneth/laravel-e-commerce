@@ -264,7 +264,9 @@
                             @if ($orderDetails['order_status'] == "For Delivery" && !empty($orderDetails['courier_name']))
                                 <div class="form-group" style="height: 15px">
                                     <label style="font-weight: 550">Courier Name: </label>
-                                    <label><a href="{{$orderDetails['courier_name']}}" target="_blank" >{{Lalamove}}</a></label>
+                                    <label><a href="{{$orderDetails['courier_name']}}" target="_blank" style="text-transform: uppercase;" >
+                                        {{ $orderDetails['shipping_method'] }}
+                                    </a></label>
                                 </div>
                             @else
                                 <div class="form-group" style="height: 15px">
