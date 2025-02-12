@@ -499,7 +499,7 @@
                                                 @endphp
 
                                                 <a target="_blank" href="{{ url('product/' . $product['product_id']) }}">
-                                                    <img src="{{ asset('front/images/product_images/small/' . $getProductImage) }}">
+                                                    <img src="{{ $getImage('front/images/product_images/small/' . $getProductImage) }}">
                                                 </a>
                                             </td>
                                             <td>{{ $product['product_code'] }}</td>
