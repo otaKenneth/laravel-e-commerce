@@ -27,9 +27,7 @@
 
 
                 <div class="collection-wide-banner-image">
-                    @if (empty($shopBanner))
-                        <img style="display: block; border-radius: 10px; width: 100%;" src="{{ $getImage("front/images/vendor/owl-carousel/dist/", 'vendor-banner.jpg') }}">
-                    @else
+                    @if (!empty($shopBanner))
                         <img style="display: block; border-radius: 10px; width: 100%;" src="{{ $getImage("front/images/vendor/owl-carousel/dist/", $shopBanner) }}">    
                     @endif
                 </div>
@@ -195,6 +193,10 @@
                     >
                         <div class="e-con-inner">
                             @if (isset($product['vendor']))
+                            @php
+                            $shop_image = $product->vendor->vendorbusinessdetails->shop_logo;
+                            if ($shop_image == '') $shop_image = '2023-12-user.png';
+                            @endphp
                             <a class="vendor__name" href="{{ url('products/vendor/' . $product->vendor->id) }}">
                                 <div
                                     class="elementor-element elementor-element-a282fc6 e-con-full e-flex e-con e-child"
@@ -213,10 +215,10 @@
                                                 decoding="async"
                                                 width="300"
                                                 height="300"
-                                                src="{{ $getImage('front/images/brand-logos/', '2023-12-user.png') }}"
+                                                src="{{ $getImage('front/images/brand-logos/', $shop_image) }}"
                                                 class="attachment-large size-large wp-image-423"
                                                 alt=""
-                                                srcset="{{ $getImage('front/images/brand-logos/', '2023-12-user.png') }} 300w, {{ $getImage('front/images/brand-logos/', '2023-12-user.png') }} 150w"
+                                                srcset="{{ $getImage('front/images/brand-logos/', $shop_image) }} 300w, {{ $getImage('front/images/brand-logos/', $shop_image) }} 150w"
                                                 sizes="(max-width: 300px) 100vw, 300px"
                                             >
                                         </div>
