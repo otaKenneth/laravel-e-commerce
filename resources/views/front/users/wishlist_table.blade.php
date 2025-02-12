@@ -17,7 +17,7 @@
                     <td>
                         <div class="prod-wishlist">
                             <div class="wishlist-img">
-                                <img decoding="async" class="prod-img" src="{{ $getImage('front/images/product/', $product['product']['product_image']) }}">
+                                <img decoding="async" class="prod-img" src="{{ $getImage('front/images/product_images/small/', $product['product']['product_image']) }}">
                             </div>
                             <div class="wishlist-prod-desc">
                                 <h4>{{$product['product']['product_name']}}</h4>
