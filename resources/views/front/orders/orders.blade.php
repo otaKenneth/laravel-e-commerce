@@ -137,6 +137,18 @@
                                 >
                                     <div class="elementor-widget-container">
                                         <h2 class="elementor-heading-title elementor-size-default">{{$product->product_name}}</h2>
+                                        
+                                        <a style="
+                                            background: #86cbb9;
+                                            color: #ffffff;
+                                            font-family: 'Lexend', Sans-serif;
+                                            font-size: 14px;
+                                            padding: 4px 10px;
+                                            display: block;
+                                            width: fit-content;
+                                            border-radius: 20px;
+                                            margin-top: 10px;
+                                        " href="#" class="chat-w-vendor-btn">CHAT VENDOR</a>
                                     </div>
                                 </div>
 

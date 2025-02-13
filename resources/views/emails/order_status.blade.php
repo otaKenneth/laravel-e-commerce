@@ -153,8 +153,6 @@
                         <tr style="background: #1f1f22;">
                             <th style="font-size: 14px; padding: 10px 20px; background: #1f1f22; color: white;">Item</th>
                             <th style="font-size: 14px; padding: 10px 20px; background: #1f1f22; color: white;">Product Code</th>
-                            <th style="font-size: 14px; padding: 10px 20px; background: #1f1f22; color: white;">Color</th>
-                            <th style="font-size: 14px; padding: 10px 20px; background: #1f1f22; color: white;">Size</th>
                             <th style="font-size: 14px; padding: 10px 20px; background: #1f1f22; color: white;">Quantity</th>
                             <th style="font-size: 14px; padding: 10px 20px; background: #1f1f22; color: white;">Price</th>
                         </tr>
@@ -162,10 +160,8 @@
                     <tbody style="border: 1px solid #1f1f22;">
                     @foreach ($orderDetails['orders_products'] as $order)
                         <tr bgcolor="#f9f9f9">
-                            <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_name'] }}</td>
+                            <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_name'] }} - {{ $order['product_size'] }} - {{ $order['product_color'] }}</td>
                             <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_code'] }}</td>
-                            <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_size'] }}</td>
-                            <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_color'] }}</td>
                             <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_qty'] }}</td>
                             <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_price'] }}</td>
                         </tr>
@@ -175,22 +171,16 @@
                         <tr>
                             <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="font-size: 12px; padding: 10px 20px;"></td>
-                            <td style="font-size: 12px; padding: 10px 20px;"></td>
-                            <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="border-left: 1px solid #1f1f22;">Shipping Charges:</td>
                             <td style="border-right: 1px solid #1f1f22;">PHP {{ $orderDetails['shipping_charges'] }}</td>
                         </tr>
                         <tr>
                             <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="font-size: 12px; padding: 10px 20px;"></td>
-                            <td style="font-size: 12px; padding: 10px 20px;"></td>
-                            <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="border-left: 1px solid #1f1f22;">Coupon Discount:</td>
                             <td style="border-right: 1px solid #1f1f22;">PHP {{ $orderDetails['coupon_amount'] }}</td>
                         </tr>
                         <tr style="background: #1f1f22; color: white;">
-                            <td style="font-size: 12px; padding: 10px 20px;"></td>
-                            <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="font-size: 12px; padding: 10px 20px; border-left: 1px solid #1f1f22; background: #1f1f22; color: white">Grand Total:</td>
