@@ -148,7 +148,7 @@
                                             width: fit-content;
                                             border-radius: 20px;
                                             margin-top: 10px;
-                                        " href="#" class="chat-w-vendor-btn">CHAT VENDOR</a>
+                                        " href="{{ route('user.chats.show', ['vendor_id' => $product->vendor_id, 'product_id' => $product->product_id ?? null]) }}" class="chat-w-vendor-btn">CHAT VENDOR</a>
                                     </div>
                                 </div>
 
