@@ -41,7 +41,7 @@ class ChatBox extends Component
             }
         } else {
             // Load last active chat
-            $this->activeChat = $user->chats()->with(['vendor.vendorBusiness'])->latest()->first();
+            $this->activeChat = $user->chats()->with(['admin'])->latest()->first();
         }
 
         if (is_null($this->activeChat)) {
