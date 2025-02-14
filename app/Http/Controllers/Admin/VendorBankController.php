@@ -15,27 +15,27 @@ class VendorBankController extends Controller
         Session::put('page', 'update_bank_details');
 
         $vendor_id = Auth::guard('admin')->user()->vendor_id;
-        $bank_list = [
-            'BDO Unibank, Inc.',
-            'Bank of the Philippine Islands',
-            'China Banking Corporation',
-            'CIMB Bank Philippines',
-            'Coins.ph',
-            'East West Banking Corporation',
-            'GrabPay',
-            'GCash',
-            'GoTyme',
-            'Land Bank of the Philippines',
-            'Maya Philippines, Inc.',
-            'Metropolitan Bank & Trust Company',
-            'Philippine National Bank',
-            'Rizal Commercial Banking Corporation',
-            'Security Bank Corporation',
-            'ShopeePay',
-            'Union Bank of the Philippines'
-        ];
+        $bank_list = array(
+            'BDO Unibank, Inc.'                     => 'BDO',
+            'Bank of the Philippine Islands'        => 'BPI',
+            'China Banking Corporation'             => 'CBC',
+            'CIMB Bank Philippines'                 => 'CIMB',
+            'Coins.ph'                              => 'COIN',
+            'East West Banking Corporation'         => 'EWBC',
+            'GrabPay'                               => 'GRB',
+            'GCash'                                 => 'GCASH',
+            'GoTyme'                                => 'GT',
+            'Land Bank of the Philippines'          => 'LBP',
+            'Maya Philippines, Inc.'                => 'MAYA',
+            'Metropolitan Bank & Trust Company'     => 'METRO',
+            'Philippine National Bank'              => 'PNB',
+            'Rizal Commercial Banking Corporation'  => 'RCBC',
+            'Security Bank Corporation'             => 'SBC',
+            'ShopeePay'                             => 'SP',
+            'Union Bank of the Philippines'         => 'UBP',
+        );
+
         if ($vendor_id) {
-            
             $vendorDetails = Vendor::with('vendor_bank')->find($vendor_id);
         }
 
@@ -44,9 +44,9 @@ class VendorBankController extends Controller
 
     public function update(Request $request) {
         $this->validate($request, [
-            'account_holder_name' => "required",
-            'bank_name' => "required",
-            'account_number' => "required"
+            'account_holder_name'   => "required",
+            'bank_name'             => "required",
+            'account_number'        => "required"
         ]);
 
         $vendor_id = Auth::guard('admin')->user()->vendor_id;
@@ -54,42 +54,50 @@ class VendorBankController extends Controller
         
         if ($vendor_bank) {
             $vendor_bank->update([
-                'account_holder_name' => $request->input('account_holder_name'),
-                'bank_name' => $request->input('bank_name'),
-                'account_number' => $request->input('account_number'),
-                'vendor_id' => $vendor_id
+                'account_holder_name'   => $request->input('account_holder_name'),
+                'bank_name'             => $request->input('bank_name'),
+                'account_number'        => $request->input('account_number'),
+                'vendor_id'             => $vendor_id,
+                'bank_ifsc_code'        => $request->input('bank_ifsc_code', 'NA'),
             ]);
             $vendor_bank->save();
         } else {
             $vendor_bank = [
-                'account_holder_name' => $request->input('account_holder_name'),
-                'bank_name' => $request->input('bank_name'),
-                'account_number' => $request->input('account_number'),
-                'vendor_id' => $vendor_id
+                'account_holder_name'   => $request->input('account_holder_name'),
+                'bank_name'             => $request->input('bank_name'),
+                'account_number'        => $request->input('account_number'),
+                'vendor_id'             => $vendor_id,
+                'bank_ifsc_code'        => $request->input('bank_ifsc_code', 'NA'),
             ];
             $vendor_bank = VendorsBankDetail::create($vendor_bank);
         }
 
-        $bank_list = [
-            'BDO Unibank, Inc.',
-            'Bank of the Philippine Islands',
-            'China Banking Corporation',
-            'CIMB Bank Philippines',
-            'Coins.ph',
-            'East West Banking Corporation',
-            'GrabPay',
-            'GCash',
-            'GoTyme',
-            'Land Bank of the Philippines',
-            'Maya Philippines, Inc.',
-            'Metropolitan Bank & Trust Company',
-            'Philippine National Bank',
-            'Rizal Commercial Banking Corporation',
-            'Security Bank Corporation',
-            'ShopeePay',
-            'Union Bank of the Philippines'
-        ];
+        $bank_list = array(
+            'BDO Unibank, Inc.'                     => 'BDO',
+            'Bank of the Philippine Islands'        => 'BPI',
+            'China Banking Corporation'             => 'CBC',
+            'CIMB Bank Philippines'                 => 'CIMB',
+            'Coins.ph'                              => 'COIN',
+            'East West Banking Corporation'         => 'EWBC',
+            'GrabPay'                               => 'GRB',
+            'GCash'                                 => 'GCASH',
+            'GoTyme'                                => 'GT',
+            'Land Bank of the Philippines'          => 'LBP',
+            'Maya Philippines, Inc.'                => 'MAYA',
+            'Metropolitan Bank & Trust Company'     => 'METRO',
+            'Philippine National Bank'              => 'PNB',
+            'Rizal Commercial Banking Corporation'  => 'RCBC',
+            'Security Bank Corporation'             => 'SBC',
+            'ShopeePay'                             => 'SP',
+            'Union Bank of the Philippines'         => 'UBP',
+        );
+
         $vendorDetails = Vendor::with('vendor_bank')->find($vendor_id);
-        return view('admin.banks.bank_information')->with(compact('vendorDetails', 'bank_list'));
+
+        return redirect()->route('admin.bank.details')->with([
+            'vendorDetails' => $vendorDetails,
+            'bank_list'     => $bank_list
+        ]);
+        
     }
 }

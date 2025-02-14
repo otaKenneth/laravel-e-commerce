@@ -9,5 +9,5 @@ class VendorsBankDetail extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['account_holder_name', 'bank_name', 'account_number', 'vendor_id'];
+    protected $fillable = ['account_holder_name', 'bank_name', 'account_number', 'vendor_id', 'bank_ifsc_code'];
 }
