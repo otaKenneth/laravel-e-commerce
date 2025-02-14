@@ -103,7 +103,13 @@ class IndexController extends Controller
     // public function emailCustomerOrderCancelledEnd() {
     //     return view('emails.order_product_refund_request_success');
     // }
-    
+    // public function emailChatNotif() {
+    //    return view('emails.new-chat-notif');
+    // }
+
+    public function sessionExpired() {
+        return view('front.users.session-expired');
+    }
 
     public function getKSContainerContent(Request $request) {
         if (isset($request->page)) {
