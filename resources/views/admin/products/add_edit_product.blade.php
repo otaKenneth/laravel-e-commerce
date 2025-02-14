@@ -206,6 +206,7 @@
                                     <label for="description">Product Description</label>
                                     <textarea name="description" id="description" class="form-control" rows="3">{{ $product['description'] }}</textarea>
                                 </div>
+                                <!--
                                 <div class="form-group">
                                     <label for="meta_title">Meta Title</label>
                                     <input type="text" class="form-control" id="meta_title" placeholder="Enter Meta Title" name="meta_title"   @if (!empty($product['meta_title'])) value="{{ $product['meta_title'] }}" @else value="{{ old('meta_title') }}" @endif >  {{-- Repopulating Forms (using old() method): https://laravel.com/docs/9.x/validation#repopulating-forms --}}
@@ -218,6 +219,7 @@
                                     <label for="meta_keywords">Meta Keywords</label>
                                     <input type="text" class="form-control" id="meta_keywords" placeholder="Enter Meta Keywords" name="meta_keywords"   @if (!empty($product['meta_keywords'])) value="{{ $product['meta_keywords'] }}" @else value="{{ old('meta_keywords') }}" @endif >  {{-- Repopulating Forms (using old() method): https://laravel.com/docs/9.x/validation#repopulating-forms --}}
                                 </div>
+                                -->
                                 <div class="form-group">
                                     <label for="is_featured">Featured Item (Yes/No)</label>
                                     <input type="checkbox" name="is_featured" id="is_featured" value="Yes" @if (!empty($product['is_featured']) && $product['is_featured'] == 'Yes') checked @endif>

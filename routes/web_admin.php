@@ -169,7 +169,7 @@ Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Ad
 
         Route::post('orders/chat', 'ChatsController@orderChat');
 
-        Route::get('bank/details', 'VendorBankController@index');
+        Route::get('bank/details', 'VendorBankController@index')->name('admin.bank.details');
         Route::post('bank/edit', 'VendorBankController@update');
     });
 });
