@@ -244,8 +244,8 @@ class OrderController extends Controller
             $ccEmails = Admin::select('email')->where('vendor_id', 0)->where('status', 1)->whereIn('type', ['superadmin', 'admin'])->get()->pluck('email')->toArray();
             array_push($ccEmails, $vendor->vendorbusinessdetails->shop_email);
 
-            \Illuminate\Support\Facades\Mail::send('emails.vendor_order_product_refund', $messageData, function ($message) use ($email, $ccEmails) {
-                $message->to($email)->subject('Order Request For Refund - ' . env('APP_URL'));
+            \Illuminate\Support\Facades\Mail::send('emails.vendor_order_product_refund', $messageData, function ($message) use ($email, $ccEmails, $order) {
+                $message->to($email)->subject('Order Request For Refund - ' . $order->id);
 
                 // Adding CC emails
                 foreach ($ccEmails as $ccEmail) {
