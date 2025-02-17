@@ -80,7 +80,10 @@ class ProductsController extends Controller
                 ->orWhere('products.product_code',    'like', '%' . $search_product . '%')  // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
                 ->orWhere('products.description',     'like', '%' . $search_product . '%')  // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
                 ->orWhere('categories.category_name', 'like', '%' . $search_product . '%'); // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
-        })->where('products.status', 1);
+        })->where('products.status', 1)
+        ->whereHas('vendor', function ($query) {
+            $query->where('status', 1);
+        });
 
         $catIds = $collection->get()->pluck('category_id')->toArray();
 
@@ -1240,7 +1243,11 @@ class ProductsController extends Controller
         } else {
             $sectionCategories = $sectionModel->where('status', 1);
 
-            $collection = Product::where('status', 1)->with('vendor');
+            $collection = Product::where('status', 1)
+                ->whereHas('vendor', function ($query) {
+                    $query->where('status', 1);
+                })
+                ->with('vendor');
         }
 
         if ($sectionCategories->count() > 0) {
@@ -1285,7 +1292,13 @@ class ProductsController extends Controller
             // Get the entered URL in the browser address bar category details
             $categoryDetails = Category::categoryDetails($category); // get the categories of the opened $url (get categories depending on the $url)
 
-            $collection = Product::with('brand')->whereIn('category_id', $categoryDetails['catIds'])->where('status', 1); // moving the paginate() method after checking for the sorting filter <form>    // Paginating Eloquent Results: https://laravel.com/docs/9.x/pagination#paginating-eloquent-results    // Displaying Pagination Results Using Bootstrap: https://laravel.com/docs/9.x/pagination#using-bootstrap        // https://laravel.com/docs/9.x/queries#additional-where-clauses    // using the brand() relationship method in Product.php
+            $collection = Product::with('brand')
+                ->whereIn('category_id', $categoryDetails['catIds'])
+                ->where('status', 1)
+                ->whereHas('vendor', function ($query) {
+                    $query->where('status', 1);
+                }); 
+                // moving the paginate() method after checking for the sorting filter <form>    // Paginating Eloquent Results: https://laravel.com/docs/9.x/pagination#paginating-eloquent-results    // Displaying Pagination Results Using Bootstrap: https://laravel.com/docs/9.x/pagination#using-bootstrap        // https://laravel.com/docs/9.x/queries#additional-where-clauses    // using the brand() relationship method in Product.php
 
             // Sorting Filter WITHOUT AJAX (using HTML <form> and jQuery) in front/products/listing.blade.php
             if (isset($_GET['sort']) && !empty($_GET['sort'])) {// if the URL query string parameters contain '&sort=someValue'    // 'sort' is the 'name' HTML attribute of the <select> box
