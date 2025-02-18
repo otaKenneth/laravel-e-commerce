@@ -8,13 +8,12 @@
 
 
     <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
-        <!--EMAIL SUBJECT: New Product Added {{$product['name']}} -->
-        <p style="margin: 0 0 20px 0;">A new product has been added by {{$vendor['business_name']}}. Here are the details:,</p>
+        <p style="margin: 0 0 20px 0;">A new product has been added by {{$vendor['vendorbusinessdetails']['shop_name']}}. Here are the details:,</p>
         <ul style="margin: 0 0 30px 0;">
-            <li><strong>Product Name:</strong> {{ $XXX['xxx'] }}</li>
+            <li><strong>Product Name:</strong> {{ $product_name }}</li>
             <li><strong>Category:</strong> {{$category['category_name']}}</li>
-            <li><strong>Merchant:</strong> {{$vendor['business_name']}}</li>
-            <li><strong>Price:</strong> {{$product['price']}}</li>
+            <li><strong>Merchant:</strong> {{$vendor['vendorbusinessdetails']['shop_name']}}</li>
+            <li><strong>Price:</strong> {{$product_price }}</li>
             <li><strong>Product Link for Approval:</strong> <a href="{{url('admin/products?product_code=' . $product_code)}}">CLICK HERE</a></li>
         </ul>
 
@@ -26,18 +25,5 @@
         <br>
        
     </div>
-
-
-
-<?php /*
-    <table>
-        <tr><td>{{$vendor['name']}} has added a new product under {{$category['category_name']}} category.</td></tr>
-        <tr><td>Review this product on <a href="{{url('admin/add-edit-product/' . $product_id)}}">this link</a></td></tr>
-        <tr><td>Approve this product on <a href="{{url('admin/products?product_code=' . $product_code)}}">this link</a></td></tr>
-    </table>
-*/ ?>
-
-
-
 </body>
 </html>

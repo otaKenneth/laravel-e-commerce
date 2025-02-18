@@ -9,14 +9,12 @@
 
 
     <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
-        <!--EMAIL SUBJECT: New Vendor Sign-Up Alert {{ $business_name }} ?> -->
         <p style="margin: 0 0 20px 0;">A new vendor has signed up on <strong>Kapiton</strong>. Below are the details:</p>
         <ul style="margin: 0 0 30px 0;">
-            <li><strong>Business Name:</strong> {{ $name }}</li>
-            <li><strong>Contact Person:</strong> {{ $XXX['xxx'] }}</li>
+            <li><strong>Contact Person:</strong> {{ $name }}</li>
             <li><strong>Email:</strong> {{ $email }}</li>
-            <li><strong>Phone Number:</strong> {{ $XXX['xxx'] }}</li>
-            <li><strong>Registration Date:</strong> {{ $XXX['xxx'] }}</li>
+            <li><strong>Phone Number:</strong> {{ $mobile }}</li>
+            <li><strong>Registration Date:</strong> {{ $registration_date }}</li>
 
         </ul>
 
@@ -45,27 +43,6 @@
             </p>
         </div>
     </div>
-
-
-
-
-<?php /*
-    <p>Hello Admin/s,</p>
-    <p>A new vendor has been registered to the system:</p>
-    
-    <ul>
-        <li>Name: {{ $name }}</li>
-        <li>Email: {{ $email }}</li>
-        <li>Initial Password: {{ $initial_password }}</li>
-    </ul>
-
-    <p>Please take necessary actions to verify and activate the vendor account.</p>
-    
-    <p>Thank you!</p>
-    <div width="150px">
-        <img src="{{ asset('front/images/main-logo/main-logo.png') }}">
-    </div>
-*/ ?>
 
 
 </body>

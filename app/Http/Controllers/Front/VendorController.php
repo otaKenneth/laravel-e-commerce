@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vendor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -258,7 +259,8 @@ class VendorController extends Controller
                     'email'  => $email,
                     'name'   => $vendorDetails->name,
                     'mobile' => $vendorDetails->mobile,
-                    'business_name' => $vendorDetails->vendorbusinessdetails->shop_name
+                    'business_name' => $vendorDetails->vendorbusinessdetails->shop_name,
+                    'registration_date' => Carbon::now()->toFormattedDateString()
                 ];
                 \Illuminate\Support\Facades\Mail::send('emails.vendor_confirmed', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.vendor_confirmed' is the vendor_confirmed.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that vendor_confirmed.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
                     $message->to($email)->subject('You Vendor Account Confirmed');
