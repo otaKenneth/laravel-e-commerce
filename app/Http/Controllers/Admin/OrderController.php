@@ -315,6 +315,8 @@ class OrderController extends Controller
             return redirect()->back()->withErrors($all_lalamove_data->quotation->errors);
         } elseif (is_array($all_lalamove_data) && isset($all_lalamove_data['errors'])) {
             return redirect()->back()->withErrors($all_lalamove_data['errors']);
+        } elseif (empty($all_lalamove_data)) {
+            return redirect()->back()->withErrors(["Something went wrong. Call your Administrator."]);
         } else {
             $getResults = \App\Models\Order::pushOrder_to_Lalamove($all_lalamove_data, $orderDetails->order_id);
             // dd(collect($getResults->errors)->pluck('message')->toArray());

@@ -448,16 +448,13 @@ class ProductsController extends Controller
             }
             $attributes_matrix = collect($attributes_values[0])->crossJoin($attributes_values[1]);
 
-            // Insert missing variants
-            foreach ($attributes_variants as $attrs_variant_value) {
-                $variantExists = $product->variants()
-                    ->where('variant_name', $attrs_variant_value)
-                    ->exists(); // Check if the variant exists
-
-                if (!$variantExists) {
-                    $product->variants()->create([
-                        'variant_name' => $attrs_variant_value
-                    ]);
+            foreach ($attributes_variants as $index => $variant_name) {
+                $variant = $product->variants()->skip($index)->first();
+            
+                if ($variant) {
+                    $variant->update(['variant_name' => $variant_name]);
+                } else {
+                    $product->variants()->create(['variant_name' => $variant_name]);
                 }
             }
 
