@@ -270,9 +270,9 @@ class ProductsController extends Controller
             $product->product_discount = $data['product_discount'];
             $product->product_weight   = $data['product_weight'];
             $product->description      = $data['description'];
-            $product->meta_title       = $data['meta_title'];
-            $product->meta_description = $data['meta_description'];
-            $product->meta_keywords    = $data['meta_keywords'];
+            $product->meta_title       = "KAPITON " . $data['product_name'] . " - " . $data['product_code'];
+            $product->meta_description = $data['description'];
+            $product->meta_keywords    = "KAPITON " . $data['product_name'] . " - " . $data['product_code'];
 
 
 
@@ -305,10 +305,12 @@ class ProductsController extends Controller
                 $admins_emails = $adminModel->whereIn('type', ['admin', 'superadmin', 'subadmin'])->get()->pluck('email')->toArray();
     
                 $vendorModel = new \App\Models\Vendor;
-                $vendorDetails = $vendorModel->find($product->vendor_id)->first();
+                $vendorDetails = $vendorModel->with('vendorbusinessdetails')->find($product->vendor_id);
     
                 $messageData = [
                     'product_id' => $product->id,
+                    'product_name' => $product->product_name,
+                    'product_price' => $product->product_price,
                     'vendor' => $vendorDetails,
                     'product_code' => $product->product_code,
                     'category' => $categoryDetails
