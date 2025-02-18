@@ -448,12 +448,10 @@ class ProductsController extends Controller
             }
             $attributes_matrix = collect($attributes_values[0])->crossJoin($attributes_values[1]);
             
-            if ($product->variants()->whereIn('variant_name', $attributes_variants)->count() < 2) {
-                foreach ($attributes_variants as $attrs_variant_value) {
-                    $product->variants()->create([
-                        'variant_name' => $attrs_variant_value
-                    ]);
-                }
+            foreach ($attributes_variants as $attrs_variant_value) {
+                $product->variants()->updateOrCreate([
+                    'variant_name' => $attrs_variant_value
+                ]);
             }
     
             foreach ($attributes_matrix as $key => $attrs_matrix_value) {
