@@ -271,7 +271,7 @@ class ProductsController extends Controller
             $product->product_weight   = $data['product_weight'];
             $product->description      = $data['description'];
             $product->meta_title       = "KAPITON " . $data['product_name'] . " - " . $data['product_code'];
-            $product->meta_description = $data['description'];
+            $product->meta_description = "";
             $product->meta_keywords    = "KAPITON " . $data['product_name'] . " - " . $data['product_code'];
 
 

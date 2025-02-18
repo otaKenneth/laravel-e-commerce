@@ -134,7 +134,7 @@ class CategoryController extends Controller
             $category->description       = $data['description'];
             $category->url               = $data['url'];
             $category->meta_title        = $data['category_name'];
-            $category->meta_description  = $data['description'];
+            $category->meta_description  = "";
             $category->meta_keywords     = "KAPITON - " . $data['category_name'];
             $category->status            = 1;
 
