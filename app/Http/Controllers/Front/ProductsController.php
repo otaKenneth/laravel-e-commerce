@@ -28,6 +28,7 @@ class ProductsController extends Controller
     public function listing(Request $request) { // using the Dynamic Routes with the foreach loop
         $type = $request->type;
         $name = $request->name;
+        $sub_category = $request->category;
         $pageTitle = $name;
         $shopBanner = '';
 
@@ -37,6 +38,7 @@ class ProductsController extends Controller
                     $result = $this->getCollectionBySection($name, $request->all());
                     break;
                 case 'category':
+                    if ($sub_category) $name = $sub_category;
                     $result = $this->getCollectionByCategory($name, $request->all());
                     break;
                 case 'vendor':
