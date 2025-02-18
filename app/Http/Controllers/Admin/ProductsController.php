@@ -448,7 +448,7 @@ class ProductsController extends Controller
             }
             $attributes_matrix = collect($attributes_values[0])->crossJoin($attributes_values[1]);
             
-            if ($product->variants()->whereIn('variant_name', $attributes_variants)->count() == 0) {
+            if ($product->variants()->whereIn('variant_name', $attributes_variants)->count() < 2) {
                 foreach ($attributes_variants as $attrs_variant_value) {
                     $product->variants()->create([
                         'variant_name' => $attrs_variant_value
