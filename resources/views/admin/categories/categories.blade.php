@@ -34,9 +34,9 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Category Name</th>
-                                            <th>Parent Category</th> {{-- Through the relationship --}}
                                             <th>Parent Section</th> {{-- Through the relationship --}}
+                                            <th>Parent Category</th> {{-- Through the relationship --}}
+                                            <th>Category Name</th>
                                             <th>URL</th>
                                             <th>Status</th>
                                             <th>Actions</th>
@@ -52,9 +52,9 @@
                                             @endif
                                             <tr>
                                                 <td>{{ $category['id'] }}</td>
-                                                <td>{{ $category['category_name'] }}</td>
-                                                <td>{{ $parent_category }}</td> {{-- Through the relationship --}}
                                                 <td>{{ $category['section']['name'] }}</td> {{-- Through the relationship --}}
+                                                <td>{{ $parent_category }}</td> {{-- Through the relationship --}}
+                                                <td>{{ $category['category_name'] }}</td>
                                                 <td>{{ $category['url'] }}</td>
                                                 <td>
                                                     @if ($category['status'] == 1)

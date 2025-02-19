@@ -271,7 +271,7 @@ class ProductsController extends Controller
             $product->product_weight   = $data['product_weight'];
             $product->description      = $data['description'];
             $product->meta_title       = "KAPITON " . $data['product_name'] . " - " . $data['product_code'];
-            $product->meta_description = $data['description'];
+            $product->meta_description = "";
             $product->meta_keywords    = "KAPITON " . $data['product_name'] . " - " . $data['product_code'];
 
 
@@ -447,14 +447,17 @@ class ProductsController extends Controller
                 $attributes_values[1] = [''];
             }
             $attributes_matrix = collect($attributes_values[0])->crossJoin($attributes_values[1]);
+
+            foreach ($attributes_variants as $index => $variant_name) {
+                $variant = $product->variants()->skip($index)->first();
             
-            if ($product->variants()->whereIn('variant_name', $attributes_variants)->count() == 0) {
-                foreach ($attributes_variants as $attrs_variant_value) {
-                    $product->variants()->create([
-                        'variant_name' => $attrs_variant_value
-                    ]);
+                if ($variant) {
+                    $variant->update(['variant_name' => $variant_name]);
+                } else {
+                    $product->variants()->create(['variant_name' => $variant_name]);
                 }
             }
+
     
             foreach ($attributes_matrix as $key => $attrs_matrix_value) {
     

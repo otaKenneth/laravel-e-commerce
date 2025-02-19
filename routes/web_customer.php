@@ -11,7 +11,9 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
      * type = collection/category/vendor/search
      * name = {type}_name
      */
-    Route::get('products/{type}/{name?}', 'ProductsController@listing')->name('listing');
+    Route::get('products/{type}/{any?}', 'ProductsController@listing')
+        ->where('any', '.*')
+        ->name('listing');
 
     // Vendor Login/Register
     Route::get('vendor/login-register', 'VendorController@loginRegister'); // render vendor login_register.blade.php page
