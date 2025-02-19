@@ -56,4 +56,7 @@
 .elementor-1751 .elementor-element.elementor-element-70dd1ff p{
 	margin-bottom: 5px;
 }
+.elementor-1751 .elementor-element.elementor-element-b3ddacb > .e-con-inner{
+	grid-template-columns: repeat(5, 1fr);
+}
 /* End Custom Fonts CSS */
