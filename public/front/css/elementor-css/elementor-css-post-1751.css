@@ -59,6 +59,13 @@
 .elementor-1751 .elementor-element.elementor-element-b3ddacb > .e-con-inner{
 	grid-template-columns: repeat(5, 1fr);
 }
+.pagination--vendor{
+	grid-column: 1 / -1
+}
+.pagination--vendor .pagination{
+	display: flex;
+	justify-content: center;
+}
 @media (max-width: 1100px){
 	.elementor-1751 .elementor-element.elementor-element-b3ddacb > .e-con-inner{
 		grid-template-columns: repeat(4, 1fr);

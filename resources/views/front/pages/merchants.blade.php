@@ -228,7 +228,7 @@
                                     <div class="e-con-inner"></div>
                                 </div>
                                 <div
-                                    class="elementor-element elementor-element-8d1e524 e-flex e-con-boxed e-con e-child"
+                                    class="elementor-element elementor-element-8d1e524 e-flex e-con-boxed e-con e-child pagination--vendor"
                                     data-id="8d1e524"
                                     data-element_type="container"
                                     data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
