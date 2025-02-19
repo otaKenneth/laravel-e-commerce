@@ -233,7 +233,9 @@
                                     data-element_type="container"
                                     data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
                                 >
-                                    <div class="e-con-inner"></div>
+                                    <div class="e-con-inner">
+                                        {{ $vendors->links() }}
+                                    </div>
                                 </div>
                                 <div
                                     class="elementor-element elementor-element-f8de5f2 e-flex e-con-boxed e-con e-child"
@@ -243,42 +245,9 @@
                                 >
                                     <div class="e-con-inner"></div>
                                 </div>
-                                <div
-                                    class="elementor-element elementor-element-71044be e-flex e-con-boxed e-con e-child"
-                                    data-id="71044be"
-                                    data-element_type="container"
-                                    data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
-                                >
-                                    <div class="e-con-inner"></div>
-                                </div>
-                                <div
-                                    class="elementor-element elementor-element-ac65710 e-flex e-con-boxed e-con e-child"
-                                    data-id="ac65710"
-                                    data-element_type="container"
-                                    data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
-                                >
-                                    <div class="e-con-inner"></div>
-                                </div>
-                                <div
-                                    class="elementor-element elementor-element-4d0e271 e-flex e-con-boxed e-con e-child"
-                                    data-id="4d0e271"
-                                    data-element_type="container"
-                                    data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
-                                >
-                                    <div class="e-con-inner"></div>
-                                </div>
-                                <div
-                                    class="elementor-element elementor-element-691334e e-flex e-con-boxed e-con e-child"
-                                    data-id="691334e"
-                                    data-element_type="container"
-                                    data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
-                                >
-                                    <div class="e-con-inner"></div>
-                                </div>
                             </div>
                         </div>
                     </div>
-                    {{ $vendors->links() }}
                 </div>
             </div>
         </div>
