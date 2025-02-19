@@ -278,6 +278,7 @@
                             </div>
                         </div>
                     </div>
+                    {{ $vendors->links() }}
                 </div>
             </div>
         </div>
