@@ -14,6 +14,7 @@
             <li><strong>Contact Person:</strong> {{ $name }}</li>
             <li><strong>Email:</strong> {{ $email }}</li>
             <li><strong>Phone Number:</strong> {{ $mobile }}</li>
+            <li><strong>Initial Password:</strong> {{ $initial_password }}</li>
             <li><strong>Registration Date:</strong> {{ $registration_date }}</li>
 
         </ul>

@@ -272,6 +272,7 @@ class VendorController extends Controller
                     'initial_password' => $initial_password,
                     'name'   => $vendorDetails->name,
                     'mobile' => $vendorDetails->mobile,
+                    'registration_date' => Carbon::now()->toFormattedDateString()
                 ];
 
                 \Illuminate\Support\Facades\Mail::send('emails.vendor_for_review', $messageData, function ($message) use ($admin_emails) {
