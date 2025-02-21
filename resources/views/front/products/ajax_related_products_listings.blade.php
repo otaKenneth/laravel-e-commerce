@@ -35,7 +35,7 @@
             >
                 <div class="elementor-widget-container">
                     <a href="{{ url('product/' . $product['id']) }}">
-                    @if (!empty($product['product_image']) && file_exists($product_image_path)) {{-- if the product image exists in BOTH database table AND filesystem (on server) --}}
+                    @if (!empty($product['product_image'])) {{-- if the product image exists in BOTH database table AND filesystem (on server) --}}
                         <img
                             loading="lazy"
                             decoding="async"
@@ -47,7 +47,8 @@
                             srcset="{{ $product_image_path }} 846w, {{ $product_image_path }} 248w, {{ $product_image_path }} 768w, {{ $product_image_path }} 879w"
                             sizes="(max-width: 800px) 100vw, 800px"
                         >
-                    @else {{-- show the dummy image --}}
+                    @else
+                    {{-- show the dummy image --}}
                         <img
                             loading="lazy"
                             decoding="async"
