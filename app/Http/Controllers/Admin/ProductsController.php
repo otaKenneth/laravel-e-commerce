@@ -163,7 +163,7 @@ class ProductsController extends Controller
                     ];
 
                     foreach ($arr_filePaths as $key => $path) {
-                        $fileStorageService->storeFile($image_tmp, $path['path'], $path['size']);
+                        $fileStorageService->storeFile($image_tmp, $path['path']);
                     }
                 
                     // Insert the image name in the database table
@@ -577,7 +577,7 @@ class ProductsController extends Controller
 
                     // Upload the image using the 'Intervention' package and save it in our THREE paths (folders) inside the 'public' folder
                     foreach ($arr_filePaths as $key => $path) {
-                        $fileStorageService->storeFile($image, $path['path'], $path['size']);
+                        $fileStorageService->storeFile($image, $path['path']);
                     }
                 
                     // Insert the image name in the database table `products_images`
