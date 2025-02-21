@@ -141,10 +141,10 @@
                                     decoding="async"
                                     width="300"
                                     height="300"
-                                    src="{{ $getImage('./front/images/brand-logos/', $vendor_profile_image) }}"
+                                    src="{{ $getImage('front/images/brand-logos/', $vendor_profile_image) }}"
                                     class="attachment-large size-large wp-image-423"
                                     alt=""
-                                    srcset="{{ $getImage('./front/images/brand-logos/', $vendor_profile_image) }} 300w, {{ $getImage('./front/images/brand-logos/', $vendor_profile_image) }} 150w"
+                                    srcset="{{ $getImage('front/images/brand-logos/', $vendor_profile_image) }} 300w, {{ $getImage('front/images/brand-logos/', $vendor_profile_image) }} 150w"
                                     sizes="(max-width: 300px) 100vw, 300px"
                                 >
                             </div>
