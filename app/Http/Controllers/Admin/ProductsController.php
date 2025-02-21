@@ -153,25 +153,13 @@ class ProductsController extends Controller
                     $arr_filePaths = [
                         [
                             'path' => 'front/images/product_images/large/'  . $imageName,
-                            'size' => [
-                                'width' => 1000,
-                                'height' => 1000,
-                            ]
-                        ], // 'large'  images folder 
+                        ],
                         [
                             'path' => 'front/images/product_images/medium/' . $imageName,
-                            'size' => [
-                                'width' => 500,
-                                'height' => 500,
-                            ]
-                        ], // 'medium' images folder
+                        ],
                         [
                             'path' => 'front/images/product_images/small/'  . $imageName,
-                            'size' => [
-                                'width' => 250,
-                                'height' => 250,
-                            ]
-                        ] // 'small'  images folder
+                        ]
                     ];
 
                     foreach ($arr_filePaths as $key => $path) {
@@ -577,26 +565,14 @@ class ProductsController extends Controller
                     // We will have three folders: small, medium and large, depending on the images sizes
                     $arr_filePaths = [
                         [
-                            'path' => 'front/images/product_images/large/'  . $imageName,
-                            'size' => [
-                                'width' => 1000,
-                                'height' => 1000,
-                            ]
-                        ], // 'large'  images folder 
+                            'path' => 'front/images/product_images/large/'  . $imageName
+                        ], 
                         [
-                            'path' => 'front/images/product_images/medium/' . $imageName,
-                            'size' => [
-                                'width' => 500,
-                                'height' => 500,
-                            ]
-                        ], // 'medium' images folder
+                            'path' => 'front/images/product_images/medium/' . $imageName
+                        ],
                         [
-                            'path' => 'front/images/product_images/small/'  . $imageName,
-                            'size' => [
-                                'width' => 250,
-                                'height' => 250,
-                            ]
-                        ] // 'small'  images folder
+                            'path' => 'front/images/product_images/small/'  . $imageName
+                        ]
                     ];
 
                     // Upload the image using the 'Intervention' package and save it in our THREE paths (folders) inside the 'public' folder
@@ -612,6 +588,11 @@ class ProductsController extends Controller
                     $image->status     = 1;
 
                     $image->save();
+
+                    if ($key == 0 && empty($product->product_image)) {
+                        $product->product_image = $imageName;
+                        $product->save();
+                    }
                 }
             }
 

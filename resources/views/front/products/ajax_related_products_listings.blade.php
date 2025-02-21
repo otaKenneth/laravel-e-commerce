@@ -124,6 +124,11 @@
                         data-element_type="container"
                         data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;container_type&quot;:&quot;flex&quot;}"
                     >
+                        @php
+                            $vendor_profile_image = null;
+                            if (isset($productDetails['vendor']['vendorbusinessdetails']['shop_logo']))
+                                $vendor_profile_image = $productDetails['vendor']['vendorbusinessdetails']['shop_logo'] != "" ? $productDetails['vendor']['vendorbusinessdetails']['shop_logo']:'2023-12-user.png';
+                        @endphp
                         <div
                             class="elementor-element elementor-element-b1a54c1 elementor-widget elementor-widget-image"
                             data-id="b1a54c1"
@@ -136,10 +141,10 @@
                                     decoding="async"
                                     width="300"
                                     height="300"
-                                    src="{{ $getImage('./images/', '2023-12-user.png') }}"
+                                    src="{{ $getImage('./front/images/brand-logos/', $vendor_profile_image) }}"
                                     class="attachment-large size-large wp-image-423"
                                     alt=""
-                                    srcset="{{ $getImage('./images/', '2023-12-user.png') }} 300w, {{ $getImage('./images/', '2023-12-user.png') }} 150w"
+                                    srcset="{{ $getImage('./front/images/brand-logos/', $vendor_profile_image) }} 300w, {{ $getImage('./front/images/brand-logos/', $vendor_profile_image) }} 150w"
                                     sizes="(max-width: 300px) 100vw, 300px"
                                 >
                             </div>
