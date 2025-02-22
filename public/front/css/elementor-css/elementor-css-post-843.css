@@ -183,7 +183,11 @@
     box-shadow: 0 2px 10px -9px black;
 	margin-bottom: 30px;
 }
-
+.elementor-843 .elementor-element.elementor-element-8fec39b img{
+    aspect-ratio: 1 / 1 !important;
+    object-fit: cover !important;
+	border-radius: 10px !important;
+}
 
 @media (max-width: 767px){
 	.elementor-843 .elementor-element-777x2zz .btn--wrapper a{
