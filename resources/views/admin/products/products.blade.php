@@ -59,7 +59,11 @@
                                                 <td>{{ $product['product_name'] }}</td>
                                                 <td>{{ $product['product_code'] }}</td>
                                                 <td>
-                                                    <img style="width:120px; height:100px"
+                                                    <img style="width: 120px;
+                                                                height: auto;
+                                                                aspect-ratio: 1 / 1;
+                                                                object-fit: cover;
+                                                                border-radius: 10px;"
                                                         src="{{ $getImage('front/images/product_images/small/', $product['product_image']) }}">
                                                     {{-- Show the 'small' image size from the 'small' folder --}}
                                                 </td>
