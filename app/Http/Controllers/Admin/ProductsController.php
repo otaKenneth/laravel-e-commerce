@@ -156,9 +156,17 @@ class ProductsController extends Controller
                         ],
                         [
                             'path' => 'front/images/product_images/medium/' . $imageName,
+                            'size' => [
+                                'width' => 500,
+                                'height' => 500,
+                            ]
                         ],
                         [
                             'path' => 'front/images/product_images/small/'  . $imageName,
+                            'size' => [
+                                'width' => 250,
+                                'height' => 250,
+                            ]
                         ]
                     ];
 
@@ -568,10 +576,18 @@ class ProductsController extends Controller
                             'path' => 'front/images/product_images/large/'  . $imageName
                         ], 
                         [
-                            'path' => 'front/images/product_images/medium/' . $imageName
+                            'path' => 'front/images/product_images/medium/' . $imageName,
+                            'size' => [
+                                'width' => 500,
+                                'height' => 500,
+                            ]
                         ],
                         [
-                            'path' => 'front/images/product_images/small/'  . $imageName
+                            'path' => 'front/images/product_images/small/'  . $imageName,
+                            'size' => [
+                                'width' => 250,
+                                'height' => 250,
+                            ]
                         ]
                     ];
 
