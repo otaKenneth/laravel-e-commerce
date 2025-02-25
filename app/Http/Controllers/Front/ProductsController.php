@@ -268,8 +268,7 @@ class ProductsController extends Controller
         // $collection = Product::with('brand', 'vendor', 'attributes')->where('vendor_id', $vendor->id)->where('status', 1); // Eager Loading (using with() method): https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'brand' is the relationship method name in Product.php model that is being Eager Loaded
 
         $collection = $vendor->products();
-                    
-        \Log::info(print_r($vendor->toArray(), true));
+        
         $catIds = $vendor->products()->pluck('category_id');
         $catDetails = Category::whereIn('id', $catIds)->where([
             'parent_id' => 0,
