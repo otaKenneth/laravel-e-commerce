@@ -84,7 +84,9 @@ class FileStorageService
         try {
             $file = Image::make($file);
             if ($size) {
-                $file = $file->resize($size['width'], $size['height']);
+                $file = $file->resize($size['width'], null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
             }
             $file_content = $file->encode('jpg', 75)->__tostring();
             $success = $bucket->upload($file_content, [
