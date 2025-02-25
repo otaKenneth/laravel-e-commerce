@@ -268,7 +268,7 @@ class ProductsController extends Controller
         // $collection = Product::with('brand', 'vendor', 'attributes')->where('vendor_id', $vendor->id)->where('status', 1); // Eager Loading (using with() method): https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'brand' is the relationship method name in Product.php model that is being Eager Loaded
 
         $collection = $vendor->products();
-        
+
         $catIds = $vendor->products()->pluck('category_id');
         $catDetails = Category::whereIn('id', $catIds)->where([
             'parent_id' => 0,
@@ -1186,6 +1186,7 @@ class ProductsController extends Controller
         if (Session::has('order_id')) { // if there's an order has been placed, empty the Cart (remove the order (the cart items/products) from `carts`table)    // 'user_id' was stored in Session inside checkout() method in Front/ProductsController.php
             $order = \App\Models\Order::with(['orders_products'])->where('id', Session::get('order_id'))->first();
 
+            $vendor_ids = [];
             foreach ($order->orders_products as $key => $item) {
                 // Inventory Management - Reduce inventory/stock when an order gets placed
                 // We wrote the Inventory/Stock Management script in TWO places: in the checkout() method in Front/ProductsController.php and in the success() method in Front/PaypalController.php
@@ -1198,10 +1199,44 @@ class ProductsController extends Controller
                     'color'       => $item['product_color'],
                     'size'       => $item['product_size']
                 ])->update(['stock' => $newStock]);
+
+                if (!array_key_exists($item->vendor_id, $vendor_ids)) {
+                    $item->load('vendor.vendorbusinessdetails');
+                    $email = $item->vendor->vendorbusinessdetails->shop_email;
+                    
+                    $vendor_ids[$item->vendor_id] = [
+                        'email'        => $email,
+                        'name'         => $item->vendor->vendorbusinessdetails->shop_name,
+                        'order_id'     => $order->id,
+                        'orderDetails' => $order,
+                        'business_name'=> $item->vendor->vendorbusinessdetails->shop_name
+                    ];
+                }
             }
 
             $order->order_status = 'New';
             $order->save();
+            
+            $email = Auth::user()->email;
+            $messageData = [
+                'email'        => $email,
+                'name'         => Auth::user()->name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+                'order_id'     => $order->id,
+                'orderDetails' => $order
+            ];
+            \Illuminate\Support\Facades\Mail::send('emails.order', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order' is the order.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                $message->to($email)->subject('Order Placed - Kapiton Store');
+            });
+
+            foreach ($vendor_ids as $vendor_id => $messageData) {
+                $messageData['orderDetails'] = \App\Models\Order::with(['orders_products' => function ($query) use ($vendor_id) {
+                    $query->where('vendor_id', $vendor_id);
+                }])->where('id', $messageData['order_id'])->first()->toArray();
+                $order_id = $messageData['order_id'];
+                \Illuminate\Support\Facades\Mail::send('emails.vendor_order_placed', $messageData, function ($message) use ($email, $order_id) {
+                    $message->to($email)->subject('New Order - Order #' . $order_id);
+                });
+            }
 
             return view('front.products.thanks');
         } else { // if there's no order has been placed
