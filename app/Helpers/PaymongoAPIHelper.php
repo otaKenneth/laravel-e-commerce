@@ -51,7 +51,7 @@ class PaymongoAPIHelper
         $this->cancel_url = url('/checkout');
         $this->success_url = url('/thanks');
         $this->reference_number = md5(Carbon::now());
-        $this->statement_descriptor = env("APP_NAME") . " - " . env("APP_ENV");
+        $this->statement_descriptor = env("APP_NAME");
     }
 
     public function set($key, $value) {
