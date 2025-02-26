@@ -603,6 +603,10 @@ class AdminController extends Controller
         // dd($admins);
 
         if (!empty($type)) { // in this case, $type can be: superadmin, admin, subadmin or vendor
+            if ($type == 'admin') {
+                $type = "superadmin";
+            }
+            
             $admins = $admins->where('type', $type);
             $title = ucfirst($type) . 's';
 
