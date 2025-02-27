@@ -36,16 +36,14 @@ class AdminController extends Controller
         $wdyfu_re        = Vendor::where('wdyfu', 'Referral')->count();
         $wdyfu_wm        = Vendor::where('wdyfu', 'Word-of-Mouth')->count();
 
+        $ordersCount     = $orders->count();
         if (!is_null($is_vendor) || $is_vendor == 0) {
             $products = $products->where('vendor_id', $is_vendor);
-            $orders = $orders->load(['orders_products' => function ($q) use ($is_vendor) {
-                $q->where('vendor_id', $is_vendor);
-            }]);
+            $ordersCount     = \App\Models\OrdersProduct::where('vendor_id', $is_vendor)->count();
             $coupons = $coupons->where('vendor_id', $is_vendor);
         }
 
         $productsCount   = $products->count();
-        $ordersCount     = $orders->count();
         $couponsCount    = $coupons->count();
 
         return view('admin/dashboard')->with(compact('is_vendor', 'sectionsCount', 'categoriesCount', 'productsCount', 'ordersCount', 'couponsCount', 'brandsCount', 'usersCount', 'wdyfu_fb', 'wdyfu_ig', 'wdyfu_li', 'wdyfu_re', 'wdyfu_wm')); // is the same as:    return view('admin.dashboard');
