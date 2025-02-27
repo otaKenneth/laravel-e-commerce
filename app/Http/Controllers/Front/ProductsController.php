@@ -764,7 +764,8 @@ class ProductsController extends Controller
 
             // Get Pickup Address
             $pickupAddress = $vendor_model->where('id', $item['product']['vendor_id'])->with(['vendorbusinessdetails' => function ($q) {
-                $q->select('vendor_id', 'shop_name', 'shop_mobile', 'shop_email', 'lat', 'long')->selectRaw("CONCAT(shop_address, ', ', shop_city, ', ', shop_state, ', ', shop_country, ', ', shop_pincode) AS shop_fulladdress");
+                $q->select('vendor_id', 'shop_name', 'shop_mobile', 'shop_email', 'lat', 'long')
+                    ->selectRaw("CONCAT(shop_address, ', ', shop_city, ', ', shop_state, ', ', shop_country, ', ', shop_pincode) AS shop_fulladdress");
             }])->first()->vendorbusinessdetails->toArray();
 
             // Ensure unique addresses

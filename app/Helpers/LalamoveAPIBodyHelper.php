@@ -29,6 +29,7 @@ class LalamoveAPIBodyHelper
     public $priceBreakdown = [], $quotation = [], $total_delivery_fee = 0.0, $sender = null, $recipient = null;
 
     public function setQuoteData($data){
+        \Log::info(json_encode($data));
         extract($data);
 
         // ship to coordinates
