@@ -321,7 +321,7 @@
                                                                 >
                                                                     <div class="elementor-widget-container">
                                                                         <h1 class="elementor-heading-title elementor-size-default">
-                                                                            <span>₱</span> 25,968.00
+                                                                            <span>₱</span> {{ number_format($revenue, 2) }}
                                                                         </h1>
                                                                     </div>
                                                                 </div>
@@ -454,7 +454,7 @@
                                                                     data-widget_type="heading.default"
                                                                 >
                                                                     <div class="elementor-widget-container">
-                                                                        <h1 class="elementor-heading-title elementor-size-default">541</h1>
+                                                                        <h1 class="elementor-heading-title elementor-size-default">{{ $buyers }}</h1>
                                                                     </div>
                                                                 </div>
                                                                 <div
@@ -586,7 +586,7 @@
                                                                     data-widget_type="heading.default"
                                                                 >
                                                                     <div class="elementor-widget-container">
-                                                                        <h1 class="elementor-heading-title elementor-size-default">5,241</h1>
+                                                                        <h1 class="elementor-heading-title elementor-size-default">{{ number_format($order_count) }}</h1>
                                                                     </div>
                                                                 </div>
                                                                 <div

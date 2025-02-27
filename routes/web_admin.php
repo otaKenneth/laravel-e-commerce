@@ -128,7 +128,7 @@ Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Ad
         Route::match(['get', 'post'], 'edit-shipping-charges/{id}', 'ShippingController@editShippingCharges'); 
     
         // Reports
-        Route::get('reports/sales', 'ReportsController@salesReports');
+        Route::get('finance/income_statement', 'ReportsController@salesReports');
     
     
         // Newsletter Subscribers module
