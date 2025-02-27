@@ -1103,7 +1103,7 @@ class ProductsController extends Controller
                 // PayPal payment gateway integration in Laravel
             } elseif ($data['payment_gateway'] == 'paymongo') {
                 $str_total_price = number_format($total_price, 2);
-                $description = "Kapiton Store - " . Auth::user()->email . " bought items with a total of {$str_total_price}. Delivery Fee - {$shipping_charges}. ";
+                $description = "Kapiton Store - " . Auth::user()->email . ". Payment for Order # {$order_id} on Kapiton. Total product amount: PHP {$str_total_price}. Delivery Fee: {$shipping_charges}. Thank you for shopping with us!";
                 if (Session::get('couponAmount') > 0) {
                     $description .= "Coupon Amount - " . Session::get('couponAmount');
                 }
