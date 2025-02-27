@@ -58,7 +58,6 @@ class VendorBankController extends Controller
                 'bank_name'             => $request->input('bank_name'),
                 'account_number'        => $request->input('account_number'),
                 'vendor_id'             => $vendor_id,
-                'bank_ifsc_code'        => $request->input('bank_ifsc_code', 'NA'),
             ]);
             $vendor_bank->save();
         } else {
@@ -67,7 +66,6 @@ class VendorBankController extends Controller
                 'bank_name'             => $request->input('bank_name'),
                 'account_number'        => $request->input('account_number'),
                 'vendor_id'             => $vendor_id,
-                'bank_ifsc_code'        => $request->input('bank_ifsc_code', 'NA'),
             ];
             $vendor_bank = VendorsBankDetail::create($vendor_bank);
         }
