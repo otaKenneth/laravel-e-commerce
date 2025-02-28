@@ -599,6 +599,10 @@
     --bc-padding-block-end: 0 !important;
     --padding-block-end: 0 !important;
 }
+.elementor-491 .elementor-element.elementor-element-9905f7b img{
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
 
 @media (max-width: 767px){
     .elementor-682 .elementor-element.elementor-element-72ef1d2 img{
