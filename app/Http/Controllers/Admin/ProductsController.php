@@ -563,31 +563,31 @@ class ProductsController extends Controller
     public function addImages(Request $request, $id) { // $id is the URL Paramter (slug) passed from the URL
         Session::put('page', 'products');
 
-        $this->validate($request, [
-            'images' => ['required', 'array'],
-            'images.*' => [
-                'file',
-                function ($attribute, $value, $fail) {
-                    $mime = $value->getMimeType();
-                    
-                    if (str_starts_with($mime, 'image/')) {
-                        if (!in_array($value->getClientOriginalExtension(), ['jpg', 'png'])) {
-                            $fail('Only JPG and PNG images are allowed.');
-                        }
-                        if ($value->getSize() > 5 * 1024 * 1024) { // 5MB
-                            $fail('Image size must not exceed 5MB.');
-                        }
-                    } else {
-                        $fail('Only images (JPG, PNG) are allowed.');
-                    }
-                },
-            ]
-        ]);
-
         $product = \App\Models\Product::select('id', 'product_name', 'product_code', 'product_price', 'product_image')->with('images')->find($id); // with('images') is the relationship method name in the Product.php model
 
 
         if ($request->isMethod('post')) { // if the <form> is submitted
+            $this->validate($request, [
+                'images' => ['required', 'array'],
+                'images.*' => [
+                    'file',
+                    function ($attribute, $value, $fail) {
+                        $mime = $value->getMimeType();
+                        
+                        if (str_starts_with($mime, 'image/')) {
+                            if (!in_array($value->getClientOriginalExtension(), ['jpg', 'png'])) {
+                                $fail('Only JPG and PNG images are allowed.');
+                            }
+                            if ($value->getSize() > 5 * 1024 * 1024) { // 5MB
+                                $fail('Image size must not exceed 5MB.');
+                            }
+                        } else {
+                            $fail('Only images (JPG, PNG) are allowed.');
+                        }
+                    },
+                ]
+            ]);
+            
             $data = $request->all();
             // dd($data);
 
