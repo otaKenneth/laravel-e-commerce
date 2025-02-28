@@ -265,6 +265,6 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
         <script src="{{ url('front/js/elementor-js/elementor-pro-assets-js-elements-handlers.min.js') }}" id="pro-elements-handlers-js"></script>
         <script src="{{ url('front/js/elementor-js/elementor-pro-assets-lib-sticky-jquery.sticky.min.js') }}" id="e-sticky-js"></script>
         <script src="{{ url('admin/js/custom-chart.js') }}"></script>
-    
+        @yield('scripts')
     </body>
 </html>

@@ -165,7 +165,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
             });
 
             Route::get('wishlist', 'WishlistController@wishlist')->name('front.user.wishlist');
-            Route::delete('wishlist/{item}', 'WishlistController@wishlistItemDelete')->name('front.user.wishlist');
+            Route::delete('wishlist/{item}', 'WishlistController@wishlistItemDelete')->name('front.user.wishlists');
             
             Route::get('chats', 'ChatsController@index')->name('user.chats.show');
         });
