@@ -45,13 +45,7 @@ class PaymongoRefundAPIHelper
         $secret = config('services.paymongo.secret');
         $encrypt = base64_encode($secret);
 
-        dd($client->request('GET', "https://api.paymongo.com/v1/payments/{$this->payment_id}", [
-            'headers' => [
-                'Content-Type' => "application/json",
-                'accept' => "application/json",
-                'authorization' => "Basic {$encrypt}"
-            ]
-        ]));
+        // dd($data);
         
 
         try {
