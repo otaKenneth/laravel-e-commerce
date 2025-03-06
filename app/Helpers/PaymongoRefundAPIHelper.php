@@ -45,10 +45,12 @@ class PaymongoRefundAPIHelper
         $secret = config('services.paymongo.secret');
         $encrypt = base64_encode($secret);
 
+        // dd($data);
+        
+
         try {
-            // dd($data);
             Log::info("Paymongo: Create Refund - " . $data);
-            $response = $client->request('POST', 'https://api.paymongo.com/refunds', [
+            $response = $client->request('POST', 'https://api.paymongo.com/v1/refunds', [
                 'body' => $data,
                 'headers' => [
                     'Content-Type' => "application/json",

@@ -92,8 +92,7 @@ class ProductsController extends Controller
     public function addEditProduct(Request $request, $id = null) { // If the $id is not passed, this means 'Add a Product', if not, this means 'Edit the Product'    
         // Correcting issues in the Skydash Admin Panel Sidebar using Session
         Session::put('page', 'products');
-
-
+    
         if ($id == '') { // if there's no $id is passed in the route/URL parameters, this means 'Add a new product'
             $title = 'Add Product';
             $product = new \App\Models\Product();
@@ -117,7 +116,7 @@ class ProductsController extends Controller
                 'product_name'  => 'required', // only alphabetical characters and spaces
                 'product_code'  => "required|regex:/^\w+$/|unique:products,product_code,{$id}", // alphanumeric regular expression
                 'product_price' => 'required|numeric',
-                'brand_id' => 'required|exists:brands,id', // only alphabetical characters and spaces
+                // 'brand_id' => 'required|exists:brands,id', // only alphabetical characters and spaces
                 'product_image' => [
                     'nullable','file', function ($attribute, $value, $fail) {
                         if (!in_array($value->getClientOriginalExtension(), ['jpg', 'png'])) {
@@ -135,6 +134,16 @@ class ProductsController extends Controller
                         }
                         if ($value->getSize() > 50 * 1024 * 1024) { // 50MB
                             $fail('Video size must not exceed 50MB.');
+                        }
+                    }
+                ],
+                'multiple_image.*' => [
+                    'nullable','file', function ($attribute, $value, $fail) {
+                        if (!in_array($value->getClientOriginalExtension(), ['jpg', 'png'])) {
+                            $fail('Only JPG and PNG images are allowed.');
+                        }
+                        if ($value->getSize() > 5 * 1024 * 1024) { // 5MB
+                            $fail('Image size must not exceed 5MB.');
                         }
                     }
                 ],
@@ -231,7 +240,7 @@ class ProductsController extends Controller
 
             $product->section_id  = $categoryDetails['section_id'];
             $product->category_id = $data['category_id'];
-            $product->brand_id    = $data['brand_id'];
+            $product->brand_id    = $data['brand_id'] ?? 2;
             $product->group_code  = $data['group_code']; // Managing Product Colors (in front/products/detail.blade.php)
 
             
@@ -312,8 +321,53 @@ class ProductsController extends Controller
 
             $product->status = is_null($id) ? 0:$product->status;
 
-
             $product->save(); // Save all data in the database
+
+            // after saving get ID and multiple image
+            // Upload Multiple Product Images
+            if ($request->hasFile('multiple_image')) {
+                $multipleImages = $request->file('multiple_image');
+                foreach ($multipleImages as $image_tmp) {
+                    if ($image_tmp->isValid()) {
+                        $extension = $image_tmp->getClientOriginalExtension();
+                        $fileStorageService = new FileStorageService;
+            
+                        $imageName = rand(111, 99999) . '.' . $extension; // e.g. 8421.png
+            
+                        $arr_filePaths = [
+                            [
+                                'path' => 'front/images/product_images/large/'  . $imageName,
+                            ],
+                            [
+                                'path' => 'front/images/product_images/medium/' . $imageName,
+                                'size' => [
+                                    'width' => 500,
+                                    'height' => 500,
+                                ]
+                            ],
+                            [
+                                'path' => 'front/images/product_images/small/'  . $imageName,
+                                'size' => [
+                                    'width' => 250,
+                                    'height' => 250,
+                                ]
+                            ]
+                        ];
+            
+                        foreach ($arr_filePaths as $key => $path) {
+                            $fileStorageService->storeFile($image_tmp, $path['path']);
+                        }
+                        
+                        $mult_image = new \App\Models\ProductsImage;
+                        $mult_image->image      = $imageName;
+                        $mult_image->product_id = $product->id;
+                        $mult_image->status     = 1;
+    
+                        $mult_image->save();
+                    }
+                }
+            }
+            
 
             // If new product, add to admin product review
             if (is_null($id)) {
@@ -373,8 +427,11 @@ class ProductsController extends Controller
             ]
         ];
 
+        // check if admin or not
+        $adminType = Auth::guard('admin')->user()->type;
+
         // return view('admin.products.add_edit_product')->with(compact('title', 'product'));
-        return view('admin.products.add_edit_product')->with(compact('title', 'product', 'categories', 'brands', 'breadcrumb'));
+        return view('admin.products.add_edit_product')->with(compact('title', 'product', 'categories', 'brands', 'breadcrumb', 'adminType'));
     }
 
     public function deleteProductImage($id) { // AJAX call from admin/js/custom.js    // Delete the product image from BOTH SERVER (FILESYSTEM) & DATABASE    // $id is passed as a Route Parameter    
@@ -563,31 +620,31 @@ class ProductsController extends Controller
     public function addImages(Request $request, $id) { // $id is the URL Paramter (slug) passed from the URL
         Session::put('page', 'products');
 
-        $this->validate($request, [
-            'images' => ['required', 'array'],
-            'images.*' => [
-                'file',
-                function ($attribute, $value, $fail) {
-                    $mime = $value->getMimeType();
-                    
-                    if (str_starts_with($mime, 'image/')) {
-                        if (!in_array($value->getClientOriginalExtension(), ['jpg', 'png'])) {
-                            $fail('Only JPG and PNG images are allowed.');
-                        }
-                        if ($value->getSize() > 5 * 1024 * 1024) { // 5MB
-                            $fail('Image size must not exceed 5MB.');
-                        }
-                    } else {
-                        $fail('Only images (JPG, PNG) are allowed.');
-                    }
-                },
-            ]
-        ]);
-
         $product = \App\Models\Product::select('id', 'product_name', 'product_code', 'product_price', 'product_image')->with('images')->find($id); // with('images') is the relationship method name in the Product.php model
 
 
         if ($request->isMethod('post')) { // if the <form> is submitted
+            $this->validate($request, [
+                'images' => ['required', 'array'],
+                'images.*' => [
+                    'file',
+                    function ($attribute, $value, $fail) {
+                        $mime = $value->getMimeType();
+                        
+                        if (str_starts_with($mime, 'image/')) {
+                            if (!in_array($value->getClientOriginalExtension(), ['jpg', 'png'])) {
+                                $fail('Only JPG and PNG images are allowed.');
+                            }
+                            if ($value->getSize() > 5 * 1024 * 1024) { // 5MB
+                                $fail('Image size must not exceed 5MB.');
+                            }
+                        } else {
+                            $fail('Only images (JPG, PNG) are allowed.');
+                        }
+                    },
+                ]
+            ]);
+            
             $data = $request->all();
             // dd($data);
 
