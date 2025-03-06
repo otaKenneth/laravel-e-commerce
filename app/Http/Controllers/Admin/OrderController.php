@@ -338,11 +338,17 @@ class OrderController extends Controller
         $refund = Refunds::where('order_id', $order->id)->where('payment_id', $payment->id)->first();
         $refundHelper = new \App\Helpers\PaymongoRefundAPIHelper;
         // should create paymongo refund data
-        $resp = $refundHelper->set('amount', $payment->amount)->setAmount()
-            ->set('notes', $refund->reason)
+        $refundHelper->set('amount', $payment->amount)->setAmount()
             ->set('payment_id', $payment->payment_id)
-            ->set('reason', "requested_by_customer")
-            ->createRefund();
+            ->set('reason', "requested_by_customer");
+
+            if ($refund && $refund->reason) {
+                $refundHelper->set('notes', $refund->reason);
+            }
+
+            $resp = $refundHelper->createRefund();
+
+ 
         
         \Log::info("Refund Order: " . json_encode($resp));
 

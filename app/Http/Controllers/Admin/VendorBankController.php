@@ -89,6 +89,26 @@ class VendorBankController extends Controller
             'ShopeePay'                             => 'SP',
             'Union Bank of the Philippines'         => 'UBP',
         );
+        
+        if ($vendor_bank) {
+            $vendor_bank->update([
+                'account_holder_name'   => $request->input('account_holder_name'),
+                'bank_name'             => $request->input('bank_name'),
+                'account_number'        => $request->input('account_number'),
+                'vendor_id'             => $vendor_id,
+                'bank_ifsc_code'        => $request->bank_ifsc_code ?? $bank_list[$request->bank_name],
+            ]);
+            $vendor_bank->save();
+        } else {
+            $vendor_bank = [
+                'account_holder_name'   => $request->input('account_holder_name'),
+                'bank_name'             => $request->input('bank_name'),
+                'account_number'        => $request->input('account_number'),
+                'vendor_id'             => $vendor_id,
+                'bank_ifsc_code'        => $request->input('bank_ifsc_code', 'NA'),
+            ];
+            $vendor_bank = VendorsBankDetail::create($vendor_bank);
+        }
 
         $vendorDetails = Vendor::with('vendor_bank')->find($vendor_id);
 

@@ -142,7 +142,7 @@
                             data-widget_type="heading.default"
                         >
                             <div class="elementor-widget-container">
-                                <h5 class="elementor-heading-title elementor-size-default">{{$product['vendor']['name']}}</h5>
+                                <h5 class="elementor-heading-title elementor-size-default">{{$product['vendor']['vendorbusinessdetails']['shop_name']}}</h5>
                             </div>
                         </div>
                     </div>

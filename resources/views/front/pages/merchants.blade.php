@@ -109,7 +109,7 @@
                                             @php
                                                 $avg_rating = $vendor->vendorProductRatings();
                                             @endphp
-                                            @if ($vendor->ratings()->count() > 0)
+                                            @if ($vendor->ratingsCount() > 0)
                                             <div class="e-con-inner">
                                                 <div
                                                     class="elementor-element elementor-element-70dd1ff elementor-widget elementor-widget-text-editor"
@@ -119,7 +119,7 @@
                                                 >
                                                     <div class="elementor-widget-container">
                                                         <p>
-                                                            <strong>{{$avg_rating}}</strong> based on {{$vendor->ratings()->count()}} reviews
+                                                            <strong>{{$avg_rating}}</strong> based on {{$vendor->ratingsCount()}} reviews
                                                         </p>
                                                     </div>
                                                     @if ($vendor->vendor_product_orders_sum_product_qty > 0)

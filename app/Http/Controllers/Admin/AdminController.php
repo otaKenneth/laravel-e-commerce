@@ -465,11 +465,11 @@ class AdminController extends Controller
                         'shop_pincode'            => $data['shop_pincode'],
                         'lat'                     => $data['business']['lat'],
                         'long'                     => $data['business']['lng'],
-                        'business_license_number' => $data['business_license_number'],
+                        'business_license_number' => $data['business_license_number'] ?? null,
                         'address_proof'           => $data['address_proof'],
                         'address_proof_image'     => $imageName,
                         'shop_logo' => $shop_logo_imageName,
-                        'shop_banner' => $shop_banner_imageName,
+                        // 'shop_banner' => $shop_banner_imageName,
                     ]);
 
                 } else { // if there's no vendor already existing, then INSERT
@@ -486,7 +486,7 @@ class AdminController extends Controller
                         'shop_pincode'            => $data['shop_pincode'],
                         'lat'                     => $data['business']['lat'],
                         'long'                     => $data['business']['lng'],
-                        'business_license_number' => $data['business_license_number'],
+                        'business_license_number' => $data['business_license_number'] ?? null,
                         'address_proof'           => $data['address_proof'],
                         'address_proof_image'     => $imageName,
                         'shop_logo'     => $shop_logo_imageName,

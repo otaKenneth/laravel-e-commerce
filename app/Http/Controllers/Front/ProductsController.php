@@ -1230,6 +1230,7 @@ class ProductsController extends Controller
             });
 
             foreach ($vendor_ids as $vendor_id => $messageData) {
+                $email = $messageData['email'];
                 $messageData['orderDetails'] = \App\Models\Order::with(['orders_products' => function ($query) use ($vendor_id) {
                     $query->where('vendor_id', $vendor_id);
                 }])->where('id', $messageData['order_id'])->first()->toArray();
