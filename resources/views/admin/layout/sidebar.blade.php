@@ -179,6 +179,19 @@
                 </div>
             </li>
 
+            <li class="nav-item">
+                <a @if (in_array(Session::get('page'), ['income_statement'])) style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-finance" aria-expanded="false" aria-controls="ui-finance">
+                    <i class="icon-layout menu-icon"></i>
+                    <span class="menu-title">Finance</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="ui-finance">
+                    <ul class="nav flex-column sub-menu" style="background: #fff !important; color: #5f7a61 !important">
+                        <li class="nav-item"> <a @if (Session::get('page') == 'income_statement')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/reports/sales') }}">Income Statement</a></li>
+                    </ul>
+                </div>
+            </li>
+
             
             <li class="nav-item">
                 <a @if (Session::get('page') == 'ratings') style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-ratings" aria-expanded="false" aria-controls="ui-ratings">
