@@ -9,27 +9,31 @@
                     <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
                         <span class="icon-menu"></span>
                     </button>
-                    <div class="col-12 col-xl-12 mb-12 mb-xl-12">
-                        <h3 class="font-weight-bold">Income Statement</h3>
-                    </div>
+                 
+                    <h3 class="font-weight-bold page--title">Income Statement</h3>
+                  
 
                     <div class="flex-box-container">
 
                         <div class="card">
                             <div class="card-body">
-                                <p class="mb-4">To Release</p>
+                                <p class="mb-4">Upcoming Payout</p>
+                                <p class="fs-30 mb-2">₱ 0.00</p>
+                                <div class="footnote-container">
+                                    <p class="footnote">*To be released on March 7 2025</p>
+                                    <p class="footnote">*Disbursed on Bank Account ending in 1234</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="mb-4">Total Revenue</p>
                                 <p class="fs-30 mb-2">₱ 0.00</p>
                             </div>
                         </div>
                         <div class="card">
                             <div class="card-body">
-                                <p class="mb-4">Total Revemnue</p>
-                                <p class="fs-30 mb-2">₱ 0.00</p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="mb-4">Total Income</p>
+                                <p class="mb-4">Total Fees Paid</p>
                                 <p class="fs-30 mb-2">₱ 0.00</p>
                             </div>
                         </div>
@@ -38,59 +42,65 @@
 
                     <h3 class="table-head">Release History</h3>
 
-                    <div class="table-container">
-                        <table>
-                            <tr>
-                                <th>Date</th>
-                                <th>Destination Bank</th>
-                                <th>Account Number</th>
-                                <th>Transaction Number</th>
-                                <th>Amount</th>
-                            </tr>
-                            <tr>
-                                <td>31 Jan - 6 Feb 2025</td>
-                                <td>[BANK NAME]</td>
-                                <td>[ACCOUT NUMBER]</td>
-                                <td>123-912-84728</td>
-                                <td>₱274, 123.54</td>
-                            </tr>
-                            <tr>
-                                <td>31 Jan - 6 Feb 2025</td>
-                                <td>[BANK NAME]</td>
-                                <td>[ACCOUT NUMBER]</td>
-                                <td>123-912-84728</td>
-                                <td>₱274, 123.54</td>
-                            </tr>
-                            <tr>
-                                <td>31 Jan - 6 Feb 2025</td>
-                                <td>[BANK NAME]</td>
-                                <td>[ACCOUT NUMBER]</td>
-                                <td>123-912-84728</td>
-                                <td>₱274, 123.54</td>
-                            </tr>
-                            <tr>
-                                <td>31 Jan - 6 Feb 2025</td>
-                                <td>[BANK NAME]</td>
-                                <td>[ACCOUT NUMBER]</td>
-                                <td>123-912-84728</td>
-                                <td>₱274, 123.54</td>
-                            </tr>
-                            <tr>
-                                <td>31 Jan - 6 Feb 2025</td>
-                                <td>[BANK NAME]</td>
-                                <td>[ACCOUT NUMBER]</td>
-                                <td>123-912-84728</td>
-                                <td>₱274, 123.54</td>
-                            </tr>
-                            <tr>
-                                <td>31 Jan - 6 Feb 2025</td>
-                                <td>[BANK NAME]</td>
-                                <td>[ACCOUT NUMBER]</td>
-                                <td>123-912-84728</td>
-                                <td>₱274, 123.54</td>
-                            </tr>
-                        </table>
-                    </div
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Destination Bank</th>
+                                        <th>Account Number</th>
+                                        <th>Transaction Number</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    <tr>
+                                        <td>31 Jan - 6 Feb 2025</td>
+                                        <td>[BANK NAME]</td>
+                                        <td>[ACCOUT NUMBER]</td>
+                                        <td>123-912-84728</td>
+                                        <td>₱274, 123.54</td>
+                                    </tr>
+                                    <tr>
+                                        <td>31 Jan - 6 Feb 2025</td>
+                                        <td>[BANK NAME]</td>
+                                        <td>[ACCOUT NUMBER]</td>
+                                        <td>123-912-84728</td>
+                                        <td>₱274, 123.54</td>
+                                    </tr>
+                                    <tr>
+                                        <td>31 Jan - 6 Feb 2025</td>
+                                        <td>[BANK NAME]</td>
+                                        <td>[ACCOUT NUMBER]</td>
+                                        <td>123-912-84728</td>
+                                        <td>₱274, 123.54</td>
+                                    </tr>
+                                    <tr>
+                                        <td>31 Jan - 6 Feb 2025</td>
+                                        <td>[BANK NAME]</td>
+                                        <td>[ACCOUT NUMBER]</td>
+                                        <td>123-912-84728</td>
+                                        <td>₱274, 123.54</td>
+                                    </tr>
+                                    <tr>
+                                        <td>31 Jan - 6 Feb 2025</td>
+                                        <td>[BANK NAME]</td>
+                                        <td>[ACCOUT NUMBER]</td>
+                                        <td>123-912-84728</td>
+                                        <td>₱274, 123.54</td>
+                                    </tr>
+                                    <tr>
+                                        <td>31 Jan - 6 Feb 2025</td>
+                                        <td>[BANK NAME]</td>
+                                        <td>[ACCOUT NUMBER]</td>
+                                        <td>123-912-84728</td>
+                                        <td>₱274, 123.54</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    
 
 
                             <?php /*
