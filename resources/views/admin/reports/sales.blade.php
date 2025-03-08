@@ -43,38 +43,43 @@
                     <h3 class="table-head">Release History</h3>
 
                     <div class="card">
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Destination Bank</th>
-                                        <th>Account Number</th>
-                                        <th>Transaction Number</th>
-                                        @if ($auth_type != 'vendor')
-                                        <th>Status</th>
-                                        @endif
-                                        <th>Amount</th>
-                                    </tr>
-                                    @foreach ($releases as $release)
-                                    <tr>
-                                        <td>{{ $release['Date Range'] }}</td>
-                                        <td>{{ $release['vendor']['vendor_bank']['bank_name'] }}</td>
-                                        <td>{{ $release['vendor']['vendor_bank']['account_number'] }}</td>
-                                        <td>
+                        <form name="admin.sales_transaction_form" method="post" action="{{ url('admin/finance/income_statement') }}">
+                            @csrf
+                            <div class="card-body">
+                                <div class="table-container">
+                                    <table>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Destination Bank</th>
+                                            <th>Account Number</th>
+                                            <th>Transaction Number</th>
                                             @if ($auth_type != 'vendor')
-                                            <input type="text" name="transaction_num[{{ $release['Date Range'] }}]" id="transaction_num[{{ $release['Date Range'] }}]">
+                                            <th>Status</th>
                                             @endif
-                                        </td>
-                                        @if ($auth_type != 'vendor')
-                                        <td></td>
-                                        @endif
-                                        <td>₱ {{ $release['amount'] }}</td>
-                                    </tr>
-                                    @endforeach
-                                </table>
+                                            <th>Amount</th>
+                                        </tr>
+                                        @foreach ($releases as $release)
+                                        <tr>
+                                            <input type="hidden" name="release[{{ $release['Date Range'] }}]" value="{{ json_encode($release) }}">
+                                            <td>{{ $release['Date Range'] }}</td>
+                                            <td>{{ $release['vendor']['vendor_bank']['bank_name'] }}</td>
+                                            <td>{{ $release['vendor']['vendor_bank']['account_number'] }}</td>
+                                            <td>
+                                                @if ($auth_type != 'vendor')
+                                                <input type="text" name="transaction_num[{{ $release['Date Range'] }}]" id="transaction_num[{{ $release['Date Range'] }}]">
+                                                @endif
+                                            </td>
+                                            @if ($auth_type != 'vendor')
+                                            <td></td>
+                                            @endif
+                                            <td>₱ {{ $release['amount'] }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </table>
+                                </div>
                             </div>
-                        </div>
+                            <input type="submit" value="Save">
+                        </form>
                     </div>
                 </div>
             </div>

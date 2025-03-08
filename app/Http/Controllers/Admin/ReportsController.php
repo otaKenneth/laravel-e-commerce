@@ -10,7 +10,7 @@ use function PHPUnit\Framework\isNull;
 
 class ReportsController extends Controller
 {
-    public function salesReports() {
+    public function salesReports(Request $request) {
         Session::put('page', 'income_statement');
         $vendor_ordersProduct = OrdersProduct::where('vendor_id', auth()->guard('admin')->user()->vendor_id);
         $get_Buyers = $vendor_ordersProduct;
@@ -41,6 +41,10 @@ class ReportsController extends Controller
         $order_count = $get_OrdersCnt->get()->count();
 
         $auth_type = auth()->guard('admin')->user()->type;
+
+        if ($request->isMethod('post')) {
+            dd($request->all());
+        }
 
         return view('admin.reports.sales')->with(compact('revenue', 'order_count', 'buyers','releases','total_income','latest_payout','auth_type'));
     }
