@@ -51,6 +51,9 @@
                                         <th>Destination Bank</th>
                                         <th>Account Number</th>
                                         <th>Transaction Number</th>
+                                        @if ($auth_type != 'vendor')
+                                        <th>Status</th>
+                                        @endif
                                         <th>Amount</th>
                                     </tr>
                                     @foreach ($releases as $release)
@@ -58,7 +61,14 @@
                                         <td>{{ $release['Date Range'] }}</td>
                                         <td>{{ $release['vendor']['vendor_bank']['bank_name'] }}</td>
                                         <td>{{ $release['vendor']['vendor_bank']['account_number'] }}</td>
-                                        <td>123-912-84728</td>
+                                        <td>
+                                            @if ($auth_type != 'vendor')
+                                            <input type="text" name="transaction_num[{{ $release['Date Range'] }}]" id="transaction_num[{{ $release['Date Range'] }}]">
+                                            @endif
+                                        </td>
+                                        @if ($auth_type != 'vendor')
+                                        <td></td>
+                                        @endif
                                         <td>₱ {{ $release['amount'] }}</td>
                                     </tr>
                                     @endforeach

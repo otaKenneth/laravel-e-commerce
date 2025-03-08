@@ -41,7 +41,7 @@ class OrdersProduct extends Model
     }
 
     public static function releaseHistory($vendor_id) {
-        return OrdersProduct::with([
+        $response = OrdersProduct::with([
             'vendor.vendor_bank'
         ])
         ->selectRaw("
@@ -52,9 +52,13 @@ class OrdersProduct extends Model
             ) AS `Date Range`,
             vendor_id,
             SUM(product_price * product_qty) as amount
-        ")
-        ->where('vendor_id', $vendor_id)
-        ->whereHas('order', function ($query) {
+        ");
+
+        if ($vendor_id > 0) {
+            $response->where('vendor_id', $vendor_id);
+        }
+
+        return $response->whereHas('order', function ($query) {
             $query->where('order_status', '!=', 'Payment Pending'); // Ensure order is not pending
         })
         ->groupBy(DB::raw("`Date Range`, vendor_id"))
@@ -62,16 +66,20 @@ class OrdersProduct extends Model
     }
 
     public static function totalIncome($vendor_id) {
-        return OrdersProduct::join('vendors as v', 'orders_products.vendor_id', '=', 'v.id') // Join vendors to get commission
+        $response = OrdersProduct::join('vendors as v', 'orders_products.vendor_id', '=', 'v.id') // Join vendors to get commission
         ->selectRaw("
             orders_products.vendor_id,
             v.commission AS commission_rate,
             SUM(orders_products.product_price * orders_products.product_qty) AS revenue,
             SUM(orders_products.product_price * orders_products.product_qty) * v.commission AS total_fees_paid,
             SUM(orders_products.product_price * orders_products.product_qty) - (SUM(orders_products.product_price * orders_products.product_qty) * v.commission) AS total_income
-        ")
-        ->where('orders_products.vendor_id', $vendor_id)
-        ->whereHas('order', function ($query) {
+        ");
+
+        if ($vendor_id > 0) {
+            $response->where('vendor_id', $vendor_id);
+        }
+        
+        return $response->whereHas('order', function ($query) {
             $query->where('order_status', '!=', 'Payment Pending');
         })
         ->groupBy(DB::raw("orders_products.vendor_id, v.commission"))

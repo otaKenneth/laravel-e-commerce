@@ -19,6 +19,7 @@ class ReportsController extends Controller
         $releases = OrdersProduct::releaseHistory(auth()->guard('admin')->user()->vendor_id);
         $total_income = OrdersProduct::totalIncome(auth()->guard('admin')->user()->vendor_id);
         $latest_payout = OrdersProduct::latestPayout(auth()->guard('admin')->user()->vendor_id);
+        
         if (!is_numeric($latest_payout)) {
             $latest_payout = 0.00;
         }
@@ -39,7 +40,8 @@ class ReportsController extends Controller
 
         $order_count = $get_OrdersCnt->get()->count();
 
+        $auth_type = auth()->guard('admin')->user()->type;
 
-        return view('admin.reports.sales')->with(compact('revenue', 'order_count', 'buyers','releases','total_income','latest_payout'));
+        return view('admin.reports.sales')->with(compact('revenue', 'order_count', 'buyers','releases','total_income','latest_payout','auth_type'));
     }
 }
