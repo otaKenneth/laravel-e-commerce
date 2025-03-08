@@ -203,3 +203,67 @@
         margin-left: 0;
     }
 }
+
+
+/*INCOME STATEMENT PAGE CSS*/
+.income-statement .flex-box-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.income-statement .flex-box-container .footnote{
+    margin-bottom: 0;
+}
+.income-statement .flex-box-container .footnote-container{
+    margin-top: 20px;
+}
+.income-statement .flex-box-container .card{
+    width: calc(25% - 15px);
+}
+.income-statement .flex-box-container .card .card-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.income-statement h3.page--title{
+    margin-bottom: 30px;
+    padding: 0 !important;
+}
+.income-statement .table-head{
+    margin-top: 50px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+.income-statement table{
+    background: white;
+    border: none;
+}
+.income-statement table td,
+.income-statement table th{
+    background: white;
+    border: none;
+    text-align: center;
+}
+.income-statement table th{
+    color: #5F7A61;
+}
+.income-statement .flex-box-container .fs-30{
+    color: #5F7A61;
+    font-weight: 700;
+}
+.income-statement .table-container{
+    overflow: auto;
+}
+@media (max-width: 767px){
+    .income-statement .flex-box-container .card{
+        width: calc(50% - 10px);
+    }
+    .income-statement table{
+        min-width: 700px;
+    }
+}
+@media (max-width: 450px){
+    .income-statement .flex-box-container .card{
+        width: 100%;
+    }
+}
