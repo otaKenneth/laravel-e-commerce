@@ -104,7 +104,7 @@ class CouponsController extends Controller
 
         if ($request->isMethod('post')) { // if the HTML Form is submitted (WHETHER Add or Update!)
             $data = $request->all();
-            // dd($data);
+            dd($data);
 
 
             // Laravel's Validation    // Customizing Laravel's Validation Error Messages: https://laravel.com/docs/9.x/validation#customizing-the-error-messages    // Customizing Validation Rules: https://laravel.com/docs/9.x/validation#custom-validation-rules    

@@ -144,19 +144,27 @@
 
 
 
-                                <div class="form-group">
+                                <div class="form-group hide">
                                     <label for="brands">Select Brand:</label>
                                     <select name="brands[]" class="form-control text-dark" multiple> {{-- "multiple" HTML attribute: https://www.w3schools.com/tags/att_multiple.asp --}} {{-- We used the Square Brackets [] in name="brands[]" is an array because we used the "multiple" HTML attribute to be able to choose multiple brands (more than one brand) at the same time --}}
                                         @foreach ($brands as $brand)
-                                            <option value="{{ $brand['id'] }}" @if (in_array($brand['id'], $selBrands)) selected @endif>{{ $brand['name'] }}</option>
+                                            <option value="{{ $brand['id'] }}" selected>{{ $brand['name'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group hide">
                                     <label for="users">Select User (by email):</label>
                                     <select name="users[]" class="form-control text-dark" multiple> {{-- "multiple" HTML attribute: https://www.w3schools.com/tags/att_multiple.asp --}} {{-- We used the Square Brackets [] in name="users[]" is an array because we used the "multiple" HTML attribute to be able to choose multiple users (more than one user) at the same time --}}
                                         @foreach ($users as $user)
-                                            <option value="{{ $user['email'] }}"  @if (in_array($user['email'], $selUsers)) selected @endif>{{ $user['email'] }}</option>
+                                            <option value="{{ $user['email'] }}"
+                                                @if ($title == 'Add Coupon') 
+                                                    selected
+                                                @else
+                                                    @if (in_array($user['email'], $selUsers)) 
+                                                        selected 
+                                                    @endif
+                                                @endif
+                                            >{{ $user['email'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>
