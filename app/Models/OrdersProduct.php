@@ -51,6 +51,7 @@ class OrdersProduct extends Model
                 DATE_FORMAT(DATE_ADD(DATE_SUB(created_at, INTERVAL (WEEKDAY(created_at) + 2) DAY), INTERVAL 6 DAY), '%d %b %Y')
             ) AS `Date Range`,
             vendor_id,
+            JSON_ARRAYAGG(orders_products.order_id) AS order_ids,
             SUM(product_price * product_qty) as amount
         ");
 

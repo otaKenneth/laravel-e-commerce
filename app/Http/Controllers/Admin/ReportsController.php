@@ -43,8 +43,50 @@ class ReportsController extends Controller
         $auth_type = auth()->guard('admin')->user()->type;
 
         if ($request->isMethod('post')) {
-            dd($request->all());
+            $transaction_nums = $request->input('transaction_num');
+            $data_releases = $request->input('release');
+            $c_transaction_nums = collect($transaction_nums)->filter(function ($value, $key) {
+                return !is_null($value);
+            })->toArray();
+
+            foreach ($releases as $key => $release) {
+                if (in_array($release['Date Range'], array_keys($c_transaction_nums))) {
+                    $new_data = [
+                        'vendor_bank_details_id' => $release['vendor']['vendor_bank']['id'],
+                        'date_range' => $release['Date Range'],
+                        'transaction_number' => $c_transaction_nums[$release['Date Range']],
+                        'amount' => $release['amount'],
+                        'status' => true,
+                        'order_ids' => $release['order_ids']
+                    ];
+                    $condition = [
+                        'vendor_bank_details_id' => $release['vendor']['vendor_bank']['id'],
+                        'date_range' => $release['Date Range'],
+                    ];
+                    $transaction_exists = \App\Models\VendorSalesTransaction::where($condition)->first();
+                    if (empty($transaction_exists)) {
+                        $new = \App\Models\VendorSalesTransaction::create($new_data);
+                    } else {
+                        $transaction_exists->update($new_data);
+                    }
+                }
+            }
         }
+
+        $releases = array_map(function ($value) {
+            $condition = [
+                'vendor_bank_details_id' => $value['vendor']['vendor_bank']['id'],
+                'date_range' => $value['Date Range'],
+            ];
+            $transaction_exists = \App\Models\VendorSalesTransaction::where($condition)->first();
+            return [
+                'Date Range' => $value['Date Range'],
+                'amount' => $value['amount'],
+                'bank_name' => $value['vendor']['vendor_bank']['bank_name'],
+                'transaction_number' => empty($transaction_exists) ? null:$transaction_exists['transaction_number'],
+                'account_number' => $value['vendor']['vendor_bank']['account_number'],
+            ];
+        }, $releases->toArray());
 
         return view('admin.reports.sales')->with(compact('revenue', 'order_count', 'buyers','releases','total_income','latest_payout','auth_type'));
     }

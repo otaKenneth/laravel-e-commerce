@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class VendorSalesTransaction extends Model
 {
     use HasFactory;
+    protected $table = 'vendor_sales_transaction';
 
-    protected $fillable = ['date_range',
+    protected $fillable = ['vendor_bank_details_id','date_range',
         'transaction_number',
         'amount',
         'status',

@@ -62,11 +62,11 @@
                                         <tr>
                                             <input type="hidden" name="release[{{ $release['Date Range'] }}]" value="{{ json_encode($release) }}">
                                             <td>{{ $release['Date Range'] }}</td>
-                                            <td>{{ $release['vendor']['vendor_bank']['bank_name'] }}</td>
-                                            <td>{{ $release['vendor']['vendor_bank']['account_number'] }}</td>
+                                            <td>{{ $release['bank_name'] }}</td>
+                                            <td>{{ $release['account_number'] }}</td>
                                             <td>
                                                 @if ($auth_type != 'vendor')
-                                                <input type="text" name="transaction_num[{{ $release['Date Range'] }}]" id="transaction_num[{{ $release['Date Range'] }}]">
+                                                <input type="text" name="transaction_num[{{ $release['Date Range'] }}]" id="transaction_num[{{ $release['Date Range'] }}]" value="{{ $release['transaction_number'] }}">
                                                 @endif
                                             </td>
                                             @if ($auth_type != 'vendor')
