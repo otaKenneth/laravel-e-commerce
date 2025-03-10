@@ -167,7 +167,7 @@
 
             
             <li class="nav-item">
-                <a @if (Session::get('page') == 'orders') style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-orders" aria-expanded="false" aria-controls="ui-orders">
+                <a @if (in_array(Session::get('page'), ['orders','income_statement'])) style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-orders" aria-expanded="false" aria-controls="ui-orders">
                     <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Orders Management</span>
                     <i class="menu-arrow"></i>
