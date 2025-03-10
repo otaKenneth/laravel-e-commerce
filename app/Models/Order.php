@@ -28,7 +28,9 @@ class Order extends Model
         return $this->hasManyThrough(Vendor::class, OrdersProduct::class, 'order_id', 'id', 'id', 'vendor_id');
     }
 
-
+    public function payment() {
+        return $this->hasOne(Payment::class);
+    }
 
     // Shiprocket API Integration! Shiprocket needs an "order_items" key/name in the JSON request, so we create this relationship method specifically for this matter (in order for the $getResults array in pushOrder() method in APIController.php to have the key/name of "order_items")
     // Relationship of an Order `orders` table with Order_Products `orders_products` table (every Order has many Order_Products)    
