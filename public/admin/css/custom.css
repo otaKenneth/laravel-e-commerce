@@ -247,6 +247,13 @@
 .income-statement table th{
     color: #5F7A61;
 }
+.income-statement .card form [type="submit"]{
+    background: #5f7a61 !important;
+    color: #FFF !important;
+    margin: 20px;
+    text-transform: uppercase;
+    min-width: 150px;
+}
 .income-statement .flex-box-container .fs-30{
     color: #5F7A61;
     font-weight: 700;

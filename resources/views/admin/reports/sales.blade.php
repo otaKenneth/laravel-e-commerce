@@ -10,19 +10,35 @@
                         <span class="icon-menu"></span>
                     </button>
                  
-                    <h3 class="font-weight-bold page--title">Income Statement</h3>
+                    <h3 class="font-weight-bold page--title">
+                    @if ($auth_type == 'vendor')
+                        Income Statement
+                    @else
+                        General Finances
+                    @endif
+                    </h3>
                   
 
                     <div class="flex-box-container">
 
                         <div class="card">
                             <div class="card-body">
-                                <p class="mb-4">Upcoming Payout</p>
+                                <p class="mb-4">
+                                @if ($auth_type == 'vendor')
+                                    Upcoming Payout
+                                @else
+                                    Total Payout
+                                @endif
+                                </p>
                                 <p class="fs-30 mb-2">₱ {{ number_format($latest_payout, 2) }}</p>
+                                
+                                @if ($auth_type == 'vendor')
                                 <div class="footnote-container">
                                     <p class="footnote">*To be released on March 7 2025</p>
                                     <p class="footnote">*Disbursed on Bank Account ending in 1234</p>
                                 </div>
+                                @endif
+                                
                             </div>
                         </div>
                         <div class="card">
@@ -34,13 +50,20 @@
                         <div class="card">
                             <div class="card-body">
                                 <p class="mb-4">Total Fees Paid</p>
-                                <p class="fs-30 mb-2">₱ {{ number_format($total_income->total_income, 2) }}</p>
+                                <p class="fs-30 mb-2">₱ 0</p>
                             </div>
                         </div>
 
                     </div>
 
-                    <h3 class="table-head">Release History</h3>
+                    <h3 class="table-head">
+                    @if ($auth_type == 'vendor')
+                        Release History
+                    @else
+                        Merchant Finances
+                    @endif
+                        
+                    </h3>
 
                     <div class="card">
                         <form name="admin.sales_transaction_form" method="post" action="{{ url('admin/finance/income_statement') }}">
@@ -93,4 +116,8 @@
         </footer>
         <!-- partial -->
     </div>
+
+
+
+    
 @endsection
