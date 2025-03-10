@@ -90,6 +90,7 @@ class ReportsController extends Controller
             return [
                 'Date Range' => $value['Date Range'],
                 'amount' => $value['amount'],
+                'shop_name' => \App\Models\VendorsBusinessDetail::where('vendor_id', $value['vendor']['id']),
                 'bank_name' => $vendor_bank_name,
                 'transaction_number' => empty($transaction_exists) ? null:$transaction_exists['transaction_number'],
                 'account_number' => $vendor_bank_accnum,

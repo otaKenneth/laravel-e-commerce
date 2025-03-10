@@ -73,6 +73,9 @@
                                     <table>
                                         <tr>
                                             <th>Date</th>
+                                            @if ($auth_type != 'vendor')
+                                            <th>Business Name</th>
+                                            @endif
                                             <th>Destination Bank</th>
                                             <th>Account Number</th>
                                             <th>Transaction Number</th>
@@ -85,6 +88,7 @@
                                         <tr>
                                             <input type="hidden" name="release[{{ $release['Date Range'] }}]" value="{{ json_encode($release) }}">
                                             <td>{{ $release['Date Range'] }}</td>
+                                            @if ($auth_type != 'vendor')<td>{{ $release['shop_name'] }}</td>@endif
                                             <td>{{ $release['bank_name'] }}</td>
                                             <td>{{ $release['account_number'] }}</td>
                                             <td>
