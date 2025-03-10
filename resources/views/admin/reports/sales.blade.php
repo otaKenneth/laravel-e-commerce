@@ -50,7 +50,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <p class="mb-4">Total Fees Paid</p>
-                                <p class="fs-30 mb-2">₱ 0</p>
+                                <p class="fs-30 mb-2">₱ {{ number_format($total_income->total_income, 2) }}</p>
                             </div>
                         </div>
 
