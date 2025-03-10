@@ -74,8 +74,9 @@ class ReportsController extends Controller
         }
 
         $releases = array_map(function ($value) {
+            $vendor_bank_id = empty($value['vendor']['vendor_bank']) ? null:$value['vendor']['vendor_bank']['id'];
             $condition = [
-                'vendor_bank_details_id' => $value['vendor']['vendor_bank']['id'],
+                'vendor_bank_details_id' => $vendor_bank_id,
                 'date_range' => $value['Date Range'],
             ];
             $transaction_exists = \App\Models\VendorSalesTransaction::where($condition)->first();
