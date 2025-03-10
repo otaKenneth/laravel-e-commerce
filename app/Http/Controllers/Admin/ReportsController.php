@@ -74,7 +74,14 @@ class ReportsController extends Controller
         }
 
         $releases = array_map(function ($value) {
-            $vendor_bank_id = empty($value['vendor']['vendor_bank']) ? null:$value['vendor']['vendor_bank']['id'];
+            $vendor_bank_id = null;
+            $vendor_bank_name = null;
+            $vendor_bank_accnum = null;
+            if (!empty($value['vendor']['vendor_bank'])) {
+                $vendor_bank_id = $value['vendor']['vendor_bank']['id'];
+                $vendor_bank_name = $value['vendor']['vendor_bank']['bank_name'];
+                $vendor_bank_accnum = $value['vendor']['vendor_bank']['account_number'];
+            }
             $condition = [
                 'vendor_bank_details_id' => $vendor_bank_id,
                 'date_range' => $value['Date Range'],
@@ -83,9 +90,9 @@ class ReportsController extends Controller
             return [
                 'Date Range' => $value['Date Range'],
                 'amount' => $value['amount'],
-                'bank_name' => $value['vendor']['vendor_bank']['bank_name'],
+                'bank_name' => $vendor_bank_name,
                 'transaction_number' => empty($transaction_exists) ? null:$transaction_exists['transaction_number'],
-                'account_number' => $value['vendor']['vendor_bank']['account_number'],
+                'account_number' => $vendor_bank_accnum,
             ];
         }, $releases->toArray());
 
