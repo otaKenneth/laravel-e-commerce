@@ -32,12 +32,19 @@ class ChatBox extends Component
 
             if (!$this->activeChat) {
                 // Create a new chat if none exists
-                $this->activeChat = new Chats([
-                    'user_id' => $user->id,
-                    'admin_id' => $admin->id,
-                    'messages' => []
+                $this->activeChat = Chats::create();
+                $this->activeChat->chatUser()->create([
+                    'user_id' => Auth::user()->id
                 ]);
-                $this->activeChat->save();
+                $this->activeChat->chatAdmin()->create([
+                    'admin_id' => $admin->id
+                ]);
+                $this->activeChat->messages()->create([
+                    'admin_id' => $admin->id,
+                    'user_id' => Auth::user()->id,
+                    'from' => '\App\Models\User',
+                    'message' => ""
+                ]);
             }
         } else {
             // Load last active chat
