@@ -105,7 +105,9 @@
                                     </table>
                                 </div>
                             </div>
-                            <input type="submit" value="Save">
+                            @if ($auth_type !== 'vendor')
+                                <input type="submit" value="Save">
+                            @endif
                         </form>
                     </div>
                 </div>
