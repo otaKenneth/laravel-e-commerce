@@ -1203,7 +1203,7 @@ class ProductsController extends Controller
 
                 if (!array_key_exists($item->vendor_id, $vendor_ids)) {
                     $item->load('vendor.vendorbusinessdetails');
-                    $email = $item->vendor->vendorbusinessdetails->shop_email;
+                    $email = $item->vendor->email;
                     
                     $vendor_ids[$item->vendor_id] = [
                         'email'        => $email,
