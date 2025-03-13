@@ -46,9 +46,9 @@ class OrdersProduct extends Model
         ])
         ->selectRaw("
             CONCAT(
-                DATE_FORMAT(DATE_SUB(created_at, INTERVAL (WEEKDAY(created_at) + 2) DAY), '%d %b'),
+                DATE_FORMAT(DATE_SUB(created_at, INTERVAL (WEEKDAY(created_at) + 3) DAY), '%d %b'),
                 ' - ',
-                DATE_FORMAT(DATE_ADD(DATE_SUB(created_at, INTERVAL (WEEKDAY(created_at) + 2) DAY), INTERVAL 6 DAY), '%d %b %Y')
+                DATE_FORMAT(DATE_ADD(DATE_SUB(created_at, INTERVAL (WEEKDAY(created_at) + 3) DAY), INTERVAL 6 DAY), '%d %b %Y')
             ) AS `Date Range`,
             vendor_id,
             JSON_ARRAYAGG(orders_products.order_id) AS order_ids,
