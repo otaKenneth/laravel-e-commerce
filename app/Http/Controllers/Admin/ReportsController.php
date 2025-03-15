@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\OrdersProduct;
 use Illuminate\Support\Facades\Session;
 use function PHPUnit\Framework\isNull;
+use Carbon\Carbon;
 
 class ReportsController extends Controller
 {
@@ -97,6 +98,19 @@ class ReportsController extends Controller
             ];
         }, $releases->toArray());
 
-        return view('admin.reports.sales')->with(compact('revenue', 'order_count', 'buyers','releases','total_income','latest_payout','auth_type'));
+        $date_dropdown_filter = collect($releases)->pluck(['Date Range']);
+
+        $nextThursday = Carbon::now()->next(Carbon::THURSDAY)->format('M d Y');
+
+        $digit4_accnum = null;
+        if ($auth_type == 'vendor') {
+            $vendor = auth()->guard('admin')->user()->load(['vendorBank']);
+            if (!isNull($vendor->vendorBank)) {
+                $account_number = $vendor->vendorBank->account_number;
+                $digit4_accnum = substr($account_number, strlen($account_number)-4);
+            }
+        }
+        
+        return view('admin.reports.sales')->with(compact('revenue', 'order_count', 'buyers','releases','total_income','latest_payout','auth_type', 'date_dropdown_filter', 'nextThursday', 'digit4_accnum'));
     }
 }

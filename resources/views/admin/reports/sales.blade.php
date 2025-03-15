@@ -34,8 +34,8 @@
                                 
                                 @if ($auth_type == 'vendor')
                                 <div class="footnote-container">
-                                    <p class="footnote">*To be released on March 7 2025</p>
-                                    <p class="footnote">*Disbursed on Bank Account ending in 1234</p>
+                                    <p class="footnote">*To be released on {{$nextThursday}}</p>
+                                    <p class="footnote">*Disbursed on Bank Account ending in {{$digit4_accnum}}</p>
                                 </div>
                                 @endif
                                 
@@ -69,39 +69,43 @@
                         <form name="admin.sales_transaction_form" method="post" action="{{ url('admin/finance/income_statement') }}">
                             @csrf
                             <div class="card-body">
-                                <div class="table-container">
-                                    <table>
-                                        <tr>
-                                            <th>Date</th>
-                                            @if ($auth_type != 'vendor')
-                                            <th>Business Name</th>
-                                            @endif
-                                            <th>Destination Bank</th>
-                                            <th>Account Number</th>
-                                            <th>Transaction Number</th>
-                                            @if ($auth_type != 'vendor')
-                                            <th>Status</th>
-                                            @endif
-                                            <th>Amount</th>
-                                        </tr>
-                                        @foreach ($releases as $release)
-                                        <tr>
-                                            <input type="hidden" name="release[{{ $release['Date Range'] }}]" value="{{ json_encode($release) }}">
-                                            <td>{{ $release['Date Range'] }}</td>
-                                            @if ($auth_type != 'vendor')<td>{{ $release['shop_name'] }}</td>@endif
-                                            <td>{{ $release['bank_name'] }}</td>
-                                            <td>{{ $release['account_number'] }}</td>
-                                            <td>
+                                <div>
+                                    <table id="sales" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
                                                 @if ($auth_type != 'vendor')
-                                                <input type="text" name="transaction_num[{{ $release['Date Range'] }}]" id="transaction_num[{{ $release['Date Range'] }}]" value="{{ $release['transaction_number'] }}">
+                                                <th>Business Name</th>
                                                 @endif
-                                            </td>
-                                            @if ($auth_type != 'vendor')
-                                            <td></td>
-                                            @endif
-                                            <td>₱ {{ $release['amount'] }}</td>
-                                        </tr>
-                                        @endforeach
+                                                <th>Destination Bank</th>
+                                                <th>Account Number</th>
+                                                <th>Transaction Number</th>
+                                                @if ($auth_type != 'vendor')
+                                                <th>Status</th>
+                                                @endif
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($releases as $release)
+                                            <tr>
+                                                <input type="hidden" name="release[{{ $release['Date Range'] }}]" value="{{ json_encode($release) }}">
+                                                <td>{{ $release['Date Range'] }}</td>
+                                                @if ($auth_type != 'vendor')<td>{{ $release['shop_name'] }}</td>@endif
+                                                <td>{{ $release['bank_name'] }}</td>
+                                                <td>{{ $release['account_number'] }}</td>
+                                                <td>
+                                                    @if ($auth_type != 'vendor')
+                                                    <input type="text" name="transaction_num[{{ $release['Date Range'] }}]" id="transaction_num[{{ $release['Date Range'] }}]" value="{{ $release['transaction_number'] }}">
+                                                    @endif
+                                                </td>
+                                                @if ($auth_type != 'vendor')
+                                                <td></td>
+                                                @endif
+                                                <td>₱ {{ $release['amount'] }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>

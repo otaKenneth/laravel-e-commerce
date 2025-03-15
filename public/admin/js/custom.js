@@ -55,6 +55,11 @@ $(document).ready(function() {
     $('#shipping').DataTable();    // in admin/shipping/shipping_charges.blade.php    
     $('#subscribers').DataTable(); // in admin/subscribers/subscribers.blade.php      
     $('#ratings').DataTable();     // in admin/ratings/ratings.blade.php              
+    $('#sales').DataTable({
+        search: {
+            search: $('input[name="search"]').val()
+        }
+    });     // in admin/reports/sales.blade.php              
 
 
 
