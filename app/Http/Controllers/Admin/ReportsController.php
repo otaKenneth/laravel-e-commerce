@@ -57,7 +57,6 @@ class ReportsController extends Controller
                         'date_range' => $release['Date Range'],
                         'transaction_number' => $c_transaction_nums[$release['Date Range']],
                         'amount' => $release['amount'],
-                        'status' => true,
                         'order_ids' => $release['order_ids']
                     ];
                     $condition = [
@@ -89,11 +88,13 @@ class ReportsController extends Controller
             ];
             $transaction_exists = \App\Models\VendorSalesTransaction::where($condition)->first();
             return [
+                'id' => empty($transaction_exists) ? false:$transaction_exists['id'],
                 'Date Range' => $value['Date Range'],
                 'amount' => $value['amount'],
                 'shop_name' => \App\Models\VendorsBusinessDetail::where('vendor_id', $value['vendor']['id'])->first()->shop_name,
                 'bank_name' => $vendor_bank_name,
                 'transaction_number' => empty($transaction_exists) ? null:$transaction_exists['transaction_number'],
+                'status' => empty($transaction_exists) ? false:$transaction_exists['status'],
                 'account_number' => $vendor_bank_accnum,
             ];
         }, $releases->toArray());
@@ -112,5 +113,28 @@ class ReportsController extends Controller
         }
         
         return view('admin.reports.sales')->with(compact('revenue', 'order_count', 'buyers','releases','total_income','latest_payout','auth_type', 'date_dropdown_filter', 'nextThursday', 'digit4_accnum'));
+    }
+
+    public function salesReportsUpdateStatus (Request $request) {
+        $status = $request->input('status');
+        $releasetransaction_id = $request->input('releasetransaction_id');
+
+        try {
+            $statusUpdate = \App\Models\VendorSalesTransaction::where(['id' => $releasetransaction_id])
+                ->update(['status' => $status]);
+    
+            if ($statusUpdate) {
+                return response()->json([
+                    'success' => true,
+                    'status' => $status,
+                    'message' => "Successfully updated status of {$releasetransaction_id}"
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 }

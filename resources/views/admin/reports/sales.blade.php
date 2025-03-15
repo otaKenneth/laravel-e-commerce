@@ -100,7 +100,20 @@
                                                     @endif
                                                 </td>
                                                 @if ($auth_type != 'vendor')
-                                                <td></td>
+                                                <td>
+                                                    @if ($release['id']) 
+                                                        @if ($release['status'] == 1)
+                                                            <a class="transactionStatus" id="admin-{{ $release['id'] }}" releasetransaction_id="{{ $release['id'] }}" href="javascript:void(0)"> {{-- Using HTML Custom Attributes. Check admin/js/custom.js --}}
+                                                                <i style="font-size: 25px" class="mdi mdi-bookmark-check" status="0"></i> {{-- Icons from Skydash Admin Panel Template --}}
+                                                            </a>
+                                                        @else 
+                                                        {{-- if the admin status is inactive --}}
+                                                            <a class="transactionStatus" id="admin-{{ $release['id'] }}" releasetransaction_id="{{ $release['id'] }}" href="javascript:void(0)"> {{-- Using HTML Custom Attributes. Check admin/js/custom.js --}}
+                                                                <i style="font-size: 25px" class="mdi mdi-bookmark-outline" status="1"></i> {{-- Icons from Skydash Admin Panel Template --}}
+                                                            </a>
+                                                        @endif
+                                                    @endif
+                                                </td>
                                                 @endif
                                                 <td>₱ {{ $release['amount'] }}</td>
                                             </tr>

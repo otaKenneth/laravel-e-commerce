@@ -91,6 +91,26 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on('click', '.transactionStatus', function () {
+        var status   = $(this).children('i').attr('status'); // Using HTML Custom Attributes
+        var releasetransaction_id = $(this).attr('releasetransaction_id'); // Using HTML Custom Attributes
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token    
+            type   : 'put',
+            url    : '/admin/finance/update-income-statement-status', // check the web.php for this route and check the AdminController for the updateAdminStatus() method
+            data   : {status: status, releasetransaction_id: releasetransaction_id}, // we pass the status and admin_id
+            success: function(resp) {
+                console.log(resp);
+                if (resp.status == "0") { // in case of success, reverse the status (active/inactive) and show the right icon in the frontend    // Or the same    if (resp['status'] == 0) {
+                    console.log($('#admin-' + releasetransaction_id));
+                    $('#admin-' + releasetransaction_id).html('<i style="font-size: 25px" class="mdi mdi-bookmark-outline" status="1"></i>');
+                } else if (resp.status == 1) {
+                    $('#admin-' + releasetransaction_id).html('<i style="font-size: 25px" class="mdi mdi-bookmark-check" status="0"></i>');
+                }
+            }
+        });
+    })
 
 
     // Updating admin status (active/inactive) using AJAX in admin/admins/admins.blade.php    

@@ -130,6 +130,7 @@ Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Ad
         // Reports
         Route::get('finance/income_statement', 'ReportsController@salesReports');
         Route::post('finance/income_statement', 'ReportsController@salesReports');
+        Route::put('finance/update-income-statement-status', 'ReportsController@salesReportsUpdateStatus');
     
     
         // Newsletter Subscribers module
