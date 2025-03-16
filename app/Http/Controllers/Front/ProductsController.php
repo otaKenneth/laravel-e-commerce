@@ -83,7 +83,7 @@ class ProductsController extends Controller
         })->where('products.status', 1)
         ->whereHas('vendor', function ($query) {
             $query->where('status', 1);
-        });
+        })->selectRaw('*, categories.id as category_id');
 
         $catIds = $collection->get()->pluck('category_id')->toArray();
 
@@ -107,6 +107,7 @@ class ProductsController extends Controller
 
         $filters = $this->getAvailableFilters($catDetails, $collection);
         $collection = $this->processFilters($collection, $data);
+        $collection->selectRaw('*, categories.id as category_id');
 
         return ["collection" => $collection, "filters" => $filters, "categoryDetails" => $categoryDetails,
             "meta_title" => $meta_title, "meta_description" => $meta_description, "meta_keywords" => $meta_keywords,
@@ -1203,7 +1204,7 @@ class ProductsController extends Controller
 
                 if (!array_key_exists($item->vendor_id, $vendor_ids)) {
                     $item->load('vendor.vendorbusinessdetails');
-                    $email = $item->vendor->vendorbusinessdetails->shop_email;
+                    $email = $item->vendor->email;
                     
                     $vendor_ids[$item->vendor_id] = [
                         'email'        => $email,
