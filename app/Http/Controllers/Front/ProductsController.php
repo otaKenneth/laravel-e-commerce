@@ -351,7 +351,7 @@ class ProductsController extends Controller
             if ($getProductStock < $data['quantity']) { // if the `stock` available (in `products_attributes` table) is less than the ordered quantity by user (the quantity that the user desires)
                 return response()->json([
                     'success' => false,
-                    'message' => "Item doesn't have stock."
+                    'message' => "Item doesn't have stock. This page will be automatically refresh after you click Ok."
                 ], 400);
             }
 
