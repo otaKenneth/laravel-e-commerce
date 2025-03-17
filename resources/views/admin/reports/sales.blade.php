@@ -95,7 +95,9 @@
                                                 <td>{{ $release['bank_name'] }}</td>
                                                 <td>{{ $release['account_number'] }}</td>
                                                 <td>
-                                                    @if ($auth_type != 'vendor')
+                                                    @if ($auth_type == 'vendor')
+                                                    {{ $release['transaction_number'] }}
+                                                    @else
                                                     <input type="text" name="transaction_num[{{ $release['Date Range'] }}]" id="transaction_num[{{ $release['Date Range'] }}]" value="{{ $release['transaction_number'] }}">
                                                     @endif
                                                 </td>
