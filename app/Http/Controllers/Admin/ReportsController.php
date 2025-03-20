@@ -53,21 +53,24 @@ class ReportsController extends Controller
             foreach ($releases as $key => $release) {
                 if (in_array($release['Date Range'], array_keys($c_transaction_nums))) {
                     $new_data = [
-                        'vendor_bank_details_id' => $release['vendor']['vendor_bank']['id'],
+                        'vendor_bank_details_id' => null,
                         'date_range' => $release['Date Range'],
                         'transaction_number' => $c_transaction_nums[$release['Date Range']],
                         'amount' => $release['amount'],
                         'order_ids' => $release['order_ids']
                     ];
-                    $condition = [
-                        'vendor_bank_details_id' => $release['vendor']['vendor_bank']['id'],
-                        'date_range' => $release['Date Range'],
-                    ];
-                    $transaction_exists = \App\Models\VendorSalesTransaction::where($condition)->first();
-                    if (empty($transaction_exists)) {
-                        $new = \App\Models\VendorSalesTransaction::create($new_data);
-                    } else {
-                        $transaction_exists->update($new_data);
+                    if (!empty($value['vendor']['vendor_bank'])) {
+                        $new_data['vendor_bank_details_id'] = $release['vendor']['vendor_bank']['id'];
+                        $condition = [
+                            'vendor_bank_details_id' => $release['vendor']['vendor_bank']['id'],
+                            'date_range' => $release['Date Range'],
+                        ];
+                        $transaction_exists = \App\Models\VendorSalesTransaction::where($condition)->first();
+                        if (empty($transaction_exists)) {
+                            $new = \App\Models\VendorSalesTransaction::create($new_data);
+                        } else {
+                            $transaction_exists->update($new_data);
+                        }
                     }
                 }
             }
