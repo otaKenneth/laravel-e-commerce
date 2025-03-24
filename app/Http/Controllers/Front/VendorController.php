@@ -27,8 +27,8 @@ class VendorController extends Controller
         $vendors = Vendor::where('status', 1)
             ->with('vendorbusinessdetails')
             ->withSum('vendorProductOrders', 'product_qty')
-            ->paginate(10)
-            ->shuffle();
+            ->paginate(10);
+        // $vendor_list = $vendors->items;
         // dd($vendors);
         return view('front.pages.merchants')->with(compact('vendors'));
     }
