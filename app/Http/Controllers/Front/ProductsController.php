@@ -1395,7 +1395,7 @@ class ProductsController extends Controller
 
         // dd($filters);
         // check for brands
-        $filters['brands'] = collect($selection)->pluck('brand.name')->unique()->toArray();
+        // $filters['brands'] = collect($selection)->pluck('brand.name')->unique()->toArray();
 
         // check for sizes
         $filters['sizes'] = collect($selection)->pluck('attributes.*.size')->flatten()->unique()->toArray();
