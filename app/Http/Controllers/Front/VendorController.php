@@ -27,11 +27,22 @@ class VendorController extends Controller
         $vendors = Vendor::where('status', 1)
             ->with('vendorbusinessdetails')
             ->withSum('vendorProductOrders', 'product_qty')
-            ->paginate(10);
-        // $vendor_list = $vendors->items;
-        // dd($vendors);
-        return view('front.pages.merchants')->with(compact('vendors'));
-    }
+            ->get()
+            ->shuffle(); // Shuffle the results
+    
+        // Manually paginate the shuffled collection
+        $perPage = 10;
+        $currentPage = request()->get('page', 1); // Get the current page from query parameters
+        $vendors_paginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $vendors->forPage($currentPage, $perPage), 
+            $vendors->count(), 
+            $perPage, 
+            $currentPage, 
+            ['path' => request()->url()]
+        );
+    
+        return view('front.pages.merchants')->with(compact('vendors_paginated'));
+    }    
 
     public function vendorRegister(Request $request) { // the register HTML form submission in vendor login_register.blade.php page    
         if ($request->isMethod('post')) { // if the register form is submitted
