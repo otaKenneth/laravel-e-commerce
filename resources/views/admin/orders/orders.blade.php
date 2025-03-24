@@ -50,7 +50,7 @@
                                                         <div class="custom-image-slider">
                                                             <div class="custom-slider" id="slider">
                                                                 @foreach ($order['orders_products'] as $key => $product)
-                                                                    <img src="{{ "http://localhost:8000/front/images/product_images/small/" . $product['product']['product_image'] }}"
+                                                                    <img src="{{ $getImage("front/images/product_images/small/", $product['product']['product_image']) }}"
                                                                         class="{{ $key != 0 ? 'd-none' : '' }} product-image"
                                                                         data-key="{{ $key }}"
                                                                         style="width:120px; height:100px; object-fit: cover; margin-right: 10px;"
