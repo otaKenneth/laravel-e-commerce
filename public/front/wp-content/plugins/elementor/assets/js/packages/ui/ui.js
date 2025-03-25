@@ -68954,8 +68954,8 @@ const Zoom = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef((props, ref
  * Do not edit directly
  * Generated on Wed, 08 Feb 2023 19:11:42 GMT
  */
-const ColorCommonBlack = "#1F1F22";
-const ColorCommonWhite = "#F9F9F9";
+const ColorCommonBlack = "#000000";
+const ColorCommonWhite = "#ffffff";
 const ColorGrey25 = "#f9fafa";
 const ColorGrey50 = "#f1f2f3";
 const ColorGrey100 = "#d5d8dc";
@@ -68968,10 +68968,10 @@ const ColorGrey700 = "#3a3f45";
 const ColorGrey750 = "#222325";
 const ColorGrey800 = "#1a1c1e";
 const ColorGrey900 = "#0c0d0e";
-const ColorSecondaryContrastText = "#F9F9F9";
+const ColorSecondaryContrastText = "#ffffff";
 const ColorTextPrimary = "#0c0d0e";
-const ColorErrorContrastText = "#F9F9F9";
-const ColorWarningContrastText = "#F9F9F9";
+const ColorErrorContrastText = "#ffffff";
+const ColorWarningContrastText = "#ffffff";
 const DarkColorGrey25 = "#F9FAFA";
 const DarkColorGrey50 = "#F1F2F3";
 const DarkColorGrey100 = "#D5D8DC";

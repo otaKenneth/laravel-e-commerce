@@ -124,27 +124,27 @@ Auto-import is designed for CSS that not dependent on the loading order.
   --button-secondary-background-color: #69727D;
   --button-secondary-hover-background-color: #525961;
   --button-secondary-active-background-color: #3a3f46;
-  --button-secondary-color: #F9F9F9;
+  --button-secondary-color: #ffffff;
   --button-danger-background-color: #DC2626;
   --button-danger-hover-background-color: #b21d1d;
   --button-danger-active-background-color: #861616;
-  --button-danger-color: #F9F9F9;
+  --button-danger-color: #ffffff;
   --button-cta-background-color: #93003f;
   --button-cta-hover-background-color: #600029;
   --button-cta-active-background-color: #2d0013;
-  --button-cta-color: #F9F9F9;
+  --button-cta-color: #ffffff;
   --button-brand-background-color: #93003f;
   --button-brand-hover-background-color: #600029;
   --button-brand-active-background-color: #2d0013;
-  --button-brand-color: #F9F9F9;
+  --button-brand-color: #ffffff;
   --button-link-background-color: #515962;
   --button-link-hover-background-color: #3a4046;
   --button-link-active-background-color: #23262a;
-  --button-link-color: #F9F9F9;
+  --button-link-color: #ffffff;
   --button-disabled-background-color: #D5D8DC;
   --button-disabled-hover-background-color: #b9bec5;
   --button-disabled-active-background-color: #9da4ae;
-  --button-disabled-color: #F9F9F9;
+  --button-disabled-color: #ffffff;
   color: var(--button-background-color, currentColor);
   font-size: var(--button-font-size, inherit);
   font-weight: 500;
@@ -164,25 +164,25 @@ Auto-import is designed for CSS that not dependent on the loading order.
   --button-primary-hover-background-color: #EB8EFB;
   --button-primary-active-background-color: #F3BAFD;
   --button-secondary-background-color: #BABFC5;
-  --button-secondary-color: #F9F9F9;
+  --button-secondary-color: #fff;
   --button-secondary-hover-background-color: #9ea5ae;
   --button-secondary-active-background-color: #838c96;
   --button-cta-background-color: #93003f;
   --button-cta-hover-background-color: #600029;
   --button-cta-active-background-color: #2d0013;
-  --button-cta-color: #F9F9F9;
+  --button-cta-color: #fff;
   --button-brand-hover-background-color: #600029;
   --button-brand-active-background-color: #2d0013;
-  --button-brand-color: #F9F9F9;
+  --button-brand-color: #fff;
   --button-brand-background-color: #93003f;
   --button-link-background-color: #515962;
   --button-link-hover-background-color: #3a4046;
   --button-link-active-background-color: #23262a;
-  --button-link-color: #F9F9F9;
+  --button-link-color: #ffffff;
   --button-disabled-background-color: #69727D;
   --button-disabled-hover-background-color: #525961;
   --button-disabled-active-background-color: #3a3f46;
-  --button-disabled-color: #F9F9F9;
+  --button-disabled-color: #fff;
 }
 .eps-button--contained {
   color: var(--button-color);
@@ -257,10 +257,10 @@ Auto-import is designed for CSS that not dependent on the loading order.
 }
 
 :root {
-  --app-background-color: #F9F9F9;
+  --app-background-color: #ffffff;
   --app-box-shadow-color: rgba(var(--box-shadow-color, rgba(0, 0, 0, 0.15)), 0.2);
   --app-header-color: #1f2124;
-  --app-logo-color: #F9F9F9;
+  --app-logo-color: #ffffff;
   --app-logo-background-color: #0C0D0E;
   --app-title-color: #0C0D0E;
   --app-header-buttons-separator-color: #9DA5AE;
@@ -274,8 +274,8 @@ Auto-import is designed for CSS that not dependent on the loading order.
   --app-box-shadow-color: rgba(var(--box-shadow-color, rgba(0, 0, 0, 0.15)), 0.2);
   --app-header-color: #D5D8DC;
   --app-logo-color: #0C0D0E;
-  --app-logo-background-color: #F9F9F9;
-  --app-title-color: #F9F9F9;
+  --app-logo-background-color: #ffffff;
+  --app-title-color: #fff;
   --app-header-buttons-separator-color: #818A96;
   --app-header-buttons-color: #BABFC5;
   --app-header-buttons-color-hover: #9DA5AE;
@@ -285,8 +285,8 @@ Auto-import is designed for CSS that not dependent on the loading order.
 :root {
   --text-muted: #BABFC5;
   --disabled: #D5D8DC;
-  --light: #F9F9F9;
-  --dark: #1F1F22;
+  --light: #ffffff;
+  --dark: #000000;
   --cta: #93003f;
   --brand: #93003f;
   --accent: #F3BAFD;
@@ -302,7 +302,7 @@ Auto-import is designed for CSS that not dependent on the loading order.
   --warning: #F59E0B;
   --warning-bg: #FFFBEB;
   --body-color: #515962;
-  --body-bg: #F9F9F9;
+  --body-bg: #ffffff;
   --link-color: #515962;
   --link-hover-color: #2e3338;
   --hr-color: #E6E8EA;
@@ -326,7 +326,7 @@ Auto-import is designed for CSS that not dependent on the loading order.
   --gray-900: #0C0D0E;
   --gray-800: #1f2124;
   --gray-750: #2b2c31;
-  --gray-725: #1F1F22438;
+  --gray-725: #333438;
   --gray-700: #3f444b;
   --gray-600: #515962;
   --gray-500: #69727D;
@@ -359,7 +359,7 @@ Auto-import is designed for CSS that not dependent on the loading order.
   --body-bg: #1f2124;
   --link-color: #0077CC;
   --link-hover-color: #2e3338;
-  --hr-color: #1F1F22438;
+  --hr-color: #333438;
   --box-shadow-color: rgba(0, 0, 0, 0.15);
   --display-1-color: #BABFC5;
   --display-2-color: #BABFC5;
@@ -380,7 +380,7 @@ Auto-import is designed for CSS that not dependent on the loading order.
   --gray-900: #0C0D0E;
   --gray-800: #1f2124;
   --gray-750: #2b2c31;
-  --gray-725: #1F1F22438;
+  --gray-725: #333438;
   --gray-700: #3f444b;
   --gray-600: #515962;
   --gray-500: #69727D;
@@ -887,7 +887,7 @@ h6,
 }
 
 :root {
-  --e-elementor-loader-color: #F9F9F9;
+  --e-elementor-loader-color: #ffffff;
   --e-elementor-loader-wrapper-color: #F9FAFA;
   --e-elementor-loader-box-color: #E6E8EA;
 }
@@ -1016,7 +1016,7 @@ h6,
 }
 .e-site-editor__promotion-overlay__icon {
   font-size: 1.25rem;
-  color: #F9F9F9;
+  color: #ffffff;
   margin-block-end: 1rem;
 }
 
@@ -1127,7 +1127,7 @@ h6,
 }
 
 .eps-theme-dark .e-app-wizard-footer {
-  --e-app-wizard-footer-border-color: #1F1F22438;
+  --e-app-wizard-footer-border-color: #333438;
 }
 
 .e-app-export-templates-features__locked {
@@ -1148,7 +1148,7 @@ h6,
 }
 
 :root {
-  --card-background-color-hover: #F9F9F9;
+  --card-background-color-hover: #ffffff;
   --card-border: 1px solid #D5D8DC;
   --card-header-footer-border: 1px solid var(--e-a-border-color);
   --card-header-footer-active-border: 2px solid #BABFC5;
@@ -1159,8 +1159,8 @@ h6,
 
 .eps-theme-dark {
   --card-background-color-hover: #2b2c31;
-  --card-border: 1px solid #1F1F22438;
-  --card-header-footer-border: 1px solid #1F1F22438;
+  --card-border: 1px solid #333438;
+  --card-header-footer-border: 1px solid #333438;
   --card-header-footer-active-border: 1px solid #1f2124;
   --card-headline-color: #D5D8DC;
   --card-figure-background-color: #3f444b;
@@ -1254,7 +1254,7 @@ h6,
   --menu-item-color-hover: #BABFC5;
   --menu-item-color-active: #9DA5AE;
   --menu-item-background-color-hover: #2b2c31;
-  --menu-item-background-color-active: #1F1F22438;
+  --menu-item-background-color-active: #333438;
   --menu-item-action-button-color: #818A96;
 }
 
@@ -1844,7 +1844,7 @@ h6,
 }
 
 :root {
-  --eps-modal-background-color: #F9F9F9;
+  --eps-modal-background-color: #ffffff;
   --eps-modal-header-background-color: #2563EB;
   --eps-tip-background-color: #F0F7FF;
 }
@@ -1884,7 +1884,7 @@ h6,
   border-radius: 0.1875rem;
 }
 .eps-modal__header, .eps-modal__header .title {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 .eps-modal__icon {
   margin-inline-end: 0.625rem;
@@ -1909,7 +1909,7 @@ h6,
 }
 .eps-modal__close-wrapper {
   padding-inline-start: 1rem;
-  border-inline-start: solid 1px #F9F9F9;
+  border-inline-start: solid 1px #ffffff;
 }
 
 .eps-add-new-button {
@@ -1937,26 +1937,26 @@ h6,
 }
 
 :root {
-  --select2-selection-background-color: #F9F9F9;
+  --select2-selection-background-color: #ffffff;
   --select2-selection-color: #515962;
   --select2-selection-border-color: #9DA5AE;
   --select2-selection-opened-focused-border-color: #BABFC5;
   --select2-single-selection-rendered-color: #515962;
-  --select2-default-single-selection-background-color: #F9F9F9;
+  --select2-default-single-selection-background-color: #ffffff;
   --select2-default-single-selection-border-color: #9DA5AE;
-  --select2-default-multiple-selection-background-color: #F9F9F9;
+  --select2-default-multiple-selection-background-color: #ffffff;
   --select2-default-multiple-selection-choice-background-color: #BABFC5;
   --select2-default-multiple-selection-choice-color: #515962;
   --select2-default-multiple-selection-choice-border-color: #BABFC5;
   --select2-default-multiple-selection-choice-remove-color: #69727D;
   --select2-default-multiple-selection-choice-remove-hover-color: #515962;
-  --select2-default-results-selected-option-background-color: #F9F9F9;
+  --select2-default-results-selected-option-background-color: #ffffff;
   --select2-default-results-selected-option-color: #515962;
   --select2-default-results-highlighted-option-background-color: #5897fb;
-  --select2-default-results-highlighted-option-color: #F9F9F9;
+  --select2-default-results-highlighted-option-color: #ffffff;
   --select2-results-selected-option-background-color: #5897fb;
-  --select2-results-selected-option-color: #F9F9F9;
-  --select2-dropdown-background-color: #F9F9F9;
+  --select2-results-selected-option-color: #ffffff;
+  --select2-dropdown-background-color: #ffffff;
   --select2-dropdown-border-color: #9DA5AE;
 }
 
@@ -2107,19 +2107,19 @@ h6,
 }
 
 :root {
-  --popover-background-color: #F9F9F9;
+  --popover-background-color: #ffffff;
   --popover-item-color: #515962;
   --popover-item-hover-color: #3f444b;
   --popover-item-danger-hover-color: #DC2626;
-  --popover-item-background-color: #F9F9F9;
+  --popover-item-background-color: #ffffff;
   --popover-box-shadow-color: rgba(0, 0, 0, 0.15);
   --popover-box-shadow-size: 0px 1px 20px;
-  --popover-arrow-color: #F9F9F9;
+  --popover-arrow-color: #ffffff;
 }
 
 .eps-theme-dark {
   --popover-background-color: #1f2124;
-  --popover-item-color: #F9F9F9;
+  --popover-item-color: #ffffff;
   --popover-item-hover-color: #D5D8DC;
   --popover-item-danger-hover-color: #F84343;
   --popover-item-background-color: #1f2124;
@@ -2224,12 +2224,12 @@ h6,
   --checkbox-border-color: #9DA5AE;
   --checkbox-hover-border-color: #8f98a2;
   --checkbox-active-border-color: #abb2ba;
-  --checkbox-background-color: #F9F9F9;
+  --checkbox-background-color: #ffffff;
   --checkbox-checked-background-color: #515962;
   --checkbox-checked-hover-background-color: #454c54;
   --checkbox-checked-active-background-color: #5d6670;
   --checkbox-checked-disabled-background-color: #D5D8DC;
-  --checkbox-indicator-color: #F9F9F9;
+  --checkbox-indicator-color: #ffffff;
   --checkbox-error-background-color: #DC2626;
 }
 
@@ -2270,7 +2270,7 @@ h6,
   --checkbox-border-color: var(--checkbox-checked-background-color);
 }
 .eps-checkbox:checked::after {
-  border: solid #F9F9F9;
+  border: solid #ffffff;
   border-width: 0 1px 1px 0;
 }
 .eps-checkbox:checked:hover {
@@ -2299,7 +2299,7 @@ h6,
   width: 7px;
   height: 0;
   transform: rotate(0deg);
-  border-block-start: 1px solid #F9F9F9;
+  border-block-start: 1px solid #ffffff;
 }
 .eps-checkbox--error::before, .eps-checkbox--error::after, .eps-checkbox--error:checked::before, .eps-checkbox--error:checked::after {
   display: inline-block;
@@ -2307,7 +2307,7 @@ h6,
   content: " ";
   width: 7px;
   height: 0;
-  border: solid #F9F9F9;
+  border: solid #ffffff;
   border-width: 1px 0 0 0;
   position: absolute;
 }
@@ -2323,13 +2323,13 @@ h6,
 }
 
 :root {
-  --e-app-drag-drop-background-color: #F9F9F9;
+  --e-app-drag-drop-background-color: #ffffff;
   --e-app-drag-drop-outline-color: #E6E8EA;
 }
 
 .eps-theme-dark {
   --e-app-drag-drop-background-color: #2b2c31;
-  --e-app-drag-drop-outline-color: #1F1F22438;
+  --e-app-drag-drop-outline-color: #333438;
 }
 
 .e-app-drag-drop {
@@ -2356,7 +2356,7 @@ h6,
   margin-inline-end: 0.625rem;
   z-index: 1040;
   font-size: 1.25rem;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 .eps-dialog__content {
   padding: 1.5rem 1.875rem 1rem;
@@ -2396,7 +2396,7 @@ h6,
   top: -16px;
   left: var(--popover-arrow-offset-end, 22px);
   border: 8px solid transparent;
-  border-block-end-color: #F9F9F9;
+  border-block-end-color: #fff;
 }
 
 .eps-inline-link {
@@ -2551,7 +2551,7 @@ h6,
 }
 
 .e-app-import-resolver {
-  --e-app-import-resolver-panel-header-background-color: #F9F9F9;
+  --e-app-import-resolver-panel-header-background-color: #ffffff;
   --e-app-import-resolver-panel-body-background-color: rgba(255, 255, 255, 0.5);
   --e-app-import-resolver-conflicts-asset-border-color: #818A96;
   --e-app-import-resolver-conflicts-asset-inactive-color: #69727D;
@@ -2649,7 +2649,7 @@ h6,
 }
 
 :root {
-  --eps-badge-background-color: #F9F9F9;
+  --eps-badge-background-color: #ffffff;
 }
 
 .eps-theme-dark {
@@ -2833,7 +2833,7 @@ h6,
   left: 0;
   margin: 0.3125rem;
   background-color: var(--e-a-color-brand);
-  color: #F9F9F9;
+  color: #ffffff;
   text-transform: uppercase;
 }
 
@@ -2876,7 +2876,7 @@ h6,
 
 .eps-search-input {
   --eps-search-input-background-color: #D5D8DC;
-  --eps-search-input-background-color-focus: #F9F9F9;
+  --eps-search-input-background-color-focus: #ffffff;
   --eps-search-input-color: #3f444b;
   --eps-search-input-placeholder-color: #69727D;
 }
@@ -3008,7 +3008,7 @@ h6,
 }
 
 .e-kit-library__tags-filter {
-  --e-kit-library-tags-filter-list-search-background-color: #F9F9F9;
+  --e-kit-library-tags-filter-list-search-background-color: #ffffff;
 }
 
 .eps-theme-dark .e-kit-library__tags-filter {
@@ -3059,7 +3059,7 @@ h6,
 
 .e-kit-library__tooltip {
   padding: 5px 12px;
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #26292C;
   font-size: 10px;
 }
@@ -3496,7 +3496,7 @@ h6,
 
 .e-onboarding__header-logo .eps-app__logo {
   background-color: #0C0D0E;
-  color: #F9F9F9;
+  color: #ffffff;
   width: 1.3rem;
   height: 1.3rem;
   line-height: 1.3rem;
@@ -3521,7 +3521,7 @@ h6,
 }
 .e-onboarding__header .eps-button__go-pro-btn {
   background-color: #93003f;
-  color: #F9F9F9;
+  color: #ffffff;
   padding: 4px 8px;
   border-radius: 4px;
   font-weight: 700;
@@ -3535,7 +3535,7 @@ h6,
 .e-onboarding__go-pro {
   width: 288px;
   font-size: 12px;
-  background-color: #F9F9F9;
+  background-color: #ffffff;
 }
 .e-onboarding__go-pro-title {
   font-size: 18px;
@@ -3595,7 +3595,7 @@ h6,
   color: #D004D4;
 }
 .e-onboarding__progress-bar-item--active .e-onboarding__progress-bar-item-icon, .e-onboarding__progress-bar-item--completed .e-onboarding__progress-bar-item-icon {
-  color: #F9F9F9;
+  color: #ffffff;
   border-color: #D004D4;
   background-color: #D004D4;
 }
@@ -3603,7 +3603,7 @@ h6,
   cursor: pointer;
 }
 .e-onboarding__progress-bar-item--skipped .e-onboarding__progress-bar-item-icon {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #69727D;
 }
 
@@ -3665,7 +3665,7 @@ h6,
   color: #0C0D0E;
 }
 .e-onboarding__card:hover {
-  box-shadow: 4px 4px 0 0 #1F1F22;
+  box-shadow: 4px 4px 0 0 #000000;
 }
 .e-onboarding__card:active {
   box-shadow: initial;

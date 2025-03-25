@@ -21163,12 +21163,12 @@
         var value = dom.getStyle(previewElm, name, true);
         if (name === 'background-color' && /transparent|rgba\s*\([^)]+,\s*0\)/.test(value)) {
           value = dom.getStyle(editor.getBody(), name, true);
-          if (dom.toHex(value).toLowerCase() === '#F9F9F9') {
+          if (dom.toHex(value).toLowerCase() === '#ffffff') {
             return;
           }
         }
         if (name === 'color') {
-          if (dom.toHex(value).toLowerCase() === '#1F1F22') {
+          if (dom.toHex(value).toLowerCase() === '#000000') {
             return;
           }
         }

@@ -102,7 +102,7 @@
     border-bottom-color: #e6e6e6;
 }
 .flatpickr-calendar.arrowTop:after {
-    border-bottom-color: #F9F9F9;
+    border-bottom-color: #fff;
 }
 .flatpickr-calendar.arrowBottom:before,
 .flatpickr-calendar.arrowBottom:after {
@@ -112,7 +112,7 @@
     border-top-color: #e6e6e6;
 }
 .flatpickr-calendar.arrowBottom:after {
-    border-top-color: #F9F9F9;
+    border-top-color: #fff;
 }
 .flatpickr-calendar:focus {
     outline: 0;
@@ -498,7 +498,7 @@ span.flatpickr-weekday {
 .flatpickr-day.today:focus {
     border-color: #959ea9;
     background: #959ea9;
-    color: #F9F9F9;
+    color: #fff;
 }
 .flatpickr-day.selected,
 .flatpickr-day.startRange,
@@ -521,7 +521,7 @@ span.flatpickr-weekday {
     background: #569ff7;
     -webkit-box-shadow: none;
     box-shadow: none;
-    color: #F9F9F9;
+    color: #fff;
     border-color: #569ff7;
 }
 .flatpickr-day.selected.startRange,

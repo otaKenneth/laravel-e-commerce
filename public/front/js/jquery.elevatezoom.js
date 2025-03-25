@@ -1778,7 +1778,7 @@ if ( typeof Object.create !== 'function' ) {
 			lensOpacity: 0.4, //opacity of the lens
 			lenszoom: false,
 			tint: false, //enable the tinting
-			tintColour: "#1F1F22", //default tint color, can be anything, red, #ccc, rgb(0,0,0)
+			tintColour: "#333", //default tint color, can be anything, red, #ccc, rgb(0,0,0)
 			tintOpacity: 0.4, //opacity of the tint
 			gallery: false,
 			galleryActiveClass: "zoomGalleryActive",

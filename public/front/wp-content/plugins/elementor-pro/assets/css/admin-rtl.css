@@ -62,7 +62,7 @@
 #adminmenu #toplevel_page_elementor a[href=elementor_pro_upgrade_license_menu_link] {
   font-weight: 600;
   background-color: #93003c;
-  color: #F9F9F9;
+  color: #ffffff;
   margin: 3px 10px 0;
   display: block;
   text-align: center;
@@ -161,7 +161,7 @@ span.font-variations-count {
 }
 
 .elementor-metabox-content .repeater-block {
-  background: #F9F9F9;
+  background: #ffffff;
   color: #3f444b;
   padding: 20px;
   margin-block-end: 2px;
@@ -243,7 +243,7 @@ span.font-variations-count {
 .elementor-metabox-content .repeater-content .repeater-content-bottom .elementor-field {
   display: flex;
   align-items: center;
-  background-color: #F9F9F9;
+  background-color: #ffffff;
   padding: 10px 20px;
   margin-block-end: 10px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
@@ -295,7 +295,7 @@ span.font-variations-count {
 }
 .elementor-metabox-content .elementor-button {
   background-color: #9DA5AE;
-  color: #F9F9F9;
+  color: #fff;
   line-height: 1;
   text-transform: uppercase;
   height: auto;
@@ -306,7 +306,7 @@ span.font-variations-count {
   transition-duration: 0.3s;
 }
 .elementor-metabox-content .elementor-button:hover, .elementor-metabox-content .elementor-button:focus, .elementor-metabox-content .elementor-button:visited {
-  color: #F9F9F9;
+  color: #fff;
 }
 .elementor-metabox-content .elementor-button:focus, .elementor-metabox-content .elementor-button:visited {
   background-color: #9DA5AE;
@@ -400,14 +400,14 @@ span.font-variations-count {
   display: none;
   border: 1px solid #F1F2F3;
   border-radius: 1px;
-  background-color: #F9F9F9;
+  background-color: #fff;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox .inside {
   margin-block-start: 10px;
   margin-block-end: 20px;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox .elementor-metabox-content {
-  background-color: #F9F9F9;
+  background-color: #fff;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox .elementor-custom-icons-metabox {
   padding-block-start: 4px;
@@ -458,7 +458,7 @@ span.font-variations-count {
 .post-type-elementor_icons div#elementor-custom-icons-metabox .elementor-field-dropzone {
   outline: 2px dashed #D5D8DC;
   outline-offset: -3px;
-  background-color: #F9F9F9;
+  background-color: #fff;
   display: none;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons {
@@ -478,7 +478,7 @@ span.font-variations-count {
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons .elementor-icon-set-header {
   height: 50px;
   color: #3f444b;
-  background-color: #F9F9F9;
+  background-color: #fff;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.06);
   padding: 0 35px;
   display: flex;
@@ -565,7 +565,7 @@ span.font-variations-count {
   position: relative;
   height: 0;
   padding-block-end: 100%;
-  background-color: #F9F9F9;
+  background-color: #fff;
   box-shadow: 0 1px 12px rgba(0, 0, 0, 0.05);
   border-radius: 3px;
   overflow: hidden;

@@ -51,8 +51,8 @@ body {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #1F1F22;
-  background-color: #F9F9F9;
+  color: #333333;
+  background-color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -129,7 +129,7 @@ a {
   color: #CC3366;
 }
 a:hover, a:active {
-  color: #1F1F22366;
+  color: #333366;
 }
 a:not([href]):not([tabindex]) {
   color: inherit;
@@ -227,7 +227,7 @@ summary {
 
 figcaption {
   font-size: 16px;
-  color: #1F1F22;
+  color: #333333;
   line-height: 1.4;
   font-style: italic;
   font-weight: 400;
@@ -353,7 +353,7 @@ input[type=tel]:focus,
 input[type=url]:focus,
 select:focus,
 textarea:focus {
-  border-color: #1F1F22;
+  border-color: #333333;
 }
 
 /**
@@ -432,7 +432,7 @@ button:hover, button:focus,
 [type=submit]:focus,
 [type=button]:hover,
 [type=button]:focus {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #CC3366;
   text-decoration: none;
 }

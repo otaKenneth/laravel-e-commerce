@@ -100,7 +100,7 @@ class Rollback {
 			h1 {
 				background: #D30C5C;
 				text-align: center;
-				color: #F9F9F9 !important;
+				color: #fff !important;
 				padding: 70px !important;
 				text-transform: uppercase;
 				letter-spacing: 1px;

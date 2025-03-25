@@ -92,7 +92,7 @@ function hello_elementor_fail_load_admin_notice() {
 		.notice.hello-elementor-notice .hello-elementor-install-now .hello-elementor-install-button {
 			background: #127DB8;
 			border-radius: 3px;
-			color: #F9F9F9;
+			color: #fff;
 			text-decoration: none;
 			height: auto;
 			line-height: 20px;

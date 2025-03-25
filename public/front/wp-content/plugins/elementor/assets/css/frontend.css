@@ -486,7 +486,7 @@
 }
 .elementor-custom-embed-play i {
   font-size: 100px;
-  color: #F9F9F9;
+  color: #fff;
   text-shadow: 1px 0 6px rgba(0, 0, 0, 0.3);
 }
 .elementor-custom-embed-play svg {
@@ -2279,13 +2279,13 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   font-size: 15px;
   padding: 12px 24px;
   border-radius: 3px;
-  color: #F9F9F9;
+  color: #fff;
   fill: #fff;
   text-align: center;
   transition: all 0.3s;
 }
 .elementor-button:hover, .elementor-button:focus, .elementor-button:visited {
-  color: #F9F9F9;
+  color: #fff;
 }
 .elementor-button-content-wrapper {
   display: flex;
@@ -2372,7 +2372,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
 .elementor-view-stacked .elementor-icon {
   padding: 0.5em;
   background-color: #69727D;
-  color: #F9F9F9;
+  color: #fff;
   fill: #fff;
 }
 
@@ -2785,7 +2785,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
 .elementor-lightbox .swiper-container .swiper-pagination-fraction {
   width: -moz-max-content;
   width: max-content;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 .elementor-lightbox .elementor-swiper-button:focus {
   outline-width: 1px;
@@ -2890,7 +2890,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   min-width: 200px;
   right: 2.8em;
   top: 3em;
-  background-color: #F9F9F9;
+  background-color: #fff;
   border-radius: 3px;
   padding: 14px 20px;
   transform: scale(0);
@@ -3304,8 +3304,8 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   --n-tabs-border-color: #D5D8DC;
   --n-tabs-content-display: flex;
   --n-tabs-title-color: var(--e-global-color-secondary, var(--n-tabs-color-secondary-fallback));
-  --n-tabs-title-color-hover: #F9F9F9;
-  --n-tabs-title-color-active: #F9F9F9;
+  --n-tabs-title-color-hover: #ffffff;
+  --n-tabs-title-color-active: #ffffff;
   --n-tabs-title-background-color: #F1F2F3;
   --n-tabs-title-background-color-hover: var(--e-global-color-accent, var(--n-tabs-color-accent-fallback));
   --n-tabs-title-background-color-active: var(--e-global-color-accent, var(--n-tabs-color-accent-fallback));
@@ -3332,7 +3332,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   --n-tabs-title-transition: 0.3s;
   --n-tabs-icon-color: var(--e-global-color-secondary, var(--n-tabs-color-secondary-fallback));
   --n-tabs-icon-color-hover: var(--n-tabs-title-color-hover);
-  --n-tabs-icon-color-active: #F9F9F9;
+  --n-tabs-icon-color-active: #ffffff;
   --n-tabs-icon-gap: 5px;
   width: 100%;
   max-width: 100%; /* Fix issue with new created n-tabs inside n-tabs with overflow */
@@ -4787,7 +4787,7 @@ body.elementor-page .elementor-widget-menu-anchor {
 .elementor-progress-wrapper {
   position: relative;
   background-color: #eeeeee;
-  color: #F9F9F9;
+  color: #ffffff;
   height: 100%;
   border-radius: 2px;
 }
@@ -4868,7 +4868,7 @@ body.elementor-page .elementor-widget-menu-anchor {
 }
 
 .elementor-social-icon {
-  --e-social-icon-icon-color: #F9F9F9;
+  --e-social-icon-icon-color: #fff;
   display: inline-flex;
   background-color: #69727D;
   align-items: center;
@@ -4902,7 +4902,7 @@ body.elementor-page .elementor-widget-menu-anchor {
   background-color: #205081;
 }
 .elementor-social-icon-codepen {
-  background-color: #1F1F22;
+  background-color: #000000;
 }
 .elementor-social-icon-delicious {
   background-color: #3399ff;
@@ -4935,7 +4935,7 @@ body.elementor-page .elementor-widget-menu-anchor {
   background-color: #006400;
 }
 .elementor-social-icon-github {
-  background-color: #1F1F22;
+  background-color: #333333;
 }
 .elementor-social-icon-gitlab {
   background-color: #e24329;
@@ -4995,7 +4995,7 @@ body.elementor-page .elementor-widget-menu-anchor {
   background-color: #0077b5;
 }
 .elementor-social-icon-snapchat {
-  background-color: #F9F9F9c00;
+  background-color: #fffc00;
 }
 .elementor-social-icon-soundcloud {
   background-color: #ff8800;
@@ -5310,7 +5310,7 @@ body.elementor-page .elementor-widget-menu-anchor {
   position: absolute;
 }
 .elementor-widget-tabs .elementor-tab-desktop-title:focus-visible {
-  border: 1px solid #1F1F22;
+  border: 1px solid #000000;
 }
 .elementor-widget-tabs .elementor-tab-mobile-title {
   padding: 10px 10px;
@@ -5424,7 +5424,7 @@ body.elementor-page .elementor-widget-menu-anchor {
 
 .elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap {
   background-color: #69727D;
-  color: #F9F9F9;
+  color: #fff;
 }
 .elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap {
   color: #69727D;
@@ -5525,7 +5525,7 @@ body.elementor-page .elementor-widget-menu-anchor {
   width: 100%;
   display: flex;
   border: none;
-  background-color: #1F1F22;
+  background-color: #000000;
 }
 @supports not (aspect-ratio: 1/1) {
   .elementor-widget-video .elementor-wrapper {

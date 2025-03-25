@@ -3,7 +3,7 @@ https://prismjs.com/download.html#themes=prism-twilight&prism-tomorrow&prism-sol
 /* Replacing pre[class*=language-] { margin:.5em 0 } to: margin: 0 , word wrap */
 /* Replacing .prismjs-twilight pre[data-line] {padding:1em 0 1em 3em;} to: {padding:1em;}*/
 .prismjs-dark code[class*=language-], .prismjs-dark pre[class*=language-] {
-  color: #F9F9F9;
+  color: #fff;
   background: 0 0;
   text-shadow: 0 -0.1em 0.2em #000;
   font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
@@ -464,7 +464,7 @@ https://prismjs.com/download.html#themes=prism-twilight&prism-tomorrow&prism-sol
 }
 
 .prismjs-twilight code[class*=language-], .prismjs-twilight pre[class*=language-] {
-  color: #F9F9F9;
+  color: #fff;
   background: 0 0;
   font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   font-size: 1em;

@@ -5150,7 +5150,7 @@
                         documentElement,
                         {
                             allowTaint: this.options.allowTaint,
-                            backgroundColor: '#F9F9F9',
+                            backgroundColor: '#ffffff',
                             canvas: null,
                             imageTimeout: this.options.imageTimeout,
                             logging: this.options.logging,
@@ -6927,7 +6927,7 @@
 					};
 					resourceOptions = __assign({}, defaultResourceOptions, opts);
 					defaultOptions = {
-						backgroundColor: '#F9F9F9',
+						backgroundColor: '#ffffff',
 						cache: opts.cache ? opts.cache : CacheStorage.create(instanceName, resourceOptions),
 						logging: true,
 						removeContainer: true,

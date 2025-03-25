@@ -24,7 +24,7 @@
 
 
                     <div class="elementor-widget-container">
-                        <h2 class="elementor-heading-title elementor-size-default font-h1">{{ $pageTitle }}</h2>
+                        <h2 class="elementor-heading-title elementor-size-default">{{ $pageTitle }}</h2>
                     </div>
                 </div>
                 <div class="elementor-element elementor-element-89b25a4 e-flex e-con-boxed elementor-invisible e-con e-child z-index-2 filter-outer"
@@ -242,7 +242,7 @@
                                             /*! elementor - v3.18.0 - 08-12-2023 */
                                             .elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap {
                                                 background-color: #69727d;
-                                                color: #F9F9F9
+                                                color: #fff
                                             }
 
                                             .elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap {
@@ -288,7 +288,7 @@
                                             /*! elementor - v3.18.0 - 08-12-2023 */
                                             .elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap {
                                                 background-color: #69727d;
-                                                color: #F9F9F9
+                                                color: #fff
                                             }
 
                                             .elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap {

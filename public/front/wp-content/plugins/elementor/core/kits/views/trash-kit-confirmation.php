@@ -52,13 +52,13 @@ $config_url = add_query_arg(
 	}
 
 	.btn-primary {
-		color: #F9F9F9;
+		color: #fff;
 		background-color: #007cba;
 		margin: 0 10px;
 	}
 
 	.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
 		background-color: #0071a1;
-		color: #F9F9F9;
+		color: #fff;
 	}
 </style>

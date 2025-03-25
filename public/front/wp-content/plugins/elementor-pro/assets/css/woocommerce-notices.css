@@ -7,7 +7,7 @@
 }
 
 .e-wc-message-notice .woocommerce-message {
-  border: 0px solid #1F1F22;
+  border: 0px solid #000000;
   background-color: #FAFBF5;
   color: var(--message-message-text-color, #3f444b);
   border-radius: var(--message-box-border-radius, 0);
@@ -64,7 +64,7 @@
   color: var(--info-buttons-normal-text-color, #3F84B9);
 }
 .e-wc-info-notice .woocommerce-info {
-  border: 0px solid #1F1F22;
+  border: 0px solid #000000;
   background-color: #F6F9FB;
   color: var(--info-message-text-color, #3f444b);
   border-radius: var(--info-box-border-radius, 0);
@@ -103,7 +103,7 @@
   color: var(--error-message-text-color, #3f444b);
 }
 .e-wc-error-notice .woocommerce-error {
-  border: 0px solid #1F1F22;
+  border: 0px solid #000000;
   background-color: #F9F2F5;
   color: var(--error-message-text-color, #3f444b);
   border-radius: var(--error-box-border-radius, 0);

@@ -8655,7 +8655,7 @@
   --green: #46c35f;
   --teal: #58d8a3;
   --cyan: #57c7d4;
-  --white: #F9F9F9;
+  --white: #ffffff;
   --gray: #6c757d;
   --gray-dark: #0f1531;
   --blue: #5E50F9;
@@ -8668,12 +8668,12 @@
   --green: #46c35f;
   --teal: #58d8a3;
   --cyan: #57c7d4;
-  --white: #F9F9F9;
+  --white: #ffffff;
   --gray: #434a54;
   --gray-light: #aab2bd;
   --gray-lighter: #e8eff4;
   --gray-lightest: #e6e9ed;
-  --black: #1F1F22;
+  --black: #000000;
   --primary: #5349ac;
   --secondary: #a3a4a5;
   --success: #57B657;
@@ -8716,7 +8716,7 @@ body {
   line-height: 1.5;
   color: #1F1F1F;
   text-align: left;
-  background-color: #F9F9F9;
+  background-color: #fff;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -9131,7 +9131,7 @@ mark,
 
 .img-thumbnail {
   padding: 0.25rem;
-  background-color: #F9F9F9;
+  background-color: #fff;
   border: 1px solid #dee2e6;
   border-radius: 0.25rem;
   max-width: 100%;
@@ -9165,7 +9165,7 @@ a > code {
 kbd {
   padding: 0.2rem 0.4rem;
   font-size: 87.5%;
-  color: #F9F9F9;
+  color: #fff;
   background-color: #212529;
   border-radius: 0.2rem;
 }
@@ -10380,7 +10380,7 @@ pre code {
 }
 
 .table .thead-dark th, .jsgrid .jsgrid-table .thead-dark th {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #343a40;
   border-color: #454d55;
 }
@@ -10392,7 +10392,7 @@ pre code {
 }
 
 .table-dark {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #343a40;
 }
 
@@ -10411,7 +10411,7 @@ pre code {
 }
 
 .table-dark.table-hover tbody tr:hover {
-  color: #F9F9F9;
+  color: #fff;
   background-color: rgba(255, 255, 255, 0.075);
 }
 
@@ -10486,7 +10486,7 @@ pre code {
   font-weight: 400;
   line-height: 1;
   color: #495057;
-  background-color: #F9F9F9;
+  background-color: #ffffff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
   border-radius: 2px;
@@ -10523,7 +10523,7 @@ pre code {
 .tt-query:focus,
 .tt-hint:focus {
   color: #495057;
-  background-color: #F9F9F9;
+  background-color: #fff;
   border-color: #80bdff;
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
@@ -10586,7 +10586,7 @@ select.form-control:focus::-ms-value, select.asColorPicker-input:focus::-ms-valu
 select.tt-query:focus::-ms-value,
 select.tt-hint:focus::-ms-value {
   color: #495057;
-  background-color: #F9F9F9;
+  background-color: #ffffff;
 }
 
 .form-control-file,
@@ -10743,7 +10743,7 @@ textarea.tt-hint {
   margin-top: .1rem;
   font-size: 0.875rem;
   line-height: 1.5;
-  color: #F9F9F9;
+  color: #fff;
   background-color: rgba(40, 167, 69, 0.9);
   border-radius: 0.25rem;
 }
@@ -10865,7 +10865,7 @@ textarea.is-valid.tt-hint {
   margin-top: .1rem;
   font-size: 0.875rem;
   line-height: 1.5;
-  color: #F9F9F9;
+  color: #fff;
   background-color: rgba(220, 53, 69, 0.9);
   border-radius: 0.25rem;
 }
@@ -11082,26 +11082,26 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-primary, .wizard > .actions a {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #5f7a61;
   border-color: #5f7a61;
 }
 
 .btn-primary:hover, .wizard > .actions a:hover {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #3f3e91;
   border-color: #3b3a88;
 }
 
 .btn-primary:focus, .wizard > .actions a:focus, .btn-primary.focus, .wizard > .actions a.focus {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #3f3e91;
   border-color: #3b3a88;
   box-shadow: 0 0 0 0.2rem rgba(102, 100, 184, 0.5);
 }
 
 .btn-primary.disabled, .wizard > .actions a.disabled, .btn-primary:disabled, .wizard > .actions a:disabled {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #5f7a61;
   border-color: #5f7a61;
 }
@@ -11109,7 +11109,7 @@ fieldset:disabled .wizard > .actions a,
 .btn-primary:not(:disabled):not(.disabled):active, .wizard > .actions a:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .wizard > .actions a:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle,
 .wizard > .actions .show > a.dropdown-toggle {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #3b3a88;
   border-color: #37367f;
 }
@@ -11127,13 +11127,13 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-secondary:hover, .wizard > .actions .disabled a:hover {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #909192;
   border-color: #898b8c;
 }
 
 .btn-secondary:focus, .wizard > .actions .disabled a:focus, .btn-secondary.focus, .wizard > .actions .disabled a.focus {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #909192;
   border-color: #898b8c;
   box-shadow: 0 0 0 0.2rem rgba(144, 145, 146, 0.5);
@@ -11148,7 +11148,7 @@ fieldset:disabled .wizard > .actions a,
 .btn-secondary:not(:disabled):not(.disabled):active, .wizard > .actions .disabled a:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active, .wizard > .actions .disabled a:not(:disabled):not(.disabled).active,
 .show > .btn-secondary.dropdown-toggle,
 .wizard > .actions .disabled .show > a.dropdown-toggle {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #898b8c;
   border-color: #838485;
 }
@@ -11160,33 +11160,33 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-success {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #57B657;
   border-color: #57B657;
 }
 
 .btn-success:hover {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #46a146;
   border-color: #429842;
 }
 
 .btn-success:focus, .btn-success.focus {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #46a146;
   border-color: #429842;
   box-shadow: 0 0 0 0.2rem rgba(112, 193, 112, 0.5);
 }
 
 .btn-success.disabled, .btn-success:disabled {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #57B657;
   border-color: #57B657;
 }
 
 .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
 .show > .btn-success.dropdown-toggle {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #429842;
   border-color: #3e8f3e;
 }
@@ -11197,33 +11197,33 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-info {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #248AFD;
   border-color: #248AFD;
 }
 
 .btn-info:hover {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #0276f8;
   border-color: #0270ec;
 }
 
 .btn-info:focus, .btn-info.focus {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #0276f8;
   border-color: #0270ec;
   box-shadow: 0 0 0 0.2rem rgba(69, 156, 253, 0.5);
 }
 
 .btn-info.disabled, .btn-info:disabled {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #248AFD;
   border-color: #248AFD;
 }
 
 .btn-info:not(:disabled):not(.disabled):active, .btn-info:not(:disabled):not(.disabled).active,
 .show > .btn-info.dropdown-toggle {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #0270ec;
   border-color: #026adf;
 }
@@ -11271,33 +11271,33 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-danger {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #FF4747;
   border-color: #FF4747;
 }
 
 .btn-danger:hover {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #ff2121;
   border-color: #ff1414;
 }
 
 .btn-danger:focus, .btn-danger.focus {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #ff2121;
   border-color: #ff1414;
   box-shadow: 0 0 0 0.2rem rgba(255, 99, 99, 0.5);
 }
 
 .btn-danger.disabled, .btn-danger:disabled {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #FF4747;
   border-color: #FF4747;
 }
 
 .btn-danger:not(:disabled):not(.disabled):active, .btn-danger:not(:disabled):not(.disabled).active,
 .show > .btn-danger.dropdown-toggle {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #ff1414;
   border-color: #ff0707;
 }
@@ -11345,33 +11345,33 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-dark {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #282f3a;
   border-color: #282f3a;
 }
 
 .btn-dark:hover {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #181d23;
   border-color: #13171c;
 }
 
 .btn-dark:focus, .btn-dark.focus {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #181d23;
   border-color: #13171c;
   box-shadow: 0 0 0 0.2rem rgba(72, 78, 88, 0.5);
 }
 
 .btn-dark.disabled, .btn-dark:disabled {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #282f3a;
   border-color: #282f3a;
 }
 
 .btn-dark:not(:disabled):not(.disabled):active, .btn-dark:not(:disabled):not(.disabled).active,
 .show > .btn-dark.dropdown-toggle {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #13171c;
   border-color: #0e1014;
 }
@@ -11387,7 +11387,7 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-outline-primary:hover {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #5f7a61;
   border-color: #5f7a61;
 }
@@ -11403,7 +11403,7 @@ fieldset:disabled .wizard > .actions a,
 
 .btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active,
 .show > .btn-outline-primary.dropdown-toggle {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #5f7a61;
   border-color: #5f7a61;
 }
@@ -11453,7 +11453,7 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-outline-success:hover, .editable-container.editable-inline .editableform .control-group .editable-buttons .editable-submit:hover {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #57B657;
   border-color: #57B657;
 }
@@ -11470,7 +11470,7 @@ fieldset:disabled .wizard > .actions a,
 .btn-outline-success:not(:disabled):not(.disabled):active, .editable-container.editable-inline .editableform .control-group .editable-buttons .editable-submit:not(:disabled):not(.disabled):active, .btn-outline-success:not(:disabled):not(.disabled).active, .editable-container.editable-inline .editableform .control-group .editable-buttons .editable-submit:not(:disabled):not(.disabled).active,
 .show > .btn-outline-success.dropdown-toggle,
 .editable-container.editable-inline .editableform .control-group .editable-buttons .show > .dropdown-toggle.editable-submit {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #57B657;
   border-color: #57B657;
 }
@@ -11487,7 +11487,7 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-outline-info:hover {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #248AFD;
   border-color: #248AFD;
 }
@@ -11503,7 +11503,7 @@ fieldset:disabled .wizard > .actions a,
 
 .btn-outline-info:not(:disabled):not(.disabled):active, .btn-outline-info:not(:disabled):not(.disabled).active,
 .show > .btn-outline-info.dropdown-toggle {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #248AFD;
   border-color: #248AFD;
 }
@@ -11551,7 +11551,7 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-outline-danger:hover {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #FF4747;
   border-color: #FF4747;
 }
@@ -11567,7 +11567,7 @@ fieldset:disabled .wizard > .actions a,
 
 .btn-outline-danger:not(:disabled):not(.disabled):active, .btn-outline-danger:not(:disabled):not(.disabled).active,
 .show > .btn-outline-danger.dropdown-toggle {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #FF4747;
   border-color: #FF4747;
 }
@@ -11615,7 +11615,7 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-outline-dark:hover {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #282f3a;
   border-color: #282f3a;
 }
@@ -11631,7 +11631,7 @@ fieldset:disabled .wizard > .actions a,
 
 .btn-outline-dark:not(:disabled):not(.disabled):active, .btn-outline-dark:not(:disabled):not(.disabled).active,
 .show > .btn-outline-dark.dropdown-toggle {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #282f3a;
   border-color: #282f3a;
 }
@@ -11761,7 +11761,7 @@ input[type="button"].btn-block {
   color: #212529;
   text-align: left;
   list-style: none;
-  background-color: #F9F9F9;
+  background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #CED4DA;
   border-radius: 0.25rem;
@@ -11939,7 +11939,7 @@ input[type="button"].btn-block {
 }
 
 .dropdown-item.active, .dropdown-item:active {
-  color: #F9F9F9;
+  color: #fff;
   text-decoration: none;
   background-color: #5f7a61;
 }
@@ -12874,7 +12874,7 @@ input[type="button"].btn-block {
 }
 
 .custom-control-input:checked ~ .custom-control-label::before {
-  color: #F9F9F9;
+  color: #fff;
   border-color: #5f7a61;
   background-color: #5f7a61;
 }
@@ -12888,7 +12888,7 @@ input[type="button"].btn-block {
 }
 
 .custom-control-input:not(:disabled):active ~ .custom-control-label::before {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #b3d7ff;
   border-color: #b3d7ff;
 }
@@ -12916,7 +12916,7 @@ input[type="button"].btn-block {
   height: 1rem;
   pointer-events: none;
   content: "";
-  background-color: #F9F9F9;
+  background-color: #fff;
   border: #adb5bd solid 1px;
 }
 
@@ -12996,7 +12996,7 @@ input[type="button"].btn-block {
 }
 
 .custom-switch .custom-control-input:checked ~ .custom-control-label::after {
-  background-color: #F9F9F9;
+  background-color: #fff;
   transform: translateX(0.75rem);
 }
 
@@ -13028,7 +13028,7 @@ input[type="button"].btn-block {
 
 .custom-select:focus::-ms-value {
   color: #495057;
-  background-color: #F9F9F9;
+  background-color: #ffffff;
 }
 
 .custom-select[multiple], .custom-select[size]:not([size="1"]) {
@@ -13115,7 +13115,7 @@ input[type="button"].btn-block {
   font-weight: 400;
   line-height: 1.5;
   color: #495057;
-  background-color: #F9F9F9;
+  background-color: #fff;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
 }
@@ -13351,8 +13351,8 @@ input[type="button"].btn-block {
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
   color: #1F1F1F;
-  background-color: #F9F9F9;
-  border-color: #ebedf2 #ebedf2 #F9F9F9;
+  background-color: #ffffff;
+  border-color: #ebedf2 #ebedf2 #ffffff;
 }
 
 .nav-tabs .dropdown-menu {
@@ -13367,7 +13367,7 @@ input[type="button"].btn-block {
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #5f7a61;
 }
 
@@ -13727,11 +13727,11 @@ input[type="button"].btn-block {
 }
 
 .navbar-dark .navbar-brand {
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .navbar-dark .navbar-brand:hover, .navbar-dark .navbar-brand:focus {
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -13750,7 +13750,7 @@ input[type="button"].btn-block {
 .navbar-dark .navbar-nav .active > .nav-link,
 .navbar-dark .navbar-nav .nav-link.show,
 .navbar-dark .navbar-nav .nav-link.active {
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .navbar-dark .navbar-toggler {
@@ -13767,11 +13767,11 @@ input[type="button"].btn-block {
 }
 
 .navbar-dark .navbar-text a {
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .navbar-dark .navbar-text a:hover, .navbar-dark .navbar-text a:focus {
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .card {
@@ -13780,7 +13780,7 @@ input[type="button"].btn-block {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #F9F9F9;
+  background-color: #fff;
   background-clip: border-box;
   border: 1px solid #e3e3e3;
   border-radius: 20px;
@@ -14054,7 +14054,7 @@ input[type="button"].btn-block {
   margin-left: -1px;
   line-height: 1.25;
   color: #5f7a61;
-  background-color: #F9F9F9;
+  background-color: #fff;
   border: 1px solid #dee2e6;
 }
 
@@ -14093,7 +14093,7 @@ input[type="button"].btn-block {
 .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-page a, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-item.active a,
 .jsgrid .jsgrid-pager .active.jsgrid-pager-page a {
   z-index: 3;
-  color: #F9F9F9;
+  color: #fff;
   background-color: #5f7a61;
   border-color: #5f7a61;
 }
@@ -14104,7 +14104,7 @@ input[type="button"].btn-block {
   color: #6c757d;
   pointer-events: none;
   cursor: auto;
-  background-color: #F9F9F9;
+  background-color: #fff;
   border-color: #dee2e6;
 }
 
@@ -14189,12 +14189,12 @@ a.badge:hover, a.badge:focus {
 }
 
 .badge-primary {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #5f7a61;
 }
 
 a.badge-primary:hover, a.badge-primary:focus {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #3b3a88;
 }
 
@@ -14219,12 +14219,12 @@ a.badge-secondary:focus, a.badge-secondary.focus {
 }
 
 .badge-success, .preview-list .preview-item .preview-thumbnail .badge.badge-online {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #57B657;
 }
 
 a.badge-success:hover, .preview-list .preview-item .preview-thumbnail a.badge.badge-online:hover, a.badge-success:focus, .preview-list .preview-item .preview-thumbnail a.badge.badge-online:focus {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #429842;
 }
 
@@ -14234,12 +14234,12 @@ a.badge-success:focus, .preview-list .preview-item .preview-thumbnail a.badge.ba
 }
 
 .badge-info, .preview-list .preview-item .preview-thumbnail .badge.badge-offline {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #248AFD;
 }
 
 a.badge-info:hover, .preview-list .preview-item .preview-thumbnail a.badge.badge-offline:hover, a.badge-info:focus, .preview-list .preview-item .preview-thumbnail a.badge.badge-offline:focus {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #0270ec;
 }
 
@@ -14264,12 +14264,12 @@ a.badge-warning:focus, .preview-list .preview-item .preview-thumbnail a.badge.ba
 }
 
 .badge-danger {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #FF4747;
 }
 
 a.badge-danger:hover, a.badge-danger:focus {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #ff1414;
 }
 
@@ -14294,12 +14294,12 @@ a.badge-light:focus, a.badge-light.focus {
 }
 
 .badge-dark {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #282f3a;
 }
 
 a.badge-dark:hover, a.badge-dark:focus {
-  color: #F9F9F9;
+  color: #fff;
   background-color: #13171c;
 }
 
@@ -14414,7 +14414,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 
 .alert-warning {
   color: #856400;
-  background-color: #F9F9F93cc;
+  background-color: #fff3cc;
   border-color: #ffeeb8;
 }
 
@@ -14492,7 +14492,7 @@ a.badge-dark:focus, a.badge-dark.focus {
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  color: #F9F9F9;
+  color: #fff;
   text-align: center;
   white-space: nowrap;
   background-color: #5f7a61;
@@ -14559,7 +14559,7 @@ a.badge-dark:focus, a.badge-dark.focus {
   position: relative;
   display: block;
   padding: 0.75rem 1.25rem;
-  background-color: #F9F9F9;
+  background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
@@ -14576,12 +14576,12 @@ a.badge-dark:focus, a.badge-dark.focus {
 .list-group-item.disabled, .list-group-item:disabled {
   color: #6c757d;
   pointer-events: none;
-  background-color: #F9F9F9;
+  background-color: #fff;
 }
 
 .list-group-item.active {
   z-index: 2;
-  color: #F9F9F9;
+  color: #fff;
   background-color: #5f7a61;
   border-color: #5f7a61;
 }
@@ -14746,7 +14746,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .list-group-item-primary.list-group-item-action.active {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #272659;
   border-color: #272659;
 }
@@ -14762,7 +14762,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .list-group-item-secondary.list-group-item-action.active {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #555556;
   border-color: #555556;
 }
@@ -14778,7 +14778,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .list-group-item-success.list-group-item-action.active {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #2d5f2d;
   border-color: #2d5f2d;
 }
@@ -14794,7 +14794,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .list-group-item-info.list-group-item-action.active {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #134884;
   border-color: #134884;
 }
@@ -14810,7 +14810,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .list-group-item-warning.list-group-item-action.active {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #856400;
   border-color: #856400;
 }
@@ -14826,7 +14826,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .list-group-item-danger.list-group-item-action.active {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #852525;
   border-color: #852525;
 }
@@ -14842,7 +14842,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .list-group-item-light.list-group-item-action.active {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #818182;
   border-color: #818182;
 }
@@ -14858,7 +14858,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .list-group-item-dark.list-group-item-action.active {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #15181e;
   border-color: #15181e;
 }
@@ -15036,7 +15036,7 @@ a.close.disabled {
   flex-direction: column;
   width: 100%;
   pointer-events: auto;
-  background-color: #F9F9F9;
+  background-color: #ffffff;
   background-clip: padding-box;
   border: 1px solid #CED4DA;
   border-radius: 0.3rem;
@@ -15251,7 +15251,7 @@ a.close.disabled {
 .tooltip-inner {
   max-width: 200px;
   padding: 0.4rem 0.75rem;
-  color: #F9F9F9;
+  color: #fff;
   text-align: center;
   background-color: #000;
   border-radius: 0.375rem;
@@ -15280,7 +15280,7 @@ a.close.disabled {
   line-break: auto;
   font-size: 0.875rem;
   word-wrap: break-word;
-  background-color: #F9F9F9;
+  background-color: #fff;
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 0.3rem;
@@ -15319,7 +15319,7 @@ a.close.disabled {
 .bs-popover-top > .arrow::after, .bs-popover-auto[x-placement^="top"] > .arrow::after {
   bottom: 1px;
   border-width: 0.5rem 0.5rem 0;
-  border-top-color: #F9F9F9;
+  border-top-color: #fff;
 }
 
 .bs-popover-right, .bs-popover-auto[x-placement^="right"] {
@@ -15342,7 +15342,7 @@ a.close.disabled {
 .bs-popover-right > .arrow::after, .bs-popover-auto[x-placement^="right"] > .arrow::after {
   left: 1px;
   border-width: 0.5rem 0.5rem 0.5rem 0;
-  border-right-color: #F9F9F9;
+  border-right-color: #fff;
 }
 
 .bs-popover-bottom, .bs-popover-auto[x-placement^="bottom"] {
@@ -15362,7 +15362,7 @@ a.close.disabled {
 .bs-popover-bottom > .arrow::after, .bs-popover-auto[x-placement^="bottom"] > .arrow::after {
   top: 1px;
   border-width: 0 0.5rem 0.5rem 0.5rem;
-  border-bottom-color: #F9F9F9;
+  border-bottom-color: #fff;
 }
 
 .bs-popover-bottom .popover-header::before, .bs-popover-auto[x-placement^="bottom"] .popover-header::before {
@@ -15396,7 +15396,7 @@ a.close.disabled {
 .bs-popover-left > .arrow::after, .bs-popover-auto[x-placement^="left"] > .arrow::after {
   right: 1px;
   border-width: 0.5rem 0 0.5rem 0.5rem;
-  border-left-color: #F9F9F9;
+  border-left-color: #fff;
 }
 
 .popover-header {
@@ -15507,7 +15507,7 @@ a.close.disabled {
   align-items: center;
   justify-content: center;
   width: 15%;
-  color: #F9F9F9;
+  color: #fff;
   text-align: center;
   opacity: 0.5;
   transition: opacity 0.15s ease;
@@ -15523,7 +15523,7 @@ a.close.disabled {
 .carousel-control-prev:hover, .carousel-control-prev:focus,
 .carousel-control-next:hover,
 .carousel-control-next:focus {
-  color: #F9F9F9;
+  color: #fff;
   text-decoration: none;
   outline: 0;
   opacity: 0.9;
@@ -15576,7 +15576,7 @@ a.close.disabled {
   margin-left: 3px;
   text-indent: -999px;
   cursor: pointer;
-  background-color: #F9F9F9;
+  background-color: #fff;
   background-clip: padding-box;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
@@ -15602,7 +15602,7 @@ a.close.disabled {
   z-index: 10;
   padding-top: 20px;
   padding-bottom: 20px;
-  color: #F9F9F9;
+  color: #fff;
   text-align: center;
 }
 
@@ -15785,7 +15785,7 @@ button.bg-dark:focus,
 }
 
 .bg-white {
-  background-color: #F9F9F9 !important;
+  background-color: #ffffff !important;
 }
 
 .bg-transparent {
@@ -15865,7 +15865,7 @@ button.bg-dark:focus,
 }
 
 .border-white {
-  border-color: #F9F9F9 !important;
+  border-color: #ffffff !important;
 }
 
 .rounded-sm {
@@ -18891,7 +18891,7 @@ button.bg-dark:focus,
 }
 
 .text-white {
-  color: #F9F9F9 !important;
+  color: #ffffff !important;
 }
 
 .text-primary, .list-wrapper .completed .remove {
@@ -19062,7 +19062,7 @@ a.text-dark:hover, a.text-dark:focus {
   
   .table td,
   .jsgrid .jsgrid-table td, .table th, .jsgrid .jsgrid-table th {
-    background-color: #F9F9F9 !important;
+    background-color: #ffffff !important;
   }
   .table-bordered th,
   .table-bordered td {
@@ -19383,7 +19383,7 @@ input:focus {
 }
 
 .bg-github {
-  background: #1F1F22;
+  background: #333333;
 }
 
 .bg-behance {
@@ -19427,7 +19427,7 @@ input:focus {
 }
 
 .bg-gradient-dark {
-  background: linear-gradient(to right, #7d7979 0%, #1F1F22 100%);
+  background: linear-gradient(to right, #7d7979 0%, #000000 100%);
 }
 
 /* Typography */
@@ -19633,7 +19633,7 @@ address p {
 }
 
 .text-github {
-  color: #1F1F22;
+  color: #333333;
 }
 
 .text-behance {
@@ -20088,7 +20088,7 @@ code {
   font-family: "themify";
   content: '\e64a';
   font-size: .875rem;
-  color: #F9F9F9;
+  color: #ffffff;
   line-height: 1.875rem;
   margin-right: 0.48rem;
 }
@@ -20106,7 +20106,7 @@ code {
   font-family: "themify";
   content: '\e649';
   font-size: .875rem;
-  color: #F9F9F9;
+  color: #ffffff;
   line-height: 1.875rem;
   margin-right: 0.48rem;
 }
@@ -20361,7 +20361,7 @@ code {
 }
 
 .accordion.accordion-bordered {
-  background: #F9F9F9;
+  background: #ffffff;
   box-shadow: 0px 1px 15px 1px rgba(230, 234, 236, 0.35);
 }
 
@@ -20428,12 +20428,12 @@ code {
 
 .accordion.accordion-filled .card .card-header a[aria-expanded="true"] {
   background: #248AFD;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .accordion.accordion-filled .card .card-header a[aria-expanded="true"]:before {
   content: "\e648";
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .accordion.accordion-filled .card .card-header a[aria-expanded="false"]:before {
@@ -20443,7 +20443,7 @@ code {
 .accordion.accordion-filled .card .card-body {
   padding: 0 2rem 2rem 2rem;
   background: #248AFD;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .accordion.accordion-solid-header .card {
@@ -20470,13 +20470,13 @@ code {
 
 .accordion.accordion-solid-header .card .card-header a[aria-expanded="true"] {
   background: #5f7a61;
-  color: #F9F9F9;
+  color: #ffffff;
   border-radius: 8px;
 }
 
 .accordion.accordion-solid-header .card .card-header a[aria-expanded="true"]:before {
   content: "\e648";
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .accordion.accordion-solid-header .card .card-header a[aria-expanded="false"]:before {
@@ -20524,14 +20524,14 @@ code {
 .accordion.accordion-solid-content .card .card-body {
   padding: 2rem;
   background: #57B657;
-  color: #F9F9F9;
+  color: #ffffff;
   border-radius: 8px;
 }
 
 .accordion.accordion-multi-colored .card .card-header,
 .accordion.accordion-multi-colored .card .card-body {
   background: transparent;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .accordion.accordion-multi-colored .card:nth-child(1) {
@@ -20745,7 +20745,7 @@ code {
 }
 
 .alert-fill-primary {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #5f7a61;
   border-color: #5f7a61;
 }
@@ -20759,7 +20759,7 @@ code {
 }
 
 .alert-fill-secondary {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #a3a4a5;
   border-color: #a3a4a5;
 }
@@ -20773,7 +20773,7 @@ code {
 }
 
 .alert-fill-success {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #57B657;
   border-color: #57B657;
 }
@@ -20787,7 +20787,7 @@ code {
 }
 
 .alert-fill-info {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #248AFD;
   border-color: #248AFD;
 }
@@ -20801,7 +20801,7 @@ code {
 }
 
 .alert-fill-warning {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #FFC100;
   border-color: #FFC100;
 }
@@ -20815,7 +20815,7 @@ code {
 }
 
 .alert-fill-danger {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #FF4747;
   border-color: #FF4747;
 }
@@ -20829,7 +20829,7 @@ code {
 }
 
 .alert-fill-light {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #f8f9fa;
   border-color: #f8f9fa;
 }
@@ -20843,7 +20843,7 @@ code {
 }
 
 .alert-fill-dark {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #282f3a;
   border-color: #282f3a;
 }
@@ -20952,12 +20952,12 @@ code {
 /*social buttons*/
 .btn-twitter {
   background: #4747A1;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-twitter:hover, .btn-twitter:focus {
   background: #37377e;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-twitter.btn-social-icon-text {
@@ -20980,17 +20980,17 @@ code {
 
 .btn-outline-twitter:hover {
   background: #4747A1;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-facebook {
   background: #7DA0FA;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-facebook:hover, .btn-facebook:focus {
   background: #4c7cf8;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-facebook.btn-social-icon-text {
@@ -21013,17 +21013,17 @@ code {
 
 .btn-outline-facebook:hover {
   background: #7DA0FA;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-google {
   background: #dc4a38;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-google:hover, .btn-google:focus {
   background: #bf3322;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-google.btn-social-icon-text {
@@ -21046,17 +21046,17 @@ code {
 
 .btn-outline-google:hover {
   background: #dc4a38;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-linkedin {
   background: #7978E9;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-linkedin:hover, .btn-linkedin:focus {
   background: #4d4ce2;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-linkedin.btn-social-icon-text {
@@ -21079,17 +21079,17 @@ code {
 
 .btn-outline-linkedin:hover {
   background: #7978E9;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-pinterest {
   background: #cc2127;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-pinterest:hover, .btn-pinterest:focus {
   background: #a01a1f;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-pinterest.btn-social-icon-text {
@@ -21112,17 +21112,17 @@ code {
 
 .btn-outline-pinterest:hover {
   background: #cc2127;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-youtube {
   background: #e52d27;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-youtube:hover, .btn-youtube:focus {
   background: #c21d17;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-youtube.btn-social-icon-text {
@@ -21145,17 +21145,17 @@ code {
 
 .btn-outline-youtube:hover {
   background: #e52d27;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-github {
-  background: #1F1F22;
-  color: #F9F9F9;
+  background: #333333;
+  color: #ffffff;
 }
 
 .btn-github:hover, .btn-github:focus {
   background: #1a1a1a;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-github.btn-social-icon-text {
@@ -21164,7 +21164,7 @@ code {
 }
 
 .btn-github.btn-social-icon-text i {
-  background: #1F1F22;
+  background: #333333;
   padding: .75rem;
   display: inline-block;
   margin-right: 1.5rem;
@@ -21172,23 +21172,23 @@ code {
 }
 
 .btn-outline-github {
-  border: 1px solid #1F1F22;
-  color: #1F1F22;
+  border: 1px solid #333333;
+  color: #333333;
 }
 
 .btn-outline-github:hover {
-  background: #1F1F22;
-  color: #F9F9F9;
+  background: #333333;
+  color: #ffffff;
 }
 
 .btn-behance {
   background: #1769ff;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-behance:hover, .btn-behance:focus {
   background: #0050e3;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-behance.btn-social-icon-text {
@@ -21211,17 +21211,17 @@ code {
 
 .btn-outline-behance:hover {
   background: #1769ff;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-dribbble {
   background: #ea4c89;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-dribbble:hover, .btn-dribbble:focus {
   background: #e51e6b;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-dribbble.btn-social-icon-text {
@@ -21244,17 +21244,17 @@ code {
 
 .btn-outline-dribbble:hover {
   background: #ea4c89;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-reddit {
   background: #ff4500;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-reddit:hover, .btn-reddit:focus {
   background: #cc3700;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .btn-reddit.btn-social-icon-text {
@@ -21277,7 +21277,7 @@ code {
 
 .btn-outline-reddit:hover {
   background: #ff4500;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 /* inverse buttons */
@@ -21292,7 +21292,7 @@ code {
 }
 
 .btn-inverse-primary:hover {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #5f7a61;
   border-color: #5f7a61;
 }
@@ -21308,7 +21308,7 @@ code {
 
 .btn-inverse-primary.active, .btn-inverse-primary:active,
 .show > .btn-inverse-primary.dropdown-toggle {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #5f7a61;
   border-color: #5f7a61;
 }
@@ -21324,7 +21324,7 @@ code {
 }
 
 .btn-inverse-secondary:hover {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #a3a4a5;
   border-color: #a3a4a5;
 }
@@ -21340,7 +21340,7 @@ code {
 
 .btn-inverse-secondary.active, .btn-inverse-secondary:active,
 .show > .btn-inverse-secondary.dropdown-toggle {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #a3a4a5;
   border-color: #a3a4a5;
 }
@@ -21356,7 +21356,7 @@ code {
 }
 
 .btn-inverse-success:hover {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #57B657;
   border-color: #57B657;
 }
@@ -21372,7 +21372,7 @@ code {
 
 .btn-inverse-success.active, .btn-inverse-success:active,
 .show > .btn-inverse-success.dropdown-toggle {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #57B657;
   border-color: #57B657;
 }
@@ -21388,7 +21388,7 @@ code {
 }
 
 .btn-inverse-info:hover {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #248AFD;
   border-color: #248AFD;
 }
@@ -21404,7 +21404,7 @@ code {
 
 .btn-inverse-info.active, .btn-inverse-info:active,
 .show > .btn-inverse-info.dropdown-toggle {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #248AFD;
   border-color: #248AFD;
 }
@@ -21420,7 +21420,7 @@ code {
 }
 
 .btn-inverse-warning:hover {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #FFC100;
   border-color: #FFC100;
 }
@@ -21436,7 +21436,7 @@ code {
 
 .btn-inverse-warning.active, .btn-inverse-warning:active,
 .show > .btn-inverse-warning.dropdown-toggle {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #FFC100;
   border-color: #FFC100;
 }
@@ -21452,7 +21452,7 @@ code {
 }
 
 .btn-inverse-danger:hover {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #FF4747;
   border-color: #FF4747;
 }
@@ -21468,7 +21468,7 @@ code {
 
 .btn-inverse-danger.active, .btn-inverse-danger:active,
 .show > .btn-inverse-danger.dropdown-toggle {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #FF4747;
   border-color: #FF4747;
 }
@@ -21484,7 +21484,7 @@ code {
 }
 
 .btn-inverse-light:hover {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #f8f9fa;
   border-color: #f8f9fa;
 }
@@ -21500,7 +21500,7 @@ code {
 
 .btn-inverse-light.active, .btn-inverse-light:active,
 .show > .btn-inverse-light.dropdown-toggle {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #f8f9fa;
   border-color: #f8f9fa;
 }
@@ -21516,7 +21516,7 @@ code {
 }
 
 .btn-inverse-dark:hover {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #282f3a;
   border-color: #282f3a;
 }
@@ -21532,7 +21532,7 @@ code {
 
 .btn-inverse-dark.active, .btn-inverse-dark:active,
 .show > .btn-inverse-dark.dropdown-toggle {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #282f3a;
   border-color: #282f3a;
 }
@@ -21603,7 +21603,7 @@ code {
 .breadcrumb.breadcrumb-custom .breadcrumb-item a:after {
   border-top: 21px solid transparent;
   border-bottom: 22px solid transparent;
-  border-left: 12px solid #F9F9F9;
+  border-left: 12px solid #ffffff;
   top: -9px;
   right: -23px;
 }
@@ -21622,7 +21622,7 @@ code {
 }
 
 .breadcrumb.bg-success .breadcrumb-item, .swal2-modal .swal2-buttonswrapper .breadcrumb.swal2-styled.swal2-confirm .breadcrumb-item, .settings-panel .color-tiles .breadcrumb.tiles.success .breadcrumb-item, .breadcrumb.bg-dark .breadcrumb-item, .settings-panel .color-tiles .breadcrumb.tiles.dark .breadcrumb-item, .breadcrumb.bg-danger .breadcrumb-item, .settings-panel .color-tiles .breadcrumb.tiles.danger .breadcrumb-item, .breadcrumb.bg-warning .breadcrumb-item, .settings-panel .color-tiles .breadcrumb.tiles.warning .breadcrumb-item, .breadcrumb.bg-primary .breadcrumb-item, .settings-panel .color-tiles .breadcrumb.tiles.primary .breadcrumb-item, .breadcrumb.bg-info .breadcrumb-item, .settings-panel .color-tiles .breadcrumb.tiles.info .breadcrumb-item {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .breadcrumb.bg-success .breadcrumb-item:before, .swal2-modal .swal2-buttonswrapper .breadcrumb.swal2-styled.swal2-confirm .breadcrumb-item:before, .settings-panel .color-tiles .breadcrumb.tiles.success .breadcrumb-item:before, .breadcrumb.bg-dark .breadcrumb-item:before, .settings-panel .color-tiles .breadcrumb.tiles.dark .breadcrumb-item:before, .breadcrumb.bg-danger .breadcrumb-item:before, .settings-panel .color-tiles .breadcrumb.tiles.danger .breadcrumb-item:before, .breadcrumb.bg-warning .breadcrumb-item:before, .settings-panel .color-tiles .breadcrumb.tiles.warning .breadcrumb-item:before, .breadcrumb.bg-primary .breadcrumb-item:before, .settings-panel .color-tiles .breadcrumb.tiles.primary .breadcrumb-item:before, .breadcrumb.bg-info .breadcrumb-item:before, .settings-panel .color-tiles .breadcrumb.tiles.info .breadcrumb-item:before {
@@ -22045,7 +22045,7 @@ code {
 }
 
 .card.card-circle-progress {
-  color: #F9F9F9;
+  color: #ffffff;
   text-align: center;
 }
 
@@ -22078,7 +22078,7 @@ code {
 
 .card.card-tale {
   background: #7DA0FA;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .card.card-tale:hover {
@@ -22087,7 +22087,7 @@ code {
 
 .card.card-dark-blue {
   background: #4747A1;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .card.card-dark-blue:hover {
@@ -22096,7 +22096,7 @@ code {
 
 .card.card-light-blue {
   background: #7978E9;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .card.card-light-blue:hover {
@@ -22105,7 +22105,7 @@ code {
 
 .card.card-light-danger {
   background: #F3797E;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .card.card-light-danger:hover {
@@ -22162,11 +22162,11 @@ code {
 
 .data-icon-card-primary {
   background: #5f7a61;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-primary .card-title {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-primary .background-icon::before {
@@ -22176,16 +22176,16 @@ code {
 
 .data-icon-card-primary .background-icon i {
   z-index: 1;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-secondary {
   background: #a3a4a5;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-secondary .card-title {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-secondary .background-icon::before {
@@ -22195,16 +22195,16 @@ code {
 
 .data-icon-card-secondary .background-icon i {
   z-index: 1;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-success {
   background: #57B657;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-success .card-title {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-success .background-icon::before {
@@ -22214,16 +22214,16 @@ code {
 
 .data-icon-card-success .background-icon i {
   z-index: 1;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-info {
   background: #248AFD;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-info .card-title {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-info .background-icon::before {
@@ -22233,16 +22233,16 @@ code {
 
 .data-icon-card-info .background-icon i {
   z-index: 1;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-warning {
   background: #FFC100;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-warning .card-title {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-warning .background-icon::before {
@@ -22252,16 +22252,16 @@ code {
 
 .data-icon-card-warning .background-icon i {
   z-index: 1;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-danger {
   background: #FF4747;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-danger .card-title {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-danger .background-icon::before {
@@ -22271,16 +22271,16 @@ code {
 
 .data-icon-card-danger .background-icon i {
   z-index: 1;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-light {
   background: #f8f9fa;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-light .card-title {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-light .background-icon::before {
@@ -22290,16 +22290,16 @@ code {
 
 .data-icon-card-light .background-icon i {
   z-index: 1;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-dark {
   background: #282f3a;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-dark .card-title {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .data-icon-card-dark .background-icon::before {
@@ -22309,7 +22309,7 @@ code {
 
 .data-icon-card-dark .background-icon i {
   z-index: 1;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 /* Checkboxes and Radios */
@@ -22398,7 +22398,7 @@ code {
   content: '\e64c';
   font-size: .9375rem;
   font-weight: bold;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .form-check .form-check-label input[type="checkbox"]:checked + .input-helper:before {
@@ -22423,7 +22423,7 @@ code {
 
 .form-check .form-check-label input[type="checkbox"]:disabled:checked + .input-helper:after {
   background: #CED4DA;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .form-check .form-check-label input[type="radio"] + .input-helper:before {
@@ -22455,7 +22455,7 @@ code {
   content: "";
   width: 8px;
   height: 8px;
-  background: #F9F9F9;
+  background: #ffffff;
   border-radius: 50%;
   top: 6px;
   left: 6px;
@@ -22503,7 +22503,7 @@ code {
 }
 
 .form-check .form-check-label input[type="radio"]:disabled:checked + .input-helper:after {
-  background: #F9F9F9;
+  background: #ffffff;
 }
 
 .form-check-primary.form-check label input[type="checkbox"] + .input-helper:before,
@@ -22840,7 +22840,7 @@ select.border-dark.tt-hint:focus {
 }
 
 .icons-list > div {
-  background: #F9F9F9;
+  background: #ffffff;
   border-bottom: 1px solid #CED4DA;
   border-right: 1px solid #CED4DA;
   display: -webkit-flex;
@@ -23717,7 +23717,7 @@ dl li {
   border: 4px solid #5f7a61;
   margin-right: 15px;
   z-index: 2;
-  background: #F9F9F9;
+  background: #ffffff;
 }
 
 .rtl .bullet-line-list li:before {
@@ -23806,7 +23806,7 @@ dl li {
 .pagination .page-item .page-link, .jsgrid .jsgrid-pager .page-item .page-link, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .jsgrid-pager-page .page-link, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a,
 .jsgrid .jsgrid-pager .jsgrid-pager-page a {
   border-color: #CED4DA;
-  color: #1F1F22;
+  color: #000000;
   font-size: .875rem;
   -webkit-transition-duration: 0.3s;
   -moz-transition-duration: 0.3s;
@@ -23840,7 +23840,7 @@ dl li {
 .jsgrid .jsgrid-pager .jsgrid-pager-page:active a {
   background: #5f7a61;
   border-color: #5f7a61;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .pagination.pagination-flat .page-item, .jsgrid .pagination-flat.jsgrid-pager .page-item, .pagination.pagination-flat .jsgrid .jsgrid-pager .jsgrid-pager-nav-button, .jsgrid .jsgrid-pager .pagination.pagination-flat .jsgrid-pager-nav-button, .jsgrid .pagination-flat.jsgrid-pager .jsgrid-pager-nav-button,
@@ -23965,7 +23965,7 @@ dl li {
 .pagination-primary .jsgrid .jsgrid-pager .jsgrid-pager-page:hover a, .jsgrid .jsgrid-pager .pagination-primary .jsgrid-pager-page:hover a {
   background: #5957b8;
   border-color: #5f7a61;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .pagination-secondary .page-item.active .page-link, .pagination-secondary .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .pagination-secondary .active.jsgrid-pager-nav-button .page-link, .pagination-secondary .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .jsgrid .jsgrid-pager .pagination-secondary .active.jsgrid-pager-page .page-link, .pagination-secondary .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .pagination-secondary .page-item.active a, .pagination-secondary .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .pagination-secondary .active.jsgrid-pager-nav-button a,
@@ -23980,7 +23980,7 @@ dl li {
 .pagination-secondary .jsgrid .jsgrid-pager .jsgrid-pager-page:hover a, .jsgrid .jsgrid-pager .pagination-secondary .jsgrid-pager-page:hover a {
   background: #b0b1b2;
   border-color: #a3a4a5;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .pagination-success .page-item.active .page-link, .pagination-success .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .pagination-success .active.jsgrid-pager-nav-button .page-link, .pagination-success .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .jsgrid .jsgrid-pager .pagination-success .active.jsgrid-pager-page .page-link, .pagination-success .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .pagination-success .page-item.active a, .pagination-success .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .pagination-success .active.jsgrid-pager-nav-button a,
@@ -23995,7 +23995,7 @@ dl li {
 .pagination-success .jsgrid .jsgrid-pager .jsgrid-pager-page:hover a, .jsgrid .jsgrid-pager .pagination-success .jsgrid-pager-page:hover a {
   background: #69be69;
   border-color: #57B657;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .pagination-info .page-item.active .page-link, .pagination-info .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .pagination-info .active.jsgrid-pager-nav-button .page-link, .pagination-info .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .jsgrid .jsgrid-pager .pagination-info .active.jsgrid-pager-page .page-link, .pagination-info .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .pagination-info .page-item.active a, .pagination-info .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .pagination-info .active.jsgrid-pager-nav-button a,
@@ -24010,7 +24010,7 @@ dl li {
 .pagination-info .jsgrid .jsgrid-pager .jsgrid-pager-page:hover a, .jsgrid .jsgrid-pager .pagination-info .jsgrid-pager-page:hover a {
   background: #3d98fd;
   border-color: #248AFD;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .pagination-warning .page-item.active .page-link, .pagination-warning .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .pagination-warning .active.jsgrid-pager-nav-button .page-link, .pagination-warning .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .jsgrid .jsgrid-pager .pagination-warning .active.jsgrid-pager-page .page-link, .pagination-warning .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .pagination-warning .page-item.active a, .pagination-warning .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .pagination-warning .active.jsgrid-pager-nav-button a,
@@ -24025,7 +24025,7 @@ dl li {
 .pagination-warning .jsgrid .jsgrid-pager .jsgrid-pager-page:hover a, .jsgrid .jsgrid-pager .pagination-warning .jsgrid-pager-page:hover a {
   background: #ffc71a;
   border-color: #FFC100;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .pagination-danger .page-item.active .page-link, .pagination-danger .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .pagination-danger .active.jsgrid-pager-nav-button .page-link, .pagination-danger .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .jsgrid .jsgrid-pager .pagination-danger .active.jsgrid-pager-page .page-link, .pagination-danger .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .pagination-danger .page-item.active a, .pagination-danger .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .pagination-danger .active.jsgrid-pager-nav-button a,
@@ -24040,7 +24040,7 @@ dl li {
 .pagination-danger .jsgrid .jsgrid-pager .jsgrid-pager-page:hover a, .jsgrid .jsgrid-pager .pagination-danger .jsgrid-pager-page:hover a {
   background: #ff6161;
   border-color: #FF4747;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .pagination-light .page-item.active .page-link, .pagination-light .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .pagination-light .active.jsgrid-pager-nav-button .page-link, .pagination-light .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .jsgrid .jsgrid-pager .pagination-light .active.jsgrid-pager-page .page-link, .pagination-light .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .pagination-light .page-item.active a, .pagination-light .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .pagination-light .active.jsgrid-pager-nav-button a,
@@ -24055,7 +24055,7 @@ dl li {
 .pagination-light .jsgrid .jsgrid-pager .jsgrid-pager-page:hover a, .jsgrid .jsgrid-pager .pagination-light .jsgrid-pager-page:hover a {
   background: white;
   border-color: #f8f9fa;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .pagination-dark .page-item.active .page-link, .pagination-dark .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button .page-link, .jsgrid .jsgrid-pager .pagination-dark .active.jsgrid-pager-nav-button .page-link, .pagination-dark .jsgrid .jsgrid-pager .active.jsgrid-pager-page .page-link, .jsgrid .jsgrid-pager .pagination-dark .active.jsgrid-pager-page .page-link, .pagination-dark .page-item.active .jsgrid .jsgrid-pager .jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .jsgrid-pager-nav-button .pagination-dark .page-item.active a, .pagination-dark .jsgrid .jsgrid-pager .active.jsgrid-pager-nav-button a, .jsgrid .jsgrid-pager .pagination-dark .active.jsgrid-pager-nav-button a,
@@ -24070,7 +24070,7 @@ dl li {
 .pagination-dark .jsgrid .jsgrid-pager .jsgrid-pager-page:hover a, .jsgrid .jsgrid-pager .pagination-dark .jsgrid-pager-page:hover a {
   background: #323b49;
   border-color: #282f3a;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 /* Popovers */
@@ -24100,7 +24100,7 @@ dl li {
 }
 
 .popover.bs-popover-top-demo .arrow:after {
-  border-top-color: #F9F9F9;
+  border-top-color: #fff;
 }
 
 .popover.bs-popover-right-demo .arrow:before {
@@ -24108,7 +24108,7 @@ dl li {
 }
 
 .popover.bs-popover-right-demo .arrow:after {
-  border-right-color: #F9F9F9;
+  border-right-color: #fff;
 }
 
 .popover.bs-popover-bottom-demo .arrow:before {
@@ -24116,7 +24116,7 @@ dl li {
 }
 
 .popover.bs-popover-bottom-demo .arrow:after {
-  border-bottom-color: #F9F9F9;
+  border-bottom-color: #fff;
 }
 
 .popover.bs-popover-bottom-demo .popover-header:before {
@@ -24128,13 +24128,13 @@ dl li {
 }
 
 .popover.bs-popover-left-demo .arrow:after {
-  border-left-color: #F9F9F9;
+  border-left-color: #fff;
 }
 
 .popover .popover-header {
   font-size: .9375rem;
   border-bottom: 0;
-  background: #F9F9F9;
+  background: #ffffff;
   color: inherit;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
@@ -24148,7 +24148,7 @@ dl li {
 }
 
 .popover.left .arrow:after {
-  border-left-color: #F9F9F9;
+  border-left-color: #fff;
 }
 
 .popover.right .arrow:before {
@@ -24156,7 +24156,7 @@ dl li {
 }
 
 .popover.right .arrow:after {
-  border-right-color: #F9F9F9;
+  border-right-color: #fff;
 }
 
 .popover.top .arrow:before {
@@ -24164,7 +24164,7 @@ dl li {
 }
 
 .popover.top .arrow:after {
-  border-top-color: #F9F9F9;
+  border-top-color: #fff;
 }
 
 .popover.bottom .arrow:before {
@@ -24172,7 +24172,7 @@ dl li {
 }
 
 .popover.bottom .arrow:after {
-  border-bottom-color: #F9F9F9;
+  border-bottom-color: #fff;
 }
 
 .popover-primary {
@@ -24181,7 +24181,7 @@ dl li {
 
 .popover-primary .popover-header {
   background: #5f7a61;
-  color: #F9F9F9;
+  color: #ffffff;
   border-bottom: 0;
 }
 
@@ -24207,7 +24207,7 @@ dl li {
 
 .popover-secondary .popover-header {
   background: #a3a4a5;
-  color: #F9F9F9;
+  color: #ffffff;
   border-bottom: 0;
 }
 
@@ -24233,7 +24233,7 @@ dl li {
 
 .popover-success .popover-header {
   background: #57B657;
-  color: #F9F9F9;
+  color: #ffffff;
   border-bottom: 0;
 }
 
@@ -24259,7 +24259,7 @@ dl li {
 
 .popover-info .popover-header {
   background: #248AFD;
-  color: #F9F9F9;
+  color: #ffffff;
   border-bottom: 0;
 }
 
@@ -24285,7 +24285,7 @@ dl li {
 
 .popover-warning .popover-header {
   background: #FFC100;
-  color: #F9F9F9;
+  color: #ffffff;
   border-bottom: 0;
 }
 
@@ -24311,7 +24311,7 @@ dl li {
 
 .popover-danger .popover-header {
   background: #FF4747;
-  color: #F9F9F9;
+  color: #ffffff;
   border-bottom: 0;
 }
 
@@ -24337,7 +24337,7 @@ dl li {
 
 .popover-light .popover-header {
   background: #f8f9fa;
-  color: #F9F9F9;
+  color: #ffffff;
   border-bottom: 0;
 }
 
@@ -24363,7 +24363,7 @@ dl li {
 
 .popover-dark .popover-header {
   background: #282f3a;
-  color: #F9F9F9;
+  color: #ffffff;
   border-bottom: 0;
 }
 
@@ -24405,7 +24405,7 @@ dl li {
 
 .portfolio-grid figure figcaption {
   padding: 2em;
-  color: #F9F9F9;
+  color: #ffffff;
   text-transform: uppercase;
   font-size: 1.25em;
   -webkit-backface-visibility: hidden;
@@ -24492,7 +24492,7 @@ dl li {
 }
 
 .preview-list .preview-item .preview-thumbnail {
-  color: #F9F9F9;
+  color: #ffffff;
   position: relative;
 }
 
@@ -24520,7 +24520,7 @@ dl li {
 }
 
 .preview-list .preview-item .preview-thumbnail .badge {
-  border: 2px solid #F9F9F9;
+  border: 2px solid #ffffff;
   border-radius: 100%;
   bottom: 5px;
   display: block;
@@ -24656,7 +24656,7 @@ dl li {
 
 .nav-tabs .nav-link {
   background: #f6f8fa;
-  color: #1F1F22;
+  color: #000000;
   border-radius: 0;
   border: 1px solid #CED4DA;
   padding: .75rem 1.5rem;
@@ -24706,7 +24706,7 @@ dl li {
 }
 
 .nav-tabs.nav-tabs-vertical-custom .nav-link.active {
-  color: #F9F9F9;
+  color: #ffffff;
   border-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -24758,7 +24758,7 @@ dl li {
 
 .nav-pills.nav-pills-custom .nav-link.active {
   background: #FF4747;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .nav-pills.nav-pills-custom .nav-item {
@@ -24892,7 +24892,7 @@ dl li {
   border-radius: 2px;
   padding: 20px;
   position: relative;
-  background: #F9F9F9;
+  background: #ffffff;
   border-radius: 6px;
   box-shadow: 1px 2px 35px 0 rgba(1, 1, 1, 0.1);
   width: 35%;
@@ -24915,8 +24915,8 @@ dl li {
   right: -14px;
   display: inline-block;
   border-top: 14px solid transparent;
-  border-left: 14px solid #F9F9F9;
-  border-right: 0 solid #F9F9F9;
+  border-left: 14px solid #ffffff;
+  border-right: 0 solid #ffffff;
   border-bottom: 14px solid transparent;
   content: " ";
 }
@@ -24954,11 +24954,11 @@ dl li {
   border-top-left-radius: 50%;
   border-bottom-right-radius: 50%;
   border-bottom-left-radius: 50%;
-  border: 2px solid #F9F9F9;
+  border: 2px solid #ffffff;
 }
 
 .timeline .timeline-wrapper .timeline-badge i {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .timeline .timeline-wrapper.timeline-inverted {
@@ -25189,7 +25189,7 @@ dl li {
 
 .tooltip-primary .tooltip-inner {
   background: #5f7a61;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .tooltip-primary.bs-tooltip-top .arrow::before, .tooltip-primary.bs-tooltip-auto[x-placement^="top"] .arrow::before {
@@ -25210,7 +25210,7 @@ dl li {
 
 .tooltip-secondary .tooltip-inner {
   background: #a3a4a5;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .tooltip-secondary.bs-tooltip-top .arrow::before, .tooltip-secondary.bs-tooltip-auto[x-placement^="top"] .arrow::before {
@@ -25231,7 +25231,7 @@ dl li {
 
 .tooltip-success .tooltip-inner {
   background: #57B657;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .tooltip-success.bs-tooltip-top .arrow::before, .tooltip-success.bs-tooltip-auto[x-placement^="top"] .arrow::before {
@@ -25252,7 +25252,7 @@ dl li {
 
 .tooltip-info .tooltip-inner {
   background: #248AFD;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .tooltip-info.bs-tooltip-top .arrow::before, .tooltip-info.bs-tooltip-auto[x-placement^="top"] .arrow::before {
@@ -25273,7 +25273,7 @@ dl li {
 
 .tooltip-warning .tooltip-inner {
   background: #FFC100;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .tooltip-warning.bs-tooltip-top .arrow::before, .tooltip-warning.bs-tooltip-auto[x-placement^="top"] .arrow::before {
@@ -25294,7 +25294,7 @@ dl li {
 
 .tooltip-danger .tooltip-inner {
   background: #FF4747;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .tooltip-danger.bs-tooltip-top .arrow::before, .tooltip-danger.bs-tooltip-auto[x-placement^="top"] .arrow::before {
@@ -25315,7 +25315,7 @@ dl li {
 
 .tooltip-light .tooltip-inner {
   background: #f8f9fa;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .tooltip-light.bs-tooltip-top .arrow::before, .tooltip-light.bs-tooltip-auto[x-placement^="top"] .arrow::before {
@@ -25336,7 +25336,7 @@ dl li {
 
 .tooltip-dark .tooltip-inner {
   background: #282f3a;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .tooltip-dark.bs-tooltip-top .arrow::before, .tooltip-dark.bs-tooltip-auto[x-placement^="top"] .arrow::before {
@@ -25402,7 +25402,7 @@ dl li {
   .email-wrapper .mail-sidebar {
     position: fixed;
     z-index: 99;
-    background: #F9F9F9;
+    background: #ffffff;
     width: 45%;
     min-width: 300px;
     left: -100%;
@@ -25563,7 +25563,7 @@ dl li {
   font-weight: 400;
   font-size: 0.875rem;
   line-height: 1;
-  color: #1F1F22;
+  color: #000000;
 }
 
 .email-wrapper .mail-sidebar .menu-bar .profile-list-item a .user .u-designation {
@@ -25649,7 +25649,7 @@ dl li {
 }
 
 .email-wrapper .mail-list-container .mail-list.new_mail .details .date {
-  color: #1F1F22;
+  color: #000000;
 }
 
 /* Message Content */
@@ -25852,7 +25852,7 @@ body.avgrund-active {
 /* Optional close button styles */
 .avgrund-close {
   display: block;
-  color: #F9F9F9;
+  color: #fff;
   background: #1F1F1F;
   font-size: 10px;
   text-decoration: none;
@@ -25868,7 +25868,7 @@ body.avgrund-active {
 }
 
 .avgrund-close:hover {
-  color: #F9F9F9;
+  color: #fff;
   text-decoration: none;
 }
 
@@ -26141,7 +26141,7 @@ body.avgrund-active {
 }
 
 .context-menu-list .context-menu-item.context-menu-hover span {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 /* Data Tables */
@@ -26232,7 +26232,7 @@ body.avgrund-active {
 .expandable-table thead tr th {
   background: #5f7a61;
   padding: 10px;
-  color: #F9F9F9;
+  color: #ffffff;
   font-size: 14px;
 }
 
@@ -26270,7 +26270,7 @@ body.avgrund-active {
   background-color: #5f7a61;
   border-radius: 10px;
   padding: 18px;
-  color: #F9F9F9;
+  color: #fff;
   font-size: 11px;
 }
 
@@ -26308,7 +26308,7 @@ body.avgrund-active {
   height: 34px;
   border-radius: 100%;
   background: #FE5C83;
-  color: #F9F9F9;
+  color: #ffffff;
   text-align: center;
   padding-top: 7px;
   font-size: 14px;
@@ -26378,13 +26378,13 @@ table.dataTable tbody td.select-checkbox:after {
   color: #1F1F1F;
   padding-bottom: 1rem;
   padding-top: 1rem;
-  background: #F9F9F9;
+  background: #ffffff;
 }
 
 .datepicker.datepicker-dropdown .datepicker-days table.table-condensed thead tr th.datepicker-switch,
 .datepicker.datepicker-inline .datepicker-days table.table-condensed thead tr th.datepicker-switch {
   color: #1F1F1F;
-  background: #F9F9F9;
+  background: #ffffff;
   padding-bottom: 1rem;
   padding-top: 1rem;
   font-size: 1rem;
@@ -26396,7 +26396,7 @@ table.dataTable tbody td.select-checkbox:after {
   color: #1F1F1F;
   padding-bottom: 1rem;
   padding-top: 1rem;
-  background: #F9F9F9;
+  background: #ffffff;
 }
 
 .datepicker.datepicker-dropdown .datepicker-days table.table-condensed thead tr th.dow,
@@ -26427,12 +26427,12 @@ table.dataTable tbody td.select-checkbox:after {
 
 .datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.day:hover,
 .datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.day:hover {
-  background: #F9F9F9;
+  background: #ffffff;
 }
 
 .datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.day.active,
 .datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.day.active {
-  color: #F9F9F9;
+  color: #fff;
   background: transparent;
   position: relative;
   z-index: 1;
@@ -26457,7 +26457,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .datepicker.datepicker-dropdown .datepicker-days table.table-condensed tbody td.day.today,
 .datepicker.datepicker-inline .datepicker-days table.table-condensed tbody td.day.today {
-  color: #F9F9F9;
+  color: #fff;
   background: transparent;
   position: relative;
   z-index: 1;
@@ -26589,7 +26589,7 @@ table.dataTable tbody td.select-checkbox:after {
 }
 
 .datepicker-dropdown:after {
-  border-bottom-color: #F9F9F9;
+  border-bottom-color: #fff;
 }
 
 .datepicker-dropdown:before {
@@ -26601,7 +26601,7 @@ table.dataTable tbody td.select-checkbox:after {
 }
 
 .datepicker-dropdown.datepicker-orient-top:after {
-  border-top-color: #F9F9F9;
+  border-top-color: #fff;
 }
 
 .datepicker-dropdown.datepicker-orient-top:before {
@@ -26650,7 +26650,7 @@ table.dataTable tbody td.select-checkbox:after {
 }
 
 .dropify-wrapper .dropify-preview .dropify-infos .dropify-infos-inner .dropify-infos-message {
-  color: #1F1F22;
+  color: #333;
   font-weight: 500;
 }
 
@@ -26735,7 +26735,7 @@ table.dataTable tbody td.select-checkbox:after {
   background-image: none;
   text-shadow: none;
   font-weight: 400;
-  background-color: #F9F9F9;
+  background-color: #ffffff;
   border-color: #CED4DA;
   text-transform: capitalize;
   color: #a8b2b9;
@@ -26756,7 +26756,7 @@ table.dataTable tbody td.select-checkbox:after {
 }
 
 .fc .fc-button-group .fc-button {
-  background-color: #F9F9F9;
+  background-color: #ffffff;
   margin: 0;
 }
 
@@ -26824,7 +26824,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .fc .fc-event {
   border: 0;
-  color: #F9F9F9;
+  color: #ffffff;
   padding: .5rem;
 }
 
@@ -26847,11 +26847,11 @@ table.dataTable tbody td.select-checkbox:after {
 
 .fc .fc-event .fc-title,
 .fc .fc-event .fc-time {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .fc-external-events .fc-event {
-  background: #F9F9F9;
+  background: #ffffff;
   color: #000;
   border-width: 0 0 0 4px;
   padding: 16px;
@@ -26976,7 +26976,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 /* Jvectormap */
 .jvectormap-container {
-  background: #F9F9F9;
+  background: #ffffff;
 }
 
 /* Light Gallery */
@@ -27083,7 +27083,7 @@ table.dataTable tbody td.select-checkbox:after {
 }
 
 .noUi-target .noUi-base .noUi-origin .noUi-handle {
-  background: #F9F9F9;
+  background: #ffffff;
   border-radius: 100%;
   border: 1px solid #CED4DA;
   width: 18px;
@@ -27158,7 +27158,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .slider-primary .noUi-base .noUi-origin .noUi-handle .noUi-tooltip {
   background: #5f7a61;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .slider-secondary .noUi-base .noUi-connect {
@@ -27175,7 +27175,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .slider-secondary .noUi-base .noUi-origin .noUi-handle .noUi-tooltip {
   background: #a3a4a5;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .slider-success .noUi-base .noUi-connect {
@@ -27192,7 +27192,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .slider-success .noUi-base .noUi-origin .noUi-handle .noUi-tooltip {
   background: #57B657;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .slider-info .noUi-base .noUi-connect {
@@ -27209,7 +27209,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .slider-info .noUi-base .noUi-origin .noUi-handle .noUi-tooltip {
   background: #248AFD;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .slider-warning .noUi-base .noUi-connect {
@@ -27226,7 +27226,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .slider-warning .noUi-base .noUi-origin .noUi-handle .noUi-tooltip {
   background: #FFC100;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .slider-danger .noUi-base .noUi-connect {
@@ -27243,7 +27243,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .slider-danger .noUi-base .noUi-origin .noUi-handle .noUi-tooltip {
   background: #FF4747;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .slider-light .noUi-base .noUi-connect {
@@ -27260,7 +27260,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .slider-light .noUi-base .noUi-origin .noUi-handle .noUi-tooltip {
   background: #f8f9fa;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .slider-dark .noUi-base .noUi-connect {
@@ -27277,7 +27277,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .slider-dark .noUi-base .noUi-origin .noUi-handle .noUi-tooltip {
   background: #282f3a;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 /* Owl-carousel */
@@ -27295,7 +27295,7 @@ table.dataTable tbody td.select-checkbox:after {
 .owl-carousel.full-width .owl-nav .owl-prev,
 .owl-carousel.full-width .owl-nav .owl-next {
   background: transparent;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .owl-carousel.full-width .owl-nav .owl-prev i:before,
@@ -27364,7 +27364,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .pws_tabs_container ul.pws_tabs_controll li a.pws_tab_active {
   background: #5f7a61;
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .pws_tabs_container .demo-tabs {
@@ -27560,7 +27560,7 @@ table.dataTable tbody td.select-checkbox:after {
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-  color: #F9F9F9;
+  color: #ffffff;
   border: 0;
   border-radius: 3px;
   padding: 6px;
@@ -27570,7 +27570,7 @@ table.dataTable tbody td.select-checkbox:after {
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice .select2-selection__choice__remove {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice:nth-child(5n+1) {
@@ -27651,7 +27651,7 @@ table.dataTable tbody td.select-checkbox:after {
 .swal2-modal .swal2-buttonswrapper .swal2-styled.swal2-cancel {
   margin-top: 32px;
   border: 1px solid #CED4DA;
-  color: #F9F9F9;
+  color: #ffffff;
   font-weight: initial;
 }
 
@@ -27713,7 +27713,7 @@ div.tagsinput {
 div.tagsinput span.tag {
   background: #5f7a61;
   border: 0;
-  color: #F9F9F9;
+  color: #ffffff;
   padding: 6px 14px;
   font-size: .8125rem;
   font-family: inherit;
@@ -27721,7 +27721,7 @@ div.tagsinput span.tag {
 }
 
 div.tagsinput span.tag a {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 /* TinyMCE Editor */
@@ -27758,7 +27758,7 @@ div.tagsinput span.tag a {
 }
 
 .typeahead {
-  background-color: #F9F9F9;
+  background-color: #ffffff;
 }
 
 .typeahead:focus {
@@ -27779,7 +27779,7 @@ div.tagsinput span.tag a {
   width: 100%;
   margin: 12px 0;
   padding: 8px 0;
-  background-color: #F9F9F9;
+  background-color: #ffffff;
   border: 1px solid #CED4DA;
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
@@ -27796,12 +27796,12 @@ div.tagsinput span.tag a {
 
 .tt-suggestion:hover {
   cursor: pointer;
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #5f7a61;
 }
 
 .tt-suggestion .tt-cursor {
-  color: #F9F9F9;
+  color: #ffffff;
   background-color: #5f7a61;
 }
 
@@ -27887,7 +27887,7 @@ div.tagsinput span.tag a {
   font-size: 1rem;
   line-height: 1.5em;
   text-decoration: none;
-  background: #F9F9F9;
+  background: #ffffff;
   border: 1px solid #CED4DA;
   padding: 0 0.2em;
   margin: 1px 0;
@@ -28109,54 +28109,54 @@ div.tagsinput span.tag a {
 
 .wizard > .steps .current a {
   background: #5f7a61;
-  color: #F9F9F9;
+  color: #ffffff;
   cursor: default;
 }
 
 .wizard > .steps .current a:hover {
   background: #5f7a61;
-  color: #F9F9F9;
+  color: #ffffff;
   cursor: default;
 }
 
 .wizard > .steps .current a:active {
   background: #5f7a61;
-  color: #F9F9F9;
+  color: #ffffff;
   cursor: default;
 }
 
 .wizard > .steps .done a {
   background: #8e8dce;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .wizard > .steps .done a:hover {
   background: #8e8dce;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .wizard > .steps .done a:active {
   background: #8e8dce;
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .wizard > .steps .error a {
   background: #FF4747;
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .wizard > .steps .error a:hover {
   background: #FF4747;
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .wizard > .steps .error a:active {
   background: #FF4747;
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .wizard > .content {
-  background: #F9F9F9;
+  background: #ffffff;
   display: block;
   margin: 0.5em;
   min-height: 24em;
@@ -28314,7 +28314,7 @@ div.tagsinput span.tag a {
 }
 
 .auth .auth-form-light {
-  background: #F9F9F9;
+  background: #ffffff;
 }
 
 .auth .auth-form-light select {
@@ -28598,7 +28598,7 @@ div.tagsinput span.tag a {
 .sidebar .nav .nav-item.active > .nav-link i,
 .sidebar .nav .nav-item.active > .nav-link .menu-title,
 .sidebar .nav .nav-item.active > .nav-link .menu-arrow {
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .sidebar .nav .nav-item.active > .nav-link i.menu-arrow::before {
@@ -28608,7 +28608,7 @@ div.tagsinput span.tag a {
 .sidebar .nav .nav-item:hover > .nav-link i,
 .sidebar .nav .nav-item:hover > .nav-link .menu-title,
 .sidebar .nav .nav-item:hover > .nav-link .menu-arrow {
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .sidebar .nav:not(.sub-menu) {
@@ -28623,7 +28623,7 @@ div.tagsinput span.tag a {
 
 .sidebar .nav:not(.sub-menu) > .nav-item:hover > .nav-link, .sidebar .nav:not(.sub-menu) > .nav-item:hover[aria-expanded="true"] {
   background: #5f7a61;
-  color: #F9F9F9;
+  color: #fff;
 }
 .sidebar .nav .nav-item:hover > .nav-link svg{
   fill: white !important;
@@ -28640,7 +28640,7 @@ div.tagsinput span.tag a {
 .sidebar .nav:not(.sub-menu) > .nav-item > .nav-link[aria-expanded="true"] {
   border-radius: 8px 8px 0 0;
   background: #5f7a61;
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .sidebar .nav:not(.sub-menu) > .nav-item.active {
@@ -28671,7 +28671,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav.sub-menu .nav-item .nav-link {
-  color: #F9F9F9;
+  color: #fff;
   padding: 0.7rem 1rem;
   position: relative;
   font-size: 0.875rem;
@@ -28681,11 +28681,11 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav.sub-menu .nav-item .nav-link:hover {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .sidebar .nav.sub-menu .nav-item .nav-link.active {
-  color: #F9F9F9;
+  color: #ffffff;
   background: transparent;
 }
 
@@ -28698,7 +28698,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar-dark .sidebar .nav .nav-item .nav-link {
-  color: #F9F9F9;
+  color: #FFFFFF;
 }
 
 .sidebar-dark .sidebar .nav .nav-item .nav-link i {
@@ -28706,7 +28706,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar-dark .sidebar .nav .nav-item .nav-link i.menu-icon {
-  color: #F9F9F9;
+  color: #FFFFFF;
 }
 
 .sidebar-dark .sidebar .nav .nav-item .nav-link .menu-title {
@@ -28714,7 +28714,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar-dark .sidebar .nav .nav-item .nav-link[aria-expanded="true"] .menu-title {
-  color: #F9F9F9;
+  color: #FFFFFF;
 }
 
 .sidebar-dark .sidebar .nav .nav-item.active > .nav-link {
@@ -28723,12 +28723,12 @@ div.tagsinput span.tag a {
 
 .sidebar-dark .sidebar .nav .nav-item.active > .nav-link .menu-title,
 .sidebar-dark .sidebar .nav .nav-item.active > .nav-link i {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .sidebar-dark .sidebar .nav:not(.sub-menu) > .nav-item:hover > .nav-link {
   background: #5f7a61;
-  color: #F9F9F9;
+  color: #fff;
 }
 
 .sidebar-dark .sidebar .nav:not(.sub-menu) > .nav-item .nav-link[aria-expanded="true"] {
@@ -28740,7 +28740,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar-dark .sidebar .nav.sub-menu .nav-item .nav-link {
-  color: #F9F9F9;
+  color: #FFFFFF;
 }
 
 .sidebar-dark .sidebar .nav.sub-menu .nav-item .nav-link:before {
@@ -28748,7 +28748,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar-dark .sidebar .nav.sub-menu .nav-item .nav-link.active {
-  color: #F9F9F9;
+  color: #ffffff;
   background: transparent;
 }
 
@@ -28796,7 +28796,7 @@ div.tagsinput span.tag a {
 }
 
 .navbar .navbar-brand-wrapper {
-  background: #F9F9F9;
+  background: #ffffff;
   transition: width 0.25s ease, background 0.25s ease;
   -webkit-transition: width 0.25s ease, background 0.25s ease;
   -moz-transition: width 0.25s ease, background 0.25s ease;
@@ -28843,7 +28843,7 @@ div.tagsinput span.tag a {
 }
 
 .navbar .navbar-menu-wrapper {
-  background: #F9F9F9;
+  background: #ffffff;
   transition: width 0.25s ease;
   -webkit-transition: width 0.25s ease;
   -moz-transition: width 0.25s ease;
@@ -29113,7 +29113,7 @@ div.tagsinput span.tag a {
   border-radius: 100%;
   background: #5f7a61;
   top: 1px;
-  border: 1px solid #F9F9F9;
+  border: 1px solid #ffffff;
 }
 
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .count-indicator:after {
@@ -29135,11 +29135,11 @@ div.tagsinput span.tag a {
 }
 
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .navbar-toggler {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item .nav-link {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text], .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text],
@@ -29149,7 +29149,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query,
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint,
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-webkit-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-webkit-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-webkit-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-webkit-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-webkit-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-webkit-input-placeholder,
@@ -29159,7 +29159,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-webkit-input-placeholder,
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-webkit-input-placeholder,
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-webkit-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-moz-placeholder[type=text], .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-moz-placeholder[type=text],
@@ -29169,7 +29169,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-moz-placeholder,
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-moz-placeholder,
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-moz-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-moz-placeholder,
@@ -29179,7 +29179,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-moz-placeholder,
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-moz-placeholder,
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-ms-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-ms-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-ms-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-ms-input-placeholder, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-ms-input-placeholder[type=text], .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-ms-input-placeholder[type=text],
@@ -29189,15 +29189,15 @@ div.tagsinput span.tag a {
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-ms-input-placeholder,
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-ms-input-placeholder,
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-ms-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .input-group-text i, .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .input-group-text i {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light .navbar-menu-wrapper {
-  background: #F9F9F9;
+  background: #ffffff;
   border-left: 1px solid #CED4DA;
 }
 
@@ -29226,11 +29226,11 @@ div.tagsinput span.tag a {
 }
 
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .navbar-toggler {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item .nav-link {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text], .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text],
@@ -29240,7 +29240,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query,
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint,
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-webkit-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-webkit-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-webkit-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-webkit-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-webkit-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-webkit-input-placeholder,
@@ -29250,7 +29250,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-webkit-input-placeholder,
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-webkit-input-placeholder,
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-webkit-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-moz-placeholder[type=text], .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-moz-placeholder[type=text],
@@ -29260,7 +29260,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-moz-placeholder,
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-moz-placeholder,
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-moz-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-moz-placeholder,
@@ -29270,7 +29270,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-moz-placeholder,
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-moz-placeholder,
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-ms-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-ms-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-ms-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-ms-input-placeholder, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-ms-input-placeholder[type=text], .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-ms-input-placeholder[type=text],
@@ -29280,15 +29280,15 @@ div.tagsinput span.tag a {
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-ms-input-placeholder,
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-ms-input-placeholder,
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-ms-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .input-group-text i, .navbar.navbar-secondary:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .input-group-text i {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light .navbar-menu-wrapper {
-  background: #F9F9F9;
+  background: #ffffff;
   border-left: 1px solid #CED4DA;
 }
 
@@ -29317,11 +29317,11 @@ div.tagsinput span.tag a {
 }
 
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .navbar-toggler {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item .nav-link {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text], .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text],
@@ -29331,7 +29331,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query,
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint,
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-webkit-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-webkit-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-webkit-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-webkit-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-webkit-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-webkit-input-placeholder,
@@ -29341,7 +29341,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-webkit-input-placeholder,
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-webkit-input-placeholder,
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-webkit-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-moz-placeholder[type=text], .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-moz-placeholder[type=text],
@@ -29351,7 +29351,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-moz-placeholder,
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-moz-placeholder,
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-moz-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-moz-placeholder,
@@ -29361,7 +29361,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-moz-placeholder,
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-moz-placeholder,
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-ms-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-ms-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-ms-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-ms-input-placeholder, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-ms-input-placeholder[type=text], .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-ms-input-placeholder[type=text],
@@ -29371,15 +29371,15 @@ div.tagsinput span.tag a {
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-ms-input-placeholder,
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-ms-input-placeholder,
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-ms-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .input-group-text i, .navbar.navbar-success:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .input-group-text i {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light .navbar-menu-wrapper {
-  background: #F9F9F9;
+  background: #ffffff;
   border-left: 1px solid #CED4DA;
 }
 
@@ -29408,11 +29408,11 @@ div.tagsinput span.tag a {
 }
 
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .navbar-toggler {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item .nav-link {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text], .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text],
@@ -29422,7 +29422,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query,
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint,
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-webkit-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-webkit-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-webkit-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-webkit-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-webkit-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-webkit-input-placeholder,
@@ -29432,7 +29432,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-webkit-input-placeholder,
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-webkit-input-placeholder,
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-webkit-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-moz-placeholder[type=text], .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-moz-placeholder[type=text],
@@ -29442,7 +29442,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-moz-placeholder,
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-moz-placeholder,
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-moz-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-moz-placeholder,
@@ -29452,7 +29452,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-moz-placeholder,
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-moz-placeholder,
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-ms-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-ms-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-ms-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-ms-input-placeholder, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-ms-input-placeholder[type=text], .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-ms-input-placeholder[type=text],
@@ -29462,15 +29462,15 @@ div.tagsinput span.tag a {
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-ms-input-placeholder,
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-ms-input-placeholder,
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-ms-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .input-group-text i, .navbar.navbar-info:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .input-group-text i {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light .navbar-menu-wrapper {
-  background: #F9F9F9;
+  background: #ffffff;
   border-left: 1px solid #CED4DA;
 }
 
@@ -29499,11 +29499,11 @@ div.tagsinput span.tag a {
 }
 
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .navbar-toggler {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item .nav-link {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text], .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text],
@@ -29513,7 +29513,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query,
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint,
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-webkit-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-webkit-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-webkit-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-webkit-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-webkit-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-webkit-input-placeholder,
@@ -29523,7 +29523,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-webkit-input-placeholder,
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-webkit-input-placeholder,
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-webkit-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-moz-placeholder[type=text], .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-moz-placeholder[type=text],
@@ -29533,7 +29533,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-moz-placeholder,
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-moz-placeholder,
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-moz-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-moz-placeholder,
@@ -29543,7 +29543,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-moz-placeholder,
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-moz-placeholder,
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-ms-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-ms-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-ms-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-ms-input-placeholder, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-ms-input-placeholder[type=text], .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-ms-input-placeholder[type=text],
@@ -29553,15 +29553,15 @@ div.tagsinput span.tag a {
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-ms-input-placeholder,
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-ms-input-placeholder,
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-ms-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .input-group-text i, .navbar.navbar-warning:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .input-group-text i {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light .navbar-menu-wrapper {
-  background: #F9F9F9;
+  background: #ffffff;
   border-left: 1px solid #CED4DA;
 }
 
@@ -29590,11 +29590,11 @@ div.tagsinput span.tag a {
 }
 
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .navbar-toggler {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item .nav-link {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text], .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text],
@@ -29604,7 +29604,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query,
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint,
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-webkit-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-webkit-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-webkit-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-webkit-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-webkit-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-webkit-input-placeholder,
@@ -29614,7 +29614,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-webkit-input-placeholder,
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-webkit-input-placeholder,
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-webkit-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-moz-placeholder[type=text], .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-moz-placeholder[type=text],
@@ -29624,7 +29624,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-moz-placeholder,
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-moz-placeholder,
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-moz-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-moz-placeholder,
@@ -29634,7 +29634,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-moz-placeholder,
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-moz-placeholder,
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-ms-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-ms-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-ms-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-ms-input-placeholder, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-ms-input-placeholder[type=text], .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-ms-input-placeholder[type=text],
@@ -29644,15 +29644,15 @@ div.tagsinput span.tag a {
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-ms-input-placeholder,
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-ms-input-placeholder,
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-ms-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .input-group-text i, .navbar.navbar-danger:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .input-group-text i {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light .navbar-menu-wrapper {
-  background: #F9F9F9;
+  background: #ffffff;
   border-left: 1px solid #CED4DA;
 }
 
@@ -29681,11 +29681,11 @@ div.tagsinput span.tag a {
 }
 
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .navbar-toggler {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item .nav-link {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text], .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text],
@@ -29695,7 +29695,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query,
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint,
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-webkit-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-webkit-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-webkit-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-webkit-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-webkit-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-webkit-input-placeholder,
@@ -29705,7 +29705,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-webkit-input-placeholder,
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-webkit-input-placeholder,
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-webkit-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-moz-placeholder[type=text], .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-moz-placeholder[type=text],
@@ -29715,7 +29715,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-moz-placeholder,
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-moz-placeholder,
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-moz-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-moz-placeholder,
@@ -29725,7 +29725,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-moz-placeholder,
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-moz-placeholder,
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-ms-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-ms-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-ms-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-ms-input-placeholder, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-ms-input-placeholder[type=text], .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-ms-input-placeholder[type=text],
@@ -29735,15 +29735,15 @@ div.tagsinput span.tag a {
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-ms-input-placeholder,
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-ms-input-placeholder,
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-ms-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .input-group-text i, .navbar.navbar-light:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .input-group-text i {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light .navbar-menu-wrapper {
-  background: #F9F9F9;
+  background: #ffffff;
   border-left: 1px solid #CED4DA;
 }
 
@@ -29772,11 +29772,11 @@ div.tagsinput span.tag a {
 }
 
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .navbar-toggler {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item .nav-link {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select, .dataTables_wrapper .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text], .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text],
@@ -29786,7 +29786,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query,
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint,
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-webkit-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-webkit-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-webkit-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-webkit-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-webkit-input-placeholder, .dataTables_wrapper .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-webkit-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-webkit-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-webkit-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-webkit-input-placeholder,
@@ -29796,7 +29796,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-webkit-input-placeholder,
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-webkit-input-placeholder,
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-webkit-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-moz-placeholder[type=text], .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-moz-placeholder[type=text],
@@ -29806,7 +29806,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-moz-placeholder,
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-moz-placeholder,
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control::-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control::-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input::-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input::-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select::-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select::-moz-placeholder, .dataTables_wrapper .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select::-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input[type=text]::-moz-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input[type=text]::-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input[type=text]::-moz-placeholder,
@@ -29816,7 +29816,7 @@ div.tagsinput span.tag a {
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query::-moz-placeholder,
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint::-moz-placeholder,
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint::-moz-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .form-control:-ms-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .form-control:-ms-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .asColorPicker-input:-ms-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group select:-ms-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .dataTables_wrapper select:-ms-input-placeholder, .dataTables_wrapper .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap select:-ms-input-placeholder, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group input:-ms-input-placeholder[type=text], .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap input:-ms-input-placeholder[type=text],
@@ -29826,15 +29826,15 @@ div.tagsinput span.tag a {
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-query:-ms-input-placeholder,
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .tt-hint:-ms-input-placeholder,
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .tt-hint:-ms-input-placeholder {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .input-group .input-group-text i, .navbar.navbar-dark:not(.navbar-light) .navbar-menu-wrapper .nav-item.nav-search .asColorPicker-wrap .input-group-text i {
-  color: #F9F9F9;
+  color: #ffffff;
 }
 
 .navbar.navbar-light .navbar-menu-wrapper {
-  background: #F9F9F9;
+  background: #ffffff;
   border-left: 1px solid #CED4DA;
 }
 
@@ -30052,7 +30052,7 @@ div.tagsinput span.tag a {
     box-shadow: -4px 0px 7px 0px rgba(182, 185, 189, 0.25);
   }
   .sidebar-dark.sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link .menu-title {
-    color: #F9F9F9;
+    color: #ffffff;
   }
   .sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link .menu-title:after {
     display: none;
@@ -30240,7 +30240,7 @@ div.tagsinput span.tag a {
   width: 300px;
   height: 100vh;
   min-height: 100%;
-  background: #F9F9F9;
+  background: #ffffff;
   -webkit-transition-duration: 0.25s;
   -moz-transition-duration: 0.25s;
   -o-transition-duration: 0.25s;
@@ -30264,7 +30264,7 @@ div.tagsinput span.tag a {
   width: auto;
   margin: 0;
   padding: 0;
-  background: #F9F9F9;
+  background: #ffffff;
 }
 
 .settings-panel .nav-tabs .nav-item {
@@ -30338,7 +30338,7 @@ div.tagsinput span.tag a {
   font-size: 0.875rem;
   line-height: 1;
   color: #595959;
-  background: #F9F9F9;
+  background: #ffffff;
   -webkit-transition-duration: 0.25s;
   -moz-transition-duration: 0.25s;
   -o-transition-duration: 0.25s;
@@ -30441,7 +30441,7 @@ div.tagsinput span.tag a {
   position: absolute;
   bottom: 0.34rem;
   right: 0;
-  border: 0.13rem solid #F9F9F9;
+  border: 0.13rem solid #ffffff;
   border-radius: 100%;
 }
 
@@ -30583,7 +30583,7 @@ div.tagsinput span.tag a {
 }
 
 #settings-trigger i {
-  color: #F9F9F9;
+  color: #ffffff;
   font-size: 1rem;
   line-height: 1rem;
 }

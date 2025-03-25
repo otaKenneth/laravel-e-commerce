@@ -190,7 +190,7 @@
   z-index: 2;
 }
 .tinymce-mobile-android-container.tinymce-mobile-android-maximized {
-  background: #F9F9F9;
+  background: #ffffff;
   border: none;
   bottom: 0;
   display: flex;
@@ -226,7 +226,7 @@
 }
 .tinymce-mobile-toolstrip .tinymce-mobile-toolbar {
   align-items: center;
-  background-color: #F9F9F9;
+  background-color: #fff;
   border-bottom: 1px solid #cccccc;
   display: flex;
   flex: 1;
@@ -437,7 +437,7 @@
   border: 0.5em solid rgba(136, 136, 136, 0);
   border-radius: 3em;
   bottom: 0;
-  color: #F9F9F9;
+  color: #fff;
   display: flex;
   height: 0.5em;
   justify-content: center;
@@ -473,7 +473,7 @@
   display: flex;
 }
 .tinymce-mobile-toolstrip .tinymce-mobile-toolbar.tinymce-mobile-context-toolbar .tinymce-mobile-toolbar-group input {
-  background: #F9F9F9;
+  background: #ffffff;
   border: none;
   border-radius: 0;
   color: #455a64;
@@ -626,7 +626,7 @@
   height: 100%;
 }
 .tinymce-mobile-outer-container .tinymce-mobile-editor-socket iframe {
-  background-color: #F9F9F9;
+  background-color: #fff;
   width: 100%;
 }
 .tinymce-mobile-editor-socket .tinymce-mobile-mask-edit-icon {

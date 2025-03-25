@@ -34,7 +34,7 @@
                     data-widget_type="heading.default"
                 >
                     <div class="elementor-widget-container">
-                        <h1 class="elementor-heading-title elementor-size-default h1">Your Cart</h1>
+                        <h1 class="elementor-heading-title elementor-size-default">Your Cart</h1>
                     </div>
                 </div>
                 <div

@@ -36,7 +36,7 @@
   justify-content: space-evenly;
   flex-wrap: wrap;
   flex-direction: column;
-  color: #F9F9F9;
+  color: #fff;
   background-color: rgba(0, 0, 0, 0.5); }
   .e-gallery-overlay__title {
     font-size: 24px; }

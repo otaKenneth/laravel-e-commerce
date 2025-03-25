@@ -1,9 +1,9 @@
 /*! elementor - v3.18.0 - 08-12-2023 */
 :root {
   color-scheme: dark;
-  --e-a-color-white:	#F9F9F9;
-  --e-a-color-black:	#1F1F22;
-  --e-a-color-logo:	#1F1F22;
+  --e-a-color-white:	#ffffff;
+  --e-a-color-black:	#000000;
+  --e-a-color-logo:	#000000;
   --e-a-color-primary:	#524CFF;
   --e-a-color-primary-bold:	#F0ABFC;
   --e-a-color-secondary:	#515962;
@@ -14,12 +14,12 @@
   --e-a-color-accent:	#93003f;
   --e-a-color-global:	#1DDDBF;
   --e-a-bg-default:	#1f2124;
-  --e-a-bg-invert:	#F9F9F9;
+  --e-a-bg-invert:	#ffffff;
   --e-a-bg-hover:	#2b2c31;
-  --e-a-bg-active:	#1F1F22438;
+  --e-a-bg-active:	#333438;
   --e-a-bg-active-bold:	#3f444b;
   --e-a-bg-loading:	#F9FAFA;
-  --e-a-bg-logo:	#F9F9F9;
+  --e-a-bg-logo:	#ffffff;
   --e-a-bg-primary:	#310132;
   --e-a-bg-secondary:	#515962;
   --e-a-bg-success:	#032317;
@@ -29,14 +29,14 @@
   --e-a-color-txt:	#D5D8DC;
   --e-a-color-txt-muted:	#9DA5AE;
   --e-a-color-txt-disabled:	#69727D;
-  --e-a-color-txt-invert:	#F9F9F9;
-  --e-a-color-txt-accent:	#F9F9F9;
+  --e-a-color-txt-invert:	#ffffff;
+  --e-a-color-txt-accent:	#ffffff;
   --e-a-color-txt-hover:	#9DA5AE;
-  --e-a-color-txt-active:	#F9F9F9;
-  --e-a-border-color:	#1F1F22438;
+  --e-a-color-txt-active:	#ffffff;
+  --e-a-border-color:	#333438;
   --e-a-border-color-bold:	#3f444b;
   --e-a-border-color-focus:	#515962;
-  --e-a-border-color-accent:	#F9F9F9;
+  --e-a-border-color-accent:	#ffffff;
   --e-a-border:	1px solid var(--e-a-border-color);
   --e-a-border-bold:	1px solid var(--e-a-border-color-bold);
   --e-a-border-radius:	3px;

@@ -11553,12 +11553,12 @@
       {
         type: choiceItem,
         text: 'Black',
-        value: '#1F1F22'
+        value: '#000000'
       },
       {
         type: choiceItem,
         text: 'White',
-        value: '#F9F9F9'
+        value: '#ffffff'
       }
     ];
     var colorCache = ColorCache(10);
@@ -11579,7 +11579,7 @@
           return '#' + color.toUpperCase();
         }
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#F9F9F9';
+        ctx.fillStyle = '#FFFFFF';
         ctx.fillStyle = color;
         ctx.fillRect(0, 0, 1, 1);
         var rgba = ctx.getImageData(0, 0, 1, 1).data;
@@ -11689,7 +11689,7 @@
             editor.execCommand('mceApplyTextcolor', format, color);
             onChoice(color);
           });
-        }, '#1F1F22');
+        }, '#000000');
       } else if (value === 'remove') {
         onChoice('');
         editor.execCommand('mceRemoveTextcolor', format);
@@ -14773,7 +14773,7 @@
                 emitSwatchChange(colorBit, value);
                 addColor(value);
               });
-            }, '#F9F9F9');
+            }, '#ffffff');
           } else if (value === 'remove') {
             emitSwatchChange(colorBit, '');
           } else {

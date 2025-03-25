@@ -86,7 +86,7 @@
                     data-id="0aa242b" data-element_type="widget"
                     data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}" data-widget_type="heading.default">
                     <div class="elementor-widget-container">
-                        <h2 class="elementor-heading-title elementor-size-default font-h1">OUR TOP CATEGORIES</h2>
+                        <h2 class="elementor-heading-title elementor-size-default">OUR TOP CATEGORIES</h2>
                     </div>
                 </div>
                 <div class="elementor-element elementor-element-9aa2de9 elementor-pagination-type-bullets elementor-arrows-position-inside elementor-pagination-position-outside elementor-invisible elementor-widget elementor-widget-n-carousel"
@@ -257,7 +257,7 @@
                         data-id="914ddf2" data-element_type="widget"
                         data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}" data-widget_type="heading.default">
                         <div class="elementor-widget-container">
-                            <h2 class="elementor-heading-title elementor-size-default font-h1">Our Top Products</h2>
+                            <h2 class="elementor-heading-title elementor-size-default">Our Top Products</h2>
                         </div>
                     </div>
 
@@ -350,7 +350,7 @@
                     data-id="9b04cf1" data-element_type="widget"
                     data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}" data-widget_type="heading.default">
                     <div class="elementor-widget-container">
-                        <h2 class="elementor-heading-title elementor-size-default font-h1">RECENTLY ADDED</h2>
+                        <h2 class="elementor-heading-title elementor-size-default">RECENTLY ADDED</h2>
                     </div>
                 </div>
                 <div class="elementor-element elementor-element-95c34ed elementor-widget-divider--view-line elementor-widget elementor-widget-divider"

@@ -97,7 +97,7 @@
                     data-widget_type="heading.default"
                 >
                     <div class="elementor-widget-container">
-                        <h1 style="margin-bottom: 20px;" class="elementor-heading-title elementor-size-default font-h1">Who we are?<br>
+                        <h1 style="margin-bottom: 20px;" class="elementor-heading-title elementor-size-default">Who we are?<br>
                         How are we different?</h1>
                         <p>At Kapiton, we're not just building a marketplace; we're creating an ecosystem that nurtures the entrepreneurial spirit of students. Our platform serves as a canvas for student creators to showcase their products, a hub for local brands to thrive, and a community where ideas turn into reality.</p>
                     </div>
@@ -120,7 +120,7 @@
                     data-widget_type="text-editor.default"
                 >
                     <div class="elementor-widget-container">
-                        <style>/*! elementor - v3.18.0 - 08-12-2023 */ .elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#69727d;color:#F9F9F9}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#69727d;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}</style>
+                        <style>/*! elementor - v3.18.0 - 08-12-2023 */ .elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#69727d;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#69727d;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}</style>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut quam iaculis, mattis elit nec, consectetur mi. Duis libero massa, dignissim sed eros et, tincidunt cursus lorem. Morbi non dolor quis libero sollicitudin volutpat non a massa. Nunc tellus lectus, pulvinar dapibus vehicula vel, feugiat sodales nunc. Curabitur quis velit ac turpis egestas ultricies.</p>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut quam iaculis, mattis elit nec, consectetur mi.</p>
                     </div>
