@@ -83,7 +83,7 @@ class ProductsController extends Controller
         })->where('products.status', 1)
         ->whereHas('vendor', function ($query) {
             $query->where('status', 1);
-        });
+        })->selectRaw('*, categories.id as category_id');
 
         $catIds = $collection->get()->pluck('category_id')->toArray();
 
@@ -107,6 +107,7 @@ class ProductsController extends Controller
 
         $filters = $this->getAvailableFilters($catDetails, $collection);
         $collection = $this->processFilters($collection, $data);
+        $collection->selectRaw('*, categories.id as category_id');
 
         return ["collection" => $collection, "filters" => $filters, "categoryDetails" => $categoryDetails,
             "meta_title" => $meta_title, "meta_description" => $meta_description, "meta_keywords" => $meta_keywords,
@@ -268,8 +269,7 @@ class ProductsController extends Controller
         // $collection = Product::with('brand', 'vendor', 'attributes')->where('vendor_id', $vendor->id)->where('status', 1); // Eager Loading (using with() method): https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'brand' is the relationship method name in Product.php model that is being Eager Loaded
 
         $collection = $vendor->products();
-                    
-        \Log::info(print_r($vendor->toArray(), true));
+
         $catIds = $vendor->products()->pluck('category_id');
         $catDetails = Category::whereIn('id', $catIds)->where([
             'parent_id' => 0,
@@ -351,7 +351,7 @@ class ProductsController extends Controller
             if ($getProductStock < $data['quantity']) { // if the `stock` available (in `products_attributes` table) is less than the ordered quantity by user (the quantity that the user desires)
                 return response()->json([
                     'success' => false,
-                    'message' => "Item doesn't have stock."
+                    'message' => "Item doesn't have stock. This page will be automatically refresh after you click Ok."
                 ], 400);
             }
 
@@ -765,7 +765,8 @@ class ProductsController extends Controller
 
             // Get Pickup Address
             $pickupAddress = $vendor_model->where('id', $item['product']['vendor_id'])->with(['vendorbusinessdetails' => function ($q) {
-                $q->select('vendor_id', 'shop_name', 'shop_mobile', 'shop_email', 'lat', 'long')->selectRaw("CONCAT(shop_address, ', ', shop_city, ', ', shop_state, ', ', shop_country, ', ', shop_pincode) AS shop_fulladdress");
+                $q->select('vendor_id', 'shop_name', 'shop_mobile', 'shop_email', 'lat', 'long')
+                    ->selectRaw("CONCAT(shop_address, ', ', shop_city, ', ', shop_state, ', ', shop_country, ', ', shop_pincode) AS shop_fulladdress");
             }])->first()->vendorbusinessdetails->toArray();
 
             // Ensure unique addresses
@@ -1103,7 +1104,7 @@ class ProductsController extends Controller
                 // PayPal payment gateway integration in Laravel
             } elseif ($data['payment_gateway'] == 'paymongo') {
                 $str_total_price = number_format($total_price, 2);
-                $description = "Kapiton Store - " . Auth::user()->email . " bought items with a total of {$str_total_price}. Delivery Fee - {$shipping_charges}. ";
+                $description = "Kapiton Store - " . Auth::user()->email . ". Payment for Order # {$order_id} on Kapiton. Total product amount: PHP {$str_total_price}. Delivery Fee: {$shipping_charges}. Thank you for shopping with us!";
                 if (Session::get('couponAmount') > 0) {
                     $description .= "Coupon Amount - " . Session::get('couponAmount');
                 }
@@ -1187,6 +1188,7 @@ class ProductsController extends Controller
         if (Session::has('order_id')) { // if there's an order has been placed, empty the Cart (remove the order (the cart items/products) from `carts`table)    // 'user_id' was stored in Session inside checkout() method in Front/ProductsController.php
             $order = \App\Models\Order::with(['orders_products'])->where('id', Session::get('order_id'))->first();
 
+            $vendor_ids = [];
             foreach ($order->orders_products as $key => $item) {
                 // Inventory Management - Reduce inventory/stock when an order gets placed
                 // We wrote the Inventory/Stock Management script in TWO places: in the checkout() method in Front/ProductsController.php and in the success() method in Front/PaypalController.php
@@ -1199,10 +1201,45 @@ class ProductsController extends Controller
                     'color'       => $item['product_color'],
                     'size'       => $item['product_size']
                 ])->update(['stock' => $newStock]);
+
+                if (!array_key_exists($item->vendor_id, $vendor_ids)) {
+                    $item->load('vendor.vendorbusinessdetails');
+                    $email = $item->vendor->email;
+                    
+                    $vendor_ids[$item->vendor_id] = [
+                        'email'        => $email,
+                        'name'         => $item->vendor->vendorbusinessdetails->shop_name,
+                        'order_id'     => $order->id,
+                        'orderDetails' => $order,
+                        'business_name'=> $item->vendor->vendorbusinessdetails->shop_name
+                    ];
+                }
             }
 
             $order->order_status = 'New';
             $order->save();
+            
+            $email = Auth::user()->email;
+            $messageData = [
+                'email'        => $email,
+                'name'         => Auth::user()->name, // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
+                'order_id'     => $order->id,
+                'orderDetails' => $order
+            ];
+            \Illuminate\Support\Facades\Mail::send('emails.order', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order' is the order.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                $message->to($email)->subject('Order Placed - Kapiton Store');
+            });
+
+            foreach ($vendor_ids as $vendor_id => $messageData) {
+                $email = $messageData['email'];
+                $messageData['orderDetails'] = \App\Models\Order::with(['orders_products' => function ($query) use ($vendor_id) {
+                    $query->where('vendor_id', $vendor_id);
+                }])->where('id', $messageData['order_id'])->first()->toArray();
+                $order_id = $messageData['order_id'];
+                \Illuminate\Support\Facades\Mail::send('emails.vendor_order_placed', $messageData, function ($message) use ($email, $order_id) {
+                    $message->to($email)->subject('New Order - Order #' . $order_id);
+                });
+            }
 
             return view('front.products.thanks');
         } else { // if there's no order has been placed

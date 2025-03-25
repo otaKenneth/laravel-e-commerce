@@ -126,7 +126,6 @@
     */ ?>
 
     <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
-        <!--EMAIL SUBJECT: New Order - Order#{{-- $ --}}-->
 
         <p style="margin: 0 0 20px 0;">Dear {{ $business_name }},</p>
         <p style="margin: 0 0 20px 0;">You have received a new order on Kapiton! Here are the details:</p>

@@ -586,6 +586,26 @@
 .elementor-491 .elementor-element.elementor-element-72ef1d2 a{
 	width: 100%;
 }
+<<<<<<< HEAD
+=======
+.elementor-491 .elementor-element-51b2b2e .swiper-slide > .elementor-element{
+    width: 100%;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+.elementor-491 .elementor-element-51b2b2e .swiper-slide > .elementor-element > .e-con-inner{
+    padding: 0 !important;
+    --bc-padding-block-start: 0 !important;
+    --padding-block-start: 0 !important;
+    --bc-padding-block-end: 0 !important;
+    --padding-block-end: 0 !important;
+}
+.elementor-491 .elementor-element.elementor-element-9905f7b img{
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+>>>>>>> 1d8a7aa64b1c9477b72191411b6da5dc7628cd96
 
 @media (max-width: 767px){
     .elementor-682 .elementor-element.elementor-element-72ef1d2 img{

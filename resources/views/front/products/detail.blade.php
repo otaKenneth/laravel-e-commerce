@@ -449,6 +449,7 @@
 
                                     <div class="elementor-form-fields-wrapper elementor-labels-">
                                         @php
+                                            $discount = $productDetails['product_discount'];
                                             $attributes = $productDetails['attributes'];
                                             $curStock = isset($attributes[0]) ? $attributes[0]['stock']:0;
                                         @endphp
@@ -470,7 +471,7 @@
                                                 <select name="variation" id="form-field-field_cfabe28" class="elementor-field-textual elementor-size-sm" aria-required="true">
                                                     @foreach ($attributes as $attribute)
                                                         @if (!is_null($attribute))
-                                                        <option value="{{$attribute['id']}}" data-productStock="{{ $attribute['stock'] }}">{{$attribute['color']}} - {{$attribute['size']}} - ₱{{$attribute['price']}}</option>
+                                                            <option value="{{$attribute['id']}}" data-productStock="{{ $attribute['stock'] }}">{{$attribute['color']}} - {{$attribute['size']}} - ₱{{ isset($discount) ? $attribute['price'] - ($attribute['price'] * ($discount / 100)) : $attribute['price']}}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>

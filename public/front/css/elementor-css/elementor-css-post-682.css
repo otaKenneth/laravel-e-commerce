@@ -309,17 +309,29 @@ body, html{
 .elementor-682 .elementor-element.elementor-element-bfbcc32 > .elementor-widget-container a{
 	width: 100%;
 }
+<<<<<<< HEAD
 .elementor-682 .elementor-element.elementor-element-757b9c4 img{
+=======
+.elementor-682 .elementor-element.elementor-element-80f00c9 .elementor-element-757b9c4 img{
+>>>>>>> 1d8a7aa64b1c9477b72191411b6da5dc7628cd96
 	width: 100% !important;
     aspect-ratio: 1 / 1 !important;
     object-fit: cover !important;
 	border-radius: 10px !important;
 }
+<<<<<<< HEAD
 .elementor-682 .elementor-element.elementor-element-757b9c4 a{
 	width: 100%;
 }
 @media (max-width: 767px){
 	.elementor-682 .elementor-element.elementor-element-757b9c4 img{
+=======
+.elementor-682 .elementor-element.elementor-element-80f00c9 .elementor-element-757b9c4 a{
+	width: 100%;
+}
+@media (max-width: 767px){
+	.elementor-682 .elementor-element.elementor-element-80f00c9 .elementor-element-757b9c4 img{
+>>>>>>> 1d8a7aa64b1c9477b72191411b6da5dc7628cd96
 		width: 100% !important;
 	}
 }

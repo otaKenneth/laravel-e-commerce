@@ -50,10 +50,12 @@ class Vendor extends Model
         return $this->belongsToMany(Chats::class, 'chat_messages', 'vendor_id', 'chat_id');
     }
 
-    public function ratings() {
+    public function ratingsCount() {
         return $this->products()
-            ->with('ratings') // Eager load ratings to avoid N+1 problem
-            ->get();
+            ->whereHas('ratings') // Eager load ratings to avoid N+1 problem
+            ->withCount('ratings') // Count the number of ratings
+            ->get()
+            ->sum('ratings_count');
     }
 
     public function vendorProductRatings() {

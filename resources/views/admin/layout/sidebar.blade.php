@@ -108,7 +108,7 @@
                 <div class="collapse" id="ui-finance">
                     <ul class="nav flex-column sub-menu" style="background: #fff !important; color: #5f7a61 !important">
                         <li class="nav-item"> <a @if (Session::get('page') == 'update_bank_details')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/bank/details') }}">Bank Details</a></li>
-                        <li class="nav-item"> <a @if (Session::get('page') == 'income_statement')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="#">Income Statement</a></li>
+                        <li class="nav-item"> <a @if (Session::get('page') == 'income_statement')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/finance/income_statement') }}">Income Statement</a></li>
                         <li class="nav-item"> <a @if (Session::get('page') == 'my_balance')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="#">My Balance - Disbursements</a></li>
                     </ul>
                 </div>
@@ -122,7 +122,7 @@
                 </a>
                 <div class="collapse" id="ui-data">
                     <ul class="nav flex-column sub-menu" style="background: #fff !important; color: #5f7a61 !important">
-                        <li class="nav-item"> <a @if (Session::get('page') == 'sales')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/reports/sales') }}">Business Insights</a></li>
+                        <li class="nav-item"> <a @if (Session::get('page') == 'sales')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="#">Business Insights</a></li>
                     </ul>
                 </div>
             </li>
@@ -141,7 +141,6 @@
                         
                         {{-- The Route Parameter {type} is the `type` column in the `admins` table, which can only be: admin, subadmin or vendor. And if there's no parameter passed at all, show ALL of the admins, subadmins and vendors at the same page --}}
                         <li class="nav-item"> <a @if (Session::get('page') == 'view_admins')    style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/admins/admin') }}">Admins</a></li>
-                        <li class="nav-item"> <a @if (Session::get('page') == 'view_subadmins') style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/admins/subadmin') }}">Subadmins</a></li>
                         <li class="nav-item"> <a @if (Session::get('page') == 'view_vendors')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/admins/vendor') }}">Vendors</a></li>
                         <li class="nav-item"> <a @if (Session::get('page') == 'view_all')       style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/admins') }}">All</a></li>
                     </ul>
@@ -168,7 +167,7 @@
 
             
             <li class="nav-item">
-                <a @if (Session::get('page') == 'orders') style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-orders" aria-expanded="false" aria-controls="ui-orders">
+                <a @if (in_array(Session::get('page'), ['orders','income_statement'])) style="background: #5f7a61 !important; color: #FFF !important" @endif class="nav-link" data-toggle="collapse" href="#ui-orders" aria-expanded="false" aria-controls="ui-orders">
                     <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Orders Management</span>
                     <i class="menu-arrow"></i>
@@ -176,6 +175,9 @@
                 <div class="collapse" id="ui-orders">
                     <ul class="nav flex-column sub-menu" style="background: #fff !important; color: #5f7a61 !important">
                         <li class="nav-item"> <a @if (Session::get('page') == 'orders')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/orders') }}">Orders</a></li>
+                    </ul>
+                    <ul class="nav flex-column sub-menu" style="background: #fff !important; color: #5f7a61 !important">
+                        <li class="nav-item"> <a @if (Session::get('page') == 'income_statement')   style="background: #5f7a61 !important; color: #FFF !important" @else style="background: #fff !important; color: #5f7a61 !important" @endif class="nav-link" href="{{ url('admin/finance/income_statement') }}">Income Statement</a></li>
                     </ul>
                 </div>
             </li>

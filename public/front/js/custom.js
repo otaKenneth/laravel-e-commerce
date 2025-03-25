@@ -129,8 +129,9 @@ $(document).ready(function() {
 
                 $('#appendHeaderCartItems').html(resp.view); // 'headerview' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the cartUpdate() method in Front/ProductsController.php
             },
-            error  : function() {
-                alert('Error');
+            error  : function(e) {
+                alert(e.responseJSON.message);
+                window.location.reload();
             }
         });
     })

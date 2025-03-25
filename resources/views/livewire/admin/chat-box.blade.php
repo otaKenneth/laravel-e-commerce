@@ -15,6 +15,16 @@
         data-core-v316-plus="true"
     >
         <div class="e-con-inner outer-e-con-custom">
+        <style>
+                @media (max-width: 767px){
+                    .custom_btn_for_navbar_mobile.dashboard_nav_btn{
+                        top: 10px;
+                    }
+                }
+            </style>
+        <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                        <span class="icon-menu"></span>
+                    </button>
             <div
                 class="elementor-element elementor-element-aca939b login-container e-flex e-con-boxed e-con e-child"
                 data-id="aca939b"

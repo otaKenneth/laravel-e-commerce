@@ -13,8 +13,7 @@
 
 
     <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
-        <!--EMAIL SUBJECT: New Message from <?php /* {{-- $customer____name --}} */ ?> -->
-        <p style="margin: 0 0 20px 0;">Dear <strong>{{ $business_name }}</strong><?php /* {{-- $business_name --}} */ ?>,</p>
+        <p style="margin: 0 0 20px 0;">Dear <strong>{{ $name }}</strong>,</p>
         <p style="margin: 0 0 20px 0;">You've received a new message from <strong>{{ $orderDetails['name'] }}</strong>! Please review their inquiry and respond promptly to ensure a smooth customer experience.</p>
         <p style="margin: 0 0 20px 0;">To access Chats, log in using your merchant account and navigate to <strong>Store &gt; Chats</strong> in your dashboard or by clicking this <a href="{{ $chatUrl }}">link</a></p>
         

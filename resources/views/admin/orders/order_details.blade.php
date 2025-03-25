@@ -157,61 +157,6 @@
                 <div class="col-md-6 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Customer Details</h4>
-                            <div class="form-group" style="height: 15px">
-                                <label style="font-weight: 550">Name: </label>
-                                <label>{{ $userDetails['first_name'] }} {{ $userDetails['last_name'] }}</label>
-                            </div>
-
-                            @if (!empty($userDetails['address']))
-                                <div class="form-group" style="height: 15px">
-                                    <label style="font-weight: 550">Address: </label>
-                                    <label>{{ $userDetails['address'] }}</label>
-                                </div>
-                            @endif
-
-                            @if (!empty($userDetails['city']))
-                                <div class="form-group" style="height: 15px">
-                                    <label style="font-weight: 550">City: </label>
-                                    <label>{{ $userDetails['city'] }}</label>
-                                </div>
-                            @endif
-
-                            @if (!empty($userDetails['state']))
-                                <div class="form-group" style="height: 15px">
-                                    <label style="font-weight: 550">State: </label>
-                                    <label>{{ $userDetails['state'] }}</label>
-                                </div>
-                            @endif
-                            
-                            @if (!empty($userDetails['country']))
-                                <div class="form-group" style="height: 15px">
-                                    <label style="font-weight: 550">Country: </label>
-                                    <label>{{ $userDetails['country'] }}</label>
-                                </div>
-                            @endif
-                            
-                            @if (!empty($userDetails['pincode']))
-                                <div class="form-group" style="height: 15px">
-                                    <label style="font-weight: 550">Zipcode: </label>
-                                    <label>{{ $userDetails['pincode'] }}</label>
-                                </div>
-                            @endif
-
-                            <div class="form-group" style="height: 15px">
-                                <label style="font-weight: 550">Mobile: </label>
-                                <label>{{ $userDetails['mobile'] }}</label>
-                            </div>
-                            <div class="form-group" style="height: 15px">
-                                <label style="font-weight: 550">Email: </label>
-                                <label>{{ $userDetails['email'] }}</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
                             <h4 class="card-title">Delivery Address</h4>
                             <div class="form-group" style="height: 15px">
                                 <label style="font-weight: 550">Name: </label>
