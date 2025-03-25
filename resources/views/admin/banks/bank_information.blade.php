@@ -10,7 +10,7 @@
 
                 button[type="save"] {
                     background: #5f7a61 !important;
-                    color: #FFF !important;
+                    color: #F9F9F9 !important;
                     border-radius: 10px;
                     width: 100%;
                     max-width: calc(50% - 20px);
@@ -43,7 +43,7 @@
                         <span class="icon-menu"></span>
                     </button>
                     <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                        <h3 class="font-weight-bold">Vendor Bank Details</h3>
+                        <h3 class="font-weight-bold font-h1">Vendor Bank Details</h3>
                     </div>
 
                     <div class="col-md-6 grid-margin stretch-card">

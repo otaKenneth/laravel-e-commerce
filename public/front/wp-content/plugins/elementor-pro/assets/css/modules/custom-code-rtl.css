@@ -69,7 +69,7 @@
 #adminmenu #toplevel_page_elementor a[href=elementor_pro_upgrade_license_menu_link] {
   font-weight: 600;
   background-color: #93003c;
-  color: #ffffff;
+  color: #F9F9F9;
   margin: 3px 10px 0;
   display: block;
   text-align: center;
@@ -168,7 +168,7 @@ span.font-variations-count {
 }
 
 .elementor-metabox-content .repeater-block {
-  background: #ffffff;
+  background: #F9F9F9;
   color: #3f444b;
   padding: 20px;
   margin-block-end: 2px;
@@ -250,7 +250,7 @@ span.font-variations-count {
 .elementor-metabox-content .repeater-content .repeater-content-bottom .elementor-field {
   display: flex;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #F9F9F9;
   padding: 10px 20px;
   margin-block-end: 10px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
@@ -302,7 +302,7 @@ span.font-variations-count {
 }
 .elementor-metabox-content .elementor-button {
   background-color: #9DA5AE;
-  color: #fff;
+  color: #F9F9F9;
   line-height: 1;
   text-transform: uppercase;
   height: auto;
@@ -313,7 +313,7 @@ span.font-variations-count {
   transition-duration: 0.3s;
 }
 .elementor-metabox-content .elementor-button:hover, .elementor-metabox-content .elementor-button:focus, .elementor-metabox-content .elementor-button:visited {
-  color: #fff;
+  color: #F9F9F9;
 }
 .elementor-metabox-content .elementor-button:focus, .elementor-metabox-content .elementor-button:visited {
   background-color: #9DA5AE;
@@ -407,14 +407,14 @@ span.font-variations-count {
   display: none;
   border: 1px solid #F1F2F3;
   border-radius: 1px;
-  background-color: #fff;
+  background-color: #F9F9F9;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox .inside {
   margin-block-start: 10px;
   margin-block-end: 20px;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox .elementor-metabox-content {
-  background-color: #fff;
+  background-color: #F9F9F9;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox .elementor-custom-icons-metabox {
   padding-block-start: 4px;
@@ -465,7 +465,7 @@ span.font-variations-count {
 .post-type-elementor_icons div#elementor-custom-icons-metabox .elementor-field-dropzone {
   outline: 2px dashed #D5D8DC;
   outline-offset: -3px;
-  background-color: #fff;
+  background-color: #F9F9F9;
   display: none;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons {
@@ -485,7 +485,7 @@ span.font-variations-count {
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons .elementor-icon-set-header {
   height: 50px;
   color: #3f444b;
-  background-color: #fff;
+  background-color: #F9F9F9;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.06);
   padding: 0 35px;
   display: flex;
@@ -572,7 +572,7 @@ span.font-variations-count {
   position: relative;
   height: 0;
   padding-block-end: 100%;
-  background-color: #fff;
+  background-color: #F9F9F9;
   box-shadow: 0 1px 12px rgba(0, 0, 0, 0.05);
   border-radius: 3px;
   overflow: hidden;
@@ -1128,7 +1128,7 @@ span.font-variations-count {
   }
 }
 :root {
-  --eps-modal-background-color: #ffffff;
+  --eps-modal-background-color: #F9F9F9;
   --eps-modal-header-background-color: #2563EB;
   --eps-tip-background-color: #F0F7FF;
 }
@@ -1168,7 +1168,7 @@ span.font-variations-count {
   border-radius: 0.1875rem;
 }
 .eps-modal__header, .eps-modal__header .title {
-  color: #ffffff;
+  color: #F9F9F9;
 }
 .eps-modal__icon {
   margin-inline-end: 0.625rem;
@@ -1193,7 +1193,7 @@ span.font-variations-count {
 }
 .eps-modal__close-wrapper {
   padding-inline-start: 1rem;
-  border-inline-start: solid 1px #ffffff;
+  border-inline-start: solid 1px #F9F9F9;
 }
 
 .eps-button {
@@ -1208,27 +1208,27 @@ span.font-variations-count {
   --button-secondary-background-color: #69727D;
   --button-secondary-hover-background-color: #525961;
   --button-secondary-active-background-color: #3a3f46;
-  --button-secondary-color: #ffffff;
+  --button-secondary-color: #F9F9F9;
   --button-danger-background-color: #DC2626;
   --button-danger-hover-background-color: #b21d1d;
   --button-danger-active-background-color: #861616;
-  --button-danger-color: #ffffff;
+  --button-danger-color: #F9F9F9;
   --button-cta-background-color: #524CFF;
   --button-cta-hover-background-color: #2119ff;
   --button-cta-active-background-color: #0800e5;
-  --button-cta-color: #ffffff;
+  --button-cta-color: #F9F9F9;
   --button-brand-background-color: #524CFF;
   --button-brand-hover-background-color: #2119ff;
   --button-brand-active-background-color: #0800e5;
-  --button-brand-color: #ffffff;
+  --button-brand-color: #F9F9F9;
   --button-link-background-color: #515962;
   --button-link-hover-background-color: #3a4046;
   --button-link-active-background-color: #23262a;
-  --button-link-color: #ffffff;
+  --button-link-color: #F9F9F9;
   --button-disabled-background-color: #D5D8DC;
   --button-disabled-hover-background-color: #b9bec5;
   --button-disabled-active-background-color: #9da4ae;
-  --button-disabled-color: #ffffff;
+  --button-disabled-color: #F9F9F9;
   color: var(--button-background-color, currentColor);
   font-size: var(--button-font-size, inherit);
   font-weight: 500;
@@ -1248,25 +1248,25 @@ span.font-variations-count {
   --button-primary-hover-background-color: #EB8EFB;
   --button-primary-active-background-color: #F3BAFD;
   --button-secondary-background-color: #BABFC5;
-  --button-secondary-color: #fff;
+  --button-secondary-color: #F9F9F9;
   --button-secondary-hover-background-color: #9ea5ae;
   --button-secondary-active-background-color: #838c96;
   --button-cta-background-color: #524CFF;
   --button-cta-hover-background-color: #2119ff;
   --button-cta-active-background-color: #0800e5;
-  --button-cta-color: #fff;
+  --button-cta-color: #F9F9F9;
   --button-brand-hover-background-color: #2119ff;
   --button-brand-active-background-color: #0800e5;
-  --button-brand-color: #fff;
+  --button-brand-color: #F9F9F9;
   --button-brand-background-color: #524CFF;
   --button-link-background-color: #515962;
   --button-link-hover-background-color: #3a4046;
   --button-link-active-background-color: #23262a;
-  --button-link-color: #ffffff;
+  --button-link-color: #F9F9F9;
   --button-disabled-background-color: #69727D;
   --button-disabled-hover-background-color: #525961;
   --button-disabled-active-background-color: #3a3f46;
-  --button-disabled-color: #fff;
+  --button-disabled-color: #F9F9F9;
 }
 .eps-button--contained {
   color: var(--button-color);
@@ -1341,7 +1341,7 @@ span.font-variations-count {
 }
 
 :root {
-  --e-site-editor-conditions-row-controls-background: #ffffff;
+  --e-site-editor-conditions-row-controls-background: #F9F9F9;
   --e-site-editor-input-wrapper-border-color: #D5D8DC;
   --e-site-editor-input-wrapper-select-color: #3f444b;
   --e-site-editor-conditions-row-controls-border: 1px solid #D5D8DC;
@@ -1366,7 +1366,7 @@ span.font-variations-count {
   		#515962;
   --e-site-editor-input-wrapper-condition-exclude-background-color:
   		#515962;
-  --e-site-editor-input-select2-search-field-color: #ffffff ;
+  --e-site-editor-input-select2-search-field-color: #F9F9F9 ;
 }
 
 .e-site-editor-conditions__header {
@@ -1423,12 +1423,12 @@ span.font-variations-count {
 .e-site-editor-conditions__add-button {
   margin-block-start: 2.75rem;
   background-color: var(--e-site-editor-add-button-background-color);
-  color: #ffffff;
+  color: #F9F9F9;
   text-transform: uppercase;
 }
 .e-site-editor-conditions__add-button:hover {
   background-color: var(--e-site-editor-add-button-color-hover-background-color);
-  color: #ffffff;
+  color: #F9F9F9;
 }
 .e-site-editor-conditions__footer {
   display: flex;
@@ -1570,7 +1570,7 @@ span.font-variations-count {
   width: auto;
 }
 .post-conditions .eps-modal__header {
-  background: #ffffff;
+  background: #F9F9F9;
   color: #1f2124;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   padding: 2px 15px;
@@ -1582,7 +1582,7 @@ span.font-variations-count {
   text-align: center;
   font-size: 0.7rem;
   border-radius: 50%;
-  color: #ffffff;
+  color: #F9F9F9;
   background-color: #93003F;
 }
 .post-conditions .eps-modal__header .eps-text {
@@ -1630,7 +1630,7 @@ span.font-variations-count {
   color: inherit;
 }
 .post-conditions .eps-modal .e-site-editor-conditions__rows .e-site-editor-conditions__row-controls .e-site-editor-conditions__input-wrapper--condition-type select:hover, .post-conditions .eps-modal .e-site-editor-conditions__rows .e-site-editor-conditions__row-controls .e-site-editor-conditions__input-wrapper--condition-type select:focus {
-  color: #ffffff;
+  color: #F9F9F9;
 }
 .post-conditions .eps-modal .e-site-editor-conditions__add-button {
   margin-block-start: 0;
@@ -1655,7 +1655,7 @@ span.font-variations-count {
 #elementor-custom-code .inside .elementor-custom-code-meta-box .elementor-custom-code-panel {
   border: 1px solid #F1F2F3;
   border-block-end: 1px solid #ccd0d4;
-  background: #ffffff;
+  background: #F9F9F9;
 }
 #elementor-custom-code .inside .elementor-custom-code-meta-box .elementor-custom-code-panel .elementor-custom-code-panel-placement {
   padding: 5px 40px;

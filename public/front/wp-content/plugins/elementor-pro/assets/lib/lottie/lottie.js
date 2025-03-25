@@ -6847,7 +6847,7 @@ License: MIT
 
 			if((properties[i].mode == 's' || properties[i].mode == 'i') && count === 0){
 				rect = createNS( 'rect');
-				rect.setAttribute('fill', '#ffffff');
+				rect.setAttribute('fill', '#F9F9F9');
 				rect.setAttribute('width', this.element.comp.data.w || 0);
 				rect.setAttribute('height', this.element.comp.data.h || 0);
 				currentMasks.push(rect);
@@ -6869,7 +6869,7 @@ License: MIT
 			}
 			count += 1;
 
-			path.setAttribute('fill', properties[i].mode === 's' ? '#000000':'#ffffff');
+			path.setAttribute('fill', properties[i].mode === 's' ? '#1F1F22':'#F9F9F9');
 			path.setAttribute('clip-rule','nonzero');
 			var filterID;
 
@@ -6886,7 +6886,7 @@ License: MIT
 				feMorph.setAttribute('radius','0');
 				expansor.appendChild(feMorph);
 				defs.appendChild(expansor);
-				path.setAttribute('stroke', properties[i].mode === 's' ? '#000000':'#ffffff');
+				path.setAttribute('stroke', properties[i].mode === 's' ? '#1F1F22':'#F9F9F9');
 			} else {
 				feMorph = null;
 				x = null;
@@ -7974,7 +7974,7 @@ License: MIT
 					alphaRect.setAttribute('height', this.comp.data.h);
 					alphaRect.setAttribute('x','0');
 					alphaRect.setAttribute('y','0');
-					alphaRect.setAttribute('fill','#ffffff');
+					alphaRect.setAttribute('fill','#F9F9F9');
 					alphaRect.setAttribute('opacity','0');
 					maskGrouper.setAttribute('filter', 'url(' + locationHref + '#'+filId+')');
 					maskGrouper.appendChild(alphaRect);

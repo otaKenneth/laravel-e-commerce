@@ -116,7 +116,7 @@
   background-color: #eeeeee;
   clip: auto !important;
   clip-path: none;
-  color: #333333;
+  color: #1F1F22;
   display: block;
   font-size: 1rem;
   height: auto;
@@ -555,7 +555,7 @@ footer .site-navigation ul.menu a {
 .site-navigation-dropdown ul.menu li a {
   display: block;
   padding: 20px;
-  background: #ffffff;
+  background: #F9F9F9;
   color: #55595c;
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1019607843);
 }

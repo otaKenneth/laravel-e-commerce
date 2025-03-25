@@ -38,7 +38,7 @@
     <div class="elementor-element">
         <div class="econinner">
             <div class="full_height_width">
-                <h1>COMING SOON...</h1>
+                <h1 class="font-h1">COMING SOON...</h1>
             </div>
         </div>
     </div>

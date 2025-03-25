@@ -1272,7 +1272,7 @@ class Form extends Form_Base {
 			[
 				'label' => esc_html__( 'Background Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => '#F9F9F9',
 				'selectors' => [
 					'{{WRAPPER}} .elementor-field-group:not(.elementor-field-type-upload) .elementor-field:not(.elementor-select-wrapper)' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} .elementor-field-group .elementor-select-wrapper select' => 'background-color: {{VALUE}};',
@@ -1390,7 +1390,7 @@ class Form extends Form_Base {
 			[
 				'label' => esc_html__( 'Text Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => '#F9F9F9',
 				'selectors' => [
 					'{{WRAPPER}} .e-form__buttons__wrapper__button-next' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .elementor-button[type="submit"]' => 'color: {{VALUE}};',
@@ -1442,7 +1442,7 @@ class Form extends Form_Base {
 			[
 				'label' => esc_html__( 'Text Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => '#F9F9F9',
 				'selectors' => [
 					'{{WRAPPER}} .e-form__buttons__wrapper__button-previous' => 'color: {{VALUE}};',
 				],
@@ -1499,7 +1499,7 @@ class Form extends Form_Base {
 			[
 				'label' => esc_html__( 'Text Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => '#F9F9F9',
 				'selectors' => [
 					'{{WRAPPER}} .e-form__buttons__wrapper__button-next:hover' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .elementor-button[type="submit"]:hover' => 'color: {{VALUE}};',
@@ -1549,7 +1549,7 @@ class Form extends Form_Base {
 			[
 				'label' => esc_html__( 'Text Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => '#F9F9F9',
 				'selectors' => [
 					'{{WRAPPER}} .e-form__buttons__wrapper__button-previous:hover' => 'color: {{VALUE}};',
 				],
@@ -1814,7 +1814,7 @@ class Form extends Form_Base {
 			[
 				'label' => esc_html__( 'Secondary Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => '#F9F9F9',
 				'selectors' => [
 					'{{WRAPPER}}' => '--e-form-steps-indicator-inactive-secondary-color: {{VALUE}};',
 				],
@@ -1849,7 +1849,7 @@ class Form extends Form_Base {
 			[
 				'label' => esc_html__( 'Secondary Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => '#F9F9F9',
 				'selectors' => [
 					'{{WRAPPER}}' => '--e-form-steps-indicator-active-secondary-color: {{VALUE}};',
 				],
@@ -1884,7 +1884,7 @@ class Form extends Form_Base {
 			[
 				'label' => esc_html__( 'Secondary Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => '#F9F9F9',
 				'condition' => [
 					'step_icon_shape!' => 'none',
 				],

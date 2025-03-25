@@ -124,7 +124,7 @@
                                         
                                         <a style="
                                             background: #86cbb9;
-                                            color: #ffffff;
+                                            color: #F9F9F9;
                                             font-family: 'Lexend', Sans-serif;
                                             font-size: 14px;
                                             padding: 4px 10px;

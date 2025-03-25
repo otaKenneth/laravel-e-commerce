@@ -1436,7 +1436,7 @@ const SetPermissionsLink = styled_components__WEBPACK_IMPORTED_MODULE_6__["defau
 	}
 `;
 const TooltipContent = (0,styled_components__WEBPACK_IMPORTED_MODULE_6__["default"])(_ui_tooltip_tooltip__WEBPACK_IMPORTED_MODULE_4__["default"].Content)`
-	background: #ffffff !important;
+	background: #F9F9F9 !important;
 	color: #6d7882 !important;
 	line-height: 1.3 !important;
 	font-style: italic !important;
@@ -1451,7 +1451,7 @@ const TooltipContent = (0,styled_components__WEBPACK_IMPORTED_MODULE_6__["defaul
 		width: 10px !important;
 		height: 10px !important;
 		border: 5px solid transparent !important;
-		border-top-color: #ffffff !important;
+		border-top-color: #F9F9F9 !important;
 		bottom: -9px !important;
 		inset-inline-end: 20px !important;
 	}
@@ -3219,7 +3219,7 @@ const StyledContent = (0,styled_components__WEBPACK_IMPORTED_MODULE_2__["default
   line-height: normal !important;
   letter-spacing: normal !important;
   word-spacing: normal !important;
-  background-color: #fff !important;
+  background-color: #F9F9F9 !important;
   box-shadow: 2px 8px 23px rgba(0, 0, 0, 0.2) !important;
   border-radius: 3px !important;
   width: 375px !important;
@@ -3702,7 +3702,7 @@ const StyledIndicator = (0,styled_components__WEBPACK_IMPORTED_MODULE_3__["defau
   align-items: center !important;
   justify-content: center !important;
   background: #39b54a !important;
-  color: #fff !important;
+  color: #F9F9F9 !important;
   outline: none !important;
   font-size: 8px !important;
 `;
@@ -4521,7 +4521,7 @@ const StyledPanelHeader = (0,styled_components__WEBPACK_IMPORTED_MODULE_3__["def
   grid-template-columns: 1fr 2fr 1fr !important;
   grid-column-gap: 10px !important;
   align-items: center !important;
-  background: #ffffff !important;
+  background: #F9F9F9 !important;
   padding: 6px 8px !important;
   flex-shrink: 0 !important;
 
@@ -4644,7 +4644,7 @@ const Handle = (0,styled_components__WEBPACK_IMPORTED_MODULE_3__["default"])((0,
   display: inline-flex !important;
   justify-content: center !important;
   align-items: center !important;
-  background-color: #fff !important;
+  background-color: #F9F9F9 !important;
   margin-top: 1px !important;
   cursor: row-resize !important;
 `;
@@ -5061,7 +5061,7 @@ const StyledIndicator = (0,styled_components__WEBPACK_IMPORTED_MODULE_2__["defau
   align-items: center !important;
   justify-content: center !important;
   background: #39b54a !important;
-  color: #fff !important;
+  color: #F9F9F9 !important;
   outline: none !important;
   font-size: 8px !important;
   margin: 2px !important;
@@ -5593,7 +5593,7 @@ const TooltipContent = (0,styled_components__WEBPACK_IMPORTED_MODULE_1__["defaul
   letter-spacing: normal !important;
   word-spacing: normal !important;
   background: #26292c !important;
-  color: #fff !important;
+  color: #F9F9F9 !important;
   border-radius: 3px !important;
   box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15) !important;
   padding: 5px 12px !important;
@@ -5704,7 +5704,7 @@ const StyledItem = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].li`
 	font-family: Roboto, sans-serif !important;
 	font-size: 12px !important;
 	color: #6d7882 !important;
-	background: #ffffff !important;
+	background: #F9F9F9 !important;
 	padding: 8px !important;
 	cursor: pointer !important;
 
@@ -5724,7 +5724,7 @@ const StyledItem = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].li`
 
 		&,
 		& * {
-			color: #ffffff !important;
+			color: #F9F9F9 !important;
 		}
 	}
 
@@ -5777,7 +5777,7 @@ const TypeaheadList = styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].
 	list-style: none !important;
 	width: 272px !important;
 	z-index: 1 !important; // Just needs any 'z-index' value in order to appear above other things.
-	background: #ffffff !important;
+	background: #F9F9F9 !important;
 	border-radius: 3px !important;
 	box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15) !important;
 `;

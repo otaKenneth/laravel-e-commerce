@@ -11,7 +11,7 @@
                         </button>
                     <div class="row">
                         <div class="col-12 col-xl-12 mb-4 mb-xl-0">
-                            <h3 class="font-weight-bold">User Management</h3>
+                            <h3 class="font-weight-bold font-h1">User Management</h3>
                         </div>
                         <div class="col-12 col-xl-4">
                             <div class="justify-content-end d-flex">

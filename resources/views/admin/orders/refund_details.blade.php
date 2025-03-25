@@ -6,7 +6,7 @@
         right: 0;
         top: 0;
         bottom: 0;
-        background: #000000a8;
+        background: #1F1F22a8;
         height: 100vh;
         display: none;
     }

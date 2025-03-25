@@ -10205,8 +10205,8 @@ exports.colors = [
 	'#00CCFF',
 	'#3300CC',
 	'#3300FF',
-	'#3333CC',
-	'#3333FF',
+	'#1F1F223CC',
+	'#1F1F223FF',
 	'#3366CC',
 	'#3366FF',
 	'#3399CC',
@@ -16102,7 +16102,7 @@ var Canvas = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function
       key: id + "__eraser-" + i,
       id: id + "__eraser-" + i,
       paths: eraserPath.paths,
-      strokeColor: "#000000",
+      strokeColor: "#1F1F22",
       strokeWidth: eraserPath.strokeWidth
     });
   })), react__WEBPACK_IMPORTED_MODULE_0__.createElement("defs", null, backgroundImage && react__WEBPACK_IMPORTED_MODULE_0__.createElement("pattern", {
@@ -16344,7 +16344,7 @@ var ReactSketchCanvas = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardR
     setUndoStack([]);
     var stroke = {
       drawMode: drawMode,
-      strokeColor: drawMode ? strokeColor : '#000000',
+      strokeColor: drawMode ? strokeColor : '#1F1F22',
       strokeWidth: drawMode ? strokeWidth : eraserWidth,
       paths: [point]
     };
