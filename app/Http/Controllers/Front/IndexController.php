@@ -18,7 +18,7 @@ class IndexController extends Controller
         $bestSellers   = \App\Models\Product::where([
             'is_bestseller' => 'Yes',
             'status'        => 1 // product is enabled (active)
-        ])->limit(4)->inRandomOrder()->get()->toArray(); // show the 'BestSeller' products with RANDOM ORDERING: https://laravel.com/docs/9.x/queries#random-ordering    // using the inRandomOder() method    // Only 'superadmin' can mark a product as 'best seller', but 'vendor' can't    
+        ])->limit(5)->inRandomOrder()->get()->toArray(); // show the 'BestSeller' products with RANDOM ORDERING: https://laravel.com/docs/9.x/queries#random-ordering    // using the inRandomOder() method    // Only 'superadmin' can mark a product as 'best seller', but 'vendor' can't    
         $discountedProducts = \App\Models\Product::where('product_discount', '>' , 0)->where('status', 1)->limit(6)->inRandomOrder()->get()->toArray(); // show 'Discounted Products' with RANDOM ORDERING    
         $featuredProducts   = \App\Models\Product::where([
             'is_featured' => 'Yes',
