@@ -46,7 +46,7 @@
         railVisible : false,
 
         // sets rail color
-        railColor : '#333',
+        railColor : '#1F1F22',
 
         // sets rail opacity
         railOpacity : .2,

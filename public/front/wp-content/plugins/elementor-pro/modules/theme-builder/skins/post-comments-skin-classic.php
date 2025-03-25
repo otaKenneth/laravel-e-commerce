@@ -109,7 +109,7 @@ class Post_Comments_Skin_Classic extends Skin_Base {
 			[
 				'label' => esc_html__( 'Background Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => '#F9F9F9',
 				'selectors' => [
 					'{{WRAPPER}} .elementor-comment' => 'background-color: {{VALUE}};',
 				],

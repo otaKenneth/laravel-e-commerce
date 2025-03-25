@@ -25,7 +25,7 @@
  *                'width' int pixels
  *                'height' int pixels
  *                'opacity' int 0-100
- *                'color' string hex-color #000000-#ffffff
+ *                'color' string hex-color #1F1F22-#F9F9F9
  *                'grayscale' bool
  *                'negate' bool
  *                'crop' bool
@@ -409,7 +409,7 @@ if ( ! class_exists( 'BFI_Thumb_1_3' ) ) {
 		 *                'width' int pixels
 		 *                'height' int pixels
 		 *                'opacity' int 0-100
-		 *                'color' string hex-color #000000-#ffffff
+		 *                'color' string hex-color #1F1F22-#F9F9F9
 		 *                'grayscale' bool
 		 *                'crop' bool
 		 *                'negate' bool

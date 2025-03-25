@@ -10,7 +10,7 @@
                         <span class="icon-menu"></span>
                     </button>
                  
-                    <h3 class="font-weight-bold page--title">
+                    <h3 class="font-weight-bold page--title font-h1">
                     @if ($auth_type == 'vendor')
                         Income Statement
                     @else
@@ -56,7 +56,7 @@
 
                     </div>
 
-                    <h3 class="table-head">
+                    <h3 class="table-head font-h1">
                     @if ($auth_type == 'vendor')
                         Release History
                     @else

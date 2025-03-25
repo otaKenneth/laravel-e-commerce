@@ -1357,7 +1357,7 @@ class Price_Table extends Base_Widget {
 			[
 				'label' => esc_html__( 'Text Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => '#F9F9F9',
 				'separator' => 'before',
 				'selectors' => [
 					'{{WRAPPER}} .elementor-price-table__ribbon-inner' => 'color: {{VALUE}}',

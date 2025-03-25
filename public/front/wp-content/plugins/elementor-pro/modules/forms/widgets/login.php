@@ -497,7 +497,7 @@ class Login extends Base_Widget {
 			[
 				'label' => esc_html__( 'Background Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
-				'default' => '#ffffff',
+				'default' => '#F9F9F9',
 				'selectors' => [
 					'{{WRAPPER}} .elementor-field-group .elementor-field:not(.elementor-select-wrapper)' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} .elementor-field-group .elementor-select-wrapper select' => 'background-color: {{VALUE}};',

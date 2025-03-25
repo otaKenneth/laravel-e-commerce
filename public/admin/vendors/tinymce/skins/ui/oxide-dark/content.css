@@ -22,7 +22,7 @@
   outline-offset: 1px;
 }
 .tox-comments-visible .tox-comment {
-  background-color: #fff0b7;
+  background-color: #F9F9F90b7;
 }
 .tox-comments-visible .tox-comment--active {
   background-color: #ffe168;
@@ -377,7 +377,7 @@ pre[class*="language-"] {
   background-color: inherit;
   border-radius: 100px;
   box-sizing: border-box;
-  color: #fff;
+  color: #F9F9F9;
   content: attr(data-user);
   display: block;
   font-size: 12px;
@@ -423,19 +423,19 @@ pre[class*="language-"] {
 }
 .mce-match-marker {
   background: #aaa;
-  color: #fff;
+  color: #F9F9F9;
 }
 .mce-match-marker-selected {
   background: #39f;
-  color: #fff;
+  color: #F9F9F9;
 }
 .mce-match-marker-selected::-moz-selection {
   background: #39f;
-  color: #fff;
+  color: #F9F9F9;
 }
 .mce-match-marker-selected::selection {
   background: #39f;
-  color: #fff;
+  color: #F9F9F9;
 }
 .mce-content-body img[data-mce-selected],
 .mce-content-body video[data-mce-selected],

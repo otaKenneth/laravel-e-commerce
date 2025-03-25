@@ -146,7 +146,7 @@ function drawStuff() {
       hAxis: {
         title: 'Year',
         titleTextStyle: {
-          color: '#333'
+          color: '#1F1F22'
         }
       },
       colors: ['#76C1FA', '#63CF72', '#F36368', '#FABA66'],

@@ -7,7 +7,7 @@
 #hello-elementor-settings .hello_elementor__header {
   padding: 20px 10px;
   margin-inline-start: -2em;
-  background-color: #ffffff;
+  background-color: #F9F9F9;
   box-shadow: 0 1px 0 rgba(213, 213, 213, 0.5), 0 1px 2px #eeeeee;
 }
 #hello-elementor-settings .hello_elementor__header .hello_elementor__container {
@@ -34,7 +34,7 @@
 #hello-elementor-settings .hello_elementor__main .components-panel__body {
   margin: 1rem 0;
   border: 1px solid #e2e4e7;
-  background: #ffffff;
+  background: #F9F9F9;
 }
 #hello-elementor-settings .hello_elementor__main .components-notice {
   margin: 0;

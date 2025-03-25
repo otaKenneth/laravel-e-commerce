@@ -32,7 +32,7 @@ border: 1px solid #ddd;
 padding: 1px;
 border-radius: 3px;
 display: inline-block;
-color:#FFFFFF;
+color:#F9F9F9;
 
 }
 .ajax-file-upload-bar {
@@ -40,7 +40,7 @@ background-color: #0ba1b5;
 width: 0;
 height: 20px;
 border-radius: 3px;
-color:#FFFFFF;
+color:#F9F9F9;
 
 }
 .ajax-file-upload-percent {
@@ -58,7 +58,7 @@ background-color: #e4685d;
 -webkit-border-radius: 4px;
 border-radius: 4px;
 display: inline-block;
-color: #fff;
+color: #F9F9F9;
 font-family: arial;
 font-size: 13px;
 font-weight: normal;
@@ -77,7 +77,7 @@ border-radius: 4px;
 margin: 0;
 padding: 0;
 display: inline-block;
-color: #fff;
+color: #F9F9F9;
 font-family: arial;
 font-size: 13px;
 font-weight: normal;
@@ -109,7 +109,7 @@ margin: 5px 10px 5px 0px;
   -webkit-box-shadow: 0 2px 0 0 #e8e8e8;
   box-shadow: 0 2px 0 0 #e8e8e8;
   padding: 6px 10px 4px 10px;
-  color: #fff;
+  color: #F9F9F9;
   background: #2f8ab9;
   border: none;
   -moz-box-shadow: 0 2px 0 0 #13648d;
