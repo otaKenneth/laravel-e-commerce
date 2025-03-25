@@ -33,13 +33,13 @@
     font-style: italic;
     margin-left: 20px;
     margin-bottom: 5px;
-    text-shadow: 0 0 1px #00000080;
+    text-shadow: 0 0 1px #1F1F2280;
 }
 </style>
 <div class="policy-wrap">
 <div class="policy-page-outer">
 
-    <h1>Privacy Policy</h1>
+    <h1 class="font-h1">Privacy Policy</h1>
 
     <p>Last updated: February 13, 2024</p>
 

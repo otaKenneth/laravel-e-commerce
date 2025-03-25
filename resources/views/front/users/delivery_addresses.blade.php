@@ -53,13 +53,13 @@
                 >
                     <div class="elementor-widget-container">
                         <p>
-                            <span style="text-decoration: underline; color: #000000;">
-                                <a class="edit-address" style="color: #000000; text-decoration: underline;" data-addressid="{{$delivery_address['id']}}">Edit</a>
+                            <span style="text-decoration: underline; color: #1F1F22;">
+                                <a class="edit-address" style="color: #1F1F22; text-decoration: underline;" data-addressid="{{$delivery_address['id']}}">Edit</a>
                             </span>
                         </p>
                         <p>
-                            <span style="text-decoration: underline; color: #000000;">
-                                <a style="color: #000000; text-decoration: underline;" class="removeAddress" data-addressid="{{$delivery_address['id']}}">Delete</a>
+                            <span style="text-decoration: underline; color: #1F1F22;">
+                                <a style="color: #1F1F22; text-decoration: underline;" class="removeAddress" data-addressid="{{$delivery_address['id']}}">Delete</a>
                             </span>
                         </p>
                     </div>

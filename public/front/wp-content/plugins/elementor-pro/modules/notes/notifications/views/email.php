@@ -17,7 +17,7 @@
 		max-width: 640px;
 		padding: 60px;
 		margin: auto;
-		background-color: #FFF;
+		background-color: #F9F9F9;
 	">
 		<h1 style="padding: 0; margin: 0 0 40px 0; font-weight: normal; font-size: 25px; line-height: 1.35;">
 			<?php
@@ -55,7 +55,7 @@
 				border-radius: 3px;
 				text-decoration: none;
 				padding: 12px 20px;
-				color: #FFF;
+				color: #F9F9F9;
 				background-color: #58D0F5;
 		">
 			<?php echo esc_html__( 'Take me there', 'elementor-pro' ); ?>
@@ -68,7 +68,7 @@
 		max-width: 640px;
 		padding: 60px;
 		margin: 1px auto 0 auto;
-		background-color: #FFF;
+		background-color: #F9F9F9;
 	">
 		<p style="font-size: 12px; padding: 0; margin: 0 0 40px 0; line-height: 1.5;">
 			<?php

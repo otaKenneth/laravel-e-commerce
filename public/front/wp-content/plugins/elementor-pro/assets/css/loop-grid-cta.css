@@ -37,7 +37,7 @@
   margin-bottom: 12px;
 }
 .e-loop-empty-view__box-cta {
-  color: #ffffff;
+  color: #F9F9F9;
   background-color: #9DA5AE;
   padding: 6px 8px;
   border-radius: 3px;
@@ -47,7 +47,7 @@
 }
 .e-loop-empty-view__box-cta:hover {
   background-color: #3f444b;
-  color: #ffffff;
+  color: #F9F9F9;
 }
 .e-loop-empty-view__box--active {
   border: 2px solid #5EEAD4;
@@ -152,7 +152,7 @@
   width: 100%;
 }
 .swiper-pagination-bullets {
-  color: #fff;
+  color: #F9F9F9;
   cursor: default;
   bottom: 0;
   left: 0;

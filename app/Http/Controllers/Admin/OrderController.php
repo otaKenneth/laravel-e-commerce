@@ -580,8 +580,8 @@ class OrderController extends Controller
                     section table thead th {
                         padding: 5px 10px;
                         background: #8BC34A;
-                        border-bottom: 5px solid #FFFFFF;
-                        border-right: 4px solid #FFFFFF;
+                        border-bottom: 5px solid #F9F9F9;
+                        border-right: 4px solid #F9F9F9;
                         text-align: right;
                         color: white;
                         font-weight: 400;
@@ -601,7 +601,7 @@ class OrderController extends Controller
                         background: #E8F3DB;
                         color: #777777;
                         text-align: right;
-                        border-bottom: 5px solid #FFFFFF;
+                        border-bottom: 5px solid #F9F9F9;
                         border-right: 4px solid #E8F3DB;
                     }
                     section table tbody td:last-child {

@@ -485,7 +485,7 @@
 }
 .elementor-custom-embed-play i {
   font-size: 100px;
-  color: #fff;
+  color: #F9F9F9;
   text-shadow: 1px 0 6px rgba(0, 0, 0, 0.3);
 }
 .elementor-custom-embed-play svg {
@@ -2278,13 +2278,13 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   font-size: 15px;
   padding: 12px 24px;
   border-radius: 3px;
-  color: #fff;
+  color: #F9F9F9;
   fill: #fff;
   text-align: center;
   transition: all 0.3s;
 }
 .elementor-button:hover, .elementor-button:focus, .elementor-button:visited {
-  color: #fff;
+  color: #F9F9F9;
 }
 .elementor-button-content-wrapper {
   display: flex;
@@ -2371,7 +2371,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
 .elementor-view-stacked .elementor-icon {
   padding: 0.5em;
   background-color: #69727D;
-  color: #fff;
+  color: #F9F9F9;
   fill: #fff;
 }
 
@@ -2784,7 +2784,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
 .elementor-lightbox .swiper-container .swiper-pagination-fraction {
   width: -moz-max-content;
   width: max-content;
-  color: #ffffff;
+  color: #F9F9F9;
 }
 .elementor-lightbox .elementor-swiper-button:focus {
   outline-width: 1px;
@@ -2889,7 +2889,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   min-width: 200px;
   left: 2.8em;
   top: 3em;
-  background-color: #fff;
+  background-color: #F9F9F9;
   border-radius: 3px;
   padding: 14px 20px;
   transform: scale(0);
@@ -3303,8 +3303,8 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   --n-tabs-border-color: #D5D8DC;
   --n-tabs-content-display: flex;
   --n-tabs-title-color: var(--e-global-color-secondary, var(--n-tabs-color-secondary-fallback));
-  --n-tabs-title-color-hover: #ffffff;
-  --n-tabs-title-color-active: #ffffff;
+  --n-tabs-title-color-hover: #F9F9F9;
+  --n-tabs-title-color-active: #F9F9F9;
   --n-tabs-title-background-color: #F1F2F3;
   --n-tabs-title-background-color-hover: var(--e-global-color-accent, var(--n-tabs-color-accent-fallback));
   --n-tabs-title-background-color-active: var(--e-global-color-accent, var(--n-tabs-color-accent-fallback));
@@ -3331,7 +3331,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   --n-tabs-title-transition: 0.3s;
   --n-tabs-icon-color: var(--e-global-color-secondary, var(--n-tabs-color-secondary-fallback));
   --n-tabs-icon-color-hover: var(--n-tabs-title-color-hover);
-  --n-tabs-icon-color-active: #ffffff;
+  --n-tabs-icon-color-active: #F9F9F9;
   --n-tabs-icon-gap: 5px;
   width: 100%;
   max-width: 100%; /* Fix issue with new created n-tabs inside n-tabs with overflow */

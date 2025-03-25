@@ -543,7 +543,7 @@
 #adminmenu #toplevel_page_elementor a[href="admin.php?page=go_elementor_pro"] {
   font-weight: 600;
   background-color: #93003f;
-  color: #ffffff;
+  color: #F9F9F9;
   margin: 3px 10px 0;
   display: block;
   text-align: center;
@@ -735,7 +735,7 @@ body .block-editor #elementor-switch-mode .button i {
   font-family: Sans-serif;
 }
 #elementor-go-to-edit-page-link:hover {
-  background-color: #ffffff;
+  background-color: #F9F9F9;
 }
 #elementor-go-to-edit-page-link:focus {
   box-shadow: none;
@@ -968,7 +968,7 @@ body.post-type-attachment table.media .column-title .media-icon img[src$=".svg"]
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
-  color: #ffffff;
+  color: #F9F9F9;
   border: 0;
   text-decoration: none;
   background: var(--e-button-context-color);
@@ -979,7 +979,7 @@ body.post-type-attachment table.media .column-title .media-icon img[src$=".svg"]
   transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .e-button:active, .e-button:hover, .e-button:focus {
-  color: #ffffff;
+  color: #F9F9F9;
   text-decoration: none;
   background: var(--e-button-context-color-dark);
 }
@@ -1157,7 +1157,7 @@ fieldset:disabled a.e-button {
   line-height: 1.5rem;
   border-radius: 100px;
   background: var(--e-notice-context-color);
-  color: #fff;
+  color: #F9F9F9;
   text-shadow: 0 0 3px var(--e-notice-context-color-dark), 0 0 1px var(--e-notice-context-color-dark), 0 0 1px var(--e-notice-context-color-dark);
 }
 .e-notice__content {
@@ -1200,7 +1200,7 @@ fieldset:disabled a.e-button {
   font-weight: bold;
 }
 .e-notice__dismiss:focus:before {
-  color: #fff;
+  color: #F9F9F9;
   background: var(--e-notice-dismiss-color);
   outline: none;
 }
@@ -1314,7 +1314,7 @@ fieldset:disabled a.e-button {
 }
 #elementor-system-info #elementor-usage-recalc {
   font-size: 12px;
-  color: #ffffff;
+  color: #F9F9F9;
   background-color: #9DA5AE;
   padding: 4px 18px 5px 18px;
   border-radius: 3px;
@@ -1679,7 +1679,7 @@ fieldset:disabled a.e-button {
   display: inline-block;
   margin-block-start: 30px;
   padding: 30px 50px;
-  background-color: #FFFFFF;
+  background-color: #F9F9F9;
   border: 1px solid #e5e5e5;
 }
 
@@ -2057,7 +2057,7 @@ fieldset:disabled a.e-button {
   padding: 0;
 }
 #elementor-role-manager .elementor-role-row {
-  background: #ffffff;
+  background: #F9F9F9;
   color: #3f444b;
   margin-block-end: 2px;
 }
@@ -2185,7 +2185,7 @@ fieldset:disabled a.e-button {
 }
 .e-experiment__title__tag {
   background: #0085ba;
-  color: #ffffff;
+  color: #F9F9F9;
   font-size: 0.8em;
   padding: 3px 6px;
   line-height: 1;
