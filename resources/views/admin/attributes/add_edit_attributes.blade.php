@@ -104,9 +104,19 @@
                                 <div class="form-group">
                                     {{-- Show the product image, if any (if exits) --}}
                                     @if (!empty($product['product_image']))
-                                        <img style="width: 120px" src="{{ $getImage('front/images/product_images/small/', $product['product_image']) }}"> {{--  the 'small' image --}}
+                                        <img style="width: 120px;
+                                                    height: auto;
+                                                    aspect-ratio: 1 / 1;
+                                                    object-fit: cover;
+                                                    border-radius: 10px;" 
+                                                    src="{{ $getImage('front/images/product_images/small/', $product['product_image']) }}"> {{--  the 'small' image --}}
                                     @else
-                                        <img style="width: 120px" src="{{ $getImage('front/images/product_images/small/', 'no-image.png') }}"> {{--  the 'small' image --}}
+                                        <img style="width: 120px;
+                                                    height: auto;
+                                                    aspect-ratio: 1 / 1;
+                                                    object-fit: cover;
+                                                    border-radius: 10px;" 
+                                                    src="{{ $getImage('front/images/product_images/small/', 'no-image.png') }}"> {{--  the 'small' image --}}
                                     @endif
                                 </div>
 

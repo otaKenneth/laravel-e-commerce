@@ -577,8 +577,20 @@
 .pdp-min-with-btn{
     min-width: 180px;
 }
+.elementor-491 .elementor-element.elementor-element-72ef1d2 img{
+	width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    object-fit: cover !important;
+	border-radius: 10px !important;
+}
+.elementor-491 .elementor-element.elementor-element-72ef1d2 a{
+	width: 100%;
+}
 
 @media (max-width: 767px){
+    .elementor-682 .elementor-element.elementor-element-72ef1d2 img{
+		width: 100% !important;
+	}
     #form-productReview .alert ul{
         padding-left: 20px;
         padding-right: 20px;
@@ -590,6 +602,9 @@
     #form-productReview .alert.success{
         line-height: 160%;
         padding: 12px 25px;
+    }
+    .elementor-491 .elementor-element.elementor-element-9707fe2 .elementor-heading-title{
+        font-size: 26px;
     }
 }
 

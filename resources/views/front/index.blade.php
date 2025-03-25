@@ -248,7 +248,7 @@
 
         <!-- Top Products -->
         @if (count($bestSellers) > 0)
-            <div class="elementor-element elementor-element-943f922 e-flex e-con-boxed e-con e-parent" data-id="943f922"
+            <div class="elementor-element elementor-element-943f922 e-flex e-con-boxed e-con e-parent bestsellers-outer" data-id="943f922"
                 data-element_type="container"
                 data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
                 data-core-v316-plus="true">
@@ -273,7 +273,7 @@
                             data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;container_type&quot;:&quot;flex&quot;}">
                             <div class="elementor-element elementor-element-70c91c9 elementor-widget elementor-widget-image"
                                 data-id="70c91c9" data-element_type="widget" data-widget_type="image.default">
-                                <div style="padding: 0 10px">
+                                <div style="padding: 0 0px" class="imginner">
                                     <a href="{{ url('product/' . $product['id']) }}">
                                         <img decoding="async" width="329" height="329"
                                             src="{{ $product_image_path }}"

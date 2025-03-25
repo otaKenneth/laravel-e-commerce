@@ -122,10 +122,54 @@
     object-fit: cover;
 	aspect-ratio: 1920 / 444;
 }
-
+.elementor-15 .elementor-element.elementor-element-70c91c9 img {
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    object-fit: cover !important;
+	border-radius: 10px !important;
+}
+.elementor-15 .elementor-element.elementor-element-70c91c9 a{
+	width: 100% !important;
+}
 @media (max-width: 767px){
-
 	.elementor-15 .elementor-element.elementor-element-7ab35dc > .elementor-widget-container{
 		padding-bottom: 0 !important;
 	}
+	.elementor-15 .elementor-element.elementor-element-70c91c9 img{
+		width: 100% !important;
+	}
 }
+
+
+/*MAKE 10 products best seller section*/
+.elementor-15 .bestsellers-outer .e-con-inner{
+	--gap: 20px 50px !important;
+}
+
+@media (min-width: 768px){
+	.elementor-15 .bestsellers-outer .elementor-element.elementor-element-6b25072{
+		--width: calc(20% - 40px) !important;
+		width: calc(20% - 40px) !important;
+	}
+}
+@media (max-width: 1024px) and (min-width: 768px) {
+	.elementor-15 .bestsellers-outer .elementor-element.elementor-element-6b25072{
+		--width: calc(33.3333% - 20px) !important;
+		width: calc(33.3333% - 20px) !important;
+	}
+	.elementor-15 .bestsellers-outer .e-con-inner{
+		--gap: 10px 30px !important;
+	}
+}
+@media (max-width: 767px){
+	.elementor-15 .bestsellers-outer .e-con-inner{
+		--gap: 20px 20px !important;
+	}
+	.elementor-15 .bestsellers-outer .elementor-element.elementor-element-6b25072{
+		--width: calc(50% - 10px) !important;
+		width: calc(50% - 10px) !important;
+	}
+}
+.elementor-15 .bestsellers-outer .imginner{
+	box-shadow: 0px 0px 20px 0px rgb(0 0 0 / 14%) !important;
+}	
