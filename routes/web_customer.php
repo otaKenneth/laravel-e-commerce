@@ -16,7 +16,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
         ->name('listing');
 
     // Vendor Login/Register
-    Route::get('vendor/login-register', 'VendorController@loginRegister'); // render vendor login_register.blade.php page
+    Route::get('np', 'VendorController@loginRegister'); // render vendor login_register.blade.php page
 
     Route::get('vendor/register', 'VendorController@create')->name('front.vendor.account.create');
     // Vendor Register
