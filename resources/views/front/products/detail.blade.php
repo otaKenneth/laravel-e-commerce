@@ -498,7 +498,7 @@
                                             >
                                             
                                         </div>
-                                        <span class="stock--label">Stock: {{ $curStock }}</span>
+                                        <span class="stock--label">Stock: <b id="curr-stock-val">{{ $curStock }}</b></span>
 
                                         <div style="height: 0; margin-bottom: 0;" class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_bcf74c7 elementor-col-100">
                                             <br>				
