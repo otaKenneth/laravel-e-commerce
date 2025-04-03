@@ -58,7 +58,8 @@ class ProductsController extends Controller
             if (is_array($result)) extract($result);
             else return redirect('/products/collection/all');
 
-            $collection = $collection->paginate(12);
+            //$collection = $collection->paginate(12);
+            $collection = $collection->inRandomOrder()->paginate(12); //Randomize all the product display
             // dd($filters);
             return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner'));
         } catch (\Exception $e) {
@@ -268,7 +269,8 @@ class ProductsController extends Controller
         // Get all vendor products
         // $collection = Product::with('brand', 'vendor', 'attributes')->where('vendor_id', $vendor->id)->where('status', 1); // Eager Loading (using with() method): https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'brand' is the relationship method name in Product.php model that is being Eager Loaded
 
-        $collection = $vendor->products();
+        //$collection = $vendor->products();
+        $collection = $vendor->products()->inRandomOrder(); //Randomizee vendor product display.
 
         $catIds = $vendor->products()->pluck('category_id');
         $catDetails = Category::whereIn('id', $catIds)->where([
