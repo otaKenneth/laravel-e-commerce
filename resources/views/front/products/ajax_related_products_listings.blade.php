@@ -135,6 +135,7 @@
                                 >
                             </div>
                         </div>
+                        @if (!empty($product['vendor']['vendorbusinessdetails']))
                         <div
                             class="elementor-element elementor-element-de8aaff elementor-widget elementor-widget-heading"
                             data-id="de8aaff"
@@ -145,6 +146,7 @@
                                 <h5 class="elementor-heading-title elementor-size-default">{{$product['vendor']['vendorbusinessdetails']['shop_name']}}</h5>
                             </div>
                         </div>
+                        @endif
                     </div>
                     <div
                         class="elementor-element elementor-element-9c2e47e elementor-widget elementor-widget-rating"
