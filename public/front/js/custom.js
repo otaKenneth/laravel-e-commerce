@@ -53,12 +53,59 @@ function addSubscriber() {
     });
 }
 
+// infinite scroll for merchants page
+let page = 2;  // since page 1 is loaded
+let loading = false;
+let observer;
+
+function initializeObserver() {
+    let target = document.getElementById("load-more-merchants-trigger");
+
+    if (!target) return; 
+
+    let observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                console.log("intersecting");
+                loadMoreVendors();
+            }
+        });
+    }, { threshold: 1.0 });
+
+    observer.observe(target);
+}
+
+function loadMoreVendors() {
+    if (loading) return;
+    loading = true;
+
+    // console.log('loading more vendors 2')
+
+    fetch("?page=" + page, {
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.html.trim() === "") {
+            observer.disconnect(); 
+        } else {
+            let newVendors = data.html;
+            document.getElementById("vendor-list").insertAdjacentHTML("beforeend", newVendors);
+            page = data.nextPage || page;  
+        }
+    })
+    .catch(error => console.error("Error loading vendors:", error))
+    .finally(() => loading = false);
+}
 
 
 // jQuery
 $(document).ready(function() {
     // Show our Preloader/Loader/Loading Page/Preloading Screen ALL THE TIME FOR TESTING!
     // $('.loader').show();
+
+    // infinite scroll for merchantes page
+    initializeObserver()
 
 
     // the <select> box in front/products/detail.blade.php (to show the correct related `price` and `stock` depending on the selected `size` (from the `products_attributes` table))

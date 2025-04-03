@@ -227,7 +227,7 @@
                                 >
                                     <div class="e-con-inner"></div>
                                 </div>
-                                <div
+                                <!-- <div
                                     class="elementor-element elementor-element-8d1e524 e-flex e-con-boxed e-con e-child pagination--vendor"
                                     data-id="8d1e524"
                                     data-element_type="container"
@@ -236,7 +236,8 @@
                                     <div class="e-con-inner">
                                         {{ $vendors_paginated->links() }}
                                     </div>
-                                </div>
+                                </div> -->
+                                <div id="load-more-merchants-trigger"></div>
                                 <div
                                     class="elementor-element elementor-element-f8de5f2 e-flex e-con-boxed e-con e-child"
                                     data-id="f8de5f2"

@@ -23,7 +23,7 @@ class VendorController extends Controller
         return view('front.vendors.vendor_register')->with(compact('countries'));
     }
 
-    public function vendorList() {
+    public function vendorList(Request $request) {
         $vendors = Vendor::where('status', 1)
             ->with('vendorbusinessdetails')
             ->withSum('vendorProductOrders', 'product_qty')
@@ -40,6 +40,13 @@ class VendorController extends Controller
             $currentPage, 
             ['path' => request()->url()]
         );
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('front.pages.merchants', compact('vendors_paginated'))->render(),
+                'nextPage' => $vendors_paginated->hasMorePages() ? $currentPage + 1 : null
+            ]);
+        }
     
         return view('front.pages.merchants')->with(compact('vendors_paginated'));
     }    
