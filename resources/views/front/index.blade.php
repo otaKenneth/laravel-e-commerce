@@ -524,15 +524,36 @@
                         <div class="elementor-element elementor-element-1cd7c54 elementor-widget elementor-widget-text-editor"
                             data-id="1cd7c54" data-element_type="widget" data-widget_type="text-editor.default">
                             <div class="elementor-widget-container" style="display: flex; flex-direction: column; align-items: flex-start;">
-                                <p style="font-size: 18px; line-height: 0.5;; color: #000;">₱{{ $getDiscountPrice }}</p>
-                                <em style="text-decoration: line-through; font-size: 14px; opacity: 0.7; color: #2d2d2d;margin-left: 5px; line-height: 0.5;margin-top:5px">₱{{ number_format($product['product_price'], 2) }}</em>
+                                <div class="price-container">
+                                    <style>
+                                        .price-container {
+                                            display: flex;
+                                            flex-direction: column;
+                                            align-items: flex-start;
+                                        }
+    
+                                        .price-container p {
+                                            font-size: 18px;
+                                            line-height: 0.5;
+                                            color: #000;
+                                        }
+    
+                                        .price-container em {
+                                            text-decoration: line-through;
+                                            font-size: 14px;
+                                            opacity: 0.7;
+                                            color: #2d2d2d;
+                                            margin-left: 5px;
+                                            line-height: 0.5;
+                                            margin-top: 5px;
+                                        }
+                                    </style>
+                                <p>₱{{ $getDiscountPrice }}</p>
+                                <em>₱{{ number_format($product['product_price'], 2) }}</em>
+                                </div>
+                                
                             </div>
-                        </div>
-                        {{-- <div class="elementor-element elementor-element-fa07c3b elementor-widget elementor-widget-text-editor" data-id="fa07c3b" data-element_type="widget" data-widget_type="text-editor.default">
-                            <div class="elementor-widget-container" style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 25px;">
-                                <em style="text-decoration: line-through; font-size: 14px; opacity: 0.7;">₱{{ number_format($product['product_price'], 2) }}</em>
-                            </div>
-                        </div> --}}
+                        </div> 
                         @else
                         <div class="elementor-element elementor-element-1cd7c54 elementor-widget elementor-widget-text-editor"
                             data-id="1cd7c54" data-element_type="widget" data-widget_type="text-editor.default">
@@ -541,7 +562,6 @@
                             </div>
                         </div>
                         @endif
-
 
                         <!-- Ratings -->
                         <div class="custom_class_rating elementor-element elementor-element-036fcb9 elementor-widget elementor-widget-rating"
