@@ -497,7 +497,7 @@
                         data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;container_type&quot;:&quot;flex&quot;}">
                         <div class="elementor-element elementor-element-bfbcc32 elementor-widget__width-inherit elementor-widget elementor-widget-image"
                             data-id="bfbcc32" data-element_type="widget" data-widget_type="image.default">
-                            <div class="elementor-widget-container" style="border-radius: 2px !important; box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1) !important;">
+                            <div class="elementor-widget-container">
                                 <a href="{{ url('product/' . $product['id']) }}">
                                     <img loading="lazy" decoding="async" width="800" height="968"
                                         src="{{ $product_image_path }}" class="attachment-large size-large wp-image-422"
