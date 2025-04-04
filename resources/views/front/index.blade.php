@@ -503,7 +503,8 @@
                                         src="{{ $product_image_path }}" class="attachment-large size-large wp-image-422"
                                         alt=""
                                         srcset="{{ $product_image_path }} 846w, {{ $product_image_path }} 248w, {{ $product_image_path }} 768w, {{ $product_image_path }} 879w"
-                                        sizes="(max-width: 800px) 100vw, 800px">
+                                        sizes="(max-width: 800px) 100vw, 800px"
+                                    >
                                 </a>
                             </div>
                         </div>
