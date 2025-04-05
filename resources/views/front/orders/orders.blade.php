@@ -56,8 +56,7 @@
                     @endphp
                     @foreach ($order->orders_products as $product)
                     @php
-                        $product_image_path = $getImage('front/images/product_images/small/', $product['product']['product_image']);
-                       
+                        $product_image_path = $getImage('front/images/product_images/small/', $product['product']['product_image']);                       
                     @endphp
                     <div
                         class="elementor-element elementor-element-958a31e e-con-full e-flex e-con e-child"
