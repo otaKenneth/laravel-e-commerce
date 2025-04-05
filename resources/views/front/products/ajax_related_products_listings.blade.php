@@ -148,6 +148,12 @@
                         </div>
                         @endif
                     </div>
+                    @php
+                    $marked = \App\Models\Product::product_computed_ratings($product['id']);
+                    @endphp
+                    @if($marked == 0 || $marked == null)
+                        <span style="display: block; width: 100%; text-align: center; font-size: 14px; color: #666; padding: 5px 0;">No reviews</span>
+                    @else
                     <div
                         class="elementor-element elementor-element-9c2e47e elementor-widget elementor-widget-rating"
                         data-id="9c2e47e"
@@ -171,36 +177,34 @@
                                     aria-label="Rated 4 out of 5"
                                 >
                                     @for ($x = 0; $x < 5; $x++)
-                                    @php
-                                        $marked = \App\Models\Product::product_computed_ratings($product['id']);
-                                    @endphp
-                                    <div class="e-icon">
-                                        <div class="e-icon-wrapper e-icon-marked" style="{{ ($x < $marked && $marked > 0) ? '':'--e-rating-icon-marked-width: 0%;' }}">
-                                            <svg
-                                                aria-hidden="true"
-                                                class="e-font-icon-svg e-eicon-star"
-                                                viewbox="0 0 1000 1000"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
-                                            </svg>
+                                        <div class="e-icon">
+                                            <div class="e-icon-wrapper e-icon-marked" style="{{ ($x < $marked && $marked > 0) ? '':'--e-rating-icon-marked-width: 0%;' }}">
+                                                <svg
+                                                    aria-hidden="true"
+                                                    class="e-font-icon-svg e-eicon-star"
+                                                    viewBox="0 0 1000 1000"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="e-icon-wrapper e-icon-unmarked">
+                                                <svg
+                                                    aria-hidden="true"
+                                                    class="e-font-icon-svg e-eicon-star"
+                                                    viewBox="0 0 1000 1000"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
+                                                </svg>
+                                            </div>
                                         </div>
-                                        <div class="e-icon-wrapper e-icon-unmarked">
-                                            <svg
-                                                aria-hidden="true"
-                                                class="e-font-icon-svg e-eicon-star"
-                                                viewbox="0 0 1000 1000"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
                                     @endfor
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
