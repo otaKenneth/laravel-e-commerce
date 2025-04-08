@@ -13,6 +13,7 @@
             href="#!"
             wire:click="navigationChatClicked('{{$chat->id}}', '{{$chat->user}}')"
         >
+        <style>.elementor-element-17994e6{margin-top: 4%;}</style>
             <div class="e-con-inner">
                 <div
                     class="elementor-element elementor-element-7100070 e-con-full e-flex e-con e-child"
