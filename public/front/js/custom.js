@@ -63,7 +63,7 @@ function initializeObserver() {
 
     if (!target) return; 
 
-    let observer = new IntersectionObserver((entries) => {
+    observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 console.log("intersecting");
@@ -92,7 +92,14 @@ function loadMoreVendors() {
             let newVendors = data.html;
             console.log(newVendors)
             document.getElementById("vendor-list-1").insertAdjacentHTML("beforeend", newVendors);
-            page = data.nextPage || page;  
+
+            if (data.nextPage) {
+                page = data.nextPage;
+                console.log('Next page will be', page);
+            } else {
+                // No more pages
+                if (observer) observer.disconnect();
+            }
         }
     })
     .catch(error => console.error("Error loading vendors:", error))
