@@ -4,7 +4,7 @@
     data-element_type="container"
     data-settings="{&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}">
     <div class="e-con-inner">
-        @foreach ($chats as $chat)
+        @foreach ($chats->reverse() as $chat)
         <a
             class="elementor-element elementor-element-17994e6 e-flex e-con-boxed e-con e-child"
             data-id="17994e6"
@@ -86,9 +86,15 @@
                             data-element_type="widget"
                             data-widget_type="text-editor.default"
                         >
-                            <div class="elementor-widget-container">
-                                <p>01/24</p>
-                            </div>
+                        <div class="elementor-widget-container">
+                            <p>
+                                @if($chat->messages->last() && $chat->messages->last()->created_at)
+                                    {{ $chat->messages->last()->created_at->format('m/d/y') }}
+                                @else
+                                    No Date Available
+                                @endif
+                            </p>
+                        </div>                        
                         </div>
                     </div>
                 </div>
