@@ -87,49 +87,7 @@ class VendorController extends Controller
         }
         
         return view('front.pages.merchants')->with(compact('vendors_paginated'));
-    }
-
-    // public function vendorList(Request $request) {
-
-    //     $seed = $request->session()->get('vendor_seed');
-    //     if (!$seed || $request->has('refresh')) {
-    //         $seed = mt_rand();
-    //         $request->session()->put('vendor_seed', $seed);
-    //     }
-
-    //     // rmemoved randomizing
-    //     // $vendors = Vendor::where('status', 1)
-    //     //     ->with('vendorbusinessdetails')
-    //     //     ->withSum('vendorProductOrders', 'product_qty')
-    //     //     ->orderByRaw("RAND($seed)")
-    //     //     ->get();
-    //         // ->shuffle(); // Shuffle the results
-    
-    //     // Manually paginate the shuffled collection
-    //     $perPage = 10;
-    //     $currentPage = request()->get('page', 1); // Get the current page from query parameters
-    //     $vendors_paginated = Vendor::where('status', 1)
-    //         ->with('vendorbusinessdetails')
-    //         ->withSum('vendorProductOrders', 'product_qty')
-    //         ->orderByRaw("RAND($seed)")
-    //         ->paginate(10);
-    //     // $vendors_paginated = new \Illuminate\Pagination\LengthAwarePaginator(
-    //     //     $vendors->forPage($currentPage, $perPage), 
-    //     //     $vendors->count(), 
-    //     //     $perPage, 
-    //     //     $currentPage, 
-    //     //     ['path' => request()->url()]
-    //     // );
-
-    //     if ($request->ajax()) {
-    //         return response()->json([
-    //             'html' => view('front.partials.vendor-cards', compact('vendors_paginated'))->render(),
-    //             'nextPage' => $vendors_paginated->hasMorePages() ? $currentPage + 1 : null
-    //         ]);
-    //     }
-    
-    //     return view('front.pages.merchants')->with(compact('vendors_paginated'));
-    // }    
+    } 
 
     public function vendorRegister(Request $request) { // the register HTML form submission in vendor login_register.blade.php page    
         if ($request->isMethod('post')) { // if the register form is submitted
