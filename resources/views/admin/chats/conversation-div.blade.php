@@ -72,7 +72,7 @@
     data-id="d05fb94"
     data-element_type="container"
     data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}">
-    <div class="e-con-inner" id="messages" style="display: flex; flex-direction: column-reverse; height: 100%; overflow-y: auto;">
+    <div class="e-con-inner" id="messages" style="display: flex; flex-direction: column-reverse; flex-grow: 1; height: auto;">
         @foreach ($activeChat->messages->reverse() as $message)
             @if (strpos(strtolower($message->from), 'user') > -1)
             <div

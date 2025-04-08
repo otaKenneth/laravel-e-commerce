@@ -21,9 +21,9 @@
     }
 }/* End custom CSS */
 /* Start custom CSS for container, class: .elementor-element-d05fb94 */.elementor-1086 .elementor-element.elementor-element-d05fb94{
-    max-height: 600px;
+    max-height: 570px;
     overflow: auto;
-    height: 600px;
+    height: 570px;
 }
 @media (max-width: 767px){
     .elementor-1086 .elementor-element.elementor-element-d05fb94{
@@ -94,10 +94,12 @@
 
 
 /* CUSTOM CSS NINO FELICIANO */
-#container-chat-list,
-#container-chat-convo{
+#container-chat-list{
 	overflow: auto;
 }
+/* #container-chat-convo{
+	overflow: auto;
+} */
 .admin-chat{
 	width: 100%;
 }
