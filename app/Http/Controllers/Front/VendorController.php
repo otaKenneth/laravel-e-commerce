@@ -43,7 +43,7 @@ class VendorController extends Controller
 
         if ($request->ajax()) {
             return response()->json([
-                'html' => view('front.pages.merchants', compact('vendors_paginated'))->render(),
+                'html' => view('front.partials.vendor-cards', compact('vendors_paginated'))->render(),
                 'nextPage' => $vendors_paginated->hasMorePages() ? $currentPage + 1 : null
             ]);
         }

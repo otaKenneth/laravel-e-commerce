@@ -46,9 +46,10 @@
                             data-element_type="container"
                             data-settings="{&quot;container_type&quot;:&quot;grid&quot;,&quot;content_width&quot;:&quot;boxed&quot;,&quot;grid_outline&quot;:&quot;yes&quot;,&quot;grid_columns_grid&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:3,&quot;sizes&quot;:[]},&quot;grid_columns_grid_tablet&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;grid_columns_grid_mobile&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:1,&quot;sizes&quot;:[]},&quot;grid_rows_grid&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:2,&quot;sizes&quot;:[]},&quot;grid_rows_grid_tablet&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;grid_rows_grid_mobile&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;grid_auto_flow&quot;:&quot;row&quot;,&quot;grid_auto_flow_tablet&quot;:&quot;row&quot;,&quot;grid_auto_flow_mobile&quot;:&quot;row&quot;}"
                         >
-                            <div class="e-con-inner">
-                                @foreach ($vendors_paginated as $vendor)
-                                <div
+                            <div class="e-con-inner" id="vendor-list-1">
+                                @include('front.partials.vendor-cards')
+                                <!-- @foreach ($vendors_paginated as $vendor) -->
+                                <!-- <div
                                     class="elementor-element elementor-element-8c38852 e-flex e-con-boxed e-con e-child"
                                     data-id="8c38852"
                                     data-element_type="container"
@@ -83,7 +84,7 @@
                                             </div>
                                         </div>
 
-                                        <!--
+                                        
                                         <div
                                             class="elementor-element elementor-element-77f2f47 elementor-widget elementor-widget-text-editor"
                                             data-id="77f2f47"
@@ -98,7 +99,7 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        -->
+                                        
 
                                         <div
                                             class="elementor-element elementor-element-0d99fff e-flex e-con-boxed e-con e-child"
@@ -217,8 +218,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                @endforeach
+                                </div> -->
+                                <!-- @endforeach -->
                                 <div
                                     class="elementor-element elementor-element-0899f6b e-flex e-con-boxed e-con e-child"
                                     data-id="0899f6b"

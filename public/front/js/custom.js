@@ -90,7 +90,8 @@ function loadMoreVendors() {
             observer.disconnect(); 
         } else {
             let newVendors = data.html;
-            document.getElementById("vendor-list").insertAdjacentHTML("beforeend", newVendors);
+            console.log(newVendors)
+            document.getElementById("vendor-list-1").insertAdjacentHTML("beforeend", newVendors);
             page = data.nextPage || page;  
         }
     })
