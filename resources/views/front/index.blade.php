@@ -350,7 +350,7 @@
                     data-id="9b04cf1" data-element_type="widget"
                     data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;}" data-widget_type="heading.default">
                     <div class="elementor-widget-container">
-                        <h2 class="elementor-heading-title elementor-size-default">RECENTLY ADDED</h2>
+                        <h2 class="font-heading text-primary text-2xl">RECENTLY ADDED</h2>
                     </div>
                 </div>
                 <div class="elementor-element elementor-element-95c34ed elementor-widget-divider--view-line elementor-widget elementor-widget-divider"
