@@ -79,26 +79,26 @@ function loadMoreVendors() {
     if (loading) return;
     loading = true;
 
-    // console.log('loading more vendors 2')
-
     fetch("?page=" + page, {
         headers: { "X-Requested-With": "XMLHttpRequest" }
     })
     .then(response => response.json())
     .then(data => {
         if (data.html.trim() === "") {
-            observer.disconnect(); 
+            if (observer) observer.disconnect();
+            document.getElementById("no-more-merchants").style.display = "block";
+
         } else {
             let newVendors = data.html;
-            console.log(newVendors)
             document.getElementById("vendor-list-1").insertAdjacentHTML("beforeend", newVendors);
 
             if (data.nextPage) {
                 page = data.nextPage;
-                console.log('Next page will be', page);
+                
             } else {
-                // No more pages
                 if (observer) observer.disconnect();
+                document.getElementById("no-more-merchants").style.display = "block";
+
             }
         }
     })

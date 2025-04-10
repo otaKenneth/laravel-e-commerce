@@ -45,11 +45,15 @@
                             data-id="b3ddacb"
                             data-element_type="container"
                             data-settings="{&quot;container_type&quot;:&quot;grid&quot;,&quot;content_width&quot;:&quot;boxed&quot;,&quot;grid_outline&quot;:&quot;yes&quot;,&quot;grid_columns_grid&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:3,&quot;sizes&quot;:[]},&quot;grid_columns_grid_tablet&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;grid_columns_grid_mobile&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:1,&quot;sizes&quot;:[]},&quot;grid_rows_grid&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:2,&quot;sizes&quot;:[]},&quot;grid_rows_grid_tablet&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;grid_rows_grid_mobile&quot;:{&quot;unit&quot;:&quot;fr&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;grid_auto_flow&quot;:&quot;row&quot;,&quot;grid_auto_flow_tablet&quot;:&quot;row&quot;,&quot;grid_auto_flow_mobile&quot;:&quot;row&quot;}"
+                            id='vendor-container'
                         >
                             <div class="e-con-inner" id="vendor-list-1">
                                 @include('front.partials.vendor-cards')
                         </div>
-                        <div id="load-more-merchants-trigger"></div>
+                            <div id="no-more-merchants" class="no-more-merchants" style="display:none; width:100%; clear:both; text-align:center; padding:1em; margin-top:2em; color:gray;">
+                                No more merchants to load.
+                            </div>
+                            <div id="load-more-merchants-trigger"></div>
                         </div>
                     </div>
                 </div>
