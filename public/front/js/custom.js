@@ -79,6 +79,8 @@ function loadMoreVendors() {
     if (loading) return;
     loading = true;
 
+    document.getElementById("merchant-loading-indicator").style.display = "flex";
+    
     fetch("?page=" + page, {
         headers: { "X-Requested-With": "XMLHttpRequest" }
     })
@@ -103,7 +105,10 @@ function loadMoreVendors() {
         }
     })
     .catch(error => console.error("Error loading vendors:", error))
-    .finally(() => loading = false);
+    .finally(() => {
+        loading = false
+        document.getElementById("merchant-loading-indicator").style.display = "none";
+    });
 }
 
 

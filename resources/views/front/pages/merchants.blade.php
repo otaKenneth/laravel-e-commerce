@@ -49,10 +49,16 @@
                         >
                             <div class="e-con-inner" id="vendor-list-1">
                                 @include('front.partials.vendor-cards')
-                        </div>
+                            </div>
+
+                            <div id="merchant-loading-indicator" class="merchant-loading-dots" style="display: none;">
+                                <span></span><span></span><span></span>
+                            </div>
+
                             <div id="no-more-merchants" class="no-more-merchants" style="display:none; width:100%; clear:both; text-align:center; padding:1em; margin-top:2em; color:gray;">
                                 No more merchants to load.
                             </div>
+
                             <div id="load-more-merchants-trigger"></div>
                         </div>
                     </div>
