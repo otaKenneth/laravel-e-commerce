@@ -124,60 +124,83 @@
 
 
 
-                            <div class="form-group">
-                                <label for="categorySelection" class="block font-medium text-gray-700">Select Coupon Scope:</label>
-                                <div class="flex space-x-3 my-2">
-                                    <button type="button" class="filter-btn px-4 py-2 border rounded-lg transition-all focus:outline-none"
-                                        data-filter="all">
-                                        All
-                                    </button>
-                                    <button type="button" class="filter-btn px-4 py-2 border rounded-lg transition-all focus:outline-none"
-                                        data-filter="category">
-                                        Category
-                                    </button>
-                                    <button type="button" class="filter-btn px-4 py-2 border rounded-lg transition-all focus:outline-none"
-                                        data-filter="subcategory">
-                                        Sub-category
-                                    </button>
+                            <div class="form-group relative">
+                                <label for="categorySelection" class="block font-medium text-gray-700 mb-2">Select Coupon
+                                    Scope:</label>
+                            
+                                <div class="flex space-x-2 mb-4">
+                                    <button type="button"
+                                        class="filter-btn px-3 py-2 text-sm border rounded-md focus:outline-none bg-indigo-500 text-white shadow-sm">All</button>
+                                    <button type="button"
+                                        class="filter-btn px-3 py-2 text-sm border rounded-md focus:outline-none text-gray-700 bg-white shadow-sm hover:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        data-filter="category">Category</button>
+                                    <button type="button"
+                                        class="filter-btn px-3 py-2 text-sm border rounded-md focus:outline-none text-gray-700 bg-white shadow-sm hover:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        data-filter="subcategory">Sub-category</button>
                                 </div>
-
-                                <select id="categorySelect" name="categories[]" class="form-control w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-dark min-h-[200px] text-lg p-4 mt-4" multiple>
-                                    @foreach ($categories as $section)
-                                    <optgroup label="{{ $section['name'] }}" class="text-gray-700 font-bold">
-                                        @foreach ($section['categories'] as $category)
-                                        <option value="{{ $category['id'] }}" class="category-option"
-                                            @if (in_array($category['id'], $selCats)) selected @endif>
-                                            {{ $category['category_name'] }}
-                                        </option>
-                                        @foreach ($category['sub_categories'] as $subcategory)
-                                        <option value="{{ $subcategory['id'] }}" class="subcategory-option"
-                                            @if (in_array($subcategory['id'], $selCats)) selected @endif>
-                                            — {{ $subcategory['category_name'] }}
-                                        </option>
+                            
+                                <div class="w-full max-h-72 overflow-y-auto border rounded-md shadow-sm bg-white">
+                                    <div class="p-3">
+                                        <input type="text" placeholder="Search Categories..." id="categorySearch"
+                                            class="w-full px-3 py-2 mb-3 border rounded-md shadow-inner text-sm focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            
+                                        @foreach ($categories as $section)
+                                            <div class="px-2 pt-2 pb-1 text-gray-800 font-semibold text-sm uppercase tracking-wide">
+                                                {{ $section['name'] }}</div>
+                                            @foreach ($section['categories'] as $category)
+                                                <label class="block px-4 py-2 text-gray-700 text-sm hover:bg-gray-50 cursor-pointer">
+                                                    <input type="checkbox"
+                                                        class="category-checkbox category-option mr-2 rounded border-gray-300 text-indigo-600 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm"
+                                                        name="categories[]" value="{{ $category['id'] }}"
+                                                        @if (in_array($category['id'], $selCats)) checked @endif>
+                                                    {{ $category['category_name'] }}
+                                                </label>
+                                                @foreach ($category['sub_categories'] as $subcategory)
+                                                    <label class="block px-6 py-2 text-gray-700 text-sm hover:bg-gray-50 cursor-pointer">
+                                                        <input type="checkbox"
+                                                            class="category-checkbox subcategory-option mr-2 rounded border-gray-300 text-indigo-600 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm"
+                                                            name="categories[]" value="{{ $subcategory['id'] }}"
+                                                            @if (in_array($subcategory['id'], $selCats)) checked @endif>
+                                                        <span class="ml-1 text-xs text-gray-600">— {{ $subcategory['category_name'] }}</span>
+                                                    </label>
+                                                @endforeach
+                                            @endforeach
                                         @endforeach
-                                        @endforeach
-                                    </optgroup>
-                                    @endforeach
-                                </select>
+                                    </div>
+                                </div>
                             </div>
-
+                            
                             <script>
                                 document.addEventListener("DOMContentLoaded", function() {
                                     const filterButtons = document.querySelectorAll(".filter-btn");
-                                    const categorySelect = document.getElementById("categorySelect");
+                                    const checkboxes = document.querySelectorAll(".category-checkbox");
+                                    const searchInput = document.getElementById("categorySearch");
+                            
                                     filterButtons.forEach(button => {
                                         button.addEventListener("click", function() {
-                                            filterButtons.forEach(btn => btn.classList.remove("bg-indigo-500", "text-white"));
-                                            this.classList.add("bg-indigo-500", "text-white");
-                                            let filter = this.getAttribute("data-filter");
-                                            categorySelect.querySelectorAll("option").forEach(option => {
-                                                option.style.display = "block"; 
-                                                if (filter === "category" && option.classList.contains("subcategory-option")) {
-                                                    option.style.display = "none"; 
-                                                } else if (filter === "subcategory" && !option.classList.contains("subcategory-option")) {
-                                                    option.style.display = "none"; 
+                                            filterButtons.forEach(btn => btn.classList.remove("bg-indigo-500", "text-white", "shadow-sm"));
+                                            filterButtons.forEach(btn => btn.classList.add("text-gray-700", "bg-white", "hover:border-indigo-300", "focus:ring", "focus:ring-indigo-200", "focus:ring-opacity-50"));
+                                            this.classList.add("bg-indigo-500", "text-white", "shadow-sm");
+                            
+                                            const filter = this.getAttribute("data-filter");
+                                            checkboxes.forEach(cb => {
+                                                const label = cb.closest("label");
+                                                label.style.display = "block";
+                                                if (filter === "category" && cb.classList.contains("subcategory-option")) {
+                                                    label.style.display = "none";
+                                                } else if (filter === "subcategory" && !cb.classList.contains("subcategory-option")) {
+                                                    label.style.display = "none";
                                                 }
                                             });
+                                        });
+                                    });
+                            
+                                    searchInput.addEventListener("input", function() {
+                                        const query = this.value.toLowerCase();
+                                        checkboxes.forEach(cb => {
+                                            const label = cb.closest("label");
+                                            const text = label.textContent.toLowerCase();
+                                            label.style.display = text.includes(query) ? "block" : "none";
                                         });
                                     });
                                 });
