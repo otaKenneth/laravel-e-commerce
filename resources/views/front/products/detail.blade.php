@@ -111,19 +111,23 @@
                                                                 data-element_type="widget"
                                                                 data-widget_type="image.default"
                                                             >
-                                                                <div class="elementor-widget-container">
-                                                                    <img
-                                                                        fetchpriority="high"
-                                                                        decoding="async"
-                                                                        width="522"
-                                                                        height="522"
-                                                                        src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}"
-                                                                        class="attachment-large size-large wp-image-503"
-                                                                        alt=""
-                                                                        srcset="{{ $getImage('front/images/product/', 'no-available-image.jpg') }} 522w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 300w, {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 150w"
-                                                                        sizes="(max-width: 522px) 100vw, 522px"
-                                                                    >
-                                                                </div>
+                                                            <div class="elementor-widget-container">
+                                                                <img
+                                                                    fetchpriority="high"
+                                                                    decoding="async"
+                                                                    width="522"
+                                                                    height="522"
+                                                                    src="{{ $getImage('front/images/product/', 'no-available-image.jpg') }}"
+                                                                    class="attachment-large size-large wp-image-503"
+                                                                    alt=""
+                                                                    srcset="
+                                                                        {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 522w, 
+                                                                        {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 300w, 
+                                                                        {{ $getImage('front/images/product/', 'no-available-image.jpg') }} 150w"
+                                                                    sizes="(max-width: 522px) 100vw, 522px"
+                                                                    style="width: 100%; max-width: 522px; height: auto; object-fit: contain; display: block;"
+                                                                >
+                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -314,33 +318,38 @@
                                     aria-label="Rated 4 out of 5"
                                 >
                                     @for ($x = 0; $x < 5; $x++)
-                                        @php
-                                            $marked = \App\Models\Product::product_computed_ratings($productDetails['id']);
-                                        @endphp
+                                    @php
+                                        $marked = \App\Models\Product::product_computed_ratings($productDetails['id']);
+                                    @endphp
                                     <!-- marked -->
-                                    <div class="e-icon">
-                                        <div class="e-icon-wrapper e-icon-marked" style="{{ ($x < $marked && $marked > 0) ? '':'--e-rating-icon-marked-width: 0%;' }}">
-                                            <svg
-                                                aria-hidden="true"
-                                                class="e-font-icon-svg e-eicon-star"
-                                                viewbox="0 0 1000 1000"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="e-icon-wrapper e-icon-unmarked">
-                                            <svg
-                                                aria-hidden="true"
-                                                class="e-font-icon-svg e-eicon-star"
-                                                viewbox="0 0 1000 1000"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    @endfor
+                                        @if ($marked == 0 || $marked == null)
+                                            <span>No reviews</span>
+                                            @break
+                                        @else
+                                            <div class="e-icon">
+                                                <div class="e-icon-wrapper e-icon-marked" style="{{ ($x < $marked && $marked > 0) ? '' : '--e-rating-icon-marked-width: 0%;' }}">
+                                                    <svg
+                                                        aria-hidden="true"
+                                                        class="e-font-icon-svg e-eicon-star"
+                                                        viewBox="0 0 1000 1000"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div class="e-icon-wrapper e-icon-unmarked">
+                                                    <svg
+                                                        aria-hidden="true"
+                                                        class="e-font-icon-svg e-eicon-star"
+                                                        viewBox="0 0 1000 1000"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endfor                            
                                 </div>
                             </div>
                         </div>
@@ -498,7 +507,7 @@
                                             >
                                             
                                         </div>
-                                        <span class="stock--label">Stock: {{ $curStock }}</span>
+                                        <span class="stock--label">Stock: <b id="curr-stock-val">{{ $curStock }}</b></span>
 
                                         <div style="height: 0; margin-bottom: 0;" class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_bcf74c7 elementor-col-100">
                                             <br>				

@@ -157,6 +157,7 @@ $(document).ready(function() {
         let q = $(ev.target).closest('form#product-detail-add-to-cart-form').find('#product-quantity');
         q.attr('max', stock);
         q.val('1');
+        $('#curr-stock-val').text(stock)
     })
 
     $('#product-detail-add-to-cart-form').submit(function (v) {

@@ -74,7 +74,7 @@
                                                 </td> {{-- Through the relationship --}}
                                                 <td>{{ $product['section']['name'] }}</td> {{-- Through the relationship --}}
                                                 <td>
-                                                    @if ($product['admin_type'] == 'vendor')
+                                                    @if ($product['admin_type'] == 'vendor' && !empty($product['vendor']['vendorbusinessdetails']))
                                                         <a target="_blank"
                                                             href="{{ url('admin/view-vendor-details/' . $product['admin_id']) }}">{{ ucfirst($product['vendor']['vendorbusinessdetails']['shop_name']) }}</a>
                                                     @else
@@ -140,10 +140,11 @@
         <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
             <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2022. All rights
-                    reserved.</span>
+                <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                    Copyright © {{ date('Y') }}. All rights reserved.
+                </span>
             </div>
-        </footer>
+        </footer>        
         <!-- partial -->
     </div>
 @endsection

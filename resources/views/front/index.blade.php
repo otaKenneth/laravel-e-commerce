@@ -503,7 +503,8 @@
                                         src="{{ $product_image_path }}" class="attachment-large size-large wp-image-422"
                                         alt=""
                                         srcset="{{ $product_image_path }} 846w, {{ $product_image_path }} 248w, {{ $product_image_path }} 768w, {{ $product_image_path }} 879w"
-                                        sizes="(max-width: 800px) 100vw, 800px">
+                                        sizes="(max-width: 800px) 100vw, 800px"
+                                    >
                                 </a>
                             </div>
                         </div>
@@ -519,29 +520,48 @@
                         @php
                             $getDiscountPrice = \App\Models\Product::getDiscountPrice($product['id']);
                         @endphp
-
                         @if ($getDiscountPrice > 0)
-                            {{-- If there's a discount on the price, show the price before (the original price) and after (the new price) the discount --}}
-                            <div class="elementor-element elementor-element-1cd7c54 elementor-widget elementor-widget-text-editor"
-                                data-id="1cd7c54" data-element_type="widget" data-widget_type="text-editor.default">
-                                <div class="elementor-widget-container">
-                                    <p> ₱{{ $getDiscountPrice }}</p>
+                        {{-- If there's a discount on the price, show the price before (the original price) and after (the new price) the discount --}}
+                        <div class="elementor-element elementor-element-1cd7c54 elementor-widget elementor-widget-text-editor"
+                            data-id="1cd7c54" data-element_type="widget" data-widget_type="text-editor.default">
+                            <div class="elementor-widget-container" style="display: flex; flex-direction: column; align-items: flex-start;">
+                                <div class="price-container">
+                                    <style>
+                                        .price-container {
+                                            display: flex;
+                                            flex-direction: column;
+                                            align-items: flex-start;
+                                        }
+    
+                                        .price-container p {
+                                            font-size: 18px;
+                                            line-height: 0.5;
+                                            color: #000;
+                                        }
+    
+                                        .price-container em {
+                                            text-decoration: line-through;
+                                            font-size: 14px;
+                                            opacity: 0.7;
+                                            color: #2d2d2d;
+                                            margin-left: 5px;
+                                            line-height: 0.5;
+                                            margin-top: 5px;
+                                        }
+                                    </style>
+                                <p>₱{{ $getDiscountPrice }}</p>
+                                <em>₱{{ number_format($product['product_price'], 2) }}</em>
                                 </div>
+                                
                             </div>
-                            <div class="elementor-element elementor-element-fa07c3b elementor-widget elementor-widget-text-editor"
-                                data-id="fa07c3b" data-element_type="widget" data-widget_type="text-editor.default">
-                                <div class="elementor-widget-container">
-                                    <em
-                                        style="text-decoration: line-through;">₱{{ number_format($product['product_price'], 2) }}</em>
-                                </div>
-                            </div>
+                        </div> 
                         @else
-                            <div class="elementor-element elementor-element-1cd7c54 elementor-widget elementor-widget-text-editor"
-                                data-id="1cd7c54" data-element_type="widget" data-widget_type="text-editor.default">
-                                <div class="elementor-widget-container">
-                                    <p> ₱{{ number_format($product['product_price'], 2) }}</p>
-                                </div>
+                        <div class="elementor-element elementor-element-1cd7c54 elementor-widget elementor-widget-text-editor"
+                            data-id="1cd7c54" data-element_type="widget" data-widget_type="text-editor.default">
+                            <div class="elementor-widget-container">
+                                <p> ₱{{ number_format($product['product_price'], 2) }}</p>
                             </div>
+                        </div>
                         @endif
 
                         <!-- Ratings -->
@@ -625,34 +645,37 @@
 
                                     }
                                 </style>
-                                <div class="e-rating" itemtype="https://schema.org/Rating" itemscope=""
-                                    itemprop="reviewRating">
+                                <div class="e-rating" itemtype="https://schema.org/Rating" itemscope="" itemprop="reviewRating">
                                     <meta itemprop="worstRating" content="0">
                                     <meta itemprop="bestRating" content="5">
-                                    <div class="e-rating-wrapper" itemprop="ratingValue" content="4" role="img"
-                                        aria-label="Rated 4 out of 5">
-                                        <label>{{ \App\Models\Rating::productRating($product['id']) }}</label>
-                                        <div class="e-icon">
-                                            <div class="e-icon-wrapper e-icon-marked" style="">
-                                                <svg aria-hidden="true" class="e-font-icon-svg e-eicon-star"
-                                                    viewbox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z">
-                                                    </path>
-                                                </svg>
+                                    <div class="e-rating-wrapper" itemprop="ratingValue" content="{{ \App\Models\Rating::productRating($product['id']) }}" role="img"
+                                        aria-label="Rated {{ \App\Models\Rating::productRating($product['id']) }} out of 5">
+                                        
+                                        @php
+                                            $avgRating = \App\Models\Rating::productRating($product['id']);
+                                        @endphp
+                                
+                                        <!-- Check if the rating is 0 or null and display "No reviews" -->
+                                        @if($avgRating == 0 || $avgRating == null)
+                                        <span style="display: inline; font-size: 14px; color: #666; margin-right: 10px;margin-top: 16px">No reviews</span>
+                                        @else
+                                            <label>{{ $avgRating }}</label>
+                                            <!-- Star Icons if there are reviews -->
+                                            <div class="e-icon">
+                                                @for ($stars = 0; $stars < 5; $stars++)
+                                                    <div class="e-icon-wrapper {{ $stars < $avgRating ? 'e-icon-marked' : 'e-icon-unmarked' }}">
+                                                        <svg aria-hidden="true" class="e-font-icon-svg e-eicon-star" viewbox="0 0 1000 1000"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z">
+                                                            </path>
+                                                        </svg>
+                                                    </div>
+                                                @endfor
                                             </div>
-                                            <div class="e-icon-wrapper e-icon-unmarked">
-                                                <svg aria-hidden="true" class="e-font-icon-svg e-eicon-star"
-                                                    viewbox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z">
-                                                    </path>
-                                                </svg>
-                                            </div>
-                                        </div>
-
+                                        @endif
                                     </div>
-                                </div>
+                                </div>                                
                             </div>
                         </div>
 
