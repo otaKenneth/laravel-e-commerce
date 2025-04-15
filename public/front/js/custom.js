@@ -68,12 +68,46 @@ function initializeProductObserver() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 console.log("intersecting");
-                
+                loadMoreProducts();
             }
         });
     }, { threshold: 1.0 });
 
     observer.observe(target);
+}
+
+function loadMoreProducts(){
+    if (productPageLoading) return;
+    productPageLoading = true;
+    
+    fetch("?page=" + page, {
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.html.trim() === "") {
+            if (observer) observer.disconnect();
+            document.getElementById("no-more-products").style.display = "block";
+
+        } else {
+            let newProducts = data.html;
+            document.getElementById("container-product_list").insertAdjacentHTML("beforeend", newProducts);
+
+            // change this
+            if (data.nextPage) {
+                page = data.nextPage;
+                
+            } else {
+                if (observer) observer.disconnect();
+                document.getElementById("no-more-products").style.display = "block";
+
+            }
+        }
+    })
+    .catch(error => console.error("Error loading products:", error))
+    .finally(() => {
+        loading = false
+    });
 }
 
 

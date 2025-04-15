@@ -62,6 +62,13 @@ class ProductsController extends Controller
             $collection = $collection->inRandomOrder()->paginate(12); //Randomize all the product display
             // dd($filters);
 
+            if ($request->ajax()) {
+                return response()->json([
+                    'html' => view('front.products.partials.product_cards', compact('collection'))->render(),
+                    'nextPage' => $collection->nextPageUrl()
+                ]);
+            }
+
             // final return
             return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner'));
         } catch (\Exception $e) {
