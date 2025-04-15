@@ -54,12 +54,35 @@ function addSubscriber() {
 }
 
 
+// infinite scroll for products page
+let productPage = 2;  // since page 1 is loaded
+let productPageLoading = false;
+let prdouctObserver;
+
+function initializeProductObserver() {
+    let target = document.getElementById("load-more-products-trigger");
+
+    if (!target) return; 
+
+    observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                console.log("intersecting");
+                
+            }
+        });
+    }, { threshold: 1.0 });
+
+    observer.observe(target);
+}
+
 
 // jQuery
 $(document).ready(function() {
     // Show our Preloader/Loader/Loading Page/Preloading Screen ALL THE TIME FOR TESTING!
     // $('.loader').show();
 
+    initializeProductObserver()
 
     // the <select> box in front/products/detail.blade.php (to show the correct related `price` and `stock` depending on the selected `size` (from the `products_attributes` table))
     $('#getPrice').change(function() {

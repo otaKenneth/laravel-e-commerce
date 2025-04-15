@@ -202,9 +202,11 @@
                     @include('front.partials.product-cards')
                 </div>
             </div>
+            <div id="load-more-products-trigger">
 
+            </div>
             <!-- pagination -->
-            @if ($collection->hasPages())
+            <!-- @if ($collection->hasPages())
                 @php
                     $lastNumInRange = $collection->lastPage();
                     $urlRange = $collection->getUrlRange(1, $collection->lastPage());
@@ -360,7 +362,7 @@
                 </div>
             @endif
 
-            {{-- $collection->links() --}}
+            {{-- $collection->links() --}} -->
         </div>
     </div>
 @endsection
