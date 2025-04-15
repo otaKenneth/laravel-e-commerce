@@ -58,9 +58,11 @@ class ProductsController extends Controller
             if (is_array($result)) extract($result);
             else return redirect('/products/collection/all');
 
-            //$collection = $collection->paginate(12);
+            // here remove pagination
             $collection = $collection->inRandomOrder()->paginate(12); //Randomize all the product display
             // dd($filters);
+
+            // final return
             return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner'));
         } catch (\Exception $e) {
             return redirect('/products/collection/all');
