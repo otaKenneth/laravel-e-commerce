@@ -4,7 +4,6 @@ $product_image_path = $getImage(
 'front/images/product_images/small/',
 $product['product_image'],
 );
-Log::info("product" . $product)
 @endphp
 <div class="elementor-element elementor-element-80f00c9 e-con-full e-flex e-con e-child single_product_card"
     data-id="80f00c9" data-element_type="container"

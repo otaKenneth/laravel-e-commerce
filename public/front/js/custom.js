@@ -86,26 +86,21 @@ function loadMoreProducts() {
         headers: { "X-Requested-With": "XMLHttpRequest" }
     })
     .then(response => {
-        console.log('got here it returned')
         if (!response.ok) throw new Error("Network response was not ok");
-        data = response.json();
-        console.log(data)
-        return data; // Only parse once
+        return response.json();; // Only parse once
     })
     .then(data => {
-        console.log('Data received:', data);
         
         if (!data.html || data.html.trim() === "") {
             if (observer) observer.disconnect();
             document.getElementById("no-more-products").style.display = "block";
         } else {
             let newProducts = data.html;
-            console.log(newProducts)
             document.getElementById("container-product_list").insertAdjacentHTML("beforeend", newProducts);
 
             // re-initialize elementor widgets for newly added prdocuts
             if (typeof elementorFrontend !== 'undefined' && elementorFrontend.init) {
-                elementorFrontend.init(); // works in older Elementor versions
+                elementorFrontend.init(); 
             } else if (typeof elementorFrontend !== 'undefined' && elementorFrontend.hooks && elementorFrontend.hooks.doAction) {
                 elementorFrontend.hooks.doAction('frontend/element_ready/global', jQuery(document));
             }
