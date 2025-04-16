@@ -37,8 +37,6 @@ class ProductsController extends Controller
         $pageTitle = $name;
         $shopBanner = '';
 
-        Log::debug('Debug data', ['type' => $type, 'name' => $name]);
-
         try {
             switch ($type) {
                 case 'collection':
@@ -65,9 +63,7 @@ class ProductsController extends Controller
             // collection, filters, categoryDetails, meta_title, meta_description, meta_keywords
             if (is_array($result)) {
                 extract($result);
-                // Log::debug('Pasok sa if', ['result' => $result]);
             }else {
-                Log::debug('Pasok sa else');
                 return redirect('/products/collection/all');
             }
 
@@ -75,22 +71,12 @@ class ProductsController extends Controller
             $collection = $collection->inRandomOrder()->paginate(12); //Randomize all the product display
             // dd($filters);
 
-            Log::debug('currentPage', ['page' => $currentPage]);
-            Log::info('Request URL: ' . $request->fullUrl());
-            
             if ($request->ajax()) {
-                Log::info('I got hereee');
-                
                 return response()->json([
                     'html' => view('front.partials.product-cards', compact('collection'))->render(),
                     'nextPage' => $currentPage + 1
                 ]);
-
-                Log::info("i went up to here pa ??");
             }
-            
-            Log::info("i went up to here pa 2 ??");
-            
             
             // final return
             return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner'));

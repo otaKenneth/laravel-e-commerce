@@ -82,6 +82,14 @@ function loadMoreProducts() {
     
     console.log('Fetching page:', productPage);
     
+    // fetch(`?page=${currentPage}`, {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+    //     },
+    //     body: JSON.stringify({ productSeed })
+    // })
     fetch("?page=" + productPage, {
         headers: { "X-Requested-With": "XMLHttpRequest" }
     })
