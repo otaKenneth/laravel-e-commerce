@@ -152,34 +152,38 @@
                                     <label for="categoryDropdown">Select Coupon Scope:</label>
                                     <div class="dropdown" style="position: relative; width: 100%;">
                                         <button class="btn btn-secondary dropdown-toggle form-control text-dark"
-                                                type="button" id="categoryDropdown" data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                                style="border-radius: 0.25rem; padding: .4375rem .75rem; background-color: #ffffff; text-align: left;">
+                                            type="button" id="categoryDropdown" data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                            style="border-radius: 0.25rem; padding: .4375rem .75rem; background-color: #ffffff; text-align: left;">
                                             Select Category
                                         </button>
-                                
+
                                         <ul class="dropdown-menu" aria-labelledby="categoryDropdown"
                                             style="min-width: 200px; width: 50%; border-radius: 0.25rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 0; background-color: #fff; border: 1px solid #ddd; text-align: left;">
                                             @foreach ($categories as $section)
-                                                <li class="dropdown-submenu position-relative" style="list-style-type: none;">
+                                                <li class="dropdown-submenu position-relative"
+                                                    style="list-style-type: none;">
                                                     <a class="dropdown-item dropdown-toggle" href="#"
-                                                        data-id="{{ $section['id'] }}" style="padding: 10px 15px; color: black;">
+                                                        data-id="{{ $section['id'] }}"
+                                                        style="padding: 10px 15px; color: black;">
                                                         {{ $section['name'] }}
                                                     </a>
                                                     <ul class="dropdown-menu">
                                                         @foreach ($section['categories'] as $category)
                                                             <li class="dropdown-submenu position-relative">
                                                                 <a class="dropdown-item dropdown-toggle" href="#"
-                                                                    data-id="{{ $category['id'] }}" style="padding: 10px 15px;">
+                                                                    data-id="{{ $category['id'] }}"
+                                                                    style="padding: 10px 15px;">
                                                                     {{ $category['category_name'] }}
                                                                 </a>
                                                                 @if (!empty($category['sub_categories']))
                                                                     <ul class="dropdown-menu">
                                                                         @foreach ($category['sub_categories'] as $subcategory)
                                                                             <li>
-                                                                                <a class="dropdown-item category-option" href="#"
-                                                                                   data-id="{{ $subcategory['id'] }}"
-                                                                                   style="padding: 10px 15px;">
+                                                                                <a class="dropdown-item category-option"
+                                                                                    href="#"
+                                                                                    data-id="{{ $subcategory['id'] }}"
+                                                                                    style="padding: 10px 15px;">
                                                                                     {{ $subcategory['category_name'] }}
                                                                                 </a>
                                                                             </li>
@@ -192,19 +196,20 @@
                                                 </li>
                                             @endforeach
                                         </ul>
-                                
+
                                         <!-- Hidden input to store selected category or subcategory -->
                                         <input type="hidden" name="categories" id="selectedCategory">
 
                                         <!-- Checkbox for "Apply to all categories" -->
                                         <div class="text-right pt-2">
                                             <label class="text-sm text-gray-600">
-                                                <input type="checkbox" id="selectAllCategories" class="mr-1"> Apply to all categories
+                                                <input type="checkbox" id="selectAllCategories" class="mr-1"> Apply to
+                                                all categories
                                             </label>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <style>
                                     .dropdown-menu {
                                         min-width: 200px;
@@ -217,12 +222,12 @@
                                         text-align: left;
                                         color: black;
                                     }
-                                
+
                                     /* Ensures that submenus align neatly with their parent */
                                     .dropdown-submenu {
                                         position: relative;
                                     }
-                                
+
                                     .dropdown-submenu .dropdown-menu {
                                         position: absolute;
                                         left: 100%;
@@ -234,12 +239,12 @@
                                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                                         border-radius: 0.25rem;
                                     }
-                                
+
                                     /* Keeps submenu aligned with the parent category */
-                                    .dropdown-submenu:hover > .dropdown-menu {
+                                    .dropdown-submenu:hover>.dropdown-menu {
                                         display: block;
                                     }
-                                
+
                                     .dropdown .dropdown-toggle:after {
                                         content: '►';
                                         /* Arrow symbol */
@@ -251,147 +256,152 @@
                                         transform: translateY(-50%);
                                     }
                                 </style>
-                                
+
                                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
-                                        const categoryOptions = document.querySelectorAll('.dropdown-item');
-                                        const categoryOptions = document.querySelectorAll('.dropdown-item.category-option, .dropdown-submenu > a');
-                                        const selectedCategoryInput = document.getElementById('selectedCategory');
-                                        const selectAllCheckbox = document.getElementById('selectAllCategories');
-                                        const categoryDropdown = document.getElementById('categoryDropdown'); // Add this for dropdown reference
-                                        const categoryDropdown = document.getElementById('categoryDropdown');
-                                        const categoryHierarchy = @json($categories);
-                                        const categoryHierarchy = @json($categories); // all nested category data
-                                        // Function to get all child IDs of a parent category
-                                        function getAllChildIdsFromParent(parentId) {
-                                            let allIds = [];
-                                            categoryHierarchy.forEach(section => {
-                                                // If clicked item is a section (Clothing)
-                                                if (section.id == parentId) {
-                                                    section.categories.forEach(cat => {
-                                                        allIds.push(cat.id);
-                                                        if (cat.sub_categories && Array.isArray(cat.sub_categories)) {
-                                                            cat.sub_categories.forEach(sub => {
-                                                                allIds.push(sub.id);
+                                                const categoryOptions = document.querySelectorAll('.dropdown-item');
+                                                const categoryOptions = document.querySelectorAll(
+                                                    '.dropdown-item.category-option, .dropdown-submenu > a');
+                                                const selectedCategoryInput = document.getElementById('selectedCategory');
+                                                const selectAllCheckbox = document.getElementById('selectAllCategories');
+                                                const categoryDropdown = document.getElementById('categoryDropdown'); // Add this for dropdown reference
+                                                const categoryDropdown = document.getElementById('categoryDropdown');
+                                                const categoryHierarchy = @json($categories);
+                                                const categoryHierarchy = @json($categories); // all nested category data
+                                                // Function to get all child IDs of a parent category
+                                                function getAllChildIdsFromParent(parentId) {
+                                                    let allIds = [];
+                                                    categoryHierarchy.forEach(section => {
+                                                        // If clicked item is a section (Clothing)
+                                                        if (section.id == parentId) {
+                                                            section.categories.forEach(cat => {
+                                                                allIds.push(cat.id);
+                                                                if (cat.sub_categories && Array.isArray(cat.sub_categories)) {
+                                                                    cat.sub_categories.forEach(sub => {
+                                                                        allIds.push(sub.id);
+                                                                    });
+                                                                }
                                                             });
                                                         }
-                                                    });
-                                                }
-                                                // If clicked item is a level 1 category (Men)
-                                                section.categories.forEach(cat => {
-                                                if (cat.id == parentId) {
-                                                    allIds.push(cat.id);
-                                                    if (cat.sub_categories && Array.isArray(cat.sub_categories)) {
-                                                        cat.sub_categories.forEach(sub => {
-                                                            allIds.push(sub.id);
+                                                        // If clicked item is a level 1 category (Men)
+                                                        section.categories.forEach(cat => {
+                                                            if (cat.id == parentId) {
+                                                                allIds.push(cat.id);
+                                                                if (cat.sub_categories && Array.isArray(cat.sub_categories)) {
+                                                                    cat.sub_categories.forEach(sub => {
+                                                                        allIds.push(sub.id);
+                                                                    });
+                                                                }
+                                                            }
+                                                            // If clicked item is a level 2 subcategory (Tshirts)
+                                                            cat.sub_categories.forEach(sub => {
+                                                                if (sub.id == parentId) {
+                                                                    allIds.push(sub.id);
+                                                                }
+                                                            });
                                                         });
-                                                    }
+                                                    });
+                                                    return [...new Set(allIds)];
+                                                    return Array.isArray(allIds) ? allIds : []; // Return as array
                                                 }
-                                                    // If clicked item is a level 2 subcategory (Tshirts)
-                                                    cat.sub_categories.forEach(sub => {
-                                                        if (sub.id == parentId) {
-                                                            allIds.push(sub.id);
+                                                // Function to build breadcrumb-style category path
+                                                function getCategoryPath(element) {
+                                                    let path = [element.innerText.trim()];
+
+                                                    function getCategoryPath(element) {
+                                                        return path.join(" > ");
+                                                    }
+                                                    // Event listener for category option clicks
+                                                    categoryOptions.forEach(option => {
+                                                        option.addEventListener('click', function(e) {
+                                                            e.preventDefault();
+                                                            const selectedId = this.getAttribute('data-id');
+                                                            let allRelevantIds = getAllChildIdsFromParent(selectedId);
+                                                            if (!allRelevantIds.includes(selectedId)) {
+                                                                allRelevantIds.unshift(selectedId);
+                                                            }
+                                                            // Get all relevant IDs for the clicked category and set the input value
+                                                            const allRelevantIds = getAllChildIdsFromParent(selectedId);
+                                                            console.log('Selected ID:', selectedId);
+                                                            console.log('All Relevant IDs:', allRelevantIds);
+                                                            console.log('Joined Value:', allRelevantIds.join(','));
+                                                            selectedCategoryInput.value = Array.isArray(allRelevantIds) ? allRelevantIds
+                                                                .join(',') : '';
+                                                            selectAllCheckbox.checked = false;
+                                                            // Set the dropdown label to breadcrumb style
+                                                            const label = getCategoryPath(this);
+                                                            categoryDropdown.innerText =
+                                                                label; // Update dropdown with the breadcrumb path
+                                                            categoryDropdown.innerText = label;
+                                                        });
+                                                    });
+                                                    // Event listener for "Apply to all categories" checkbox
+                                                    selectAllCheckbox.addEventListener("change", function() {
+                                                        if (this.checked) {
+                                                            let allIds = [];
+                                                            categoryHierarchy.forEach(section => {
+                                                                section.categories.forEach(cat => {
+                                                                    allIds.push(cat.id);
+                                                                    cat.sub_categories.forEach(sub => {
+                                                                        allIds.push(sub.id);
+                                                                    });
+                                                                    cat.sub_categories.forEach(sub => allIds.push(sub.id));
+                                                                });
+                                                            });
+                                                            selectedCategoryInput.value = [...new Set(allIds)].join(',');
+                                                            categoryDropdown.innerText = 'All Categories';
+                                                        } else {
+                                                            selectedCategoryInput.value = '';
+                                                            categoryDropdown.innerText = 'Select Category';
                                                         }
                                                     });
                                                 });
-                                            });
-                                            return [...new Set(allIds)];
-                                            return Array.isArray(allIds) ? allIds : []; // Return as array
-                                        }
-                                        // Function to build breadcrumb-style category path
-                                        function getCategoryPath(element) {
-                                            let path = [element.innerText.trim()];
-@@ -318,89 +316,59 @@ function getCategoryPath(element) {
-                                            return path.join(" > ");
-                                        }
-                                        // Event listener for category option clicks
-                                        categoryOptions.forEach(option => {
-                                            option.addEventListener('click', function(e) {
-                                                e.preventDefault();
-                                                const selectedId = this.getAttribute('data-id');
-                                                let allRelevantIds = getAllChildIdsFromParent(selectedId);
-                                                if (!allRelevantIds.includes(selectedId)) {
-                                                    allRelevantIds.unshift(selectedId);
+                                            // Helper to build breadcrumb label
+                                            function getCategoryPath(element) {
+                                                let path = [element.innerText.trim()];
+                                                let parent = element.closest("ul").previousElementSibling;
+                                                while (parent && parent.classList.contains("dropdown-item")) {
+                                                    path.unshift(parent.innerText.trim());
+                                                    parent = parent.closest("ul").previousElementSibling;
                                                 }
-                                                // Get all relevant IDs for the clicked category and set the input value
-                                                const allRelevantIds = getAllChildIdsFromParent(selectedId);
-                                                console.log('Selected ID:', selectedId);
-                                                console.log('All Relevant IDs:', allRelevantIds);
-                                                console.log('Joined Value:', allRelevantIds.join(','));
-                                                selectedCategoryInput.value = Array.isArray(allRelevantIds) ? allRelevantIds.join(',') : '';
-                                                selectAllCheckbox.checked = false;
-                                                // Set the dropdown label to breadcrumb style
-                                                const label = getCategoryPath(this);
-                                                categoryDropdown.innerText = label; // Update dropdown with the breadcrumb path
-                                                categoryDropdown.innerText = label;
-                                            });
-                                        });
-                                        // Event listener for "Apply to all categories" checkbox
-                                        selectAllCheckbox.addEventListener("change", function() {
-                                            if (this.checked) {
-                                                let allIds = [];
-                                                categoryHierarchy.forEach(section => {
-                                                    section.categories.forEach(cat => {
-                                                        allIds.push(cat.id);
-                                                        cat.sub_categories.forEach(sub => {
-                                                            allIds.push(sub.id);
-                                                        });
-                                                        cat.sub_categories.forEach(sub => allIds.push(sub.id));
-                                                    });
+                                                return path.join(" > ");
+                                            }
+                                            // Toggle submenus on click
+                                            document.querySelectorAll(".dropdown-submenu > a").forEach(function(el) {
+                                                el.addEventListener("click", function(e) {
+                                                    e.preventDefault();
+                                                    const submenu = this.nextElementSibling;
+                                                    if (submenu) {
+                                                        submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+                                                        this.parentElement.classList.toggle("open");
+                                                    }
                                                 });
-                                                selectedCategoryInput.value = [...new Set(allIds)].join(',');
-                                                categoryDropdown.innerText = 'All Categories';
-                                            } else {
-                                                selectedCategoryInput.value = '';
-                                                categoryDropdown.innerText = 'Select Category';
-                                            }
-                                        });
-                                    });
-                                    // Helper to build breadcrumb label
-                                    function getCategoryPath(element) {
-                                        let path = [element.innerText.trim()];
-                                        let parent = element.closest("ul").previousElementSibling;
-                                        while (parent && parent.classList.contains("dropdown-item")) {
-                                            path.unshift(parent.innerText.trim());
-                                            parent = parent.closest("ul").previousElementSibling;
-                                        }
-                                        return path.join(" > ");
-                                    }
-                                    // Toggle submenus on click
-                                    document.querySelectorAll(".dropdown-submenu > a").forEach(function(el) {
-                                        el.addEventListener("click", function(e) {
-                                            e.preventDefault();
-                                            const submenu = this.nextElementSibling;
-                                            if (submenu) {
-                                                submenu.style.display = submenu.style.display === "block" ? "none" : "block";
-                                                this.parentElement.classList.toggle("open");
-                                            }
-                                        });
-                                    });
-                                    // Hover behavior for submenus
-                                    document.querySelectorAll(".dropdown-submenu").forEach(function(el) {
-                                        el.addEventListener("mouseenter", function() {
-                                            const submenu = this.querySelector(".dropdown-menu");
-                                            if (submenu) submenu.style.display = "block";
-                                        });
-                                        el.addEventListener("mouseleave", function() {
-                                            const submenu = this.querySelector(".dropdown-menu");
-                                            if (submenu) submenu.style.display = "none";
-                                        // Submenu toggle
-                                        document.querySelectorAll(".dropdown-submenu > a").forEach(function(el) {
-                                            el.addEventListener("click", function(e) {
-                                                const submenu = this.nextElementSibling;
-                                                if (submenu) {
-                                                    submenu.style.display = submenu.style.display === "block" ? "none" :
-                                                    "block";
-                                                    this.parentElement.classList.toggle("open");
-                                                }
                                             });
-                                        });
-                                    });
+                                            // Hover behavior for submenus
+                                            document.querySelectorAll(".dropdown-submenu").forEach(function(el) {
+                                                    el.addEventListener("mouseenter", function() {
+                                                        const submenu = this.querySelector(".dropdown-menu");
+                                                        if (submenu) submenu.style.display = "block";
+                                                    });
+                                                    el.addEventListener("mouseleave", function() {
+                                                        const submenu = this.querySelector(".dropdown-menu");
+                                                        if (submenu) submenu.style.display = "none";
+                                                        // Submenu toggle
+                                                        document.querySelectorAll(".dropdown-submenu > a").forEach(function(el) {
+                                                            el.addEventListener("click", function(e) {
+                                                                const submenu = this.nextElementSibling;
+                                                                if (submenu) {
+                                                                    submenu.style.display = submenu.style.display === "block" ?
+                                                                        "none" :
+                                                                        "block";
+                                                                    this.parentElement.classList.toggle("open");
+                                                                }
+                                                            });
+                                                        });
+                                                    });
                                 </script>
-                                
+
 
 
 
