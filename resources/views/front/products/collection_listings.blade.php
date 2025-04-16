@@ -34,7 +34,7 @@
                     <div class="elementor-element elementor-element-970c6e2 elementor-widget__width-auto elementor-widget elementor-widget-heading"
                         data-id="970c6e2" data-element_type="widget" data-widget_type="heading.default">
                         <div class="elementor-widget-container mobile-height-auto">
-                            <h5 class="elementor-heading-title elementor-size-default">{{ $collection->count() }}
+                            <h5 class="elementor-heading-title elementor-size-default">{{ $totalCount > 999 ? '999+' : $totalCount }}
                                 PRODUCTS </h5>
                         </div>
                     </div>

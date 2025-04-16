@@ -67,6 +67,8 @@ class ProductsController extends Controller
                 return redirect('/products/collection/all');
             }
 
+            $totalCount = $collection->count();
+
             // here remove pagination
             $collection = $collection->inRandomOrder()->paginate(12); //Randomize all the product display
             // dd($filters);
@@ -79,7 +81,7 @@ class ProductsController extends Controller
             }
             
             // final return
-            return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner'));
+            return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner', 'totalCount'));
         } catch (\Exception $e) {
             Log::info("may exception" . $e);
             
