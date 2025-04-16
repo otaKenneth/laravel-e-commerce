@@ -4,8 +4,9 @@ $product_image_path = $getImage(
 'front/images/product_images/small/',
 $product['product_image'],
 );
+Log::info("product" . $product)
 @endphp
-<div class="elementor-element elementor-element-80f00c9 e-con-full e-flex elementor-invisible e-con e-child single_product_card"
+<div class="elementor-element elementor-element-80f00c9 e-con-full e-flex e-con e-child single_product_card"
     data-id="80f00c9" data-element_type="container"
     data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;container_type&quot;:&quot;flex&quot;}">
     <div class="elementor-element elementor-element-757b9c4 elementor-widget__width-inherit elementor-widget elementor-widget-image"

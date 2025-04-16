@@ -83,10 +83,7 @@ class ProductsController extends Controller
                 
                 return response()->json([
                     'html' => view('front.partials.product-cards', compact('collection'))->render(),
-                    'nextPage' => $currentPage + 1,
-                    'pageTitle' => $pageTitle,
-                    'filters' => $filters ?? [],
-                    'shopBanner' => $shopBanner ?? null
+                    'nextPage' => $currentPage + 1
                 ]);
 
                 Log::info("i went up to here pa ??");

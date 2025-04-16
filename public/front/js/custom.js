@@ -100,7 +100,15 @@ function loadMoreProducts() {
             document.getElementById("no-more-products").style.display = "block";
         } else {
             let newProducts = data.html;
+            console.log(newProducts)
             document.getElementById("container-product_list").insertAdjacentHTML("beforeend", newProducts);
+
+            // re-initialize elementor widgets for newly added prdocuts
+            if (typeof elementorFrontend !== 'undefined' && elementorFrontend.init) {
+                elementorFrontend.init(); // works in older Elementor versions
+            } else if (typeof elementorFrontend !== 'undefined' && elementorFrontend.hooks && elementorFrontend.hooks.doAction) {
+                elementorFrontend.hooks.doAction('frontend/element_ready/global', jQuery(document));
+            }
             
             if (data.nextPage) {
                 productPage = data.nextPage;
