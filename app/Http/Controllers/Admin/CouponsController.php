@@ -104,7 +104,7 @@ class CouponsController extends Controller
 
         if ($request->isMethod('post')) { // if the HTML Form is submitted (WHETHER Add or Update!)
             $data = $request->all();
-            // dd($data);
+            //dd($data);
 
 
             // Laravel's Validation    // Customizing Laravel's Validation Error Messages: https://laravel.com/docs/9.x/validation#customizing-the-error-messages    // Customizing Validation Rules: https://laravel.com/docs/9.x/validation#custom-validation-rules    
@@ -133,7 +133,7 @@ class CouponsController extends Controller
 
 
 
-            if (isset($data['categories']) && is_array($data['categories'])) {
+            if (isset($data['categories'])) {
                 $categories = implode(',', $data['categories']);
             } else {
                 $categories = '';
@@ -151,7 +151,7 @@ class CouponsController extends Controller
                 $users = '';
             }
 
-
+            
             // In case of 'Automatic' Coupon Option, we generate a random coupon code string, but in case it's 'Manual', we take the inserted coupon code as is
             if ($data['coupon_option'] == 'Automatic') {
                 $coupon_code = \Illuminate\Support\Str::random(8); // Str::random(): https://laravel.com/docs/9.x/helpers#method-str-random

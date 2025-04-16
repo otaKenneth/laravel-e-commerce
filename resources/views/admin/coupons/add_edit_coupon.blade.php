@@ -195,7 +195,7 @@
                                 
                                         <!-- Hidden input to store selected category or subcategory -->
                                         <input type="hidden" name="categories" id="selectedCategory">
-                                
+
                                         <!-- Checkbox for "Apply to all categories" -->
                                         <div class="text-right pt-2">
                                             <label class="text-sm text-gray-600">
@@ -265,17 +265,23 @@
                                         function getAllChildIdsFromParent(parentId) {
                                             let allIds = [];
                                             categoryHierarchy.forEach(section => {
-                                                if (section.id === parentId) {
+                                                if (section.id == parentId) {
                                                     section.categories.forEach(cat => {
                                                         allIds.push(cat.id);
-                                                        cat.sub_categories.forEach(sub => allIds.push(sub.id));
+                                                        if (cat.sub_categories && Array.isArray(cat.sub_categories)) {
+                                                            cat.sub_categories.forEach(sub => {
+                                                                allIds.push(sub.id);
+                                                            });
+                                                        }
                                                     });
                                                 }
+
                                                 section.categories.forEach(cat => {
-                                                    if (cat.id === parentId) {
+                                                    if (cat.id == parentId) {
                                                         allIds.push(cat.id);
                                                         cat.sub_categories.forEach(sub => allIds.push(sub.id));
                                                     }
+
                                                     cat.sub_categories.forEach(sub => {
                                                         if (sub.id === parentId) {
                                                             allIds.push(sub.id);
@@ -283,10 +289,10 @@
                                                     });
                                                 });
                                             });
-                                            return [...new Set(allIds)];
+
+                                            return Array.isArray(allIds) ? allIds : []; // Return as array
                                         }
-                                
-                                        // Function to generate category path
+
                                         function getCategoryPath(element) {
                                             let path = [element.innerText.trim()];
                                             let parent = element.closest("ul").previousElementSibling;
@@ -306,7 +312,7 @@
                                                 if (!allRelevantIds.includes(selectedId)) {
                                                     allRelevantIds.unshift(selectedId);
                                                 }
-                                
+
                                                 selectedCategoryInput.value = allRelevantIds.join(',');
                                                 selectAllCheckbox.checked = false;
                                 
