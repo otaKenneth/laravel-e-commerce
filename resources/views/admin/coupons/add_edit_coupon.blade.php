@@ -198,7 +198,7 @@
                                         </ul>
 
                                         <!-- Hidden input to store selected category or subcategory -->
-                                        <input type="hidden" name="categories" id="selectedCategory">
+                                        <input type="hidden" name="categories[]" id="selectedCategory">
 
                                         <!-- Checkbox for "Apply to all categories" -->
                                         <div class="text-right pt-2">
@@ -271,23 +271,30 @@
                                             let allIds = [];
 
                                             categoryHierarchy.forEach(section => {
+                                                // If clicked item is a section (Clothing)
                                                 if (section.id == parentId) {
                                                     section.categories.forEach(cat => {
                                                         allIds.push(cat.id);
-                                                        cat.sub_categories.forEach(sub => {
-                                                            allIds.push(sub.id);
-                                                        });
+                                                        if (cat.sub_categories && Array.isArray(cat.sub_categories)) {
+                                                            cat.sub_categories.forEach(sub => {
+                                                                allIds.push(sub.id);
+                                                            });
+                                                        }
                                                     });
                                                 }
 
+                                                // If clicked item is a level 1 category (Men)
                                                 section.categories.forEach(cat => {
-                                                    if (cat.id == parentId) {
-                                                        allIds.push(cat.id);
+                                                if (cat.id == parentId) {
+                                                    allIds.push(cat.id);
+                                                    if (cat.sub_categories && Array.isArray(cat.sub_categories)) {
                                                         cat.sub_categories.forEach(sub => {
                                                             allIds.push(sub.id);
                                                         });
                                                     }
+                                                }
 
+                                                    // If clicked item is a level 2 subcategory (Tshirts)
                                                     cat.sub_categories.forEach(sub => {
                                                         if (sub.id == parentId) {
                                                             allIds.push(sub.id);
@@ -296,9 +303,8 @@
                                                 });
                                             });
 
-                                            return Array.isArray(allIds) ? allIds : []; // Return as array
+                                            return [...new Set(allIds)];
                                         }
-
                                         // Function to build breadcrumb-style category path
                                         function getCategoryPath(element) {
                                             let path = [element.innerText.trim()];
@@ -320,6 +326,9 @@
 
                                                 // Get all relevant IDs for the clicked category and set the input value
                                                 const allRelevantIds = getAllChildIdsFromParent(selectedId);
+                                                console.log('Selected ID:', selectedId);
+                                                console.log('All Relevant IDs:', allRelevantIds);
+                                                console.log('Joined Value:', allRelevantIds.join(','));
                                                 selectedCategoryInput.value = Array.isArray(allRelevantIds) ? allRelevantIds.join(',') : '';
                                                 selectAllCheckbox.checked = false;
 
