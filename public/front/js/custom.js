@@ -76,40 +76,47 @@ function initializeProductObserver() {
     observer.observe(target);
 }
 
-function loadMoreProducts(){
+function loadMoreProducts() {
     if (productPageLoading) return;
     productPageLoading = true;
     
-    fetch("?page=" + page, {
+    console.log('Fetching page:', productPage);
+    
+    fetch("?page=" + productPage, {
         headers: { "X-Requested-With": "XMLHttpRequest" }
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('got here it returned')
+        if (!response.ok) throw new Error("Network response was not ok");
+        data = response.json();
+        console.log(data)
+        return data; // Only parse once
+    })
     .then(data => {
-        if (data.html.trim() === "") {
+        console.log('Data received:', data);
+        
+        if (!data.html || data.html.trim() === "") {
             if (observer) observer.disconnect();
             document.getElementById("no-more-products").style.display = "block";
-
         } else {
             let newProducts = data.html;
             document.getElementById("container-product_list").insertAdjacentHTML("beforeend", newProducts);
-
-            // change this
+            
             if (data.nextPage) {
-                page = data.nextPage;
-                
+                productPage = data.nextPage;
             } else {
                 if (observer) observer.disconnect();
                 document.getElementById("no-more-products").style.display = "block";
-
             }
         }
     })
-    .catch(error => console.error("Error loading products:", error))
+    .catch(error => {
+        console.error("Error loading products:", error);
+    })
     .finally(() => {
-        loading = false
+        productPageLoading = false;
     });
 }
-
 
 // jQuery
 $(document).ready(function() {

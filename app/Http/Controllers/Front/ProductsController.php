@@ -19,17 +19,25 @@ use App\Models\Vendor;
 use App\Models\Brand;
 use App\Models\Wishlist;
 use App\Helpers\LalamoveAPIBodyHelper;
-
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Log;
 
 class ProductsController extends Controller
 {
     private $lalamoveAPI_Helper;
     // match() method is used for the HTTP 'GET' requests to render listing.blade.php page and the HTTP 'POST' method for the AJAX request of the Sorting Filter or the HTML Form submission and jQuery for the Sorting Filter WITHOUT AJAX, AND ALSO for submitting the Search Form in listing.blade.php    // e.g.    /men    or    /computers
     public function listing(Request $request) { // using the Dynamic Routes with the foreach loop
+        $currentPage = $request->get('page', 1);
+        Paginator::currentPageResolver(function () use ($currentPage) {
+            return $currentPage;
+        });
+        
         $type = $request->type;
         $name = $request->any;
         $pageTitle = $name;
         $shopBanner = '';
+
+        Log::debug('Debug data', ['type' => $type, 'name' => $name]);
 
         try {
             switch ($type) {
@@ -55,23 +63,43 @@ class ProductsController extends Controller
             }
 
             // collection, filters, categoryDetails, meta_title, meta_description, meta_keywords
-            if (is_array($result)) extract($result);
-            else return redirect('/products/collection/all');
+            if (is_array($result)) {
+                extract($result);
+                // Log::debug('Pasok sa if', ['result' => $result]);
+            }else {
+                Log::debug('Pasok sa else');
+                return redirect('/products/collection/all');
+            }
 
             // here remove pagination
             $collection = $collection->inRandomOrder()->paginate(12); //Randomize all the product display
             // dd($filters);
 
+            Log::debug('currentPage', ['page' => $currentPage]);
+            Log::info('Request URL: ' . $request->fullUrl());
+            
             if ($request->ajax()) {
+                Log::info('I got hereee');
+                
                 return response()->json([
-                    'html' => view('front.products.partials.product_cards', compact('collection'))->render(),
-                    'nextPage' => $collection->nextPageUrl()
+                    'html' => view('front.partials.product-cards', compact('collection'))->render(),
+                    'nextPage' => $currentPage + 1,
+                    'pageTitle' => $pageTitle,
+                    'filters' => $filters ?? [],
+                    'shopBanner' => $shopBanner ?? null
                 ]);
-            }
 
+                Log::info("i went up to here pa ??");
+            }
+            
+            Log::info("i went up to here pa 2 ??");
+            
+            
             // final return
             return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner'));
         } catch (\Exception $e) {
+            Log::info("may exception" . $e);
+            
             return redirect('/products/collection/all');
         }
     }
