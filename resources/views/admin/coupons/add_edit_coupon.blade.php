@@ -259,17 +259,14 @@
                                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
-                                        const categoryOptions = document.querySelectorAll('.dropdown-item');
+                                        const categoryOptions = document.querySelectorAll('.dropdown-item.category-option, .dropdown-submenu > a');
                                         const selectedCategoryInput = document.getElementById('selectedCategory');
                                         const selectAllCheckbox = document.getElementById('selectAllCategories');
-                                        const categoryDropdown = document.getElementById('categoryDropdown'); // Add this for dropdown reference
+                                        const categoryDropdown = document.getElementById('categoryDropdown');
+                                        const categoryHierarchy = @json($categories);
 
-                                        const categoryHierarchy = @json($categories); // all nested category data
-
-                                        // Function to get all child IDs of a parent category
                                         function getAllChildIdsFromParent(parentId) {
                                             let allIds = [];
-
                                             categoryHierarchy.forEach(section => {
                                                 // If clicked item is a section (Clothing)
                                                 if (section.id == parentId) {
@@ -303,8 +300,9 @@
                                                 });
                                             });
 
-                                            return [...new Set(allIds)];
+                                            return Array.isArray(allIds) ? allIds : []; // Return as array
                                         }
+
                                         // Function to build breadcrumb-style category path
                                         function getCategoryPath(element) {
                                             let path = [element.innerText.trim()];
@@ -318,39 +316,34 @@
                                             return path.join(" > ");
                                         }
 
-                                        // Event listener for category option clicks
                                         categoryOptions.forEach(option => {
                                             option.addEventListener('click', function(e) {
                                                 e.preventDefault();
                                                 const selectedId = this.getAttribute('data-id');
+                                                let allRelevantIds = getAllChildIdsFromParent(selectedId);
+                                                if (!allRelevantIds.includes(selectedId)) {
+                                                    allRelevantIds.unshift(selectedId);
+                                                }
 
                                                 // Get all relevant IDs for the clicked category and set the input value
                                                 const allRelevantIds = getAllChildIdsFromParent(selectedId);
-                                                console.log('Selected ID:', selectedId);
-                                                console.log('All Relevant IDs:', allRelevantIds);
-                                                console.log('Joined Value:', allRelevantIds.join(','));
                                                 selectedCategoryInput.value = Array.isArray(allRelevantIds) ? allRelevantIds.join(',') : '';
                                                 selectAllCheckbox.checked = false;
 
-                                                // Set the dropdown label to breadcrumb style
                                                 const label = getCategoryPath(this);
-                                                categoryDropdown.innerText = label; // Update dropdown with the breadcrumb path
+                                                categoryDropdown.innerText = label;
                                             });
                                         });
 
-                                        // Event listener for "Apply to all categories" checkbox
                                         selectAllCheckbox.addEventListener("change", function() {
                                             if (this.checked) {
                                                 let allIds = [];
                                                 categoryHierarchy.forEach(section => {
                                                     section.categories.forEach(cat => {
                                                         allIds.push(cat.id);
-                                                        cat.sub_categories.forEach(sub => {
-                                                            allIds.push(sub.id);
-                                                        });
+                                                        cat.sub_categories.forEach(sub => allIds.push(sub.id));
                                                     });
                                                 });
-
                                                 selectedCategoryInput.value = [...new Set(allIds)].join(',');
                                                 categoryDropdown.innerText = 'All Categories';
                                             } else {
@@ -358,46 +351,21 @@
                                                 categoryDropdown.innerText = 'Select Category';
                                             }
                                         });
-                                    });
 
-                                    // Helper to build breadcrumb label
-                                    function getCategoryPath(element) {
-                                        let path = [element.innerText.trim()];
-                                        let parent = element.closest("ul").previousElementSibling;
-
-                                        while (parent && parent.classList.contains("dropdown-item")) {
-                                            path.unshift(parent.innerText.trim());
-                                            parent = parent.closest("ul").previousElementSibling;
-                                        }
-
-                                        return path.join(" > ");
-                                    }
-
-                                    // Toggle submenus on click
-                                    document.querySelectorAll(".dropdown-submenu > a").forEach(function(el) {
-                                        el.addEventListener("click", function(e) {
-                                            e.preventDefault();
-                                            const submenu = this.nextElementSibling;
-                                            if (submenu) {
-                                                submenu.style.display = submenu.style.display === "block" ? "none" : "block";
-                                                this.parentElement.classList.toggle("open");
-                                            }
-                                        });
-                                    });
-
-                                    // Hover behavior for submenus
-                                    document.querySelectorAll(".dropdown-submenu").forEach(function(el) {
-                                        el.addEventListener("mouseenter", function() {
-                                            const submenu = this.querySelector(".dropdown-menu");
-                                            if (submenu) submenu.style.display = "block";
-                                        });
-
-                                        el.addEventListener("mouseleave", function() {
-                                            const submenu = this.querySelector(".dropdown-menu");
-                                            if (submenu) submenu.style.display = "none";
+                                        // Submenu toggle
+                                        document.querySelectorAll(".dropdown-submenu > a").forEach(function(el) {
+                                            el.addEventListener("click", function(e) {
+                                                const submenu = this.nextElementSibling;
+                                                if (submenu) {
+                                                    submenu.style.display = submenu.style.display === "block" ? "none" :
+                                                    "block";
+                                                    this.parentElement.classList.toggle("open");
+                                                }
+                                            });
                                         });
                                     });
                                 </script>
+
 
 
 
