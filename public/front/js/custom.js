@@ -80,16 +80,8 @@ function loadMoreProducts() {
     if (productPageLoading) return;
     productPageLoading = true;
     
-    console.log('Fetching page:', productPage);
+    document.getElementById("product-loading-indicator").style.display = "flex";
     
-    // fetch(`?page=${currentPage}`, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-    //     },
-    //     body: JSON.stringify({ productSeed })
-    // })
     fetch("?page=" + productPage, {
         headers: { "X-Requested-With": "XMLHttpRequest" }
     })
@@ -131,6 +123,7 @@ function loadMoreProducts() {
     })
     .finally(() => {
         productPageLoading = false;
+        document.getElementById("product-loading-indicator").style.display = "none";
     });
 }
 

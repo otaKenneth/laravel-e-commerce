@@ -202,8 +202,11 @@
                 @include('front.partials.product-cards')
             </div>
         </div>
+        <div id="product-loading-indicator" class="product-loading-dots" style="display: none;">
+            <span></span><span></span><span></span>
+        </div>
         <div id="no-more-products" class="no-more-products" style="display:none; width:100%; clear:both; text-align:center; padding:1em; margin-top:2em; color:gray;">
-            No more merchants to load.
+            No more products to load.
         </div>
         <div id="load-more-products-trigger"></div>
         <!-- pagination -->
