@@ -668,27 +668,6 @@ class ProductsController extends Controller
                 }
 
 
-                // Check if the coupon code submitted by user is not available for that user (in case the coupon is already selected for certain specific users selected by 'admin' or 'vendor' in the Coupons tab in Admin Panel, and it's not available for all users)
-                // Get the coupon's selected users
-                // if (isset($couponDetails->users) && !empty($couponDetails->users)) {
-                //     $usersArr = explode(',', $couponDetails->users);
-                //     // Check if the submitted coupon code is available ONLY for some specific users (from the Coupons tab in Admin Panel in 'Select User (by email):') and check if the coupon is available or not for the user submitting the coupon code
-                //     if (count($usersArr)) { // if there's at least a one specific selected user for the coupon
-                //         // Get user ids of all the selected users that the coupon code are available for them
-                //         foreach ($usersArr as $key => $user) {
-                //             $getUserId = \App\Models\User::select('id')->where('email', $user)->first()->toArray();
-                //             $usersId[] = $getUserId['id'];
-                //         }
-
-                //         foreach ($getCartItems as $item) {
-                //             if (!in_array($item['user_id'], $usersId)) { // if the user id of one of the products in the Cart doesn't belong to the Coupon's specifically selected users (to check if the submitted coupon code is available to the user submitting it or not)
-                //                 $message = 'This coupon code is not available for you! Try again with a valid coupon code! (The coupon code is available only for certain selected users!)';
-                //             }
-                //         }
-                //     }
-                // }
-
-
                 // Check if the submitted Coupon code belongs to the Vendor of that product (in case that a vendor (not an 'admin') added that coupon code, because vendor coupon codes are available ONLY for the products of that vendor, and not available for all other products. In contrast, 'Admin' coupon codes are available for ALL products)
                 // Vendor's Coupons are eligible only for that vendor's products
                 if ($couponDetails->vendor_id > 0) { // Check if submitted coupon code belongs to a 'vendor' (becasue a vendor' coupon is available ONLY for that vendor's products (not all products), whereas admin's coupons are available for all products)
