@@ -112,11 +112,80 @@ function loadMoreVendors() {
 }
 
 
+// infinite scroll for products page
+let productPage = 2;  // since page 1 is loaded
+let productPageLoading = false;
+let prdouctObserver;
+
+function initializeProductObserver() {
+    let target = document.getElementById("load-more-products-trigger");
+
+    if (!target) return; 
+
+    observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                console.log("intersecting");
+                loadMoreProducts();
+            }
+        });
+    }, { threshold: 1.0 });
+
+    observer.observe(target);
+}
+
+function loadMoreProducts() {
+    if (productPageLoading) return;
+    productPageLoading = true;
+    
+    document.getElementById("product-loading-indicator").style.display = "flex";
+    
+    fetch("?page=" + productPage, {
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();; // Only parse once
+    })
+    .then(data => {
+        
+        if (!data.html || data.html.trim() === "") {
+            if (observer) observer.disconnect();
+            document.getElementById("no-more-products").style.display = "block";
+        } else {
+            let newProducts = data.html;
+            document.getElementById("container-product_list").insertAdjacentHTML("beforeend", newProducts);
+
+            // re-initialize elementor widgets for newly added prdocuts
+            if (typeof elementorFrontend !== 'undefined' && elementorFrontend.init) {
+                elementorFrontend.init(); 
+            } else if (typeof elementorFrontend !== 'undefined' && elementorFrontend.hooks && elementorFrontend.hooks.doAction) {
+                elementorFrontend.hooks.doAction('frontend/element_ready/global', jQuery(document));
+            }
+            
+            if (data.nextPage) {
+                productPage = data.nextPage;
+            } else {
+                if (observer) observer.disconnect();
+                document.getElementById("no-more-products").style.display = "block";
+            }
+        }
+    })
+    .catch(error => {
+        console.error("Error loading products:", error);
+    })
+    .finally(() => {
+        productPageLoading = false;
+        document.getElementById("product-loading-indicator").style.display = "none";
+    });
+}
+
 // jQuery
 $(document).ready(function() {
     // Show our Preloader/Loader/Loading Page/Preloading Screen ALL THE TIME FOR TESTING!
     // $('.loader').show();
 
+    initializeProductObserver()
     // infinite scroll for merchantes page
     initializeObserver()
 
