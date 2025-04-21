@@ -82,9 +82,9 @@
         <p style="margin: 0 0 20px 0;">Dear {{ $name }}<?php /* {{-- $name --}} */ ?>,</p>
         <p style="margin: 0 0 20px 0;">Welcome to Kapiton! We're thrilled to have you on board. Your account has been successfully created with the following details:</p>
         <ul style="margin: 0 0 30px 0;">
-            <li>Name: Von Miles Gacutan<?php /* {{-- $name --}} */ ?></li>
-            <li>Mobile: (+63) 917 170 6796<?php /* {{-- $mobile --}} */ ?></li>
-            <li>Email: voncaraccessories@gmail.com<?php /* {{-- $email --}} */ ?></li>
+            <li>Name: {{ $name }}<?php /* {{-- $name --}} */ ?></li>
+            <li>Mobile: {{ $mobile }}<?php /* {{-- $mobile --}} */ ?></li>
+            <li>Email: {{ $email }}<?php /* {{-- $email --}} */ ?></li>
         </ul>
         <p style="margin: 0 0 20px 0;">For your security, your password is hidden: *******. If you ever forget it, you can easily reset it using the "Forgot Password" option on our platform.</p>
         <p style="margin: 0 0 20px 0;">If you have any questions or need assistance, feel free to reach out.</p>

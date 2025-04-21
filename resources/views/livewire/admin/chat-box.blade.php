@@ -31,6 +31,11 @@
                 data-element_type="container"
                 data-settings="{&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;background_background&quot;:&quot;classic&quot;,&quot;container_type&quot;:&quot;flex&quot;,&quot;content_width&quot;:&quot;boxed&quot;}"
             >
+                <style>
+                .elementor-element-aca939b{
+                    width: 100%; 
+                    margin-left: 15%;}
+                </style>
                 <div class="e-con-inner">
 
                 <button class="custom_btn_for_navbar_mobile dashboard_nav_btn navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
