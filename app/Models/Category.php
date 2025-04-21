@@ -35,6 +35,9 @@ class Category extends Model
 
 
     // Multi-level categories (and subcategories (children)) relationships
+    public function getParentCategory() {// Return the parent category directly, or null if it doesn't exist
+        return $this->belongsTo('App\Models\Category', 'parent_id')->select('id', 'category_name', 'parent_id')->with('parentCategory');
+    }
     public function parentCategory() { // This relationship brings the categories that the current category `parent_id` points to. (Example: If the current category with the `id` = 5, i.e. \App\Models\Category::find(5), and its `parent_id` = 4, the relationship brings the category with the `id` = 4) (Check the $getCategories in the CategoryController inside addEditCategory() method))    // Note: This is a relationship inside the same table `categories` (not between two different tables))    // A parent category has no parent category
         return $this->belongsTo('App\Models\Category', 'parent_id')->select('id', 'category_name'); // 'parent_id' is the `categories` table foreign key to the same table (the relationship between a category and its parent category inside the same table (`categories` table))    // select('id', 'category_name') means select `id` and `category_name` columns ONLY from the `sections` table for a better performance
     }

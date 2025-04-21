@@ -88,11 +88,6 @@
                                 </div>
                             @endif
 
-
-
-
-
-
                             <form class="forms-sample"
                                 @if (empty($product['id'])) action="{{ url('admin/add-edit-product') }}" @else action="{{ url('admin/add-edit-product/' . $product['id']) }}" @endif
                                 method="post" enctype="multipart/form-data">
@@ -103,7 +98,7 @@
                                     <label for="categoryDropdown">Select Category</label>
                                     <div class="dropdown" style="position: relative; width: 100%;">
                                         <button class="btn btn-secondary dropdown-toggle form-control text-dark" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0.25rem; padding: .4375rem .75rem; background-color: #ffffff; color: white; text-align: left;">
-                                            Select Category
+                                            {{ $fullPath }}
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="categoryDropdown" style="min-width: 200px; width: 100%; border-radius: 0.25rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 0; background-color: #fff; border: 1px solid #ddd; text-align: left; color: black;">
                                             @foreach ($categories as $section)
@@ -134,13 +129,8 @@
                                                 </li>
                                             @endforeach
                                         </ul>
-                                        <input type="hidden" name="category_id" id="selectedCategory">
+                                        <input type="hidden" name="category_id" id="selectedCategory" value="{{ $fullPath }}">
                                     </div>
-                                </div>
-                                
-                                {{-- Including the related filters <select> box of a product DEPENDING ON THE SELECTED CATEGORY of the product --}}
-                                <div class="loadFilters">
-                                    @include('admin.filters.category_filters')
                                 </div>
 
 
