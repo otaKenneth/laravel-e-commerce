@@ -454,7 +454,21 @@ class ProductsController extends Controller
         $adminType = Auth::guard('admin')->user()->type;
 
         // return view('admin.products.add_edit_product')->with(compact('title', 'product'));
-        return view('admin.products.add_edit_product')->with(compact('title', 'product', 'categories', 'brands', 'breadcrumb', 'adminType', 'sections', 'subcategories', 'fullPath'));
+        $data = [
+            'title',
+            'product',
+            'categories',
+            'brands',
+            'breadcrumb',
+            'adminType',
+            'fullPath',
+        ];
+
+        if (!empty($id)) {
+            $data[] = 'subcategories';
+            $data[] = 'sections'; 
+        }
+        return view('admin.products.add_edit_product')->with(compact($data));
     }
 
     public function deleteProductImage($id) { // AJAX call from admin/js/custom.js    // Delete the product image from BOTH SERVER (FILESYSTEM) & DATABASE    // $id is passed as a Route Parameter    
