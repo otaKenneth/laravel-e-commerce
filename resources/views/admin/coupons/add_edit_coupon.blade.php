@@ -196,7 +196,7 @@
                                         </ul>
 
                                         <!-- Hidden input to store selected category or subcategory -->
-                                        <input type="hidden" name="categories[]" id="selectedCategory">
+                                        <input type="hidden" name="categories" id="selectedCategory">
 
                                         <!-- Checkbox for "Apply to all categories" -->
                                         <div class="text-right pt-2">
@@ -254,136 +254,150 @@
                                         transform: translateY(-50%);
                                     }
                                 </style>
+
                                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
-                                        const categoryOptions = document.querySelectorAll('.dropdown-item.category-option, .dropdown-submenu > a');
-                                        const selectedCategoryInput = document.getElementById('selectedCategory');
-                                        const selectAllCheckbox = document.getElementById('selectAllCategories');
-                                        const categoryDropdown = document.getElementById('categoryDropdown');
-                                        const categoryHierarchy = @json($categories);
-
-                                        function getAllChildIdsFromSection(sectionId) {
-                                            let allIds = [];
-                                            categoryHierarchy.forEach(section => {
-                                                if (section.id == sectionId) {
-                                                    section.categories.forEach(cat => {
-                                                        allIds.push(cat.id);
-                                                        cat.sub_categories.forEach(sub => {
-                                                            allIds.push(sub.id);
+                                                const categoryOptions = document.querySelectorAll('.dropdown-item');
+                                                const categoryOptions = document.querySelectorAll(
+                                                    '.dropdown-item.category-option, .dropdown-submenu > a');
+                                                const selectedCategoryInput = document.getElementById('selectedCategory');
+                                                const selectAllCheckbox = document.getElementById('selectAllCategories');
+                                                const categoryDropdown = document.getElementById('categoryDropdown'); // Add this for dropdown reference
+                                                const categoryDropdown = document.getElementById('categoryDropdown');
+                                                const categoryHierarchy = @json($categories);
+                                                const categoryHierarchy = @json($categories); // all nested category data
+                                                // Function to get all child IDs of a parent category
+                                                function getAllChildIdsFromParent(parentId) {
+                                                    let allIds = [];
+                                                    categoryHierarchy.forEach(section => {
+                                                        // If clicked item is a section (Clothing)
+                                                        if (section.id == parentId) {
+                                                            section.categories.forEach(cat => {
+                                                                allIds.push(cat.id);
+                                                                if (cat.sub_categories && Array.isArray(cat.sub_categories)) {
+                                                                    cat.sub_categories.forEach(sub => {
+                                                                        allIds.push(sub.id);
+                                                                    });
+                                                                }
+                                                            });
+                                                        }
+                                                        // If clicked item is a level 1 category (Men)
+                                                        section.categories.forEach(cat => {
+                                                            if (cat.id == parentId) {
+                                                                allIds.push(cat.id);
+                                                                if (cat.sub_categories && Array.isArray(cat.sub_categories)) {
+                                                                    cat.sub_categories.forEach(sub => {
+                                                                        allIds.push(sub.id);
+                                                                    });
+                                                                }
+                                                            }
+                                                            // If clicked item is a level 2 subcategory (Tshirts)
+                                                            cat.sub_categories.forEach(sub => {
+                                                                if (sub.id == parentId) {
+                                                                    allIds.push(sub.id);
+                                                                }
+                                                            });
                                                         });
                                                     });
+                                                    return [...new Set(allIds)];
+                                                    return Array.isArray(allIds) ? allIds : []; // Return as array
                                                 }
-                                            });
-                                            return allIds;
-                                        }
+                                                // Function to build breadcrumb-style category path
+                                                function getCategoryPath(element) {
+                                                    let path = [element.innerText.trim()];
 
-                                        function getAllChildIdsFromCategory(categoryId) {
-                                            let allIds = [];
-                                            categoryHierarchy.forEach(section => {
-                                                section.categories.forEach(cat => {
-                                                    if (cat.id == categoryId) {
-                                                        allIds.push(cat.id);
-                                                        cat.sub_categories.forEach(sub => {
-                                                            allIds.push(sub.id);
-                                                        });
+                                                    function getCategoryPath(element) {
+                                                        return path.join(" > ");
                                                     }
-                                                });
-                                            });
-                                            return allIds;
-                                        }
-
-                                        function getAllChildIdsFromSubcategory(subcategoryId) {
-                                            let allIds = [];
-                                            categoryHierarchy.forEach(section => {
-                                                section.categories.forEach(cat => {
-                                                    cat.sub_categories.forEach(sub => {
-                                                        if (sub.id == subcategoryId) {
-                                                            allIds.push(sub.id);
+                                                    // Event listener for category option clicks
+                                                    categoryOptions.forEach(option => {
+                                                        option.addEventListener('click', function(e) {
+                                                            e.preventDefault();
+                                                            const selectedId = this.getAttribute('data-id');
+                                                            let allRelevantIds = getAllChildIdsFromParent(selectedId);
+                                                            if (!allRelevantIds.includes(selectedId)) {
+                                                                allRelevantIds.unshift(selectedId);
+                                                            }
+                                                            // Get all relevant IDs for the clicked category and set the input value
+                                                            const allRelevantIds = getAllChildIdsFromParent(selectedId);
+                                                            console.log('Selected ID:', selectedId);
+                                                            console.log('All Relevant IDs:', allRelevantIds);
+                                                            console.log('Joined Value:', allRelevantIds.join(','));
+                                                            selectedCategoryInput.value = Array.isArray(allRelevantIds) ? allRelevantIds
+                                                                .join(',') : '';
+                                                            selectAllCheckbox.checked = false;
+                                                            // Set the dropdown label to breadcrumb style
+                                                            const label = getCategoryPath(this);
+                                                            categoryDropdown.innerText =
+                                                                label; // Update dropdown with the breadcrumb path
+                                                            categoryDropdown.innerText = label;
+                                                        });
+                                                    });
+                                                    // Event listener for "Apply to all categories" checkbox
+                                                    selectAllCheckbox.addEventListener("change", function() {
+                                                        if (this.checked) {
+                                                            let allIds = [];
+                                                            categoryHierarchy.forEach(section => {
+                                                                section.categories.forEach(cat => {
+                                                                    allIds.push(cat.id);
+                                                                    cat.sub_categories.forEach(sub => {
+                                                                        allIds.push(sub.id);
+                                                                    });
+                                                                    cat.sub_categories.forEach(sub => allIds.push(sub.id));
+                                                                });
+                                                            });
+                                                            selectedCategoryInput.value = [...new Set(allIds)].join(',');
+                                                            categoryDropdown.innerText = 'All Categories';
+                                                        } else {
+                                                            selectedCategoryInput.value = '';
+                                                            categoryDropdown.innerText = 'Select Category';
                                                         }
                                                     });
                                                 });
-                                            });
-                                            return allIds;
-                                        }
-
-                                        function getCategoryPath(element) {
-                                            let path = [element.innerText.trim()];
-                                            let parent = element.closest("ul").previousElementSibling;
-
-                                            while (parent && parent.classList.contains("dropdown-item")) {
-                                                path.unshift(parent.innerText.trim());
-                                                parent = parent.closest("ul").previousElementSibling;
+                                            // Helper to build breadcrumb label
+                                            function getCategoryPath(element) {
+                                                let path = [element.innerText.trim()];
+                                                let parent = element.closest("ul").previousElementSibling;
+                                                while (parent && parent.classList.contains("dropdown-item")) {
+                                                    path.unshift(parent.innerText.trim());
+                                                    parent = parent.closest("ul").previousElementSibling;
+                                                }
+                                                return path.join(" > ");
                                             }
-
-                                            return path.join(" > ");
-                                        }
-
-                                        categoryOptions.forEach(option => {
-                                            option.addEventListener('click', function(e) {
-                                                e.preventDefault();
-                                                const selectedId = this.getAttribute('data-id');
-                                                const type = this.getAttribute('data-type');
-                                                let allRelevantIds = [];
-
-                                                if (type === "section") {
-                                                    // If section is clicked, get all category and subcategories
-                                                    allRelevantIds = getAllChildIdsFromSection(selectedId);
-                                                } else if (type === "category") {
-                                                    // If category is clicked, get all subcategories of that category
-                                                    allRelevantIds = getAllChildIdsFromCategory(selectedId);
-                                                } else if (type === "subcategory") {
-                                                    // If subcategory is clicked, get that subcategory only
-                                                    allRelevantIds = getAllChildIdsFromSubcategory(selectedId);
-                                                }
-
-                                                if (!allRelevantIds.includes(selectedId)) {
-                                                    allRelevantIds.unshift(selectedId);
-                                                }
-
-                                                // Set the selected IDs and display it on the UI
-                                                selectedCategoryInput.value = allRelevantIds.join(',');
-                                                selectAllCheckbox.checked = false;
-
-                                                // Update the dropdown label
-                                                const label = getCategoryPath(this);
-                                                categoryDropdown.innerText = label;
-
-                                                console.log('Selected ID:', selectedId);
-                                                console.log('All Relevant IDs:', allRelevantIds);
-                                                console.log('Joined Value:', allRelevantIds.join(','));
-                                            });
-                                        });
-
-                                        selectAllCheckbox.addEventListener("change", function() {
-                                            if (this.checked) {
-                                                let allIds = [];
-                                                categoryHierarchy.forEach(section => {
-                                                    section.categories.forEach(cat => {
-                                                        allIds.push(cat.id);
-                                                        cat.sub_categories.forEach(sub => allIds.push(sub.id));
-                                                    });
+                                            // Toggle submenus on click
+                                            document.querySelectorAll(".dropdown-submenu > a").forEach(function(el) {
+                                                el.addEventListener("click", function(e) {
+                                                    e.preventDefault();
+                                                    const submenu = this.nextElementSibling;
+                                                    if (submenu) {
+                                                        submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+                                                        this.parentElement.classList.toggle("open");
+                                                    }
                                                 });
-                                                selectedCategoryInput.value = [...new Set(allIds)].join(',');
-                                                categoryDropdown.innerText = 'All Categories';
-                                            } else {
-                                                selectedCategoryInput.value = '';
-                                                categoryDropdown.innerText = 'Select Category';
-                                            }
-                                        });
-
-                                        // Submenu toggle
-                                        document.querySelectorAll(".dropdown-submenu > a").forEach(function(el) {
-                                            el.addEventListener("click", function(e) {
-                                                const submenu = this.nextElementSibling;
-                                                if (submenu) {
-                                                    submenu.style.display = submenu.style.display === "block" ? "none" : "block";
-                                                    this.parentElement.classList.toggle("open");
-                                                }
                                             });
-                                        });
-                                    });
-
+                                            // Hover behavior for submenus
+                                            document.querySelectorAll(".dropdown-submenu").forEach(function(el) {
+                                                    el.addEventListener("mouseenter", function() {
+                                                        const submenu = this.querySelector(".dropdown-menu");
+                                                        if (submenu) submenu.style.display = "block";
+                                                    });
+                                                    el.addEventListener("mouseleave", function() {
+                                                        const submenu = this.querySelector(".dropdown-menu");
+                                                        if (submenu) submenu.style.display = "none";
+                                                        // Submenu toggle
+                                                        document.querySelectorAll(".dropdown-submenu > a").forEach(function(el) {
+                                                            el.addEventListener("click", function(e) {
+                                                                const submenu = this.nextElementSibling;
+                                                                if (submenu) {
+                                                                    submenu.style.display = submenu.style.display === "block" ?
+                                                                        "none" :
+                                                                        "block";
+                                                                    this.parentElement.classList.toggle("open");
+                                                                }
+                                                            });
+                                                        });
+                                                    });
                                 </script>
 
 
