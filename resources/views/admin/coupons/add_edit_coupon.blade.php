@@ -157,22 +157,21 @@
                                             style="border-radius: 0.25rem; padding: .4375rem .75rem; background-color: #ffffff; text-align: left;">
                                             Select Category
                                         </button>
-
+                                
                                         <ul class="dropdown-menu" aria-labelledby="categoryDropdown"
                                             style="min-width: 200px; width: 50%; border-radius: 0.25rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 0; background-color: #fff; border: 1px solid #ddd; text-align: left;">
                                             @foreach ($categories as $section)
-                                                <li class="dropdown-submenu position-relative"
-                                                    style="list-style-type: none;">
-                                                    <a class="dropdown-item dropdown-toggle" href="#"
-                                                        data-id="{{ $section['id'] }}"
+                                                <li class="dropdown-submenu position-relative" style="list-style-type: none;">
+                                                    <a class="dropdown-item dropdown-toggle" href="#" 
+                                                        data-id="{{ $section['id'] }}" data-type="section" 
                                                         style="padding: 10px 15px; color: black;">
                                                         {{ $section['name'] }}
                                                     </a>
                                                     <ul class="dropdown-menu">
                                                         @foreach ($section['categories'] as $category)
                                                             <li class="dropdown-submenu position-relative">
-                                                                <a class="dropdown-item dropdown-toggle" href="#"
-                                                                    data-id="{{ $category['id'] }}"
+                                                                <a class="dropdown-item dropdown-toggle" href="#" 
+                                                                    data-id="{{ $category['id'] }}" data-type="category"
                                                                     style="padding: 10px 15px;">
                                                                     {{ $category['category_name'] }}
                                                                 </a>
@@ -180,9 +179,8 @@
                                                                     <ul class="dropdown-menu">
                                                                         @foreach ($category['sub_categories'] as $subcategory)
                                                                             <li>
-                                                                                <a class="dropdown-item category-option"
-                                                                                    href="#"
-                                                                                    data-id="{{ $subcategory['id'] }}"
+                                                                                <a class="dropdown-item category-option" href="#" 
+                                                                                    data-id="{{ $subcategory['id'] }}" data-type="subcategory"
                                                                                     style="padding: 10px 15px;">
                                                                                     {{ $subcategory['category_name'] }}
                                                                                 </a>
@@ -252,7 +250,7 @@
                                         position: absolute;
                                         right: 10px;
                                         /* Align it to the right */
-                                        top: 50%;
+                                        top: 27%;
                                         transform: translateY(-50%);
                                     }
                                 </style>
@@ -265,45 +263,50 @@
                                         const categoryDropdown = document.getElementById('categoryDropdown');
                                         const categoryHierarchy = @json($categories);
 
-                                        function getAllChildIdsFromParent(parentId) {
+                                        function getAllChildIdsFromSection(sectionId) {
                                             let allIds = [];
                                             categoryHierarchy.forEach(section => {
-                                                // If clicked item is a section (Clothing)
-                                                if (section.id == parentId) {
+                                                if (section.id == sectionId) {
                                                     section.categories.forEach(cat => {
                                                         allIds.push(cat.id);
-                                                        if (cat.sub_categories && Array.isArray(cat.sub_categories)) {
-                                                            cat.sub_categories.forEach(sub => {
-                                                                allIds.push(sub.id);
-                                                            });
-                                                        }
+                                                        cat.sub_categories.forEach(sub => {
+                                                            allIds.push(sub.id);
+                                                        });
                                                     });
                                                 }
+                                            });
+                                            return allIds;
+                                        }
 
-                                                // If clicked item is a level 1 category (Men)
+                                        function getAllChildIdsFromCategory(categoryId) {
+                                            let allIds = [];
+                                            categoryHierarchy.forEach(section => {
                                                 section.categories.forEach(cat => {
-                                                if (cat.id == parentId) {
-                                                    allIds.push(cat.id);
-                                                    if (cat.sub_categories && Array.isArray(cat.sub_categories)) {
+                                                    if (cat.id == categoryId) {
+                                                        allIds.push(cat.id);
                                                         cat.sub_categories.forEach(sub => {
                                                             allIds.push(sub.id);
                                                         });
                                                     }
-                                                }
+                                                });
+                                            });
+                                            return allIds;
+                                        }
 
-                                                    // If clicked item is a level 2 subcategory (Tshirts)
+                                        function getAllChildIdsFromSubcategory(subcategoryId) {
+                                            let allIds = [];
+                                            categoryHierarchy.forEach(section => {
+                                                section.categories.forEach(cat => {
                                                     cat.sub_categories.forEach(sub => {
-                                                        if (sub.id == parentId) {
+                                                        if (sub.id == subcategoryId) {
                                                             allIds.push(sub.id);
                                                         }
                                                     });
                                                 });
                                             });
-
-                                            return Array.isArray(allIds) ? allIds : []; // Return as array
+                                            return allIds;
                                         }
 
-                                        // Function to build breadcrumb-style category path
                                         function getCategoryPath(element) {
                                             let path = [element.innerText.trim()];
                                             let parent = element.closest("ul").previousElementSibling;
@@ -320,18 +323,35 @@
                                             option.addEventListener('click', function(e) {
                                                 e.preventDefault();
                                                 const selectedId = this.getAttribute('data-id');
-                                                let allRelevantIds = getAllChildIdsFromParent(selectedId);
+                                                const type = this.getAttribute('data-type');
+                                                let allRelevantIds = [];
+
+                                                if (type === "section") {
+                                                    // If section is clicked, get all category and subcategories
+                                                    allRelevantIds = getAllChildIdsFromSection(selectedId);
+                                                } else if (type === "category") {
+                                                    // If category is clicked, get all subcategories of that category
+                                                    allRelevantIds = getAllChildIdsFromCategory(selectedId);
+                                                } else if (type === "subcategory") {
+                                                    // If subcategory is clicked, get that subcategory only
+                                                    allRelevantIds = getAllChildIdsFromSubcategory(selectedId);
+                                                }
+
                                                 if (!allRelevantIds.includes(selectedId)) {
                                                     allRelevantIds.unshift(selectedId);
                                                 }
 
-                                                // Get all relevant IDs for the clicked category and set the input value
-                                                const allRelevantIds = getAllChildIdsFromParent(selectedId);
-                                                selectedCategoryInput.value = Array.isArray(allRelevantIds) ? allRelevantIds.join(',') : '';
+                                                // Set the selected IDs and display it on the UI
+                                                selectedCategoryInput.value = allRelevantIds.join(',');
                                                 selectAllCheckbox.checked = false;
 
+                                                // Update the dropdown label
                                                 const label = getCategoryPath(this);
                                                 categoryDropdown.innerText = label;
+
+                                                console.log('Selected ID:', selectedId);
+                                                console.log('All Relevant IDs:', allRelevantIds);
+                                                console.log('Joined Value:', allRelevantIds.join(','));
                                             });
                                         });
 
@@ -357,13 +377,13 @@
                                             el.addEventListener("click", function(e) {
                                                 const submenu = this.nextElementSibling;
                                                 if (submenu) {
-                                                    submenu.style.display = submenu.style.display === "block" ? "none" :
-                                                    "block";
+                                                    submenu.style.display = submenu.style.display === "block" ? "none" : "block";
                                                     this.parentElement.classList.toggle("open");
                                                 }
                                             });
                                         });
                                     });
+
                                 </script>
 
 
