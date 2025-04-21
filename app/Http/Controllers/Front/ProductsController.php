@@ -19,13 +19,19 @@ use App\Models\Vendor;
 use App\Models\Brand;
 use App\Models\Wishlist;
 use App\Helpers\LalamoveAPIBodyHelper;
-
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Log;
 
 class ProductsController extends Controller
 {
     private $lalamoveAPI_Helper;
     // match() method is used for the HTTP 'GET' requests to render listing.blade.php page and the HTTP 'POST' method for the AJAX request of the Sorting Filter or the HTML Form submission and jQuery for the Sorting Filter WITHOUT AJAX, AND ALSO for submitting the Search Form in listing.blade.php    // e.g.    /men    or    /computers
     public function listing(Request $request) { // using the Dynamic Routes with the foreach loop
+        $currentPage = $request->get('page', 1);
+        Paginator::currentPageResolver(function () use ($currentPage) {
+            return $currentPage;
+        });
+        
         $type = $request->type;
         $name = $request->any;
         $pageTitle = $name;
@@ -55,14 +61,30 @@ class ProductsController extends Controller
             }
 
             // collection, filters, categoryDetails, meta_title, meta_description, meta_keywords
-            if (is_array($result)) extract($result);
-            else return redirect('/products/collection/all');
+            if (is_array($result)) {
+                extract($result);
+            }else {
+                return redirect('/products/collection/all');
+            }
 
-            //$collection = $collection->paginate(12);
+            $totalCount = $collection->count();
+
+            // here remove pagination
             $collection = $collection->inRandomOrder()->paginate(12); //Randomize all the product display
             // dd($filters);
-            return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner'));
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'html' => view('front.partials.product-cards', compact('collection'))->render(),
+                    'nextPage' => $currentPage + 1
+                ]);
+            }
+            
+            // final return
+            return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner', 'totalCount'));
         } catch (\Exception $e) {
+            Log::info("Product Listing: " . $e);
+            
             return redirect('/products/collection/all');
         }
     }
