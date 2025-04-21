@@ -350,9 +350,9 @@
                                                 const label = getCategoryPath(this);
                                                 categoryDropdown.innerText = label;
 
-                                                console.log('Selected ID:', selectedId);
-                                                console.log('All Relevant IDs:', allRelevantIds);
-                                                console.log('Joined Value:', allRelevantIds.join(','));
+                                                // console.log('Selected ID:', selectedId);
+                                                // console.log('All Relevant IDs:', allRelevantIds);
+                                                // console.log('Joined Value:', allRelevantIds.join(','));
                                             });
                                         });
 
