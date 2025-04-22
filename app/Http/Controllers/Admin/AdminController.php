@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 // Auth without a namespace here works fine because the Admin.php model extends Authenticatable
 use Illuminate\Support\FacadesAuth;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
 use Symfony\Component\VarDumper\VarDumper;
@@ -229,6 +230,8 @@ class AdminController extends Controller
 
                     // Assigning the uploaded images path inside the 'public' folder
                     $imagePath = 'admin/images/photos/' . $imageName;
+
+                    Log::debug("image path" . $imagePath);
 
                     // Upload the image using the Intervention package and save it in our path inside the 'public' folder
                     // Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package

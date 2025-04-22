@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 
 class FileStorageService
@@ -19,6 +20,8 @@ class FileStorageService
     {
         if (config('app.env') === 'development') {
             // Store the file locally
+            Log::debug("saved locally");
+
             return $this->storeLocally($file, $path, $size);
         } else {
             // Store the file in Google Cloud Storage
@@ -50,6 +53,8 @@ class FileStorageService
         if ($size) {
             $file = $file->resize($size['width'], $size['height'])->encode('jpg', 75);
         }
+
+        Log::debug("path" . $path);
 
         return $file->save($path);
     }
@@ -90,7 +95,8 @@ class FileStorageService
             }
             $file_content = $file->encode('jpg', 75)->__tostring();
             $success = $bucket->upload($file_content, [
-                'name' => $path
+                'name' => $path,
+                'predefinedAcl' => 'publicRead'
             ]);
             
             if (!$success) return false;
