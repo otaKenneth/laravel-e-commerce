@@ -231,8 +231,6 @@ class AdminController extends Controller
                     // Assigning the uploaded images path inside the 'public' folder
                     $imagePath = 'admin/images/photos/' . $imageName;
 
-                    Log::debug("image path" . $imagePath);
-
                     // Upload the image using the Intervention package and save it in our path inside the 'public' folder
                     // Image::make($image_tmp)->save($imagePath); // '\Image' is the Intervention package
                     $fileStorageService = new FileStorageService;

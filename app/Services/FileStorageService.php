@@ -20,7 +20,6 @@ class FileStorageService
     {
         if (config('app.env') === 'development') {
             // Store the file locally
-            Log::debug("saved locally");
 
             return $this->storeLocally($file, $path, $size);
         } else {
