@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 
 class FileStorageService
