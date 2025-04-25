@@ -41,12 +41,8 @@
                                                 <td>{{ $admin['mobile'] }}</td>
                                                 <td>{{ $admin['email'] }}</td>
                                                 <td>
-                                                @if ($admin['image'] != '')
-                                                    @if (app()->environment('production'))
-                                                        <img src="https://storage.googleapis.com/{{ env('GOOGLE_CLOUD_STORAGE_BUCKET') }}/admin/images/photos/{{ $admin['image'] }}">
-                                                    @else
-                                                        <img src="{{ asset('admin/images/photos/' . $admin['image']) }}">
-                                                    @endif
+                                                @if (!empty($admin['image']))
+                                                    <img src="{{ $getImage('admin/images/photos/', $admin['image']) }}">
                                                 @else
                                                     <img src="{{ asset('admin/images/photos/no-image.gif') }}">
                                                 @endif
