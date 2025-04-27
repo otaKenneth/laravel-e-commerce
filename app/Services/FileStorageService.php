@@ -19,6 +19,7 @@ class FileStorageService
     {
         if (config('app.env') === 'development') {
             // Store the file locally
+
             return $this->storeLocally($file, $path, $size);
         } else {
             // Store the file in Google Cloud Storage
@@ -90,7 +91,8 @@ class FileStorageService
             }
             $file_content = $file->encode('jpg', 75)->__tostring();
             $success = $bucket->upload($file_content, [
-                'name' => $path
+                'name' => $path,
+                'predefinedAcl' => 'publicRead'
             ]);
             
             if (!$success) return false;
