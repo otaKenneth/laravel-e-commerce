@@ -52,8 +52,6 @@ class FileStorageService
             $file = $file->resize($size['width'], $size['height'])->encode('jpg', 75);
         }
 
-        Log::debug("path" . $path);
-
         return $file->save($path);
     }
 
