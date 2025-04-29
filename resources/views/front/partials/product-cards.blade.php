@@ -5,8 +5,7 @@ $product_image_path = $getImage(
 $product['product_image'],
 );
 
-$counter++;
-$isInitialLoad = $counter < 13;
+$isInitialLoad = $initialLoad ?? false;
 
 // for animation
 $settings = [
