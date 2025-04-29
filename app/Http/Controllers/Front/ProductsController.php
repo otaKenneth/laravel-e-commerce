@@ -1428,33 +1428,70 @@ class ProductsController extends Controller
      */
     private function getAvailableFilters($categoryDetails, $products)
     {
-
-        $selection = $products->select('*')->with(['brand', 'attributes' => function ($query) {
-            return $query->select('product_id', 'size');
-        }, 'vendor'])->get()->toArray();
-
         $filters = [];
 
-        if (isset($categoryDetails['categories']))
-            // check for categories
-            $filters['categories'] = $categoryDetails['categories'];
-        elseif (isset($categoryDetails['category_name']))
-            $filters['categories'] = [$categoryDetails];
-        else {
-            $temp = collect($categoryDetails)->pluck('categories')->toArray();
-            $filters['categories'] = array_merge(...$temp);
+        // Fetch all parent categories with their subcategories
+        $allParentCategories = \App\Models\Category::with('subCategories')
+            ->where('parent_id', 0)
+            ->where('status', 1)
+            ->get();
+
+        // Determine the active category URL
+        $activeCategoryUrl = null;
+        if (isset($categoryDetails['url'])) {
+            $activeCategoryUrl = $categoryDetails['url'];
+        } elseif (isset($categoryDetails['category_name'])) {
+            $activeCategoryUrl = $categoryDetails['url'] ?? null;
+        } elseif (is_array($categoryDetails) && !empty($categoryDetails)) {
+            $flat = collect($categoryDetails)->flatten(1);
+            $activeCategoryUrl = $flat->first()['url'] ?? null;
         }
 
-        // dd($filters);
-        // check for brands
-        // $filters['brands'] = collect($selection)->pluck('brand.name')->unique()->toArray();
+        // Format categories for filter output
+        $formattedCategories = $allParentCategories->map(function ($cat) use ($activeCategoryUrl) {
+            return [
+                'category_name' => $cat->category_name,
+                'url' => $cat->url,
+                'is_active' => $cat->url === $activeCategoryUrl,
+                'sub_categories' => $cat->subCategories->map(function ($sub) use ($activeCategoryUrl) {
+                    return array_merge(
+                        $sub->toArray(),
+                        ['is_active' => $sub->url === $activeCategoryUrl]
+                    );
+                })->toArray(),
+            ];
+        })->toArray();
 
-        // check for sizes
-        $filters['sizes'] = collect($selection)->pluck('attributes.*.size')->flatten()->unique()->toArray();
+        $filters['categories'] = $formattedCategories;
 
-        // check for color
-        $filters['color'] = collect($selection)->pluck('product_color')->unique()->toArray();
+        // Fetch filtered products with relationships
+        $selection = $products->select('*')
+            ->with([
+                'brand',
+                'attributes' => function ($query) {
+                    $query->select('product_id', 'size');
+                },
+                'vendor'
+            ])
+            ->get()
+            ->toArray();
 
+        // Extract unique sizes
+        $filters['sizes'] = collect($selection)
+            ->pluck('attributes.*.size')
+            ->flatten()
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+
+        // Extract unique colors
+        $filters['color'] = collect($selection)
+            ->pluck('product_color')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
 
         return $filters;
     }
