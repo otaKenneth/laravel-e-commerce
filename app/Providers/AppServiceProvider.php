@@ -34,9 +34,9 @@ class AppServiceProvider extends ServiceProvider
         // Create a StorageClient instance using the configuration
         $storage = new StorageClient([
             'projectId' => $gcsConfig['project_id'],
-            'keyFilePath' => base_path('gcp-key.json'),
+            'keyFilePath' => $gcsConfig['key_file'],
+            'credentials' => CredentialsLoader::makeCredentials(['https://www.googleapis.com/auth/cloud-platform'], json_decode(file_get_contents($gcsConfig['key_file']), true))
         ]);
-        
 
         // Specify your bucket name from the configuration
         $bucketName = $gcsConfig['bucket'];
