@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductsController;
 use Illuminate\Support\Facades\Route;
 
 // Second: FRONT section routes:
@@ -122,6 +123,8 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::group(['middleware' => ['auth']], function() {
         // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission via AJAX in front/products/cart_items.blade.php, check front/js/custom.js
         Route::post('/apply-coupon', 'ProductsController@applyCoupon'); // Important Note: We added this route here as a protected route inside the 'auth' middleware group because ONLY logged in/authenticated users are allowed to redeem Coupons!
+
+        Route::post('/stack-coupon', 'ProductsController@stackCoupon'); // STACKING COUPONS TEST ROUTE
 
         // Checkout page (using match() method for the 'GET' request for rendering the front/products/checkout.blade.php page or the 'POST' request for the HTML Form submission in the same page (for submitting the user's Delivery Address and Payment Method))
         Route::match(['GET', 'POST'], '/checkout', 'ProductsController@checkout')->name('front.user.checkout');
