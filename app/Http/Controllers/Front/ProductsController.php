@@ -628,11 +628,17 @@ class ProductsController extends Controller
         }
 
         $couponCodes[] = $couponCode; // stack new coupon
+        
+        // get total amount
+        $total_amount = 0;
+        foreach ($getCartItems as $key => $item) {
+            $attrPrice = Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']);
+            $total_amount = $total_amount + ($attrPrice['final_price'] * $item['quantity']);
+        }
 
         // loop thru coupon codes and recompute total
         foreach ($couponCodes as $couponCode) {
-            
-            // HERE START
+            // get if fixed or percent tapos compute based sa sagot ni sir von    
         }
 
 
@@ -698,8 +704,6 @@ class ProductsController extends Controller
 
         return $message;
     }
-
-
 
     // Note: For Coupons module, user must be logged in (authenticated) to be able to redeem them. Both 'admins' and 'vendors' can add Coupons. Coupons added by 'vendor' will be available for their products ONLY, but ones added by 'admins' will be available for ALL products.
     // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission via AJAX in front/products/cart_items.blade.php, check front/js/custom.js
