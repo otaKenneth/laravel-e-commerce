@@ -11,11 +11,8 @@ $isInitialLoad = $initialLoad ?? false;
 $settings = [
         'content_width' => 'full',
         'container_type' => 'flex',
+        'animation' => 'fadeInUp'
     ];
-
-if ($isInitialLoad) {
-    $settings['animation'] = 'fadeInUp';
-}
 
 @endphp
 <div class="elementor-element elementor-element-80f00c9 e-con-full e-flex e-con e-child single_product_card"
