@@ -5,8 +5,6 @@ $product_image_path = $getImage(
 $product['product_image'],
 );
 
-$isInitialLoad = $initialLoad ?? false;
-
 // for animation
 $settings = [
         'content_width' => 'full',

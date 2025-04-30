@@ -72,18 +72,16 @@ class ProductsController extends Controller
             // here remove pagination
             $collection = $collection->inRandomOrder()->paginate(12); //Randomize all the product display
             // dd($filters);
-            
-            $initialLoad = $currentPage === 1;
 
             if ($request->ajax()) {
                 return response()->json([
-                    'html' => view('front.partials.product-cards', compact('collection', 'initialLoad'))->render(),
+                    'html' => view('front.partials.product-cards', compact('collection',))->render(),
                     'nextPage' => $currentPage + 1
                 ]);
             }
             
             // final return
-            return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner', 'totalCount', 'initialLoad'));
+            return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner', 'totalCount'));
         } catch (\Exception $e) {
             Log::info("Product Listing: " . $e);
             
