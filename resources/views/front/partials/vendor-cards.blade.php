@@ -116,7 +116,7 @@
                         </p>
                     </div>
                     @if ($vendor->vendor_product_orders_sum_product_qty > 0)
-                    <div style="display: flex; justify-content: center; font-weight: bold;">
+                    <div style="display: flex; justify-content: center; font-weight: bold; content-visibility: hidden;">
                         {{$vendor->vendor_product_orders_sum_product_qty}} SOLD
                     </div>
                     @endif
@@ -250,6 +250,7 @@
 </div>
 
 <div
+    id="custom_button_style"
     class="elementor-element elementor-element-58fa36b elementor-widget__width-auto elementor-align-center elementor-widget elementor-widget-button"
     data-id="58fa36b"
     data-element_type="widget"
@@ -262,8 +263,10 @@
                 </span>
             </a>
         </div>
+        <style>#custom_button_style{margin-top: -7px}</style>
     </div>
 </div>
+
 </div>
 </div>
 @endforeach
