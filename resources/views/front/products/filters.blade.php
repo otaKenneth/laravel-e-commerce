@@ -81,6 +81,8 @@
     
             <div id="slide-price-range"></div>
             <p id="slide-price-display">₱<span id="slide-price-min"></span> - ₱<span id="slide-price-max"></span></p>
+            <input type="hidden" name="price_min" value="{{ request('price_min', 0) }}">
+            <input type="hidden" name="price_max" value="{{ request('price_max', 1000) }}">
         </div>
         <!-- Filter-Price /- -->
         <button type="submit" class="apply-filter">Apply Filters</button>

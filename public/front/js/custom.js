@@ -1115,20 +1115,27 @@ $(document).ready(function() {
 
 
     // Set up the price range slider
-    $(".filter_outer_container #slide-price-range").slider({
+    let min = parseInt($("input[name='price_min']").val()) || 0;
+    let max = parseInt($("input[name='price_max']").val()) || 1000;
+    
+    $("#slide-price-range").slider({
         range: true,
         min: 0,
         max: 1000,
-        values: [0, 1000],
-        slide: function(event, ui) {
-          $(".filter_outer_container #slide-price-min").text(ui.values[0]);
-          $(".filter_outer_container #slide-price-max").text(ui.values[1]);
+        values: [min, max],
+        slide: function (event, ui) {
+            $("#slide-price-min").text(ui.values[0]);
+            $("#slide-price-max").text(ui.values[1]);
+            $("input[name='price_min']").val(ui.values[0]);
+            $("input[name='price_max']").val(ui.values[1]);
         }
     });
+    
+    // Set initial display
+    $("#slide-price-min").text(min);
+    $("#slide-price-max").text(max);
+    
 
-    // Display initial values
-    $(".filter_outer_container #slide-price-min").text($(".filter_outer_container #slide-price-range").slider("values", 0));
-    $(".filter_outer_container #slide-price-max").text($(".filter_outer_container #slide-price-range").slider("values", 1));
 
     $('#form-productReview').on('submit', (e) => {
         e.preventDefault();

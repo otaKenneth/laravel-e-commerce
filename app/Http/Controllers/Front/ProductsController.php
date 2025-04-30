@@ -1378,37 +1378,79 @@ class ProductsController extends Controller
      *
      * @return array $filters
      */
-    private function getAvailableFilters($categoryDetails, $products) {
-
-        $selection = $products->select('*')->with(['brand', 'attributes' => function($query) {
-            return $query->select('product_id','size');
-        }, 'vendor'])->get()->toArray();
-
+    private function getAvailableFilters($categoryDetails, $products)
+    {
         $filters = [];
 
-        if (isset($categoryDetails['categories']))
-            // check for categories
+        // Normalize category data
+        if (isset($categoryDetails['categories'])) {
             $filters['categories'] = $categoryDetails['categories'];
-        elseif (isset($categoryDetails['category_name']))
+        } elseif (isset($categoryDetails['category_name'])) {
             $filters['categories'] = [$categoryDetails];
-        else {
+        } else {
             $temp = collect($categoryDetails)->pluck('categories')->toArray();
             $filters['categories'] = array_merge(...$temp);
         }
 
-        // dd($filters);
-        // check for brands
-        // $filters['brands'] = collect($selection)->pluck('brand.name')->unique()->toArray();
+        // Determine active category URL
+        $activeCategoryUrl = null;
+        if (isset($categoryDetails['url'])) {
+            $activeCategoryUrl = $categoryDetails['url'];
+        } elseif (isset($categoryDetails['category_name'])) {
+            $activeCategoryUrl = $categoryDetails['url'] ?? null;
+        } elseif (is_array($categoryDetails)) {
+            $flat = collect($categoryDetails)->flatten(1);
+            $activeCategoryUrl = $flat->first()['url'] ?? null;
+        }
 
-        // check for sizes
-        $filters['sizes'] = collect($selection)->pluck('attributes.*.size')->flatten()->unique()->toArray();
+        // Fetch all parent categories with subcategories
+        $allParentCategories = \App\Models\Category::with('subCategories')
+            ->where('parent_id', 0)
+            ->where('status', 1)
+            ->get();
 
-        // check for color
-        $filters['color'] = collect($selection)->pluck('product_color')->unique()->toArray();
+        // Build full category tree with active status
+        $filters['categories'] = $allParentCategories->map(function ($cat) use ($activeCategoryUrl) {
+            return [
+                'category_name' => $cat->category_name,
+                'url' => $cat->url,
+                'is_active' => $cat->url === $activeCategoryUrl,
+                'sub_categories' => $cat->subCategories->map(function ($sub) use ($activeCategoryUrl) {
+                    return array_merge(
+                        $sub->toArray(),
+                        ['is_active' => $sub->url === $activeCategoryUrl]
+                    );
+                })->toArray(),
+            ];
+        })->toArray();
 
+        // Load full product data with required relations
+        $selection = $products->select('*')->with([
+            'brand',
+            'attributes' => function ($query) {
+                $query->select('product_id', 'size');
+            },
+            'vendor'
+        ])->get();
+
+        // Extract unique sizes
+        $filters['sizes'] = $selection->pluck('attributes.*.size')
+            ->flatten()
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+
+        // Extract unique colors
+        $filters['color'] = $selection->pluck('product_color')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
 
         return $filters;
     }
+
 
     private function old_processFilters($categoryProducts, $data) {
         // We used TWO ways to OPERATE the Dynamic Filters (on the left side of the listing.blade.php page): statically for every filter using jQuery and dynamically from Admin Panel. Here we use the first way (for the 'fabric' filter only):    // Check front/js/custom.js
@@ -1457,13 +1499,10 @@ class ProductsController extends Controller
                 $categoryProducts->whereIn('products.id', $productIds);
             }
 
-
-
-
-            // Size, price, color, brand, … are also Dynamic Filters, but won't be managed like the other Dynamic Filters, but we will manage every filter of them from the suitable respective database table, like the 'size' Filter from the `products_attributes` database table, 'color' Filter and `price` Filter from `products` table, 'brand' Filter from `brands` table
-            // Fourth: the 'brand' filter (from `products` and `brands` database table)
-            if (isset($data['brand']) && !empty($data['brand'])) { // coming from the AJAX call in front/js/custom.js    // example:    $data['brand'] = 'Large'
-                $productIds = \App\Models\Product::select('id')->whereIn('brand_id', $data['brand'])->pluck('id')->toArray(); // fetch the products ids with `brand_id` of $data['brand'] from the `products` table
+        // Size, price, color, brand, … are also Dynamic Filters, but won't be managed like the other Dynamic Filters, but we will manage every filter of them from the suitable respective database table, like the 'size' Filter from the `products_attributes` database table, 'color' Filter and `price` Filter from `products` table, 'brand' Filter from `brands` table
+        // Fourth: the 'brand' filter (from `products` and `brands` database table)
+        if (isset($data['brand']) && !empty($data['brand'])) { // coming from the AJAX call in front/js/custom.js    // example:    $data['brand'] = 'Large'
+            $productIds = \App\Models\Product::select('id')->whereIn('brand_id', $data['brand'])->pluck('id')->toArray(); // fetch the products ids with `brand_id` of $data['brand'] from the `products` table
 
                 $categoryProducts->whereIn('products.id', $productIds); // `products.id` means that `products` is the table name (means grab the `id` column of the `products` table)
             }
@@ -1485,6 +1524,12 @@ class ProductsController extends Controller
                 $prodAttributeModel = new ProductsAttribute;
                 $attributeIds = $prodAttributeModel->whereIn('size', $data['sizes'])->get()->pluck('product_id')->toArray();
                 $collection->orWhereIn('id', $attributeIds);
+            }
+
+            if (isset($data['price_min']) && isset($data['price_max'])) {
+                $min = floatval($data['price_min']);
+                $max = floatval($data['price_max']);
+                $collection->whereBetween('product_price', [$min, $max]);
             }
 
             // features
