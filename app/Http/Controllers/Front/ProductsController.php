@@ -601,8 +601,7 @@ class ProductsController extends Controller
         $data = $request->all();
         $couponCode = $data['code'];
 
-        // COUPON VALIDITY CHECKS
-        // if in previous couponcodes stack already
+        // COUPON VALIDITY CHECKS - MOVE TO PRIV FUNCTION
         // check if coupon exists in db
         $couponCount = \App\Models\Coupon::where('coupon_code', $data['code'])->count(); 
         if ($couponCount == 0) { // if the submitted coupon is wrong, send error message
@@ -616,7 +615,7 @@ class ProductsController extends Controller
             ]);
         }
         // coupon details validity
-        $message = $this->checkCouponValidity($couponCode, $getCartItems);
+        $message = $this->checkCouponValidity($couponCode, $couponCodes, $getCartItems);
         if (isset($message)) {
             return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
                 'status'         => false,
@@ -624,15 +623,17 @@ class ProductsController extends Controller
                 'message'        => $message,
                 // We'll use that array key 'view' as a JavaScript 'response' property to render the view (    $('#appendCartItems').html(resp.view);    ). Check front/js/custom.js
                 'view'           => (String) \Illuminate\Support\Facades\View::make('front.products.cart_items')->with(compact('getCartItems')), // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-
                 'headerview'     => (String) \Illuminate\Support\Facades\View::make('front.layout.header_cart_items')->with(compact('getCartItems')) // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
             ]);
         }
 
-        
         $couponCodes[] = $couponCode; // stack new coupon
 
         // loop thru coupon codes and recompute total
+        foreach ($couponCodes as $couponCode) {
+            
+            // HERE START
+        }
 
 
         // if successful store back to session after successful
@@ -642,9 +643,14 @@ class ProductsController extends Controller
         Log::info('data: ', $couponCodes);
     }
     
-    private function checkCouponValidity(String $couponCode, mixed $cartItems){
+    private function checkCouponValidity(String $couponCode, mixed $couponCodes, mixed $cartItems){
         $couponDetails = \App\Models\Coupon::where('coupon_code', $couponCode)->first(); // $data['code'] comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
         $message = null;
+
+        // if in previous couponcodes stack already
+        if (in_array($couponCode, $couponCodes)){
+            $message = 'You can only apply coupons once!';
+        }        
 
         // Check if the submitted coupon code is active/inactive (enabled/disabled/activated/deactivated)
         if ($couponDetails->status == 0) {
@@ -676,6 +682,17 @@ class ProductsController extends Controller
         foreach ($cartItems as $key => $item) {
             if (!in_array($item['product']['category_id'], $catArr)) { // if the category of one of the products in the Cart doesn't belong to the Coupon's categories (the categories of the coupon selected by 'vendor' or 'admin' in the Admin Panel for the coupon)
                 $message = 'This coupon isn’t applicable to your order.';
+            }
+        }
+
+        if ($couponDetails->vendor_id > 0) { // Check if submitted coupon code belongs to a 'vendor' (becasue a vendor' coupon is available ONLY for that vendor's products (not all products), whereas admin's coupons are available for all products)
+            // Get all the products ids of that very vendor
+            $productIds = \App\Models\Product::select('id')->where('vendor_id', $couponDetails->vendor_id)->pluck('id')->toArray();
+
+            foreach ($cartItems as $item) {
+                if (!in_array($item['product']['id'], $productIds)) { // if the user id of one of the products in the Cart doesn't belong to the products ids of that vendor (to check if the submitted coupon code pertains to that specific/very vendor or not)
+                    $message = 'COUPON ERROR: Coupon is unavailable for this product';
+                }
             }
         }
 
