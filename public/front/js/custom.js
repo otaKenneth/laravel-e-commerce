@@ -817,22 +817,6 @@ $(document).ready(function() {
         var code = $('#code').val();
         // console.log(code);
 
-        console.log('im calling this function')
-
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
-            url: '/stack-coupon',
-            type: 'POST',
-            data: { 
-                code: code
-            },
-            success: function(resp){
-                console.log(resp)
-            }
-        })
-
-        return;
-
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             url    : '/apply-coupon', // check this route in web.php
