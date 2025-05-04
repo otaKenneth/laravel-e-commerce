@@ -41,11 +41,11 @@
                                                 <td>{{ $admin['mobile'] }}</td>
                                                 <td>{{ $admin['email'] }}</td>
                                                 <td>
-                                                    @if ($admin['image'] != '')
-                                                        <img src="{{ asset('admin/images/photos/' . $admin['image']) }}">
-                                                    @else
-                                                        <img src="{{ asset('admin/images/photos/no-image.gif') }}">
-                                                    @endif
+                                                @if (!empty($admin['image']))
+                                                    <img src="{{ $getImage('admin/images/photos/', $admin['image']) }}">
+                                                @else
+                                                    <img src="{{ asset('admin/images/photos/no-image.gif') }}">
+                                                @endif
                                                 </td>
                                                 <td>
                                                     @if ($admin['confirm'] == 'Yes')
