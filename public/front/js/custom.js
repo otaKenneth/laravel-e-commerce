@@ -820,11 +820,8 @@ $(document).ready(function() {
             return false; // Get out of the WHOLE function!
         }
 
-
         var code = $('#code').val();
         // console.log(code);
-
-
 
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
@@ -844,6 +841,7 @@ $(document).ready(function() {
 
 
                 if (resp.couponAmount > 0) { // if there's a coupon code submitted and it's valid        // 'couponAmount' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php
+                    $('.couponCode').text(resp.couponCode);
                     $('.couponAmount').text(Number(resp.couponAmount).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
@@ -851,7 +849,6 @@ $(document).ready(function() {
                 } else {
                     $('.couponAmount').text('0.00');
                 }
-
 
                 if (resp.grand_total > 0) { // if there's a coupon code submitted and it's valid        // 'grand_total' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php
                     $('.grand_total').text(Number(resp.grand_total).toLocaleString(undefined, {
