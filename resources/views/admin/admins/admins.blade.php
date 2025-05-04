@@ -41,11 +41,11 @@
                                                 <td>{{ $admin['mobile'] }}</td>
                                                 <td>{{ $admin['email'] }}</td>
                                                 <td>
-                                                    @if ($admin['image'] != '')
-                                                        <img src="{{ asset('admin/images/photos/' . $admin['image']) }}">
-                                                    @else
-                                                        <img src="{{ asset('admin/images/photos/no-image.gif') }}">
-                                                    @endif
+                                                @if (!empty($admin['image']))
+                                                    <img src="{{ $getImage('admin/images/photos/', $admin['image']) }}">
+                                                @else
+                                                    <img src="{{ asset('admin/images/photos/no-image.gif') }}">
+                                                @endif
                                                 </td>
                                                 <td>
                                                     @if ($admin['confirm'] == 'Yes')
@@ -90,9 +90,11 @@
         <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
             <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2022. All rights reserved.</span>
+                <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                    Copyright © {{ date('Y') }}. All rights reserved.
+                </span>
             </div>
-        </footer>
+        </footer>        
         <!-- partial -->
     </div>
 @endsection

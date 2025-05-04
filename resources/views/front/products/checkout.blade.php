@@ -389,11 +389,11 @@
                                 >
                                     <div class="elementor-widget-container">
                                         <div class="elementor-button-wrapper">
-                                            <a class="elementor-button elementor-button-link elementor-size-sm" href="#">
+                                            <button id="checkout-submit-btn" class="elementor-button elementor-button-link elementor-size-sm" type="button">
                                                 <span class="elementor-button-content-wrapper">
-                                                    <span class="elementor-button-text">PAY NOW</span>
+                                                    <span id="checkoutBtn" class="elementor-button-text">PAY NOW</span>
                                                 </span>
-                                            </a>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

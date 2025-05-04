@@ -19,13 +19,19 @@ use App\Models\Vendor;
 use App\Models\Brand;
 use App\Models\Wishlist;
 use App\Helpers\LalamoveAPIBodyHelper;
-
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Log;
 
 class ProductsController extends Controller
 {
     private $lalamoveAPI_Helper;
     // match() method is used for the HTTP 'GET' requests to render listing.blade.php page and the HTTP 'POST' method for the AJAX request of the Sorting Filter or the HTML Form submission and jQuery for the Sorting Filter WITHOUT AJAX, AND ALSO for submitting the Search Form in listing.blade.php    // e.g.    /men    or    /computers
     public function listing(Request $request) { // using the Dynamic Routes with the foreach loop
+        $currentPage = $request->get('page', 1);
+        Paginator::currentPageResolver(function () use ($currentPage) {
+            return $currentPage;
+        });
+        
         $type = $request->type;
         $name = $request->any;
         $pageTitle = $name;
@@ -55,14 +61,30 @@ class ProductsController extends Controller
             }
 
             // collection, filters, categoryDetails, meta_title, meta_description, meta_keywords
-            if (is_array($result)) extract($result);
-            else return redirect('/products/collection/all');
+            if (is_array($result)) {
+                extract($result);
+            }else {
+                return redirect('/products/collection/all');
+            }
 
-            //$collection = $collection->paginate(12);
+            $totalCount = $collection->count();
+
+            // here remove pagination
             $collection = $collection->inRandomOrder()->paginate(12); //Randomize all the product display
             // dd($filters);
-            return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner'));
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'html' => view('front.partials.product-cards', compact('collection'))->render(),
+                    'nextPage' => $currentPage + 1
+                ]);
+            }
+            
+            // final return
+            return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner', 'totalCount'));
         } catch (\Exception $e) {
+            Log::info("Product Listing: " . $e);
+            
             return redirect('/products/collection/all');
         }
     }
@@ -602,7 +624,7 @@ class ProductsController extends Controller
 
                 // Check if the submitted coupon code is active/inactive (enabled/disabled/activated/deactivated)
                 if ($couponDetails->status == 0) {
-                    $message = 'The coupon is inactive!';
+                    $message = 'This coupon is currently inactive.';
                 }
 
 
@@ -611,7 +633,7 @@ class ProductsController extends Controller
                 $current_date = date('Y-m-d'); // this date format is understandable by MySQL
 
                 if ($expiry_date < $current_date) {
-                    $message = 'The coupon is expired!';
+                    $message = 'This coupon has expired and can no longer be used.';
                 }
 
 
@@ -624,7 +646,7 @@ class ProductsController extends Controller
                     ])->count();
 
                     if ($couponCount >= 1) { // if this 'Single Time' coupon code has been used/redeemed more than one single time by this user (this authenticated/logged-in user) (i.e. meaning that if that coupon code is already existing in the `orders` table and has been used/redeemed by this authenticated/logged-in user)
-                        $message = 'This coupon code is already availed by you!';
+                        $message = 'You’ve already used this coupon code.';
                     }
                 }
 
@@ -637,33 +659,12 @@ class ProductsController extends Controller
 
                 foreach ($getCartItems as $key => $item) {
                     if (!in_array($item['product']['category_id'], $catArr)) { // if the category of one of the products in the Cart doesn't belong to the Coupon's categories (the categories of the coupon selected by 'vendor' or 'admin' in the Admin Panel for the coupon)
-                        $message = 'This coupon code selected categories is not for one of the selected products category!';
+                        $message = 'This coupon isn’t applicable to your order.';
                     }
 
 
                     $attrPrice = Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']);
                     $total_amount = $total_amount + ($attrPrice['final_price'] * $item['quantity']);
-                }
-
-
-                // Check if the coupon code submitted by user is not available for that user (in case the coupon is already selected for certain specific users selected by 'admin' or 'vendor' in the Coupons tab in Admin Panel, and it's not available for all users)
-                // Get the coupon's selected users
-                if (isset($couponDetails->users) && !empty($couponDetails->users)) {
-                    $usersArr = explode(',', $couponDetails->users);
-                    // Check if the submitted coupon code is available ONLY for some specific users (from the Coupons tab in Admin Panel in 'Select User (by email):') and check if the coupon is available or not for the user submitting the coupon code
-                    if (count($usersArr)) { // if there's at least a one specific selected user for the coupon
-                        // Get user ids of all the selected users that the coupon code are available for them
-                        foreach ($usersArr as $key => $user) {
-                            $getUserId = \App\Models\User::select('id')->where('email', $user)->first()->toArray();
-                            $usersId[] = $getUserId['id'];
-                        }
-
-                        foreach ($getCartItems as $item) {
-                            if (!in_array($item['user_id'], $usersId)) { // if the user id of one of the products in the Cart doesn't belong to the Coupon's specifically selected users (to check if the submitted coupon code is available to the user submitting it or not)
-                                $message = 'This coupon code is not available for you! Try again with a valid coupon code! (The coupon code is available only for certain selected users!)';
-                            }
-                        }
-                    }
                 }
 
 
@@ -675,7 +676,7 @@ class ProductsController extends Controller
 
                     foreach ($getCartItems as $item) {
                         if (!in_array($item['product']['id'], $productIds)) { // if the user id of one of the products in the Cart doesn't belong to the products ids of that vendor (to check if the submitted coupon code pertains to that specific/very vendor or not)
-                            $message = 'This coupon code is not available for you! Try again with a valid coupon code! (vendor validation)!. The coupon code exists but one of the products in the Cart doesn\'t belong to that specific vendor who created/owns that Coupon!';
+                            $message = 'COUPON ERROR: Coupon is unavailable for this product';
                         }
                     }
                 }

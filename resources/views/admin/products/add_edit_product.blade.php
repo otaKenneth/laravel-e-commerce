@@ -88,11 +88,6 @@
                                 </div>
                             @endif
 
-
-
-
-
-
                             <form class="forms-sample"
                                 @if (empty($product['id'])) action="{{ url('admin/add-edit-product') }}" @else action="{{ url('admin/add-edit-product/' . $product['id']) }}" @endif
                                 method="post" enctype="multipart/form-data">
@@ -100,37 +95,42 @@
                                 <!-- Using the enctype="multipart/form-data" to allow uploading files (images) -->
                                 @csrf
                                 <div class="form-group">
-                                    <label for="category_id">Select Category</label>
-                                    {{-- <input type="text" class="form-control" id="category_id" placeholder="Enter Category Name" name="category_id" @if (!empty($product['name'])) value="{{ $product['category_id'] }}" @else value="{{ old('category_id') }}" @endif>  --}} {{-- Repopulating Forms (using old() method): https://laravel.com/docs/9.x/validation#repopulating-forms --}}
-                                    <select name="category_id" id="category_id" class="form-control text-dark">
-                                        <option value="">Select Category</option>
-                                        @foreach ($categories as $section)
-                                            {{-- $categories are ALL the `sections` with their related 'parent' categories (if any (if exist)) and their subcategories or `child` categories (if any (if exist)) --}} {{-- Check ProductsController.php --}}
-                                            <optgroup label="{{ $section['name'] }}"> {{-- sections --}}
-                                                @foreach ($section['categories'] as $category)
-                                                    {{-- parent categories --}} {{-- Check ProductsController.php --}}
-                                                    <option value="{{ $category['id'] }}"
-                                                        @if (!empty($product['category_id'] == $category['id'])) selected @endif>
-                                                        {{ $category['category_name'] }}</option> {{-- parent categories --}}
-                                                    @foreach ($category['sub_categories'] as $subcategory)
-                                                        {{-- subcategories or child categories --}} {{-- Check ProductsController.php --}}
-                                                        <option value="{{ $subcategory['id'] }}"
-                                                            @if (!empty($product['category_id'] == $subcategory['id'])) selected @endif>
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;{{ $subcategory['category_name'] }}
-                                                        </option> {{-- subcategories or child categories --}}
-                                                    @endforeach
-                                                @endforeach
-                                            </optgroup>
-                                        @endforeach
-                                        {{-- <option value="{{ $category['id'] }}" @if (!empty($product['category_id']) && $product['category_id'] == $category['id']) selected @endif >{{ $category['name'] }}</option> --}}
-                                    </select>
-                                </div>
-
-
-
-                                {{-- Including the related filters <select> box of a product DEPENDING ON THE SELECTED CATEGORY of the product --}}
-                                <div class="loadFilters">
-                                    @include('admin.filters.category_filters')
+                                    <label for="categoryDropdown">Select Category</label>
+                                    <div class="dropdown" style="position: relative; width: 100%;">
+                                        <button class="btn btn-secondary dropdown-toggle form-control text-dark" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0.25rem; padding: .4375rem .75rem; background-color: #ffffff; color: white; text-align: left;">
+                                            {{ $fullPath }}
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="categoryDropdown" style="min-width: 200px; width: 100%; border-radius: 0.25rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 0; background-color: #fff; border: 1px solid #ddd; text-align: left; color: black;">
+                                            @foreach ($categories as $section)
+                                                <li class="dropdown-submenu position-relative" style="list-style-type: none;">
+                                                    <a class="dropdown-item dropdown-toggle" href="#" data-id="{{ $section['id'] }}" style="padding: 10px 15px; cursor: pointer; transition: background-color 0.3s ease-in-out; text-align: left; color: black;">
+                                                        {{ $section['name'] }}
+                                                    </a>
+                                                    <ul class="dropdown-menu" style="display: none; position: absolute; left: 100%; top: 0; margin-left: 0.1rem; min-width: 200px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 0.25rem; background-color: #f8f9fa; text-align: left; color: black;">
+                                                        @foreach ($section['categories'] as $category)
+                                                            <li class="dropdown-submenu position-relative" style="list-style-type: none;">
+                                                                <a class="dropdown-item dropdown-toggle" href="#" data-id="{{ $category['id'] }}" style="padding: 10px 15px; cursor: pointer; transition: background-color 0.3s ease-in-out; text-align: left; color: black;">
+                                                                    {{ $category['category_name'] }}
+                                                                </a>
+                                                                @if (!empty($category['sub_categories']))
+                                                                    <ul class="dropdown-menu" style="display: none; position: absolute; left: 100%; top: 0; margin-left: 0.1rem; min-width: 200px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 0.25rem; background-color: #f8f9fa; text-align: left; color: black;">
+                                                                        @foreach ($category['sub_categories'] as $subcategory)
+                                                                            <li style="list-style-type: none;">
+                                                                                <a class="dropdown-item category-option" href="#" data-id="{{ $subcategory['id'] }}" style="padding: 10px 15px; cursor: pointer; transition: background-color 0.3s ease-in-out; text-align: left; color: black;">
+                                                                                    {{ $subcategory['category_name'] }}
+                                                                                </a>
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                @endif
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                        <input type="hidden" name="category_id" id="selectedCategory" value="{{ $fullPath }}">
+                                    </div>
                                 </div>
 
 
@@ -318,5 +318,118 @@
         });
     });
 
+    document.addEventListener("DOMContentLoaded", function () {
+    const categoryDropdown = document.getElementById("categoryDropdown");
+    const selectedCategoryInput = document.getElementById("selectedCategory");
+
+    // Handle category selection (including subcategories)
+    document.querySelectorAll(".dropdown-submenu > a, .category-option").forEach(function (el) {
+        el.addEventListener("click", function (e) {
+            e.preventDefault();
+            let selectedCategory = this.dataset.id;
+
+            if (selectedCategory) {
+                selectedCategoryInput.value = selectedCategory; // Update hidden input
+                let categoryPath = getCategoryPath(this);
+
+                categoryDropdown.innerText = categoryPath; // Update dropdown text
+
+                // Save to localStorage for future editing
+                localStorage.setItem("selectedCategoryID", selectedCategory);
+                localStorage.setItem("selectedCategoryText", categoryPath);
+            }
+        });
+    });
+
+    // Function to get the full category path
+    function getCategoryPath(element) {
+        let path = [element.innerText.trim()];
+        let parent = element.closest("ul").previousElementSibling;
+
+        while (parent && parent.classList.contains("dropdown-item")) {
+            path.unshift(parent.innerText.trim()); // Add parent categories to the path
+            parent = parent.closest("ul").previousElementSibling;
+        }
+
+        return path.join(" > "); // Format with " > "
+    }
+
+    // Toggle submenu display on click (for parent categories)
+    document.querySelectorAll(".dropdown-submenu > a").forEach(function (el) {
+        el.addEventListener("click", function (e) {
+            e.preventDefault();
+            let submenu = this.nextElementSibling;
+            if (submenu) {
+                submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+                this.parentElement.classList.toggle("open");
+            }
+        });
+    });
+
+    // Hover to show submenus
+    document.querySelectorAll(".dropdown-submenu").forEach(function (el) {
+        el.addEventListener("mouseenter", function () {
+            let submenu = this.querySelector(".dropdown-menu");
+            if (submenu) {
+                submenu.style.display = "block";
+            }
+        });
+
+        el.addEventListener("mouseleave", function () {
+            let submenu = this.querySelector(".dropdown-menu");
+            if (submenu) {
+                submenu.style.display = "none";
+            }
+        });
+    });
+});
+
+
     </script>
+    {{-- <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
+<!-- Bootstrap JS (Ensure this is loaded) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+    .dropdown-menu {
+        min-width: 200px;
+        width: 50%;
+        border-radius: 0.25rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 0;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        text-align: left;
+        color: black;
+    }
+
+    /* Ensures that submenus align neatly with their parent */
+    .dropdown-submenu {
+        position: relative;
+    }
+
+    .dropdown-submenu .dropdown-menu {
+        position: absolute;
+        left: 100%;
+        top: 0;
+        margin-left: -1px; /* Helps prevent gaps */
+        min-width: 200px;
+        background-color: #f8f9fa;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 0.25rem;
+    }
+
+    /* Keeps submenu aligned with the parent category */
+    .dropdown-submenu:hover > .dropdown-menu {
+        display: block;
+    }
+    .dropdown .dropdown-toggle:after {
+        content: '►'; /* Arrow symbol */
+        font-size: 0.8rem;
+        position: absolute;
+        right: 10px; /* Align it to the right */
+        top: 50%;
+        transform: translateY(-50%);
+    }
+</style>
 @endsection

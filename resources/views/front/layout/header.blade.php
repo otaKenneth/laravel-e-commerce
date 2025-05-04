@@ -8,6 +8,7 @@ $sections = \App\Models\Section::sections();
 
 <!-- Header -->
 <header>
+    <div class="w-full text-dark text-sm h-10 flex items-center text-center justify-center fixed top-0 z-50 font-bold" style="background-color: #ffffff; font-weight: bold; font-size: 14px ;"><span class="flex items-center" style="font-size: 18px">🛒</span> KAPITON IS IN EARLY DEVELOPMENT</div>
     <div data-elementor-type="header" data-elementor-id="34" class="elementor elementor-34 elementor-location-header"
         data-elementor-post-type="elementor_library">
         <div class="elementor-element elementor-element-76c1337 e-flex e-con-boxed e-con e-parent" data-id="76c1337"

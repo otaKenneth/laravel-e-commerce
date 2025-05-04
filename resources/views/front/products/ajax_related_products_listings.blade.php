@@ -110,17 +110,18 @@
                         data-element_type="container"
                         data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;container_type&quot;:&quot;flex&quot;}"
                     >
-                        @php
-                            $vendor_profile_image = null;
-                            if (isset($productDetails['vendor']['vendorbusinessdetails']['shop_logo']))
-                                $vendor_profile_image = $productDetails['vendor']['vendorbusinessdetails']['shop_logo'] != "" ? $productDetails['vendor']['vendorbusinessdetails']['shop_logo']:'2023-12-user.png';
+                    @php
+                        $vendor_profile_image = null;
+                        $vendorDetails = $product['vendor']['vendorbusinessdetails'] ?? null;
+                        $vendor_profile_image = !empty($vendorDetails['shop_logo'])
+                        ? $vendorDetails['shop_logo']
+                        : '2023-12-user.png';
                         @endphp
-                        <div
-                            class="elementor-element elementor-element-b1a54c1 elementor-widget elementor-widget-image"
+
+                        <div class="elementor-element elementor-element-b1a54c1 elementor-widget elementor-widget-image"
                             data-id="b1a54c1"
                             data-element_type="widget"
-                            data-widget_type="image.default"
-                        >
+                            data-widget_type="image.default">
                             <div class="elementor-widget-container">
                                 <img
                                     loading="lazy"
@@ -131,10 +132,10 @@
                                     class="attachment-large size-large wp-image-423"
                                     alt=""
                                     srcset="{{ $getImage('front/images/brand-logos/', $vendor_profile_image) }} 300w, {{ $getImage('front/images/brand-logos/', $vendor_profile_image) }} 150w"
-                                    sizes="(max-width: 300px) 100vw, 300px"
-                                >
+                                    sizes="(max-width: 300px) 100vw, 300px">
                             </div>
                         </div>
+                        @if (!empty($product['vendor']['vendorbusinessdetails']))
                         <div
                             class="elementor-element elementor-element-de8aaff elementor-widget elementor-widget-heading"
                             data-id="de8aaff"
@@ -145,6 +146,7 @@
                                 <h5 class="elementor-heading-title elementor-size-default">{{$product['vendor']['vendorbusinessdetails']['shop_name']}}</h5>
                             </div>
                         </div>
+                        @endif
                     </div>
                     @php
                     $marked = \App\Models\Product::product_computed_ratings($product['id']);

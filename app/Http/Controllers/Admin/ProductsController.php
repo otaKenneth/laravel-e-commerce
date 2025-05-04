@@ -98,10 +98,33 @@ class ProductsController extends Controller
             $product = new \App\Models\Product();
             // dd($product);
             $message = 'Product added successfully!';
+            $fullPath='';
         } else { // if the $id is passed in the route/URL parameters, this means Edit the Product
             $title = 'Edit Product';
-            $product = \App\Models\Product::find($id);
-            // dd($product);
+            $product = \App\Models\Product::with(['section', 'category', 'category.subCategories'])->findOrFail($id);
+            $sections = \App\Models\Section::all();
+            $categories = \App\Models\Category::where('section_id', $product->section_id)->get();
+            $subcategories = \App\Models\Category::where('id', $product->category_id)->with(['parentCategory', 'section'])->get();
+            
+            $subcategory = $subcategories->first(); // Get the one subcategory
+            $subcategoryName = $subcategory->category_name;
+            
+            $parentCategory = $subcategory->getParentCategory()->first();
+            
+            $categoryName = $parentCategory ? $parentCategory->category_name : $subcategory->category_name;
+            $sectionName = $subcategory->section->name ?? 'No Section';
+            // If there is no subcategory, display only Section > Category
+            $hasSubcategory = $subcategory->subCategories->isNotEmpty();
+            // Full path logic: 
+            if ($hasSubcategory) {
+                // If subcategory exists, include it in the full path
+                $fullPath = "$sectionName > $categoryName > $subcategoryName";
+            } else {
+                // If there are no subcategories, only show the section and category
+                $fullPath = "$sectionName > $categoryName";
+            }
+            //dd($fullPath); // Or send this to your view
+            //dd($subcategories);
             $message = 'Product updated successfully!';
         }
 
@@ -431,7 +454,21 @@ class ProductsController extends Controller
         $adminType = Auth::guard('admin')->user()->type;
 
         // return view('admin.products.add_edit_product')->with(compact('title', 'product'));
-        return view('admin.products.add_edit_product')->with(compact('title', 'product', 'categories', 'brands', 'breadcrumb', 'adminType'));
+        $data = [
+            'title',
+            'product',
+            'categories',
+            'brands',
+            'breadcrumb',
+            'adminType',
+            'fullPath',
+        ];
+
+        if (!empty($id)) {
+            $data[] = 'subcategories';
+            $data[] = 'sections'; 
+        }
+        return view('admin.products.add_edit_product')->with(compact($data));
     }
 
     public function deleteProductImage($id) { // AJAX call from admin/js/custom.js    // Delete the product image from BOTH SERVER (FILESYSTEM) & DATABASE    // $id is passed as a Route Parameter    

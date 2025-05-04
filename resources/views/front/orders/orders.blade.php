@@ -56,7 +56,7 @@
                     @endphp
                     @foreach ($order->orders_products as $product)
                     @php
-                        $product_image_path = $getImage("front/images/product_images/small/", $product['product_image']);
+                        $product_image_path = $getImage('front/images/product_images/small/', $product['product']['product_image']);                       
                     @endphp
                     <div
                         class="elementor-element elementor-element-958a31e e-con-full e-flex e-con e-child"
@@ -77,20 +77,17 @@
                                 data-widget_type="image.default"
                             >
                                 <div class="elementor-widget-container">
-                                <img
-                                    loading="lazy"
-                                    decoding="async"
-                                    width="800"
-                                    height="968"
-                                    src="{{ $product_image_path }}"
-                                    class="attachment-large size-large wp-image-422"
-                                    alt=""
-                                    srcset="{{ $product_image_path }} 846w, {{ $product_image_path }} 248w, {{ $product_image_path }} 768w, {{ $product_image_path }} 879w"
-                                    sizes="(max-width: 800px) 100vw, 800px"
-                                >
+                                        <img loading="lazy" decoding="async" width="800" height="968"
+                                            src="{{ $product_image_path }}" class="attachment-large size-large wp-image-422"
+                                            alt=""
+                                            srcset="{{ $product_image_path }} 846w, {{ $product_image_path }} 248w, {{ $product_image_path }} 768w, {{ $product_image_path }} 879w"
+                                            sizes="(max-width: 800px) 100vw, 800px"
+                                        >
+                                    </a>
                                 </div>
                             </div>
                         </div>
+                    
                         <div
                             class="elementor-element elementor-element-96bb8db e-con-full e-flex e-con e-child"
                             data-id="96bb8db"

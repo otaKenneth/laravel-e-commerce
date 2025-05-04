@@ -23,26 +23,71 @@ class VendorController extends Controller
         return view('front.vendors.vendor_register')->with(compact('countries'));
     }
 
-    public function vendorList() {
-        $vendors = Vendor::where('status', 1)
+    public function vendorList(Request $request) {
+        $perPage = 10;
+        $currentPage = $request->get('page', 1);
+        
+        // On first visit or refresh, generate a random order and store vendor IDs
+        if ($currentPage == 1 || $request->has('refresh')) {
+            $allVendorIds = Vendor::where('status', 1)->pluck('id')->toArray();
+            shuffle($allVendorIds);
+            $request->session()->put('randomized_vendor_ids', $allVendorIds);
+        }
+        
+        // Get the stored vendor IDs
+        $vendorIds = $request->session()->get('randomized_vendor_ids', []);
+        
+        // Calculate offset for current page
+        $offset = ($currentPage - 1) * $perPage;
+        
+        // Get IDs for current page
+        $pageVendorIds = array_slice($vendorIds, $offset, $perPage);
+        
+        // If no more vendors, return empty
+        if (empty($pageVendorIds)) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'html' => '',
+                    'nextPage' => null
+                ]);
+            }
+        }
+        
+        // Get the vendors for this page
+        $vendors_paginated = Vendor::whereIn('id', $pageVendorIds)
             ->with('vendorbusinessdetails')
             ->withSum('vendorProductOrders', 'product_qty')
-            ->get()
-            ->shuffle(); // Shuffle the results
-    
-        // Manually paginate the shuffled collection
-        $perPage = 10;
-        $currentPage = request()->get('page', 1); // Get the current page from query parameters
+            // Use case statements to maintain the same order as the pageVendorIds array
+            ->orderByRaw("CASE id " . 
+                implode(' ', array_map(function($i, $id) {
+                    return "WHEN $id THEN $i";
+                }, array_keys($pageVendorIds), $pageVendorIds)) . 
+                " END")
+            ->get();
+        
+        // Create pagination info
+        $totalVendors = count($vendorIds);
+        $hasMore = ($offset + $perPage) < $totalVendors;
+        $nextPage = $hasMore ? $currentPage + 1 : null;
+        
+        // Wrap in a custom paginator
         $vendors_paginated = new \Illuminate\Pagination\LengthAwarePaginator(
-            $vendors->forPage($currentPage, $perPage), 
-            $vendors->count(), 
-            $perPage, 
-            $currentPage, 
-            ['path' => request()->url()]
+            $vendors_paginated,
+            $totalVendors,
+            $perPage,
+            $currentPage,
+            ['path' => $request->url()]
         );
     
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('front.partials.vendor-cards', compact('vendors_paginated'))->render(),
+                'nextPage' => $nextPage
+            ]);
+        }
+        
         return view('front.pages.merchants')->with(compact('vendors_paginated'));
-    }    
+    } 
 
     public function vendorRegister(Request $request) { // the register HTML form submission in vendor login_register.blade.php page    
         if ($request->isMethod('post')) { // if the register form is submitted
