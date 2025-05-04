@@ -519,161 +519,178 @@
                         {{-- Call the static getDiscountPrice() method in the Product.php Model to determine the final price of a product because a product can have a discount from TWO things: either a `CATEGORY` discount or `PRODUCT` discout     --}}
                         @php
                             $getDiscountPrice = \App\Models\Product::getDiscountPrice($product['id']);
+                            $avgRating = \App\Models\Rating::productRating($product['id']);
                         @endphp
-                        @if ($getDiscountPrice > 0)
-                        {{-- If there's a discount on the price, show the price before (the original price) and after (the new price) the discount --}}
-                        <div class="elementor-element elementor-element-1cd7c54 elementor-widget elementor-widget-text-editor"
-                            data-id="1cd7c54" data-element_type="widget" data-widget_type="text-editor.default">
-                            <div class="elementor-widget-container" style="display: flex; flex-direction: column; align-items: flex-start;">
-                                <div class="price-container">
+
+                        <!-- Wrapper for Price + Ratings alignment -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+
+                            @if ($getDiscountPrice > 0)
+                            {{-- If there's a discount on the price, show the price before (the original price) and after (the new price) the discount --}}
+                            <div class="elementor-element elementor-element-1cd7c54 elementor-widget elementor-widget-text-editor"
+                                data-id="1cd7c54" data-element_type="widget" data-widget_type="text-editor.default">
+                                <div class="elementor-widget-container" style="display: flex; flex-direction: column; align-items: flex-start;">
+                                    <div class="price-container">
+                                        <style>
+                                            .price-container {
+                                                display: flex;
+                                                flex-direction: column;
+                                                align-items: flex-start;
+                                            }
+
+                                            .price-container p {
+                                                font-size: 18px;
+                                                line-height: 0.5;
+                                                color: #000;
+                                            }
+
+                                            .price-container em {
+                                                text-decoration: line-through;
+                                                font-size: 14px;
+                                                opacity: 0.7;
+                                                color: #2d2d2d;
+                                                margin-left: 5px;
+                                                line-height: 0.5;
+                                                margin-top: 5px;
+                                            }
+                                        </style>
+                                        <p>₱{{ $getDiscountPrice }}</p>
+                                        <em>₱{{ number_format($product['product_price'], 2) }}</em>
+                                    </div>
+                                </div>
+                            </div>
+                            @else
+                            <div class="elementor-element elementor-element-1cd7c54 elementor-widget elementor-widget-text-editor"
+                                data-id="1cd7c54" data-element_type="widget" data-widget_type="text-editor.default">
+                                <div class="elementor-widget-container">
+                                    <p> ₱{{ number_format($product['product_price'], 2) }}</p>
+                                </div>
+                            </div>
+                            @endif
+
+                            <!-- Ratings -->
+                            <div class="custom_class_rating elementor-element elementor-element-036fcb9 elementor-widget elementor-widget-rating"
+                                data-id="036fcb9" data-element_type="widget" data-widget_type="rating.default"
+                                style="margin-left: auto; margin-top: 0;">
+                                <div class="elementor-widget-container">
                                     <style>
-                                        .price-container {
+                                        .elementor-widget-rating {
+                                            --e-rating-gap: 0px;
+                                            --e-rating-icon-font-size: 16px;
+                                            --e-rating-icon-color: #ccd6df;
+                                            --e-rating-icon-marked-color: #f0ad4e;
+                                            --e-rating-icon-marked-width: 100%;
+                                            --e-rating-justify-content: flex-start
+                                        }
+
+                                        .elementor-widget-rating .e-rating {
                                             display: flex;
-                                            flex-direction: column;
-                                            align-items: flex-start;
+                                            justify-content: var(--e-rating-justify-content)
                                         }
-    
-                                        .price-container p {
-                                            font-size: 18px;
-                                            line-height: 0.5;
-                                            color: #000;
+
+                                        .elementor-widget-rating .e-rating-wrapper {
+                                            display: flex;
+                                            justify-content: inherit;
+                                            flex-direction: row;
+                                            flex-wrap: wrap;
+                                            width: fit-content;
+                                            margin-block-end: calc(0px - var(--e-rating-gap));
+                                            margin-inline-end: calc(0px - var(--e-rating-gap))
                                         }
-    
-                                        .price-container em {
-                                            text-decoration: line-through;
-                                            font-size: 14px;
-                                            opacity: 0.7;
-                                            color: #2d2d2d;
-                                            margin-left: 5px;
-                                            line-height: 0.5;
+
+                                        .elementor-widget-rating .e-rating .e-icon {
+                                            position: relative;
+                                            margin-block-end: var(--e-rating-gap);
+                                            margin-inline-end: var(--e-rating-gap)
+                                        }
+
+                                        .elementor-widget-rating .e-rating .e-icon-wrapper.e-icon-marked {
+                                            --e-rating-icon-color: var(--e-rating-icon-marked-color);
+                                            width: var(--e-rating-icon-marked-width);
+                                            position: absolute;
+                                            z-index: 1;
+                                            height: 100%;
+                                            left: 0;
+                                            top: 0;
+                                            overflow: hidden
+                                        }
+
+                                        .elementor-widget-rating .e-rating .e-icon-wrapper :is(i, svg) {
+                                            display: flex;
+                                            flex-shrink: 0
+                                        }
+
+                                        .elementor-widget-rating .e-rating .e-icon-wrapper i {
+                                            font-size: var(--e-rating-icon-font-size);
+                                            color: var(--e-rating-icon-color)
+                                        }
+
+                                        .elementor-widget-rating .e-rating .e-icon-wrapper svg {
+                                            width: auto;
+                                            height: var(--e-rating-icon-font-size);
+                                            fill: var(--e-rating-icon-color)
+                                        }
+
+                                        .custom_class_rating {
+                                            margin-left: auto;
                                             margin-top: 5px;
                                         }
-                                    </style>
-                                <p>₱{{ $getDiscountPrice }}</p>
-                                <em>₱{{ number_format($product['product_price'], 2) }}</em>
-                                </div>
-                                
-                            </div>
-                        </div> 
-                        @else
-                        <div class="elementor-element elementor-element-1cd7c54 elementor-widget elementor-widget-text-editor"
-                            data-id="1cd7c54" data-element_type="widget" data-widget_type="text-editor.default">
-                            <div class="elementor-widget-container">
-                                <p> ₱{{ number_format($product['product_price'], 2) }}</p>
-                            </div>
-                        </div>
-                        @endif
 
-                        <!-- Ratings -->
-                        <div class="custom_class_rating elementor-element elementor-element-036fcb9 elementor-widget elementor-widget-rating"
-                            data-id="036fcb9" data-element_type="widget" data-widget_type="rating.default">
-                            <div class="elementor-widget-container">
-                                <style>
-                                    /*! elementor - v3.18.0 - 08-12-2023 */
-                                    .elementor-widget-rating {
-                                        --e-rating-gap: 0px;
-                                        --e-rating-icon-font-size: 16px;
-                                        --e-rating-icon-color: #ccd6df;
-                                        --e-rating-icon-marked-color: #f0ad4e;
-                                        --e-rating-icon-marked-width: 100%;
-                                        --e-rating-justify-content: flex-start
-                                    }
-
-                                    .elementor-widget-rating .e-rating {
-                                        display: flex;
-                                        justify-content: var(--e-rating-justify-content)
-                                    }
-
-                                    .elementor-widget-rating .e-rating-wrapper {
-                                        display: flex;
-                                        justify-content: inherit;
-                                        flex-direction: row;
-                                        flex-wrap: wrap;
-                                        width: -moz-fit-content;
-                                        width: fit-content;
-                                        margin-block-end: calc(0px - var(--e-rating-gap));
-                                        margin-inline-end: calc(0px - var(--e-rating-gap))
-                                    }
-
-                                    .elementor-widget-rating .e-rating .e-icon {
-                                        position: relative;
-                                        margin-block-end: var(--e-rating-gap);
-                                        margin-inline-end: var(--e-rating-gap)
-                                    }
-
-                                    .elementor-widget-rating .e-rating .e-icon-wrapper.e-icon-marked {
-                                        --e-rating-icon-color: var(--e-rating-icon-marked-color);
-                                        width: var(--e-rating-icon-marked-width);
-                                        position: absolute;
-                                        z-index: 1;
-                                        height: 100%;
-                                        left: 0;
-                                        top: 0;
-                                        overflow: hidden
-                                    }
-
-                                    .elementor-widget-rating .e-rating .e-icon-wrapper :is(i, svg) {
-                                        display: flex;
-                                        flex-shrink: 0
-                                    }
-
-                                    .elementor-widget-rating .e-rating .e-icon-wrapper i {
-                                        font-size: var(--e-rating-icon-font-size);
-                                        color: var(--e-rating-icon-color)
-                                    }
-
-                                    .elementor-widget-rating .e-rating .e-icon-wrapper svg {
-                                        width: auto;
-                                        height: var(--e-rating-icon-font-size);
-                                        fill: var(--e-rating-icon-color)
-                                    }
-
-                                    .custom_class_rating {
-                                        margin-left: auto;
-                                        margin-top: 5px;
-                                    }
-
-                                    .custom_class_rating label {
-                                        margin-right: 5px;
-                                    }
-
-                                    @media (max-width: 767px) {
-                                        .custom_class_rating {
-                                            width: 100%;
-                                            margin-top: -10px;
+                                        .custom_class_rating label {
+                                            margin-right: 5px;
                                         }
 
-                                    }
-                                </style>
-                                <div class="e-rating" itemtype="https://schema.org/Rating" itemscope="" itemprop="reviewRating">
-                                    <meta itemprop="worstRating" content="0">
-                                    <meta itemprop="bestRating" content="5">
-                                    <div class="e-rating-wrapper" itemprop="ratingValue" content="{{ \App\Models\Rating::productRating($product['id']) }}" role="img"
-                                        aria-label="Rated {{ \App\Models\Rating::productRating($product['id']) }} out of 5">
-                                        
-                                        @php
-                                            $avgRating = \App\Models\Rating::productRating($product['id']);
-                                        @endphp
-                                
-                                        <!-- Check if the rating is 0 or null and display "No reviews" -->
-                                        @if($avgRating == 0 || $avgRating == null)
-                                        <span style="display: inline; font-size: 14px; color: #666; margin-right: 10px;margin-top: 16px">No reviews</span>
-                                        @else
-                                            <label>{{ $avgRating }}</label>
-                                            <!-- Star Icons if there are reviews -->
-                                            <div class="e-icon">
-                                                @for ($stars = 0; $stars < 5; $stars++)
-                                                    <div class="e-icon-wrapper {{ $stars < $avgRating ? 'e-icon-marked' : 'e-icon-unmarked' }}">
-                                                        <svg aria-hidden="true" class="e-font-icon-svg e-eicon-star" viewbox="0 0 1000 1000"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z">
-                                                            </path>
-                                                        </svg>
-                                                    </div>
-                                                @endfor
-                                            </div>
-                                        @endif
+                                        @media (max-width: 767px) {
+                                            .custom_class_rating {
+                                                width: 100%;
+                                                margin-top: -10px;
+                                            }
+                                        }
+                                    </style>
+                                    <div class="e-rating" itemtype="https://schema.org/Rating" itemscope="" itemprop="reviewRating">
+                                        <meta itemprop="worstRating" content="0">
+                                        <meta itemprop="bestRating" content="5">
+                                        <div class="e-rating-wrapper" itemprop="ratingValue" content="{{ $avgRating }}" role="img"
+                                            aria-label="Rated {{ $avgRating }} out of 5">
+
+                                            <!-- Check if the rating is 0 or null and display "No reviews" -->
+                                            @if($avgRating == 0 || $avgRating == null)
+                                                <span class="no-reviews-text">No reviews</span>
+                                                <style>
+                                                    .no-reviews-text {
+                                                        display: inline;
+                                                        font-size: 14px;
+                                                        color: #666;
+                                                        margin-left: 70px;
+                                                        margin-bottom: 20px;
+                                                    }
+                                                
+                                                    @media (max-width: 767px) {
+                                                        .no-reviews-text {
+                                                            margin-left: 0;
+                                                            text-align: center;
+                                                            display: block;
+                                                            margin-bottom: 10px;
+                                                        }
+                                                    }
+                                                </style>
+                                            @else
+                                                <label>{{ $avgRating }}</label>
+                                                <!-- Star Icons if there are reviews -->
+                                                <div class="e-icon">
+                                                    @for ($stars = 0; $stars < 5; $stars++)
+                                                        <div class="e-icon-wrapper {{ $stars < $avgRating ? 'e-icon-marked' : 'e-icon-unmarked' }}">
+                                                            <svg aria-hidden="true" class="e-font-icon-svg e-eicon-star" viewbox="0 0 1000 1000"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z">
+                                                                </path>
+                                                            </svg>
+                                                        </div>
+                                                    @endfor
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>                                
                             </div>
