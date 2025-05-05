@@ -33,7 +33,18 @@
                 data-element_type="widget"
                 data-widget_type="image.default"
             >
-                <div class="elementor-widget-container">
+                <div class="elementor-widget-container product-card-hover">
+                    <style>
+                        .product-card-hover {
+                            transition: transform 0.3s ease, box-shadow 0.3s ease;
+                        }
+        
+                        .product-card-hover:hover {
+                            transform: translateY(-5px);
+                            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+                            cursor: pointer;
+                        }
+                    </style>
                     <a href="{{ url('product/' . $product['id']) }}">
                         <img
                             loading="lazy"
