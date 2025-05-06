@@ -1484,7 +1484,8 @@ class ProductsController extends Controller
         return $filters;
     }
 
-    private function old_processFilters($categoryProducts, $data) {
+    private function old_processFilters($categoryProducts, $data)
+    {
         // We used TWO ways to OPERATE the Dynamic Filters (on the left side of the listing.blade.php page): statically for every filter using jQuery and dynamically from Admin Panel. Here we use the first way (for the 'fabric' filter only):    // Check front/js/custom.js
         // Note: the checked checkboxes <input> fields will be submitted as an ARRAY because we used SQUARE BRACKETS [] with the "name" HTML attribute in the checkbox <input> field in filters.blade.php e.g.    'fabric' => ['cotton', 'polyester']    , or else, AJAX is used to send the <input> values WITHOUT submitting the <form> at all    // Sidenote: There are TWO ways to submit a <form> to the backed: firstly, the regular one using the <button type="submit">, secondly, using AJAX by sending the "value" attributes of the <input> fields
 
@@ -1543,27 +1544,35 @@ class ProductsController extends Controller
     private function processFilters($collection, $data)
     {
         if ($data !== null) {
-            if (isset($data['color'])) {
-                $collection->orWhereIn('product_color', $data['color']);
+
+            $minPrice = max(0, isset($data['price_min']) ? (int) $data['price_min'] : 0);
+            $maxPrice = min(1000, isset($data['price_max']) ? (int) $data['price_max'] : 1000);
+
+            // price filter
+            if (isset($data['price_min']) || isset($data['price_max'])) {
+                $minPrice = max(0, isset($data['price_min']) ? (int) $data['price_min'] : 0);
+                $maxPrice = min(1000, isset($data['price_max']) ? (int) $data['price_max'] : 1000);
+                $collection->whereBetween('product_price', [$minPrice, $maxPrice]);
             }
 
-            if (isset($data['brands'])) {
-                $brandModel = new Brand;
-                $brandIds = $brandModel->select('id')->whereIn('name', $data['brands'])->get()->pluck('id')->toArray();
-                $collection->orWhereIn('brand_id', $brandIds);
-            }
+            $collection->where(function ($query) use ($data) {
+                if (isset($data['color'])) {
+                    $query->orWhereIn('product_color', $data['color']);
+                }
 
-            if (isset($data['sizes'])) {
-                $prodAttributeModel = new ProductsAttribute;
-                $attributeIds = $prodAttributeModel->whereIn('size', $data['sizes'])->get()->pluck('product_id')->toArray();
-                $collection->orWhereIn('id', $attributeIds);
-            }
+                if (isset($data['brands'])) {
+                    $brandModel = new Brand;
+                    $brandIds = $brandModel->select('id')->whereIn('name', $data['brands'])->get()->pluck('id')->toArray();
+                    $query->orWhereIn('brand_id', $brandIds);
+                }
 
-            if (isset($data['price_min']) && isset($data['price_max'])) {
-                $min = floatval($data['price_min']);
-                $max = floatval($data['price_max']);
-                $collection->whereBetween('product_price', [$min, $max]);
-            }
+                if (isset($data['sizes'])) {
+                    $prodAttributeModel = new ProductsAttribute;
+                    $attributeIds = $prodAttributeModel->whereIn('size', $data['sizes'])->get()->pluck('product_id')->toArray();
+                    $query->orWhereIn('id', $attributeIds);
+                }
+            });
+
 
             // features
             $productFilters = ProductsFilter::productFilters(); // Get all the (enabled/active) Filters    // (Another way to go is using an AJAX call to get the $productFilters!)
