@@ -196,7 +196,7 @@
             <div class="filter_outer_container">
                 @include('front.products.filters')
             </div>
-
+            
             <div id="container-product_list" class="product_list_container">
                 <!-- Start of product list -->
                 @include('front.partials.product-cards')
