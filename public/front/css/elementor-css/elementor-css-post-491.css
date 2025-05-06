@@ -586,8 +586,6 @@
 .elementor-491 .elementor-element.elementor-element-72ef1d2 a{
 	width: 100%;
 }
-<<<<<<< HEAD
-=======
 .elementor-491 .elementor-element-51b2b2e .swiper-slide > .elementor-element{
     width: 100%;
     max-width: 100% !important;
@@ -605,7 +603,6 @@
     aspect-ratio: 1 / 1;
     object-fit: cover;
 }
->>>>>>> 1d8a7aa64b1c9477b72191411b6da5dc7628cd96
 
 @media (max-width: 767px){
     .elementor-682 .elementor-element.elementor-element-72ef1d2 img{
@@ -628,6 +625,15 @@
     }
 }
 
+.product-card-hover {
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card-hover:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+}
 
 
 
