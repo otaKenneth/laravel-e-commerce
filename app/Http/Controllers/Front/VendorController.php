@@ -96,8 +96,8 @@ class VendorController extends Controller
             // dd($data);
             // Validation (Validation of vendor registration form)    // Manually Creating Validators: https://laravel.com/docs/9.x/validation#manually-creating-validators    
             $rules = [
-                'firstname' => 'required',
-                'lastname' => 'required',
+                'firstname' => ['required', 'regex:/^[a-zA-Z\s\-]+$/'],
+                'lastname' => ['required', 'regex:/^[a-zA-Z\s\-]+$/'],
                 'email' => 'required|email|unique:admins|unique:vendors',
                 'mobile' => 'required|min:10|numeric',
                 // 'personal.address' => 'required',
@@ -105,7 +105,7 @@ class VendorController extends Controller
                 // 'personal.state' => 'required',
                 // 'personal.country' => 'required',
                 // 'personal.postal' => 'required|numeric|min:3|max_digits:6',
-                'business.shop_name' => 'required|unique:vendors_business_details,shop_name',
+                'business.shop_name' => ['required','regex:/^[a-zA-Z\s\-]+$/','unique:vendors_business_details,shop_name'],
                 // 'business.shop_email' => 'required|email|unique:vendors_business_details,shop_email',
                 // 'business.shop_mobile' => 'required|min:10|numeric',
                 // 'business.address' => 'required',
