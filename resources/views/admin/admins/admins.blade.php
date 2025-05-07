@@ -46,15 +46,17 @@
 
                                                 <td>{{ $admin['mobile'] }}</td>
                                                 <td>{{ $admin['email'] }}</td>
-                                                <td>
+                                                <td class="text-center">
                                                     @php
-                                                        $imagePath = 'admin/images/photos/' . $admin['image'];
-                                                    @endphp
-                                                    @if (!empty($admin['image']) && file_exists(public_path($imagePath)))
-                                                        <img src="{{ asset($imagePath) }}">
-                                                    @else
-                                                        <img src="{{ asset('admin/images/photos/no-image.gif') }}">
-                                                    @endif
+                                                    $shopLogoPath = 'front/images/brand-logos/' . ($admin['vendor_business']['shop_logo'] ?? '');
+                                                @endphp
+
+                                                @if (!empty($admin['vendor_business']['shop_logo']) && file_exists(public_path($shopLogoPath)))
+                                                    <img src="{{ asset($shopLogoPath) }}">
+                                                @else
+                                                    <img src="{{ asset('admin/images/photos/no-image.gif') }}">
+                                                @endif
+
                                                 </td>
                                                 <td>
                                                     @if ($admin['confirm'] == 'Yes')
