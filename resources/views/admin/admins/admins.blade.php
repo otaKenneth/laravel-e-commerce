@@ -46,7 +46,7 @@
 
                                                 <td>{{ $admin['mobile'] }}</td>
                                                 <td>{{ $admin['email'] }}</td>
-                                                <td class="text-center">
+                                                <td>
                                                     @php
                                                     $shopLogoPath = 'front/images/brand-logos/' . ($admin['vendor_business']['shop_logo'] ?? '');
                                                 @endphp
