@@ -196,7 +196,7 @@
                                         </ul>
 
                                         <!-- Hidden input to store selected category or subcategory -->
-                                        <input type="hidden" name="categories" id="selectedCategory">
+                                        <input type="hidden" name="categories[]" id="selectedCategory">
 
                                         <!-- Checkbox for "Apply to all categories" -->
                                         <div class="text-right pt-2">
@@ -350,9 +350,9 @@
                                                 const label = getCategoryPath(this);
                                                 categoryDropdown.innerText = label;
 
-                                                // console.log('Selected ID:', selectedId);
-                                                // console.log('All Relevant IDs:', allRelevantIds);
-                                                // console.log('Joined Value:', allRelevantIds.join(','));
+                                                console.log('Selected ID:', selectedId);
+                                                console.log('All Relevant IDs:', allRelevantIds);
+                                                console.log('Joined Value:', allRelevantIds.join(','));
                                             });
                                         });
 
