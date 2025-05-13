@@ -8,9 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\File;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+use App\Helpers\GoogleReCaptchaHelper;
 
 class VendorController extends Controller
 {
@@ -92,6 +91,14 @@ class VendorController extends Controller
     public function vendorRegister(Request $request) { // the register HTML form submission in vendor login_register.blade.php page    
         if ($request->isMethod('post')) { // if the register form is submitted
             $data = $request->all();
+            $gcsConfig = config('filesystems.disks.gcs');
+            $grecaptcha = new GoogleReCaptchaHelper;
+            $grecaptcha_resp = $grecaptcha->create_assessment(
+                $gcsConfig['key_file'],
+                $request->input('g-recaptcha-response'),
+                'stone-semiotics-416509',
+                'submit'
+            );
             
             // dd($data);
             // Validation (Validation of vendor registration form)    // Manually Creating Validators: https://laravel.com/docs/9.x/validation#manually-creating-validators    
