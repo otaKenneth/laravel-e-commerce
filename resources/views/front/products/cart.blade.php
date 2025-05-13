@@ -76,5 +76,43 @@
             </div>
         </div>
     </div>
+        <div id="couponModal" class="modal" style="display:none; position: fixed; inset: 0; background-color: rgba(0,0,0,0.5); z-index: 9999;">
+        <div style="
+            background: #A8D5BA;
+            color: #fff;
+            margin: 10vh auto;
+            padding: 2rem 1.5rem;
+            border-radius: 1.5rem;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            box-sizing: border-box;
+        ">
+            <h2 style="font-weight: bold; margin-bottom: 0.5rem; font-size: 1.25rem; color: white;">
+                COUPON APPLIED
+            </h2>
+            <hr style="border: 1px solid rgba(255, 255, 255, 0.5); margin: 1rem 0;">
+            <p id="couponMessageText" style="font-size: 1rem; color: white;">
+                You are getting a discount!
+            </p>
+            
+            <button id="closeModal" style="
+                margin-top: 1.5rem;
+                background-color: #1c1c1c;
+                color: white;
+                font-weight: bold;
+                padding: 0.75rem 1.5rem;
+                border: none;
+                border-radius: 9999px;
+                cursor: pointer;
+                font-size: 1rem;
+                width: 100%;
+                max-width: 200px;
+            ">
+                CLOSE
+            </button>
+        </div>
+    </div>
 </div>
 @endsection
