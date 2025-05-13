@@ -78,7 +78,7 @@ $name, $mobile, $email, ...) used here are passed in from the vendorRegister() m
 
     <div style="box-sizing: border-box; padding: 20px; background: #f0f5f0; border-radius: 10px; max-width: 630px; width: 90%; margin-left: auto; margin-right: auto; font-family: 'Lexend', Sans-serif;">
 
-        <p style="margin: 0 0 20px 0;">Your Vendor Account has been successfully deactivated.  As a result, you will no longer be able to access the account or its associated services.</p>
+        <p style="margin: 0 0 20px 0;">Your Vendor Account has been deactivated.  As a result, you will no longer be able to access the account or its associated services.</p>
         <p style="margin: 0 0 20px 0;">If you have any questions or need assistance, feel free to reach out to our support team at <a href="mailto:kapiton.marketplace@gmail.com">kapiton.marketplace@gmail.com</a> or by sending a message on our <a target="_blank" href="https://t.me/+FC_5bLL7k2pkYTM1">merchant helpdesk</a>. We're here to help!</p>
         <p style="margin: 0 0 20px 0;">Thank you for your understanding!</p>
         
