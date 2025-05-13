@@ -18,7 +18,7 @@ $settings = [
     data-settings="{{ json_encode($settings) }}">
     <div class="elementor-element elementor-element-757b9c4 elementor-widget__width-inherit elementor-widget elementor-widget-image"
         data-id="757b9c4" data-element_type="widget" data-widget_type="image.default">
-        <div class="elementor-widget-container">
+        <div class="elementor-widget-container product-card-hover">
             <a href="{{ url('product/' . $product['id']) }}">
                 <img loading="lazy" decoding="async" width="800" height="968"
                     src="{{ $product_image_path }}" class="attachment-large size-large wp-image-422"
