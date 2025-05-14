@@ -30,19 +30,6 @@
             <div class="elementor-widget-container">
                 <h5 class="elementor-heading-title elementor-size-default" id="shop_name">{{$vendor->vendorbusinessdetails->shop_name}}</h5>
             </div>
-            <style>
-            #custom_vendor_style {
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-            }
-
-            #shop_name {
-                font-size: 16px;
-                justify-content: center;
-                align-items: center;
-            }
-            </style>
         </div>
 
 
@@ -85,7 +72,7 @@
                         display: inline-block
                     }
                 </style>
-                <p style="visibility: hidden; height: 0; overflow: hidden; margin: 0; padding: 0;">{{$vendor->name}}<br>
+                <p id="custom_vendor_name_style">{{$vendor->name}}<br>
                     {{$vendor->vendorbusinessdetails->shop_address}}, {{$vendor->vendorbusinessdetails->shop_city}},
                     {{$vendor->vendorbusinessdetails->shop_state}}, {{$vendor->vendorbusinessdetails->shop_country}}<br>
                     {{$vendor->vendorbusinessdetails->shop_mobile}}
@@ -263,7 +250,6 @@
                 </span>
             </a>
         </div>
-        <style>#custom_button_style{margin-top: -7px}</style>
     </div>
 </div>
 
