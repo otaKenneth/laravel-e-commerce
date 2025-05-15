@@ -733,19 +733,12 @@ class ProductsController extends Controller
         if ($request->ajax()) { // if the request is coming via an AJAX call
             $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call) (through the 'data' object)
 
-
-            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart
-            Session::forget('couponAmount'); // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
-            Session::forget('couponCode');   // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
-
-
             $getCartItems = \App\Models\Cart::getCartItems();
             $totalCartItems = totalCartItems(); // totalCartItems() function is in our custom Helpers/Helper.php file that we have registered in 'composer.json' file    // We created the CSS class 'totalCartItems' in front/layout/header.blade.php to use it in front/js/custom.js to update the total cart items via AJAX, because in pages that we originally use AJAX to update the cart items (such as when we delete a cart item in http://127.0.0.1:8000/cart using AJAX), the number doesn't change in the header automatically because AJAX is already used and no page reload/refresh has occurred
-
-
+                        
             // Check the validity of the Coupon Code
             $couponCount = \App\Models\Coupon::where('coupon_code', $data['code'])->count(); // $data['code'] comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-
+            
             if ($couponCount == 0) { // if the submitted coupon is wrong, send error message
                 return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
                     'status'         => false,
@@ -759,14 +752,14 @@ class ProductsController extends Controller
                 
                 // SUBMITTED COUPON CODE VALIDATION:
                 $couponValidity = $this->checkCouponValidity($data['code'], $getCartItems);
-
+                
                 // get total amount
                 $total_amount = 0;
                 foreach ($getCartItems as $key => $item) {
                     $attrPrice = Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']);
                     $total_amount = $total_amount + ($attrPrice['final_price'] * $item['quantity']);
                 }
-
+                
                 // If there's an error message with the submitted coupon code, send this response to the AJAX call
                 if (isset($couponValidity['message'])) {
                     return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
@@ -775,11 +768,15 @@ class ProductsController extends Controller
                         'message'        => $couponValidity['message'],
                         // We'll use that array key 'view' as a JavaScript 'response' property to render the view (    $('#appendCartItems').html(resp.view);    ). Check front/js/custom.js
                         'view'           => (string) \Illuminate\Support\Facades\View::make('front.products.cart_items')->with(compact('getCartItems')), // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-
+                        
                         'headerview'     => (string) \Illuminate\Support\Facades\View::make('front.layout.header_cart_items')->with(compact('getCartItems')) // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
                     ]);
                 } else { // if the submitted coupon code is correct and passes the previous coupon code validation and passes all the previous if conditions (free of errors)
-
+                    
+                    // remove only if the coupon code is valid so previous coupons that are valid wont be removed if the current coupon is invalid
+                    // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart
+                    Session::forget('couponAmount'); // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
+                    Session::forget('couponCode');   // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
 
                     // Check if the submitted Coupon code Amount Type is 'Fixed' or 'Percentage'
                     if ($couponValidity['couponDetails']->amount_type == 'Fixed') { // if the submitted coupon code Amount Type is 'Fixed'
