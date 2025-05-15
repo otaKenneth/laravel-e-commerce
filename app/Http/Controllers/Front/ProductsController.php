@@ -726,6 +726,26 @@ class ProductsController extends Controller
         return ['message' => $message, 'couponDetails' => $couponDetails];
     }
 
+    private function getGrandTotalWithCoupon($getCartItems, $couponDetails){
+        // get total amount
+        $total_amount = 0;
+        foreach ($getCartItems as $key => $item) {
+            $attrPrice = Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']);
+            $total_amount = $total_amount + ($attrPrice['final_price'] * $item['quantity']);
+        }
+
+        // Check if the submitted Coupon code Amount Type is 'Fixed' or 'Percentage'
+        if ($couponDetails->amount_type == 'Fixed') { // if the submitted coupon code Amount Type is 'Fixed'
+            $couponAmount = $couponDetails->amount; // As is
+        } else { // if the submitted coupon code Amount Type is 'Percentage'
+            $couponAmount = $total_amount * ($couponDetails->amount / 100);
+        }
+
+        $grand_total = $total_amount - $couponAmount;
+        return [$grand_total, $couponAmount];
+
+    }
+
     // Note: For Coupons module, user must be logged in (authenticated) to be able to redeem them. Both 'admins' and 'vendors' can add Coupons. Coupons added by 'vendor' will be available for their products ONLY, but ones added by 'admins' will be available for ALL products.
     // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission via AJAX in front/products/cart_items.blade.php, check front/js/custom.js
     public function applyCoupon(Request $request)
@@ -753,13 +773,6 @@ class ProductsController extends Controller
                 // SUBMITTED COUPON CODE VALIDATION:
                 $couponValidity = $this->checkCouponValidity($data['code'], $getCartItems);
                 
-                // get total amount
-                $total_amount = 0;
-                foreach ($getCartItems as $key => $item) {
-                    $attrPrice = Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']);
-                    $total_amount = $total_amount + ($attrPrice['final_price'] * $item['quantity']);
-                }
-                
                 // If there's an error message with the submitted coupon code, send this response to the AJAX call
                 if (isset($couponValidity['message'])) {
                     return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
@@ -778,15 +791,7 @@ class ProductsController extends Controller
                     Session::forget('couponAmount'); // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
                     Session::forget('couponCode');   // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
 
-                    // Check if the submitted Coupon code Amount Type is 'Fixed' or 'Percentage'
-                    if ($couponValidity['couponDetails']->amount_type == 'Fixed') { // if the submitted coupon code Amount Type is 'Fixed'
-                        $couponAmount = $couponValidity['couponDetails']->amount; // As is
-                    } else { // if the submitted coupon code Amount Type is 'Percentage'
-                        $couponAmount = $total_amount * ($couponValidity['couponDetails']->amount / 100);
-                    }
-
-
-                    $grand_total = $total_amount - $couponAmount;
+                    [$grand_total, $couponAmount] = $this->getGrandTotalWithCoupon($getCartItems, $couponValidity['couponDetails']);
 
                     // Assign the Coupon Code and $couponAmount to Session Variables
                     Session::put('couponAmount', $couponAmount);
