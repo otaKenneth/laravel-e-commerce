@@ -835,6 +835,11 @@ $(document).ready(function() {
 
                 if (resp.message != '') {
                     // alert(resp.message);
+                    if (resp.status){
+                        $('#couponHeadingText').text('COUPON APPLIED');
+                    }else{
+                        $('#couponHeadingText').text('COUPON INVALID');
+                    }
                     $('#couponMessageText').text(resp.message);
                     $('#couponModal').fadeIn();
                 }
