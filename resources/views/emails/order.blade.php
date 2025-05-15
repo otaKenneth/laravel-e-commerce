@@ -188,6 +188,7 @@
             <li>Address: {{ $orderDetails['address'] }}, {{ $orderDetails['city'] }}, {{ $orderDetails['state'] }}, {{ $orderDetails['country'] }}, {{ $orderDetails['pincode'] }}</li>
             <li>Phone: {{ $orderDetails['mobile'] }}</li>
             <li>Email: {{ $email }}</li>
+            <li>Shipping Method: {{$deliveryDetails['courier_name']}}</li>
         </ul>
         <hr>
         <br>
