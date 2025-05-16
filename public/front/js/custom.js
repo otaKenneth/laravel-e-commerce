@@ -809,7 +809,9 @@ $(document).ready(function() {
 
     // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission in front/products/cart_items.blade.php
     // Note: For Coupons, user must be logged in (authenticated) to be able to redeem them. Both 'admins' and 'vendors' can add Coupons. Coupons added by 'vendor' will be available for their products ONLY, but ones added by 'admins' will be available for ALL products.
-    $('#applyCoupon').submit(function() { // When the Coupon <form> is submitted
+    $(document).on('submit', '#applyCoupon', function(e) {// When the Coupon <form> is submitted
+        e.preventDefault();
+
         var user = $(this).attr('user');
         // console.log(user);
 
@@ -833,6 +835,11 @@ $(document).ready(function() {
 
                 if (resp.message != '') {
                     // alert(resp.message);
+                    if (resp.status){
+                        $('#couponHeadingText').text('COUPON APPLIED');
+                    }else{
+                        $('#couponHeadingText').text('COUPON INVALID');
+                    }
                     $('#couponMessageText').text(resp.message);
                     $('#couponModal').fadeIn();
                 }

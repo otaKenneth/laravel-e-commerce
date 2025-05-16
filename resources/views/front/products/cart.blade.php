@@ -89,7 +89,7 @@
             position: relative;
             box-sizing: border-box;
         ">
-            <h2 style="font-weight: bold; margin-bottom: 0.5rem; font-size: 1.25rem; color: white;">
+            <h2 id="couponHeadingText" style="font-weight: bold; margin-bottom: 0.5rem; font-size: 1.25rem; color: white;">
                 COUPON APPLIED
             </h2>
             <hr style="border: 1px solid rgba(255, 255, 255, 0.5); margin: 1rem 0;">
