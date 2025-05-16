@@ -1202,7 +1202,9 @@ class ProductsController extends Controller
                 ];
 
                 \Illuminate\Support\Facades\Mail::send('emails.order', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order' is the order.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
-                    $message->to($email)->subject('Order Placed - Kapiton Store');
+                    $message->to($email)
+                            ->bcc('kapiton.marketplace@gmail.com')
+                            ->subject('Order Placed - Kapiton Store');
                 });
 
                 /*
@@ -1342,7 +1344,9 @@ class ProductsController extends Controller
                 'orderDetails' => $order
             ];
             \Illuminate\Support\Facades\Mail::send('emails.order', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order' is the order.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
-                $message->to($email)->subject('Order Placed - Kapiton Store');
+                $message->to($email)
+                        ->bcc('kapiton.marketplace@gmail.com')
+                        ->subject('Order Placed - Kapiton Store');
             });
 
             foreach ($vendor_ids as $vendor_id => $messageData) {
@@ -1352,7 +1356,9 @@ class ProductsController extends Controller
                 }])->where('id', $messageData['order_id'])->first()->toArray();
                 $order_id = $messageData['order_id'];
                 \Illuminate\Support\Facades\Mail::send('emails.vendor_order_placed', $messageData, function ($message) use ($email, $order_id) {
-                    $message->to($email)->subject('New Order - Order #' . $order_id);
+                    $message->to($email)
+                            ->bcc('kapiton.marketplace@gmail.com')
+                            ->subject('New Order - Order #' . $order_id);
                 });
             }
 

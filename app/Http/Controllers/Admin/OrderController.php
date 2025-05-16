@@ -174,7 +174,9 @@ class OrderController extends Controller
                 ];
 
                 \Illuminate\Support\Facades\Mail::send('emails.order_status', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_status' is the order_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
-                    $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
+                    $message->to($email)
+                            ->bcc('kapiton.marketplace@gmail.com')
+                            ->subject('Order Status Updated - ' . env('APP_URL'));
                 });
 
             } else { // if there are no Courier Name and Tracking Number data, don't include them in the email
@@ -266,7 +268,9 @@ class OrderController extends Controller
                 ];
 
                 \Illuminate\Support\Facades\Mail::send('emails.order_item_status', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_item_status' is the order_item_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_item_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
-                    $message->to($email)->subject('Order Item Status Updated - ' . env('APP_URL'));
+                    $message->to($email)
+                            ->bcc('kapiton.marketplace@gmail.com')
+                            ->subject('Order Item Status Updated - ' . env('APP_URL'));
                 });
 
             } else { // if there are no Courier Name and Tracking Number data, don't include them in the email
