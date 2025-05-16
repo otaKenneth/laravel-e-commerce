@@ -133,7 +133,7 @@ class CouponsController extends Controller
 
 
 
-            if (isset($data['categories'])) {
+            if (isset($data['categories']) && is_array($data['categories'])) {
                 $categories = implode(',', $data['categories']);
             } else {
                 $categories = '';

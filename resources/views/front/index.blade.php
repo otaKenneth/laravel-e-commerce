@@ -273,7 +273,7 @@
                             data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;container_type&quot;:&quot;flex&quot;}">
                             <div class="elementor-element elementor-element-70c91c9 elementor-widget elementor-widget-image"
                                 data-id="70c91c9" data-element_type="widget" data-widget_type="image.default">
-                                <div style="padding: 0 0px" class="imginner">
+                                <div style="padding: 0 0px" class="imginner product-card-hover">
                                     <a href="{{ url('product/' . $product['id']) }}">
                                         <img decoding="async" width="329" height="329"
                                             src="{{ $product_image_path }}"
@@ -497,7 +497,7 @@
                         data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;container_type&quot;:&quot;flex&quot;}">
                         <div class="elementor-element elementor-element-bfbcc32 elementor-widget__width-inherit elementor-widget elementor-widget-image"
                             data-id="bfbcc32" data-element_type="widget" data-widget_type="image.default">
-                            <div class="elementor-widget-container">
+                            <div class="elementor-widget-container product-card-hover">
                                 <a href="{{ url('product/' . $product['id']) }}">
                                     <img loading="lazy" decoding="async" width="800" height="968"
                                         src="{{ $product_image_path }}" class="attachment-large size-large wp-image-422"
