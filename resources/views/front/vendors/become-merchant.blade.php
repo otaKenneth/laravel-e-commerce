@@ -1,5 +1,12 @@
 {{-- This page is accessed from Becoma a Merchant section in footer Learn more button --}} 
 @extends('front.layout.layout')
+<script src="https://www.google.com/recaptcha/enterprise.js?render=6Lc8YjErAAAAAI4c_4rpCJVI0VjevDquLHmRe17X"></script>
+<!-- Replace the variables below. -->
+<script>
+  function onSubmit(token) {
+    document.getElementById("form-vendor_registration").submit();
+  }
+</script>
 
 
 @section('content')
@@ -491,11 +498,16 @@
                                         @endif
                                         <div
                                             class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100 e-form__buttons">
-                                            <button type="submit"
+                                            <button  
+                                                class="g-recaptcha"
+                                                data-sitekey="6Lc8YjErAAAAAI4c_4rpCJVI0VjevDquLHmRe17X"
+                                                data-callback='onSubmit'
+                                                data-action='submit'
                                                 class="elementor-button elementor-size-sm"> <span> <span
                                                         class="elementor-button-icon"> </span> <span
                                                         class="elementor-button-text">SUBMIT</span> </span>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
