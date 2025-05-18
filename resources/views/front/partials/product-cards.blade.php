@@ -9,7 +9,6 @@ $product['product_image'],
 $settings = [
         'content_width' => 'full',
         'container_type' => 'flex',
-        'animation' => 'fadeInUp'
     ];
 
 @endphp
