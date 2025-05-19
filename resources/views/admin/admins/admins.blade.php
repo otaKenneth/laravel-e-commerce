@@ -16,6 +16,7 @@
                 $renderTables['Inactive Vendors'] = array_filter($admins, fn($a) => $a['status'] == 0);
             } elseif ($title == "All Admins/Subadmins/Vendors") {
                 $renderTables['Superadmins'] = array_filter($admins, fn($a) => $a['type'] == 'superadmin');
+                 $renderTables['Admins'] = array_filter($admins, fn($a) => $a['type'] == 'admin');
                 $renderTables['Vendors'] = array_filter($admins, fn($a) => $a['type'] == 'vendor');
             } else {
                 $renderTables[$title] = $admins;
