@@ -56,7 +56,7 @@
                                                     @if (!empty($admin['image']))
                                                         <img src="{{ $getImage('admin/images/photos/', $admin['image']) }}" style="width: 50px; height: auto;">
                                                     @else
-                                                        <img src="{{ asset('admin/images/photos/no-image.gif') }}" style="width: 50px; height: auto;">
+                                                        <img src="{{ $getImage('front/images/brand-logos/', '2023-12-user.png') }}" style="width: 50px; height: auto;">
                                                     @endif
                                                 </td>
                                                 <td>
