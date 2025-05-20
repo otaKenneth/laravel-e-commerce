@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home1/hryflate/repositories/kapiton-master/
+    - /bin/cp -R $SOURCE_DIR/* $DEPLOYPATH
