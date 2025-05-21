@@ -90,47 +90,65 @@ class AdminController extends Controller
         return view('admin/login');
     }
 
-    public function forgotPassword(Request $request) {
+    public function forgotPassword(Request $request)
+    {
         if ($request->isMethod('post')) {
             $data = $request->all();
             // dd($data);
 
-            // Validation
+            // Step 1: Basic Validation (not checking exists here to avoid Laravel limitation)
             $rules = [
-                'email'    => 'required|email|max:255|exists:vendors,email',
+                'email' => 'required|email|max:255',
             ];
 
-            $customMessages = [ // Specifying A Custom Message For A Given Attribute: https://laravel.com/docs/9.x/validation#specifying-a-custom-message-for-a-given-attribute
-                'email.required'    => 'Email Address is required!',
-                'email.email'       => 'Valid Email Address is required',
+            $customMessages = [
+                'email.required' => 'Email Address is required!',
+                'email.email' => 'Valid Email Address is required!',
             ];
 
             $this->validate($request, $rules, $customMessages);
 
-            $userDetails = Vendor::where('email', $data['email'])->first();
+            // Step 2: Check if email exists in Admins or Vendors
+            $admin = Admin::where('email', $data['email'])->first();
+            $vendor = Vendor::where('email', $data['email'])->first();
+
+            if (!$admin && !$vendor) {
+                return redirect()->back()->withErrors(['email' => 'Email does not exist in our records.'])->withInput();
+            }
+
+            // Step 3: Use whichever user is found (vendor takes priority here)
+            $userDetails = $vendor ?? $admin;
             $email = $data['email'];
             $new_password = \Illuminate\Support\Str::random(16);
 
-            // The email message data/variables that will be passed in to the email view
+            // Prepare the email data
             $messageData = [
-                'name'     => $userDetails['name'], // the user's name that they entered while submitting the registration form
-                'email'    => $email, // the user's email that they entered while submitting the registration form
-                'password' => $new_password // the user's email that they entered while submitting the registration form
-                // 'code'  => base64_encode($data['email']) // We base64 code the user's $email and send it as a Route Parameter from user_confirmation.blade.php to the 'user/confirm/{code}' route in web.php, then it gets base64 decoded again in confirmUser() method in Front/UserController.php    // we will use the opposite: base64_decode() in the confirmUser() method (encode X decode)
+                'name' => $userDetails->name,
+                'email' => $email,
+                'password' => $new_password,
             ];
 
-            $admin = Admin::where('vendor_id', $userDetails->id)->first();
-            $admin->password = bcrypt($new_password);
-            $admin->update();
+            // Step 4: Update password based on user type
+            if ($admin) {
+                $admin->password = bcrypt($new_password);
+                $admin->update();
+            } elseif ($vendor) {
+                $linkedAdmin = Admin::where('vendor_id', $vendor->id)->first();
+                if ($linkedAdmin) {
+                    $linkedAdmin->password = bcrypt($new_password);
+                    $linkedAdmin->update();
+                }
+            }
 
-            \Illuminate\Support\Facades\Mail::send('emails.user_forgot_password', $messageData, function ($message) use ($email) { 
-                // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail
+            // Step 5: Send reset email
+            \Illuminate\Support\Facades\Mail::send('emails.user_forgot_password', $messageData, function ($message) use ($email) {
                 $message->to($email)->subject('New Password - ' . env('APP_URL'));
             });
         }
 
         return view('admin.forgotpassword');
     }
+
 
     public function logout() {
         session()->forget('errors');
