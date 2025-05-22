@@ -9,7 +9,7 @@ use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
 
 
     // Every 'product' belongs to a 'section'

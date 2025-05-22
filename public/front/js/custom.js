@@ -156,13 +156,19 @@ function loadMoreProducts() {
             let newProducts = data.html;
             document.getElementById("container-product_list").insertAdjacentHTML("beforeend", newProducts);
 
-            // re-initialize elementor widgets for newly added prdocuts
-            if (typeof elementorFrontend !== 'undefined' && elementorFrontend.init) {
-                elementorFrontend.init(); 
-            } else if (typeof elementorFrontend !== 'undefined' && elementorFrontend.hooks && elementorFrontend.hooks.doAction) {
-                elementorFrontend.hooks.doAction('frontend/element_ready/global', jQuery(document));
-            }
-            
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = newProducts;
+
+            const newProductElements = tempDiv.querySelectorAll('.single_product_card');
+
+            newProductElements.forEach(function(el) {
+                if (typeof elementorFrontend !== 'undefined') {
+                    if (elementorFrontend.hooks && elementorFrontend.hooks.doAction) {
+                        elementorFrontend.hooks.doAction('frontend/element_ready/global', jQuery(el));
+                    }
+                }
+            });
+
             if (data.nextPage) {
                 productPage = data.nextPage;
             } else {
@@ -814,11 +820,8 @@ $(document).ready(function() {
             return false; // Get out of the WHOLE function!
         }
 
-
         var code = $('#code').val();
         // console.log(code);
-
-
 
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
@@ -838,6 +841,7 @@ $(document).ready(function() {
 
 
                 if (resp.couponAmount > 0) { // if there's a coupon code submitted and it's valid        // 'couponAmount' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php
+                    $('.couponCode').text(resp.couponCode);
                     $('.couponAmount').text(Number(resp.couponAmount).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
@@ -845,7 +849,6 @@ $(document).ready(function() {
                 } else {
                     $('.couponAmount').text('0.00');
                 }
-
 
                 if (resp.grand_total > 0) { // if there's a coupon code submitted and it's valid        // 'grand_total' is sent as a PHP array key (in the HTTP response from the server (backend)) from inside the applyCoupon() method in Front/ProductsController.php
                     $('.grand_total').text(Number(resp.grand_total).toLocaleString(undefined, {
@@ -1114,21 +1117,35 @@ $(document).ready(function() {
     });
 
 
-    // Set up the price range slider
-    $(".filter_outer_container #slide-price-range").slider({
-        range: true,
-        min: 0,
-        max: 1000,
-        values: [0, 1000],
-        slide: function(event, ui) {
-          $(".filter_outer_container #slide-price-min").text(ui.values[0]);
-          $(".filter_outer_container #slide-price-max").text(ui.values[1]);
-        }
+   // Set up the price range slider
+    $(function () {
+        // Get the *overall* min/max range for the slider from data attributes
+        let sliderMinRange = parseInt($("#slide-price-range").data('min-range')) || 0;
+        let sliderMaxRange = parseInt($("#slide-price-range").data('max-range')) || 1000;
+
+        let initialMinSelected = parseInt($("input[name='price_min']").val()) || sliderMinRange;
+        let initialMaxSelected = parseInt($("input[name='price_max']").val()) || sliderMaxRange;
+
+        $(".filter_outer_container #slide-price-range").slider({
+            range: true,
+            min: sliderMinRange,
+            max: sliderMaxRange,
+            values: [initialMinSelected, initialMaxSelected],
+            slide: function (event, ui) {
+                // Update the displayed price range text
+                $(".filter_outer_container #slide-price-min").text(ui.values[0]);
+                $(".filter_outer_container #slide-price-max").text(ui.values[1]);
+                // Update the hidden input fields that will be submitted
+                $("input[name='price_min']").val(ui.values[0]);
+                $("input[name='price_max']").val(ui.values[1]);
+            }
+        });
+
+        // Display initial values (which are the selected values)
+        $(".filter_outer_container #slide-price-min").text(initialMinSelected);
+        $(".filter_outer_container #slide-price-max").text(initialMaxSelected);
     });
 
-    // Display initial values
-    $(".filter_outer_container #slide-price-min").text($(".filter_outer_container #slide-price-range").slider("values", 0));
-    $(".filter_outer_container #slide-price-max").text($(".filter_outer_container #slide-price-range").slider("values", 1));
 
     $('#form-productReview').on('submit', (e) => {
         e.preventDefault();

@@ -95,10 +95,13 @@ $filterAvailable = \App\Models\ProductsFilter::filterAvailable(
         <div class="facet-filter-associates">
             <h3 class="title-name">Price</h3>
 
-            <div id="slide-price-range"></div>
+            <div id="slide-price-range" data-min-range="{{ $overallMinPrice ?? 0 }}"
+                data-max-range="{{ $overallMaxPrice ?? 1000 }}"></div>
+
             <p id="slide-price-display">₱<span id="slide-price-min"></span> - ₱<span id="slide-price-max"></span></p>
+            <input type="hidden" name="price_min" value="{{ $priceMin ?? 0 }}">
+            <input type="hidden" name="price_max" value="{{ $priceMax ?? 1000 }}">
         </div>
-        <!-- Filter-Price /- -->
         <button type="submit" class="apply-filter">Apply Filters</button>
     </form>
 
