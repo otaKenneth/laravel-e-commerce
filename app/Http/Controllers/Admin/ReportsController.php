@@ -25,10 +25,12 @@ class ReportsController extends Controller
             $latest_payout = 0.00;
         }
         
-        $revenue = $vendor_ordersProduct
-            ->whereNotIn('item_status', ['Pending Refund', 'Refunded', 'Refund Approved'])
-            ->selectRaw('SUM(product_price * product_qty) as total_sales')
-            ->value('total_sales');
+        // $revenue = $vendor_ordersProduct
+        //     ->whereNotIn('item_status', ['Pending Refund', 'Refunded', 'Refund Approved'])
+        //     ->selectRaw('SUM(product_price * product_qty) as total_sales')
+        //     ->value('total_sales');
+
+        $revenue = collect($releases)->sum('amount'); // Sum the 'amount' field from the releases array
 
         $buyers = $get_Buyers->selectRaw('COUNT(user_id) as count')
             ->groupBy('user_id')
