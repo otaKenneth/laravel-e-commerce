@@ -8,9 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\File;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+use App\Helpers\GoogleReCaptchaHelper;
 
 class VendorController extends Controller
 {
@@ -92,12 +91,20 @@ class VendorController extends Controller
     public function vendorRegister(Request $request) { // the register HTML form submission in vendor login_register.blade.php page    
         if ($request->isMethod('post')) { // if the register form is submitted
             $data = $request->all();
+            $gcsConfig = config('filesystems.disks.gcs');
+            $grecaptcha = new GoogleReCaptchaHelper;
+            $grecaptcha_resp = $grecaptcha->create_assessment(
+                $gcsConfig['key_file'],
+                $request->input('g-recaptcha-response'),
+                'stone-semiotics-416509',
+                'submit'
+            );
             
             // dd($data);
             // Validation (Validation of vendor registration form)    // Manually Creating Validators: https://laravel.com/docs/9.x/validation#manually-creating-validators    
             $rules = [
-                'firstname' => 'required',
-                'lastname' => 'required',
+                'firstname' => ['required', 'regex:/^[a-zA-Z\s\-]+$/'],
+                'lastname' => ['required', 'regex:/^[a-zA-Z\s\-]+$/'],
                 'email' => 'required|email|unique:admins|unique:vendors',
                 'mobile' => 'required|min:10|numeric',
                 // 'personal.address' => 'required',
@@ -105,7 +112,7 @@ class VendorController extends Controller
                 // 'personal.state' => 'required',
                 // 'personal.country' => 'required',
                 // 'personal.postal' => 'required|numeric|min:3|max_digits:6',
-                'business.shop_name' => 'required|unique:vendors_business_details,shop_name',
+                'business.shop_name' => ['required','regex:/^[a-zA-Z\s\-]+$/','unique:vendors_business_details,shop_name'],
                 // 'business.shop_email' => 'required|email|unique:vendors_business_details,shop_email',
                 // 'business.shop_mobile' => 'required|min:10|numeric',
                 // 'business.address' => 'required',
