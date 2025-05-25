@@ -196,7 +196,7 @@
                                         </ul>
 
                                         <!-- Hidden input to store selected category or subcategory -->
-                                        <input type="hidden" name="categories" id="selectedCategory">
+                                        <input type="hidden" name="categories[]" id="selectedCategory">
 
                                         <!-- Checkbox for "Apply to all categories" -->
                                         <div class="text-right pt-2">

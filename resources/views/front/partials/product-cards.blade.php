@@ -4,13 +4,20 @@ $product_image_path = $getImage(
 'front/images/product_images/small/',
 $product['product_image'],
 );
+
+// for animation
+$settings = [
+        'content_width' => 'full',
+        'container_type' => 'flex',
+    ];
+
 @endphp
 <div class="elementor-element elementor-element-80f00c9 e-con-full e-flex e-con e-child single_product_card"
     data-id="80f00c9" data-element_type="container"
-    data-settings="{&quot;content_width&quot;:&quot;full&quot;,&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;container_type&quot;:&quot;flex&quot;}">
+    data-settings="{{ json_encode($settings) }}">
     <div class="elementor-element elementor-element-757b9c4 elementor-widget__width-inherit elementor-widget elementor-widget-image"
         data-id="757b9c4" data-element_type="widget" data-widget_type="image.default">
-        <div class="elementor-widget-container">
+        <div class="elementor-widget-container product-card-hover">
             <a href="{{ url('product/' . $product['id']) }}">
                 <img loading="lazy" decoding="async" width="800" height="968"
                     src="{{ $product_image_path }}" class="attachment-large size-large wp-image-422"

@@ -33,7 +33,7 @@
                 data-element_type="widget"
                 data-widget_type="image.default"
             >
-                <div class="elementor-widget-container">
+                <div class="elementor-widget-container product-card-hover">
                     <a href="{{ url('product/' . $product['id']) }}">
                         <img
                             loading="lazy"

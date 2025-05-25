@@ -22,6 +22,7 @@
                                 <table id="orders" class="table table-bordered"> {{-- using the id here for the DataTable --}}
                                     <thead>
                                         <tr>
+                                            <th>Order No.</th>
                                             <th>Order ID</th>
                                             <th>Order Date</th>
                                             <th>Order Image</th>
@@ -39,11 +40,13 @@
                                         @php
                                             // dd($orders); // check if the authenticated/logged-in user is 'vendor' (show ONLY orders of products belonging to them), or 'admin' (show ALL orders)
                                             $sortedOrders = collect($orders)->sortByDesc('created_at');
+                                            $count = $sortedOrders->count();
                                         @endphp
                                         @foreach ($sortedOrders as $order)
                                             @if ($order['orders_products'])
                                                 {{-- If the 'vendor' has ordered products (if a 'vendor' product has been ordered), show them. Check how we constrained the eager loads using a subquery in orders() method in Admin/OrderController.php inside the if condition --}}
                                                 <tr>
+                                                    <td>{{ $count-- }}
                                                     <td>{{ $order['id'] }}</td>
                                                     <td>{{ date('Y-m-d h:i:s', strtotime($order['created_at'])) }}</td>
                                                     <td>
