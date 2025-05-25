@@ -59,7 +59,9 @@ class OrderController extends Controller
                 ];
                 
                 \Illuminate\Support\Facades\Mail::send('emails.order', $messageData, function ($message) use ($email) {
-                    $message->to($email)->subject('Order Cancelled - Kapiton Store');
+                    $message->to($email)
+                            ->bcc('kapiton.marketplace@gmail.com')
+                            ->subject('Order Cancelled - Kapiton Store');
                 });
 
                 // Notify vendor for cancellation
@@ -82,7 +84,9 @@ class OrderController extends Controller
                     ];
 
                     \Illuminate\Support\Facades\Mail::send('emails.order_status', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.order_status' is the order_status.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that order_status.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
-                        $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
+                        $message->to($email)
+                                ->bcc('kapiton.marketplace@gmail.com')
+                                ->subject('Order Status Updated - ' . env('APP_URL'));
                     });
                 }
 
@@ -121,7 +125,9 @@ class OrderController extends Controller
                     // send an email to user
                     $email = $order->email;
                     \Illuminate\Support\Facades\Mail::send('emails.order_product_refund_request', $messageData, function ($message) use ($email) {
-                        $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
+                        $message->to($email)
+                                ->bcc('kapiton.marketplace@gmail.com')
+                                ->subject('Order Status Updated - ' . env('APP_URL'));
                     });
         
                     // send an email to vendor
@@ -134,7 +140,9 @@ class OrderController extends Controller
                         array_push($ccEmails, $vendor->vendorbusinessdetails->shop_email);
             
                         \Illuminate\Support\Facades\Mail::send('emails.vendor_order_product_refund', $messageData, function ($message) use ($email, $ccEmails) {
-                            $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
+                            $message->to($email)
+                                    ->bcc('kapiton.marketplace@gmail.com')
+                                    ->subject('Order Status Updated - ' . env('APP_URL'));
             
                             // Adding CC emails
                             foreach ($ccEmails as $ccEmail) {
@@ -236,7 +244,9 @@ class OrderController extends Controller
             // send an email to user
             $email = $user->email;
             \Illuminate\Support\Facades\Mail::send('emails.order_product_refund_request', $messageData, function ($message) use ($email) {
-                $message->to($email)->subject('Order Status Updated - ' . env('APP_URL'));
+                $message->to($email)
+                        ->bcc('kapiton.marketplace@gmail.com')
+                        ->subject('Order Status Updated - ' . env('APP_URL'));
             });
 
             // send an email to vendor

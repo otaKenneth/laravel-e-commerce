@@ -261,15 +261,47 @@
 
                         @php
                             $vendor_profile_image = null;
-                            if (isset($productDetails['vendor']['vendorbusinessdetails']['shop_logo']))
+                            if (isset($productDetails['vendor']['vendorbusinessdetails']['shop_logo'])){
                                 $vendor_profile_image = $productDetails['vendor']['vendorbusinessdetails']['shop_logo'] != "" ? $productDetails['vendor']['vendorbusinessdetails']['shop_logo']:'2023-12-user.png';
+                            }
+                            $vendor_id = $productDetails['vendor']['id'] ?? null;
+                            $store_url = $vendor_id ? url('products/vendor/' . $vendor_id) : '#';
                         @endphp
+                        <style>
+                            .vendor-card-link {
+                                display: inline-block;
+                                text-align: center;
+                                text-decoration: none;
+                                color: inherit;
+                                transition: transform 0.3s ease, color 0.3s ease;
+                            }
+                        
+                            .vendor-card-link:hover {
+                                transform: scale(1.02);
+                                color: #292929; /* Adjust to your theme color */
+                                text-decoration: underline;
+                            }
+                        
+                            .vendor-card-link img {
+                                border-radius: 50%;
+                                transition: transform 0.3s ease;
+                            }
+                        
+                            .vendor-card-link:hover img {
+                                transform: scale(1.05);
+                            }
+                        
+                            .vendor-card-link h5 {
+                                margin-top: 10px;
+                            }
+                        </style>
                         <div
                             class="elementor-element elementor-element-8b97798 elementor-widget elementor-widget-image"
                             data-id="8b97798"
                             data-element_type="widget"
                             data-widget_type="image.default">
                             <div class="elementor-widget-container">
+                            <a href="{{ $store_url }}" class="vendor-card-link">
                                 <img
                                     loading="lazy"
                                     decoding="async"
@@ -281,6 +313,7 @@
                                     srcset="{{ $getImage('front/images/brand-logos/', $vendor_profile_image) }} 300w, {{ $getImage('front/images/brand-logos/', $vendor_profile_image) }} 150w"
                                     sizes="(max-width: 300px) 100vw, 300px"
                                 >
+                            </a>
                             </div>
                         </div>
                         <div
@@ -289,7 +322,9 @@
                             data-element_type="widget"
                             data-widget_type="heading.default">
                             <div class="elementor-widget-container">
+                            <a href="{{ $store_url }}" class="vendor-card-link">
                                 <h5 class="elementor-heading-title elementor-size-default">{{ (isset($productDetails['vendor']['vendorbusinessdetails']['shop_name'])  ? $productDetails['vendor']['vendorbusinessdetails']['shop_name']:'') }}</h5>
+                            </a>
                             </div>
                         </div>
 
