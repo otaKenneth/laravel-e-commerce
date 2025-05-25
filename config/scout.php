@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Product;
+
 return [
 
     /*
@@ -16,14 +18,39 @@ return [
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'tntsearch'),
+    'driver' => env('SCOUT_DRIVER', 'meilisearch'),
 
-    'tntsearch' => [
-        'storage' => storage_path(),
-        'fuzziness' => env('TNTSEARCH_FUZZINESS', true),
-        'prefix_length' => env('TNTSEARCH_PREFIX_LENGTH', 2),
-        'max_edits' => env('TNTSEARCH_MAX_EDITS', 2),
-        'asYouType' => true, // Optional: for real-time search
+    'meilisearch' => [
+        'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
+        'key' => env('MEILISEARCH_KEY', null),
+        'index-settings' => [
+            Product::class => [
+                'filterableAttributes' => [
+                    'category_id',
+                    'vendor_id',
+                    'brand_id',
+                    'product_color',
+                    'product_price',
+                ],
+                'sortableAttributes' => [
+                    'product_name',
+                    'product_price',
+                    'created_at_timestamp',
+                ],
+                'searchableAttributes' => [
+                    'product_name',
+                    'product_code',
+                    'product_color',
+                    'description',
+                    'category_name',
+                    'vendor_name',
+                    'brand_name',
+                    'meta_title',
+                    'meta_description',
+                    'meta_keywords',
+                ],
+            ],
+        ],
     ],
 
 
@@ -144,16 +171,6 @@ return [
     | See: https://www.meilisearch.com/docs/learn/configuration/instance_options#all-instance-options
     |
     */
-
-    'meilisearch' => [
-        'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
-        'key' => env('MEILISEARCH_KEY'),
-        'index-settings' => [
-            // 'users' => [
-            //     'filterableAttributes'=> ['id', 'name', 'email'],
-            // ],
-        ],
-    ],
 
     /*
     |--------------------------------------------------------------------------

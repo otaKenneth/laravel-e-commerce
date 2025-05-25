@@ -9,7 +9,7 @@ use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
 
     // Every 'product' belongs to a 'section'
@@ -214,7 +214,7 @@ class Product extends Model
     public function toSearchableArray()
     {
         return [
-            'id'            => $this->id, // Make sure 'id' is included
+            'id'            => $this->id, 
             'product_name'  => $this->product_name,
             'product_code'  => $this->product_code,
             'product_color' => $this->product_color,

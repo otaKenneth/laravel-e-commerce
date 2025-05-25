@@ -554,6 +554,18 @@ $sections = \App\Models\Section::sections();
                 }
             }
 
+            function debounce(func, wait) {
+                let timeout;
+                return function(...args) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(this, args), wait);
+                };
+            }
+
+            searchInput.addEventListener('input', debounce(function(e) {
+                // your existing code here
+            }, 250));
+
             // Initialize the search functionality
             initializeAppSearch();
         });
