@@ -812,16 +812,6 @@ $(document).ready(function() {
     $(document).on('submit', '#applyCoupon', function(e) {// When the Coupon <form> is submitted
         e.preventDefault();
 
-        var user = $(this).attr('user');
-        // console.log(user);
-
-        if (user == 1) { // if the user is logged in (authenticated), they can apply coupon (redeem coupons)
-
-        } else { // if the user is unauthenticated/logged-out
-            alert('Please login to apply Coupon!');
-            return false; // Get out of the WHOLE function!
-        }
-
         var code = $('#code').val();
         // console.log(code);
 
