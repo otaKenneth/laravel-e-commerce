@@ -17,18 +17,62 @@ class ReportsController extends Controller
         $get_Buyers = $vendor_ordersProduct;
         $get_topItems = $vendor_ordersProduct;
         $get_OrdersCnt = $vendor_ordersProduct;
+
         $releases = OrdersProduct::releaseHistory(auth()->guard('admin')->user()->vendor_id);
+        //dd($releases);
+        $today = Carbon::now();
+        $dateRanges = collect();
+
+        
+        $startDate = Carbon::parse('2020-01-01');
+        $endDate = $today;
+
+        while ($startDate->lte($endDate)) {
+            $startOfWeek = $startDate->copy()->startOfWeek();
+            $endOfWeek = $startOfWeek->copy()->endOfWeek();
+
+            $dateRanges->push([
+                'start_date' => $startOfWeek->toDateString(),
+                'end_date' => $endOfWeek->toDateString()
+            ]);
+
+            $startDate = $endOfWeek->addDay();
+        }
+
+        $releases = $releases->filter(function ($release) use ($dateRanges) {
+
+            $releaseDate = Carbon::parse($release->created_at);
+
+            foreach ($dateRanges as $range) {
+                $start_date = Carbon::parse($range['start_date']);
+                $end_date = Carbon::parse($range['end_date']);
+
+                if ($releaseDate->between($start_date, $end_date)) {
+                    return true;
+                }
+            }
+
+            return false; // Return false if no match found
+        });
+
+
         $total_income = OrdersProduct::totalIncome(auth()->guard('admin')->user()->vendor_id);
+        
         $latest_payout = OrdersProduct::latestPayout(auth()->guard('admin')->user()->vendor_id);
         
-        if (!is_numeric($latest_payout)) {
-            $latest_payout = 0.00;
-        }
+        $productBreakdown = OrdersProduct::selectRaw('product_name, created_at, item_status, SUM(product_qty) as total_qty, SUM(product_price * product_qty) as total_revenue')
+            ->where('vendor_id', auth()->guard('admin')->user()->vendor_id)
+            ->whereNotIn('item_status', ['Pending Refund', 'Refunded', 'Refund Approved'])
+            ->groupBy('product_name', 'created_at','item_status')
+            ->get();
         
         $revenue = $vendor_ordersProduct
             ->whereNotIn('item_status', ['Pending Refund', 'Refunded', 'Refund Approved'])
             ->selectRaw('SUM(product_price * product_qty) as total_sales')
-            ->value('total_sales');
+            // ->value('total_sales')
+            ->toRawSql();
+        dd($revenue);
+        
 
         $buyers = $get_Buyers->selectRaw('COUNT(user_id) as count')
             ->groupBy('user_id')
@@ -75,34 +119,89 @@ class ReportsController extends Controller
                 }
             }
         }
+        // Breakdown of releases by date range and their items
+        $releases_breakdown = $releases->groupBy(function ($release) {
+            return $release->date_range;
+            
+        });
+        
+       // Breakdown of releases by date range and their items
+        $release_items_by_date = $releases->mapWithKeys(function ($release) {
+        $order_ids = explode(',', $release['order_ids']);
 
+        $items = OrdersProduct::whereIn('order_id', $order_ids)
+            ->whereNotIn('item_status', ['Pending Refund', 'Refunded', 'Refund Approved'])
+            ->select('product_name', 'product_qty', 'product_price', 'item_status')
+            ->get()
+            ->groupBy('product_name')
+            ->map(function ($itemsGroup) {
+                return [
+                    'total_qty' => $itemsGroup->sum('product_qty'),
+                    'total_revenue' => $itemsGroup->sum(function ($item) {
+                        return $item->product_price * $item->product_qty;
+                    }),
+                    'items' => $itemsGroup->map(function ($item) {
+                        return [
+                            'product_qty' => $item->product_qty,
+                            'product_price' => $item->product_price,
+                            'item_status' => $item->item_status,
+                        ];
+                    }),
+                ];
+            });
+
+        $release_total_revenue = $items->sum('total_revenue');
+
+        return [
+            $release['Date Range'] => [
+                'items' => $items,
+                'total_revenue' => $release_total_revenue, 
+            ],
+            ];
+        });
+
+       $releases = $releases->map(function ($release) use ($release_items_by_date) {
+        // Calculate the total revenue for the current release
+        $release['amount'] = $release_items_by_date[$release['Date Range']]['total_revenue'] ?? 0;
+
+        // Return the release only if it has revenue
+        return ($release['amount'] > 0) ? $release : null;
+        })->filter(function ($release) {
+        // Remove null entries, which were releases without revenue
+        return $release !== null;
+
+});
         $releases = array_map(function ($value) {
-            $vendor_bank_id = null;
-            $vendor_bank_name = null;
-            $vendor_bank_accnum = null;
-            if (!empty($value['vendor']['vendor_bank'])) {
-                $vendor_bank_id = $value['vendor']['vendor_bank']['id'];
-                $vendor_bank_name = $value['vendor']['vendor_bank']['bank_name'];
-                $vendor_bank_accnum = $value['vendor']['vendor_bank']['account_number'];
-            }
-            $condition = [
-                'vendor_bank_details_id' => $vendor_bank_id,
-                'date_range' => $value['Date Range'],
-            ];
-            $transaction_exists = \App\Models\VendorSalesTransaction::where($condition)->first();
-            return [
-                'id' => empty($transaction_exists) ? false:$transaction_exists['id'],
-                'Date Range' => $value['Date Range'],
-                'amount' => $value['amount'],
-                'shop_name' => \App\Models\VendorsBusinessDetail::where('vendor_id', $value['vendor']['id'])->first()->shop_name,
-                'bank_name' => $vendor_bank_name,
-                'transaction_number' => empty($transaction_exists) ? null:$transaction_exists['transaction_number'],
-                'status' => empty($transaction_exists) ? false:$transaction_exists['status'],
-                'account_number' => $vendor_bank_accnum,
-            ];
-        }, $releases->toArray());
+        $vendor_bank_id = null;
+        $vendor_bank_name = null;
+        $vendor_bank_accnum = null;
 
-        $date_dropdown_filter = collect($releases)->pluck(['Date Range']);
+        if (!empty($value['vendor']['vendor_bank'])) {
+            $vendor_bank_id = $value['vendor']['vendor_bank']['id'];
+            $vendor_bank_name = $value['vendor']['vendor_bank']['bank_name'];
+            $vendor_bank_accnum = $value['vendor']['vendor_bank']['account_number'];
+        }
+        $condition = [
+            'vendor_bank_details_id' => $vendor_bank_id,
+            'date_range' => $value['Date Range'],
+        ];
+        $transaction_exists = \App\Models\VendorSalesTransaction::where($condition)
+            ->whereNotIn('status', ['pending refund', 'refunded', 'refund approved']) // Exclude certain statuses
+            ->first();
+
+        return [
+            'id' => empty($transaction_exists) ? false : $transaction_exists['id'],
+            'Date Range' => $value['Date Range'],
+            'amount' => $value['amount'],
+            'shop_name' => \App\Models\VendorsBusinessDetail::where('vendor_id', $value['vendor']['id'])->first()->shop_name,
+            'bank_name' => $vendor_bank_name,
+            'transaction_number' => empty($transaction_exists) ? null : $transaction_exists['transaction_number'],
+            'status' => empty($transaction_exists) ? false : $transaction_exists['status'],
+            'account_number' => $vendor_bank_accnum,
+        ];
+    }, $releases->toArray());
+
+        $date_dropdown_filter = collect($releases)->pluck('Date Range');
 
         $nextThursday = Carbon::now()->next(Carbon::THURSDAY)->format('M d Y');
 
@@ -114,8 +213,8 @@ class ReportsController extends Controller
                 $digit4_accnum = substr($account_number, strlen($account_number)-4);
             }
         }
-        
-        return view('admin.reports.sales')->with(compact('revenue', 'order_count', 'buyers','releases','total_income','latest_payout','auth_type', 'date_dropdown_filter', 'nextThursday', 'digit4_accnum'));
+        return view('admin.reports.sales')->with(compact('revenue', 'order_count', 'buyers','releases','total_income','latest_payout','auth_type', 'date_dropdown_filter', 'nextThursday', 'digit4_accnum','productBreakdown','release_items_by_date'))
+            ->with('top_items', $top_items);
     }
 
     public function salesReportsUpdateStatus (Request $request) {

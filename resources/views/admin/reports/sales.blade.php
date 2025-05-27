@@ -143,7 +143,18 @@
         </footer>        
         <!-- partial -->
     </div>
+<script>
+    const breakdown = @json($productBreakdown);
+     // Calculate the total revenue from the breakdown
+    const totalRevenue = breakdown.reduce((sum, item) => sum + parseFloat(item.total_revenue), 0);
 
+    console.log("Revenue Breakdown:", breakdown);
+    console.log("Total Revenue: ₱" + totalRevenue.toLocaleString());
+
+
+    const releaseItems = @json($release_items_by_date);
+    console.log("Release Items Breakdown:", releaseItems);
+</script>
 
 
     

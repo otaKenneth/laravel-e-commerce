@@ -63,6 +63,7 @@ class OrdersProduct extends Model
             $query->where('order_status', '!=', 'Payment Pending'); // Ensure order is not pending
         })
         ->groupBy(DB::raw("`Date Range`, vendor_id"))
+        // ->toRawSql();
         ->get();
     }
 
