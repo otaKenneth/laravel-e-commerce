@@ -20,6 +20,7 @@ use App\Models\Brand;
 use App\Models\Wishlist;
 use App\Helpers\LalamoveAPIBodyHelper;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 
 class ProductsController extends Controller
@@ -53,7 +54,14 @@ class ProductsController extends Controller
                     $result = $this->vendorListing($vendor, $request->all());
                     break;
                 case 'search':
-                    $result = $this->filter($request->all());
+                    $collection = Product::query();
+                    $resultCollection = $this->processFilters($collection, $request->all());
+                    $collection = $resultCollection;
+                    $filters = ProductsFilter::productFilters();
+                    $categoryDetails = ['catIds' => []];
+                    $meta_title = 'Search Results';
+                    $meta_description = 'Products matching your search criteria.';
+                    $meta_keywords = 'search, products';
                     break;
 
                 default:
@@ -62,22 +70,22 @@ class ProductsController extends Controller
             }
 
             // collection, filters, categoryDetails, meta_title, meta_description, meta_keywords
-            if (is_array($result)) {
+            if (is_array($result) && $type !== 'search') {
                 extract($result);
-            } else {
+            } elseif (!isset($collection)) {
                 return redirect('/products/collection/all');
             }
 
             $totalCount = $collection->count();
 
-            // here remove pagination
-            $collection = $collection->inRandomOrder()->paginate(12); //Randomize all the product display
-            // dd($filters);
+            $collection = $collection->inRandomOrder()->paginate(12)->appends($request->query());
 
             if ($request->ajax()) {
+                // Send the next page number from the paginator itself
+                $nextPage = $collection->currentPage() < $collection->lastPage() ? $collection->currentPage() + 1 : null;
                 return response()->json([
                     'html' => view('front.partials.product-cards', compact('collection'))->render(),
-                    'nextPage' => $currentPage + 1
+                    'nextPage' => $nextPage
                 ]);
             }
 
@@ -1541,74 +1549,80 @@ class ProductsController extends Controller
         }
     }
 
-    private function processFilters($collection, $data)
+    private function processFilters(Builder $collection, $data) // Type-hint $collection as Builder
     {
         if ($data !== null) {
 
-            $minPrice = max(0, isset($data['price_min']) ? (int) $data['price_min'] : 0);
-            $maxPrice = min(1000, isset($data['price_max']) ? (int) $data['price_max'] : 1000);
-
-            // price filter
-            if (isset($data['price_min']) || isset($data['price_max'])) {
-                $minPrice = max(0, isset($data['price_min']) ? (int) $data['price_min'] : 0);
-                $maxPrice = min(1000, isset($data['price_max']) ? (int) $data['price_max'] : 1000);
+            // Apply price filter first, as it's a fundamental range
+            if (isset($data['price_min']) && isset($data['price_max'])) {
+                $minPrice = (float) $data['price_min'];
+                $maxPrice = (float) $data['price_max'];
+                // This should be a direct WHERE condition (AND with others)
                 $collection->whereBetween('product_price', [$minPrice, $maxPrice]);
             }
 
-            $collection->where(function ($query) use ($data) {
-                if (isset($data['color'])) {
-                    $query->orWhereIn('product_color', $data['color']);
-                }
+            // Apply color filter (should be AND with other filters)
+            if (isset($data['color']) && !empty($data['color'])) {
+                // If multiple colors are selected, they should be OR'ed within the color filter
+                $collection->whereIn('product_color', $data['color']);
+            }
 
-                if (isset($data['brands'])) {
-                    $brandModel = new Brand;
-                    $brandIds = $brandModel->select('id')->whereIn('name', $data['brands'])->get()->pluck('id')->toArray();
-                    $query->orWhereIn('brand_id', $brandIds);
-                }
+            // Apply brands filter
+            if (isset($data['brands']) && !empty($data['brands'])) {
+                $brandModel = new Brand;
+                $brandIds = $brandModel->select('id')->whereIn('name', $data['brands'])->get()->pluck('id')->toArray();
+                // This should be an AND condition. If multiple brands are selected, whereIn handles the OR for them.
+                $collection->whereIn('brand_id', $brandIds);
+            }
 
-                if (isset($data['sizes'])) {
-                    $prodAttributeModel = new ProductsAttribute;
-                    $attributeIds = $prodAttributeModel->whereIn('size', $data['sizes'])->get()->pluck('product_id')->toArray();
-                    $query->orWhereIn('id', $attributeIds);
-                }
-            });
+            // Apply sizes filter
+            if (isset($data['sizes']) && !empty($data['sizes'])) {
+                // We need to ensure products have *any* of the selected sizes
+                $collection->whereHas('attributes', function (Builder $query) use ($data) {
+                    $query->whereIn('size', $data['sizes']);
+                });
+            }
 
-
-            // features
-            $productFilters = ProductsFilter::productFilters(); // Get all the (enabled/active) Filters    // (Another way to go is using an AJAX call to get the $productFilters!)
+            // Features (dynamic filters)
+            $productFilters = ProductsFilter::productFilters();
             foreach ($productFilters as $key => $filter) {
                 if (isset($filter['filter_column']) && isset($data[$filter['filter_column']]) && !empty($filter['filter_column']) && !empty($data[$filter['filter_column']])) {
+                    // This assumes `features` is a JSON column and filter_column is a key within that JSON.
+                    // Using `whereJsonContains` works like an AND for this filter,
+                    // but if $data[$filter['filter_column']] is an array, it acts as an OR within that JSON key.
+                    // This is generally correct for dynamic features.
                     $collection->whereJsonContains("features->" . $filter['filter_column'], $data[$filter['filter_column']]);
                 }
             }
 
+            // Sorting
             if (isset($data['sortby'])) {
-                // sorts
                 switch ($data['sortby']) {
                     case 'date-1':
-                        $collection->orderBy('created_at');
+                        $collection->orderBy('created_at', 'asc'); // Ascending (oldest first)
                         break;
                     case 'date-2':
-                        $collection->orderByDesc('created_at');
+                        $collection->orderBy('created_at', 'desc'); // Descending (newest first)
                         break;
                     case 'price-1':
-                        $collection->orderBy('product_price');
+                        $collection->orderBy('product_price', 'asc'); // Ascending (low to high)
                         break;
                     case 'price-2':
-                        $collection->orderByDesc('product_price');
+                        $collection->orderBy('product_price', 'desc'); // Descending (high to low)
                         break;
                     case 'alphabetically-A':
-                        $collection->orderBy('product_name');
+                        $collection->orderBy('product_name', 'asc');
                         break;
                     case 'alphabetically-Z':
-                        $collection->orderByDesc('product_name');
+                        $collection->orderBy('product_name', 'desc');
                         break;
                     case 'rating':
-                        $collection->orderBy('ratings');
+                        // Assuming 'ratings' is a direct column or a calculated average you want to order by
+                        // If it's a computed rating, you might need a `join` or `withAvg` (Laravel 8+)
+                        $collection->orderBy('ratings', 'desc'); // Order by highest rating
                         break;
-
                     default:
-                        # code...
+                        // No specific sort, or default order
                         break;
                 }
             }
