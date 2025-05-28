@@ -53,15 +53,29 @@ function addSubscriber() {
     });
 }
 
-    // infinite scroll for products page
-    let productPage = 2; // Initial page number, assuming page 1 is already loaded
+   // infinite scroll for products page
+    let productPage = 1;
     let productPageLoading = false;
     let productObserver;
+    let lastPage = null; 
+
+    function getInitialLastPage() {
+        const lastPageMeta = document.querySelector('meta[name="last-page"]');
+        if (lastPageMeta) {
+            return parseInt(lastPageMeta.content);
+        }
+        return null; // Or a default if you know there's at least one page
+    }
 
     function initializeProductObserver() {
         let target = document.getElementById("load-more-products-trigger");
 
         if (!target) return;
+
+        // Set initial lastPage when the observer is initialized
+        if (lastPage === null) {
+            lastPage = getInitialLastPage();
+        }
 
         productObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -76,35 +90,51 @@ function addSubscriber() {
     }
 
     function loadMoreProducts() {
-        if (productPageLoading) return;
-        productPageLoading = true;
+        // Stop loading if already loading or if we've reached the last page
+        if (productPageLoading || (lastPage !== null && productPage >= lastPage)) {
+            console.log("No more products to load or already loading.");
+            document.getElementById("product-loading-indicator").style.display = "none"; 
+            document.getElementById("no-more-products").style.display = "block"; 
+            if (productObserver) productObserver.disconnect(); 
+            return;
+        }
 
+        productPageLoading = true;
         document.getElementById("product-loading-indicator").style.display = "flex";
 
         const currentFilters = $('#form-products-listing-filter').serialize();
-        const url = window.location.origin + window.location.pathname + '?' + currentFilters + '&page=' + (productPage + 1); 
+        console.log("Serialized Filters:", currentFilters);
+
+        const url = window.location.origin + window.location.pathname + '?' + currentFilters + '&page=' + (productPage + 1);
 
         console.log("Fetching URL for page " + (productPage + 1) + ": " + url);
 
-        fetch(url, { // Use the constructed URL with filters and page
+        fetch(url, {
             headers: { "X-Requested-With": "XMLHttpRequest" }
         })
         .then(response => {
             if (!response.ok) {
                 console.error("Network response was not ok:", response.status, response.statusText);
-                return response.text().then(text => { throw new Error(text); }); // Throw error with response body
+                return response.text().then(text => { throw new Error(text); }); 
             }
             return response.json();
         })
         .then(data => {
+            // Update lastPage from the response
+            if (data.lastPage !== undefined) {
+                lastPage = data.lastPage;
+            }
+
             if (!data.html || data.html.trim() === "") {
-                if (productObserver) productObserver.disconnect(); 
+                // No HTML means no more products, or an empty response
+                if (productObserver) productObserver.disconnect();
                 document.getElementById("no-more-products").style.display = "block";
-                console.log("No more products to load.");
+                console.log("No more products to load (empty HTML or no more pages).");
             } else {
                 let newProducts = data.html;
                 document.getElementById("container-product_list").insertAdjacentHTML("beforeend", newProducts);
 
+                // Re-initialize Elementor hooks for newly added elements
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = newProducts;
                 const newProductElements = tempDiv.querySelectorAll('.single_product_card');
@@ -114,14 +144,15 @@ function addSubscriber() {
                     }
                 });
 
-                // Update productPage only if more pages are available, otherwise disconnect observer
+                // Increment productPage only if more pages are available, otherwise disconnect observer
                 if (data.nextPage) {
                     productPage = data.nextPage;
+                    console.log("Successfully loaded page " + productPage + ". Next page: " + data.nextPage);
                 } else {
                     if (productObserver) productObserver.disconnect();
                     document.getElementById("no-more-products").style.display = "block";
+                    console.log("Successfully loaded last page (" + productPage + "). No more pages.");
                 }
-                console.log("Successfully loaded page " + (productPage) + ".");
             }
         })
         .catch(error => {
@@ -142,6 +173,12 @@ $(document).ready(function() {
     initializeProductObserver(); 
     // infinite scroll for merchantes page
     //initializeObserver();
+
+    $('#form-products-listing-filter').on('submit', function(e) {
+        // Reset state for new filter application
+        productPage = 1;
+        lastPage = null; // Reset lastPage
+        });
 
 
     // the <select> box in front/products/detail.blade.php (to show the correct related `price` and `stock` depending on the selected `size` (from the `products_attributes` table))
