@@ -38,7 +38,7 @@
                 data-widget_type="heading.default"
             >
                 <div class="elementor-widget-container">
-                    <h5 class="elementor-heading-title elementor-size-default">ABOUT US</h5>
+                    <h5 class="elementor-heading-title elementor-size-default" style="color: #fff">ABOUT US</h5>
                 </div>
             </div>
             <div
@@ -46,6 +46,7 @@
                 data-id="d5abdf0"
                 data-element_type="widget"
                 data-widget_type="icon.default"
+                style="content-visibility: hidden;"
             >
                 <div class="elementor-widget-container">
                     <div class="elementor-icon-wrapper">
@@ -68,7 +69,7 @@
                 data-element_type="widget"
                 data-widget_type="heading.default"
             >
-                <div class="elementor-widget-container">
+                <div class="elementor-widget-container" style="content-visibility: hidden;">
                     <h5 class="elementor-heading-title elementor-size-default">
                         <a href="{{ url('management') }}">BOARD AND MANAGEMENT TEAM</a>
                     </h5>

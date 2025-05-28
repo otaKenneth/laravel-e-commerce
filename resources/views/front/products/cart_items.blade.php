@@ -236,7 +236,7 @@
                                 <td>₱{{number_format($total_price, 2)}}</td>
                             </tr>
                             <tr>
-                                <td>Coupon Amount</td>
+                                <td class="couponCode">Coupon Amount</td>
                                 <td>₱<span class="couponAmount">0.00</span></td>
                             </tr>
                             <tr>
