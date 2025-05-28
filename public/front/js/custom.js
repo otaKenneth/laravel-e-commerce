@@ -156,13 +156,19 @@ function loadMoreProducts() {
             let newProducts = data.html;
             document.getElementById("container-product_list").insertAdjacentHTML("beforeend", newProducts);
 
-            // re-initialize elementor widgets for newly added prdocuts
-            if (typeof elementorFrontend !== 'undefined' && elementorFrontend.init) {
-                elementorFrontend.init(); 
-            } else if (typeof elementorFrontend !== 'undefined' && elementorFrontend.hooks && elementorFrontend.hooks.doAction) {
-                elementorFrontend.hooks.doAction('frontend/element_ready/global', jQuery(document));
-            }
-            
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = newProducts;
+
+            const newProductElements = tempDiv.querySelectorAll('.single_product_card');
+
+            newProductElements.forEach(function(el) {
+                if (typeof elementorFrontend !== 'undefined') {
+                    if (elementorFrontend.hooks && elementorFrontend.hooks.doAction) {
+                        elementorFrontend.hooks.doAction('frontend/element_ready/global', jQuery(el));
+                    }
+                }
+            });
+
             if (data.nextPage) {
                 productPage = data.nextPage;
             } else {
