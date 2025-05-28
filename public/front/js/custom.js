@@ -186,15 +186,65 @@ function loadMoreProducts() {
     });
 }
 
+// document.addEventListener('scroll', function(e) {
+//     console.log('Something scrolled:', e.target);
+// }, true);
+// let lastScrollY = 0;
+
+// let lastScrollY = 0;
+        
+// window.addEventListener('scroll', function() {
+//     const currentScrollY = window.pageYOffset;
+//     const header = document.getElementById('testHeader');
+    
+//     console.log("Vanilla JS - Scrolling:", currentScrollY);
+    
+//     if (currentScrollY > lastScrollY && currentScrollY > 50) {
+//         console.log("Vanilla JS - Hiding header");
+//         header.style.transform = 'translateY(-100%)';
+//     } else if (currentScrollY < lastScrollY) {
+//         console.log("Vanilla JS - Showing header");  
+//         header.style.transform = 'translateY(0)';
+//     }
+    
+//     lastScrollY = currentScrollY;
+// });
+
 // jQuery
 $(document).ready(function() {
     // Show our Preloader/Loader/Loading Page/Preloading Screen ALL THE TIME FOR TESTING!
     // $('.loader').show();
 
+    // infinite scroll for merchantes nd products page
     initializeProductObserver()
-    // infinite scroll for merchantes page
     initializeObserver()
 
+    // header layout
+    let lastScrollY = $('body').scrollTop();
+    const $header = $('#pageHeader');
+    const header = document.getElementById('pageHeader');
+    header.style.setProperty('position', 'fixed', 'important');
+    header.style.setProperty('top', '0', 'important');
+    header.style.setProperty('left', '0', 'important');
+    header.style.setProperty('width', '100%', 'important');
+    header.style.setProperty('z-index', '9999', 'important');
+
+
+    $('body').on('scroll', function() {
+
+        const currentScrollY = $('body').scrollTop();
+        const header = document.getElementById('pageHeader');
+        
+        if (currentScrollY > lastScrollY && currentScrollY > 50) {
+            console.log("Vanilla JS - Hiding header");
+            header.style.transform = 'translateY(-100%)';
+        } else if (currentScrollY < lastScrollY) {
+            console.log("Vanilla JS - Showing header");  
+            header.style.transform = 'translateY(0)';
+        }
+
+        lastScrollY = currentScrollY;
+    });
 
     // the <select> box in front/products/detail.blade.php (to show the correct related `price` and `stock` depending on the selected `size` (from the `products_attributes` table))
     $('#getPrice').change(function() {
