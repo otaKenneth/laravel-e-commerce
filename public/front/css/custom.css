@@ -22,3 +22,84 @@
 .hidden {
   display: none;
 }
+
+
+/* /front/css/custom.css */
+header {
+    position: relative;
+    width: 100%;
+    z-index: 999;
+    transition: transform 0.5s ease, opacity 0.3s ease;
+    /* Matched opacity duration */
+    transform-origin: top;
+}
+
+header.header-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+    opacity: 1;
+}
+
+header.header-fixed.header-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Temporary class to disable transitions for instant state changes */
+header.no-transition {
+    transition: none !important;
+}
+
+body {
+    padding-top: 0 !important;
+}
+
+.header-placeholder {
+    box-sizing: border-box;
+}
+
+.mini-cart-wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    z-index: 9999;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    pointer-events: none;
+    background-color: white;
+    width: 300px;
+    overflow-y: auto;
+    max-width: 90%;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.mini-cart-wrapper.mini-cart-open {
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9990;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.cart-overlay.overlay-active {
+    opacity: 1;
+    visibility: visible;
+}
