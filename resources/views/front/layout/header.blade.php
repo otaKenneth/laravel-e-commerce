@@ -7,8 +7,8 @@ $sections = \App\Models\Section::sections();
 
 
 <!-- Header -->
-<header id="pageHeader" class="fixed top-0 left-0 w-full z-50"  >
-    <div class="w-full text-dark text-sm h-10 flex items-center text-center justify-center font-bold" style="background-color: #ffffff; font-weight: bold; font-size: 14px ;"><span class="flex items-center" style="font-size: 18px">🛒</span> KAPITON IS IN EARLY DEVELOPMENT</div>
+<header id="pageHeader" class="sticky top-0 left-0 w-full" >
+    <div id="earlyDevHeader" class="w-full text-dark text-sm h-10 flex items-center text-center justify-center font-bold" style="background-color: #ffffff; font-weight: bold; font-size: 14px ;"><span class="flex items-center" style="font-size: 18px">🛒</span> KAPITON IS IN EARLY DEVELOPMENT</div>
     <div data-elementor-type="header" data-elementor-id="34" class="elementor elementor-34 elementor-location-header"
         data-elementor-post-type="elementor_library">
         <div class="elementor-element elementor-element-76c1337 e-flex e-con-boxed e-con e-parent" data-id="76c1337"

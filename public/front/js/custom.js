@@ -221,26 +221,65 @@ $(document).ready(function() {
 
     // header layout
     let lastScrollY = $('body').scrollTop();
-    const $header = $('#pageHeader');
     const header = document.getElementById('pageHeader');
-    header.style.setProperty('position', 'fixed', 'important');
+    header.style.setProperty('position', 'sticky', 'important');
     header.style.setProperty('top', '0', 'important');
     header.style.setProperty('left', '0', 'important');
-    header.style.setProperty('width', '100%', 'important');
-    header.style.setProperty('z-index', '9999', 'important');
+    header.style.setProperty('width', '100%', 'important'); 
+    header.style.setProperty('z-index', '50', 'important');
 
+    $(window).on('scroll', function () {
+        const currentScrollY = $(window).scrollTop(); 
 
+        const header = document.getElementById('pageHeader');
+        const earlyDevHeader = document.getElementById('earlyDevHeader');
+
+        if (currentScrollY > lastScrollY && currentScrollY > 150) {
+            header.style.transform = 'translateY(-100%)';
+            header.style.setProperty('transition', 'transform 0.3s ease', 'important');
+        } else if (currentScrollY < lastScrollY) {
+            header.style.transform = 'translateY(0)';
+            header.style.setProperty('transition', 'transform 0.3s ease', 'important');
+
+            if (currentScrollY != 0){
+                earlyDevHeader.style.transform = 'translateY(-100%)';
+                earlyDevHeader.style.height = '0';
+                earlyDevHeader.style.overflow = 'hidden';
+            } else {
+                earlyDevHeader.style.transform = 'translateY(0)';
+                earlyDevHeader.style.height = 'auto'; 
+                earlyDevHeader.style.overflow = 'visible';
+                earlyDevHeader.style.setProperty('transition', 'transform 0.5s ease', 'important');
+            }
+        }
+
+        lastScrollY = currentScrollY;
+    });
+
+    // body scrolls on the products page
     $('body').on('scroll', function() {
 
         const currentScrollY = $('body').scrollTop();
         const header = document.getElementById('pageHeader');
+        const earlyDevHeader = document.getElementById('earlyDevHeader');
         
-        if (currentScrollY > lastScrollY && currentScrollY > 50) {
-            console.log("Vanilla JS - Hiding header");
+        if (currentScrollY > lastScrollY && currentScrollY > 150) {
             header.style.transform = 'translateY(-100%)';
+            header.style.setProperty('transition', 'transform 0.3s ease', 'important');
         } else if (currentScrollY < lastScrollY) {
-            console.log("Vanilla JS - Showing header");  
             header.style.transform = 'translateY(0)';
+            header.style.setProperty('transition', 'transform 0.3s ease', 'important');
+            
+            if (currentScrollY != 0){
+                earlyDevHeader.style.transform = 'translateY(-100%)';
+                earlyDevHeader.style.height = '0';
+                earlyDevHeader.style.overflow = 'hidden';
+            } else {
+                earlyDevHeader.style.transform = 'translateY(0)';
+                earlyDevHeader.style.height = 'auto'; 
+                earlyDevHeader.style.overflow = 'visible';
+                earlyDevHeader.style.setProperty('transition', 'transform 0.5s ease', 'important');
+            }
         }
 
         lastScrollY = currentScrollY;
