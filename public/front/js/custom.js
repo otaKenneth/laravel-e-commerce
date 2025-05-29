@@ -186,29 +186,6 @@ function loadMoreProducts() {
     });
 }
 
-// document.addEventListener('scroll', function(e) {
-//     console.log('Something scrolled:', e.target);
-// }, true);
-// let lastScrollY = 0;
-
-// let lastScrollY = 0;
-        
-// window.addEventListener('scroll', function() {
-//     const currentScrollY = window.pageYOffset;
-//     const header = document.getElementById('testHeader');
-    
-//     console.log("Vanilla JS - Scrolling:", currentScrollY);
-    
-//     if (currentScrollY > lastScrollY && currentScrollY > 50) {
-//         console.log("Vanilla JS - Hiding header");
-//         header.style.transform = 'translateY(-100%)';
-//     } else if (currentScrollY < lastScrollY) {
-//         console.log("Vanilla JS - Showing header");  
-//         header.style.transform = 'translateY(0)';
-//     }
-    
-//     lastScrollY = currentScrollY;
-// });
 
 // jQuery
 $(document).ready(function() {
