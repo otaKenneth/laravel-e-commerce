@@ -145,10 +145,14 @@ class ReportsController extends Controller
     $nextThursday = Carbon::now()->next(Carbon::THURSDAY)->format('M d Y');
 
     $digit4_accnum = null;
-    if ($auth_type == 'vendor' && !empty($vendor->vendorBank)) {
-        $accnum = $vendor->vendorBank->account_number;
-        $digit4_accnum = substr($accnum, -4);
+        if ($auth_type == 'vendor') {
+        $vendor = auth()->guard('admin')->user()->load(['vendorBank']);
+            if (!is_null($vendor->vendorBank)) {
+                $accnum = (string) $vendor->vendorBank->account_number;
+                $digit4_accnum = substr($accnum, strlen($accnum)-4);
+        }
     }
+    // dd($auth_type, $vendor->vendorBank, $digit4_accnum);
         return view('admin.reports.sales')->with(compact('revenue', 'order_count', 'buyers','releases','total_income','latest_payout','auth_type', 'date_dropdown_filter', 'nextThursday', 'digit4_accnum','productBreakdown','release_items_by_date'))->with('top_items', $top_items);
     }
 
