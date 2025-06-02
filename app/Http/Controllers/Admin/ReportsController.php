@@ -22,6 +22,26 @@ class ReportsController extends Controller
     $weeklyRanges = collect($salesHelper->getFridayToThursdayRanges());
     $sixWeekChunks = $weeklyRanges->chunk(6);
 
+        // Handle report type from request (default to current)
+    $reportType = $request->input('report_type', 'current');
+
+    // Filter $sixWeekChunks based on report type
+    if ($reportType == 'current') {
+        // Keep only chunks that include the current month
+        $sixWeekChunks = $sixWeekChunks->filter(function ($chunk) {
+            $chunkStart = Carbon::parse($chunk->first()['from']);
+            $chunkEnd = Carbon::parse($chunk->last()['to']);
+            return Carbon::now()->between($chunkStart, $chunkEnd);
+        });
+    } elseif ($reportType == 'previous') {
+        // Remove any chunks that touch the current month
+        $sixWeekChunks = $sixWeekChunks->filter(function ($chunk) {
+            $chunkEnd = Carbon::parse($chunk->last()['to']);
+            return $chunkEnd->lt(Carbon::now()->startOfMonth());
+        });
+    }
+
+    
     // Prepare releases from orders grouped in 6-week chunks
     $releases = [];
     $vendor = \App\Models\Vendor::with('vendor_bank')->find($vendor_id);
