@@ -22,12 +22,13 @@
             </div>
         </div>
         <div
+            id="custom_vendor_style"
             class="elementor-element elementor-element-bde2533 elementor-widget elementor-widget-heading"
             data-id="bde2533"
             data-element_type="widget"
             data-widget_type="heading.default">
             <div class="elementor-widget-container">
-                <h5 class="elementor-heading-title elementor-size-default">{{$vendor->vendorbusinessdetails->shop_name}}</h5>
+                <h5 class="elementor-heading-title elementor-size-default" id="shop_name">{{$vendor->vendorbusinessdetails->shop_name}}</h5>
             </div>
         </div>
 
@@ -71,7 +72,7 @@
                         display: inline-block
                     }
                 </style>
-                <p>{{$vendor->name}}<br>
+                <p id="custom_vendor_name_style">{{$vendor->name}}<br>
                     {{$vendor->vendorbusinessdetails->shop_address}}, {{$vendor->vendorbusinessdetails->shop_city}},
                     {{$vendor->vendorbusinessdetails->shop_state}}, {{$vendor->vendorbusinessdetails->shop_country}}<br>
                     {{$vendor->vendorbusinessdetails->shop_mobile}}
@@ -81,6 +82,7 @@
 
 
         <div
+            id="custom_review_style"
             class="elementor-element elementor-element-0d99fff e-flex e-con-boxed e-con e-child"
             data-id="0d99fff"
             data-element_type="container"
@@ -101,7 +103,7 @@
                         </p>
                     </div>
                     @if ($vendor->vendor_product_orders_sum_product_qty > 0)
-                    <div style="display: flex; justify-content: center; font-weight: bold;">
+                    <div style="display: flex; justify-content: center; font-weight: bold; content-visibility: hidden;">
                         {{$vendor->vendor_product_orders_sum_product_qty}} SOLD
                     </div>
                     @endif
@@ -113,6 +115,9 @@
                     data-widget_type="rating.default">
                     <div class="elementor-widget-container">
                         <style>
+                            #custom_review_style{
+                                margin-top: -20px;
+                            }
                             /*! elementor - v3.18.0 - 08-12-2023 */
                             .elementor-widget-rating {
                                 --e-rating-gap: 0px;
@@ -232,6 +237,7 @@
 </div>
 
 <div
+    id="custom_button_style"
     class="elementor-element elementor-element-58fa36b elementor-widget__width-auto elementor-align-center elementor-widget elementor-widget-button"
     data-id="58fa36b"
     data-element_type="widget"
@@ -246,6 +252,7 @@
         </div>
     </div>
 </div>
+
 </div>
 </div>
 @endforeach
