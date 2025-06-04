@@ -299,7 +299,7 @@
                                 <div class="elementor-element elementor-element-0624bb6 elementor-widget elementor-widget-heading"
                                     data-id="0624bb6" data-element_type="widget" data-widget_type="heading.default">
                                     <div class="elementor-widget-container">
-                                        <h2 class="elementor-secondary-title elementor-size-default">
+                                        <h2 class="elementor-secondary-title top-product-price elementor-size-default">
                                             ₱{{ $getDiscountPrice }}</h2>
                                     </div>
                                 </div>
@@ -314,7 +314,7 @@
                                 <div class="elementor-element elementor-element-0624bb6 elementor-widget elementor-widget-heading"
                                     data-id="0624bb6" data-element_type="widget" data-widget_type="heading.default">
                                     <div class="elementor-widget-container">
-                                        <h2 class="elementor-secondary-title elementor-size-default">
+                                        <h2 class="elementor-secondary-title top-product-price elementor-size-default">
                                             ₱{{ number_format($product['product_price'], 2) }}</h2>
                                     </div>
                                 </div>
