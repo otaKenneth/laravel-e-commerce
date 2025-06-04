@@ -65,6 +65,8 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
         <!-- Google Fonts for Banners only -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:400,800" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
         <!-- Bootstrap 4 -->
         <link rel="stylesheet" href="{{ url('front/css/bootstrap.min.css') }}">
         <!-- Font Awesome 5 -->
@@ -81,6 +83,9 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14
         <link rel="stylesheet" href="{{ url('front/css/utility.css') }}">
         <!-- Main -->
         <link rel="stylesheet" href="{{ url('front/css/bundle.css') }}">
+
+        <!-- Global Styles -->
+         <link rel="stylesheet" href="{{ url('front/css/global-styles.css') }}">
 
         {{-- Elementor --}}
         <style id="wp-emoji-styles-inline-css">  	img.wp-smiley, img.emoji { 		display: inline !important; 		border: none !important; 		box-shadow: none !important; 		height: 1em !important; 		width: 1em !important; 		margin: 0 0.07em !important; 		vertical-align: -0.1em !important; 		background: none !important; 		padding: 0 !important; 	}</style>

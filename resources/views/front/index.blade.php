@@ -113,7 +113,7 @@
                                                             data-id="586c92f" data-element_type="widget"
                                                             data-widget_type="heading.default">
                                                             <div class="elementor-widget-container">
-                                                                <h2 class="elementor-heading-title elementor-size-default">
+                                                                <h2 class="elementor-secondary-title elementor-size-default">
                                                                     {{ $category['category_name'] }}</h2>
                                                             </div>
                                                         </div>
@@ -299,7 +299,7 @@
                                 <div class="elementor-element elementor-element-0624bb6 elementor-widget elementor-widget-heading"
                                     data-id="0624bb6" data-element_type="widget" data-widget_type="heading.default">
                                     <div class="elementor-widget-container">
-                                        <h2 class="elementor-heading-title elementor-size-default">
+                                        <h2 class="elementor-secondary-title elementor-size-default">
                                             ₱{{ $getDiscountPrice }}</h2>
                                     </div>
                                 </div>
@@ -314,7 +314,7 @@
                                 <div class="elementor-element elementor-element-0624bb6 elementor-widget elementor-widget-heading"
                                     data-id="0624bb6" data-element_type="widget" data-widget_type="heading.default">
                                     <div class="elementor-widget-container">
-                                        <h2 class="elementor-heading-title elementor-size-default">
+                                        <h2 class="elementor-secondary-title elementor-size-default">
                                             ₱{{ number_format($product['product_price'], 2) }}</h2>
                                     </div>
                                 </div>
@@ -511,7 +511,7 @@
                         <div class="elementor-element elementor-element-2344262 elementor-widget__width-inherit elementor-widget elementor-widget-heading"
                             data-id="2344262" data-element_type="widget" data-widget_type="heading.default">
                             <div class="elementor-widget-container">
-                                <h2 class="elementor-heading-title elementor-size-default custom_h2_size">
+                                <h2 class="elementor-secondary-title elementor-size-default custom_h2_size recently-added-product-name">
                                     {{ $product['product_name'] }}</h2>
                             </div>
                         </div>
@@ -554,8 +554,8 @@
                                                 margin-top: 5px;
                                             }
                                         </style>
-                                        <p>₱{{ $getDiscountPrice }}</p>
-                                        <em>₱{{ number_format($product['product_price'], 2) }}</em>
+                                        <p class="font-family-body recently-added-price">₱{{ $getDiscountPrice }}</p>
+                                        <em class="font-family-body recently-added-price">₱{{ number_format($product['product_price'], 2) }}</em>
                                     </div>
                                 </div>
                             </div>
@@ -563,7 +563,7 @@
                             <div class="elementor-element elementor-element-1cd7c54 elementor-widget elementor-widget-text-editor"
                                 data-id="1cd7c54" data-element_type="widget" data-widget_type="text-editor.default">
                                 <div class="elementor-widget-container">
-                                    <p> ₱{{ number_format($product['product_price'], 2) }}</p>
+                                    <p class="font-family-body recently-added-price"> ₱{{ number_format($product['product_price'], 2) }}</p>
                                 </div>
                             </div>
                             @endif
@@ -655,7 +655,7 @@
 
                                             <!-- Check if the rating is 0 or null and display "No reviews" -->
                                             @if($avgRating == 0 || $avgRating == null)
-                                                <span class="no-reviews-text">No reviews</span>
+                                                <span class="no-reviews-text font-family-body recently-added-price">No reviews</span>
                                                 <style>
                                                     .no-reviews-text {
                                                         display: inline;
