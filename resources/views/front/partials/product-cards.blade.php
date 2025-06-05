@@ -30,7 +30,7 @@ $settings = [
     <div class="elementor-element elementor-element-826026e elementor-widget__width-inherit elementor-widget elementor-widget-heading"
         data-id="826026e" data-element_type="widget" data-widget_type="heading.default">
         <div class="elementor-widget-container">
-            <h2 class="elementor-heading-title elementor-size-default">
+            <h2 class="elementor-secondary-title elementor-size-default">
                 {{ $product['product_name'] }}
             </h2>
         </div>
@@ -78,12 +78,12 @@ $settings = [
                     display: inline-block
                 }
             </style>
-            <p> ₱{{ $getDiscountPrice }}</p>
+            <p class="font-family-body"> ₱{{ $getDiscountPrice }}</p>
         </div>
     </div>
     <div class="elementor-element elementor-element-725e6f0 elementor-widget elementor-widget-text-editor"
         data-id="725e6f0" data-element_type="widget" data-widget_type="text-editor.default">
-        <div class="elementor-widget-container">
+        <div class="elementor-widget-container font-family-body">
             <em style="text-decoration: line-through;">₱{{ $product['product_price'] }}</em>
         </div>
     </div>
@@ -124,7 +124,7 @@ $settings = [
                     display: inline-block
                 }
             </style>
-            <p> ₱{{ $product['product_price'] }}</p>
+            <p class="font-family-body"> ₱{{ $product['product_price'] }}</p>
         </div>
     </div>
     @endif
@@ -161,7 +161,7 @@ $settings = [
                         data-id="67825cd" data-element_type="widget"
                         data-widget_type="heading.default">
                         <div class="elementor-widget-container">
-                            <h5 class="elementor-heading-title elementor-size-default">
+                            <h5 class="font-family-body elementor-size-default">
                                 {{ $product->vendor->vendorbusinessdetails->shop_name ?? '' }}
                             </h5>
                         </div>

@@ -3717,8 +3717,12 @@
 	font-family: var(--font-family-secondary-title);
 }
 
+.elementor-15 .font-family-body {
+  font-family: var(--font-family-body);
+}
+
 .elementor-15 .elementor-element.elementor-element-636e848 .recently-added-product-name{
-	font-size: large;
+  font-size: large;
 }
 
 .elementor-15 .elementor-element.elementor-element-6b25072 .top-product-price{
@@ -3733,8 +3737,4 @@
 
 .elementor-15 .elementor-element.elementor-element-636e848 .recently-added-price{
 	font-size: small;
-}
-
-.elementor-15 .font-family-body {
-	font-family: var(--font-family-body);
 }
