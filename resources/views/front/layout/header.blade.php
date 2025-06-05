@@ -65,13 +65,13 @@ $sections = \App\Models\Section::sections();
                                     <li
                                         class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-38">
                                         <a href="/" aria-current="page"
-                                            class="elementor-item elementor-item-active">HOME</a>
+                                            class="elementor-item elementor-item-active font-family-heading-title">HOME</a>
                                     </li>
                                     <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-39">
-                                        <a href="{{ url('products/collection/all') }}" class="elementor-item">PRODUCTS</a>
+                                        <a href="{{ url('products/collection/all') }}" class="elementor-item font-family-heading-title">PRODUCTS</a>
                                     </li>
                                     <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-40">
-                                        <a href="{{ url('merchants') }}" class="elementor-item">MERCHANTS</a>
+                                        <a href="{{ url('merchants') }}" class="elementor-item font-family-heading-title">MERCHANTS</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -193,19 +193,19 @@ $sections = \App\Models\Section::sections();
                                     gap: 20px;
                                 }
                             </style>
-                            <h6 class="elementor-heading-title elementor-size-default"><a href="{{ url('become-merchant') }}">Become a Seller</a></h6>
-                            <h6 class="elementor-heading-title elementor-size-default">
+                            <h6 class="font-family-body elementor-size-default"><a href="{{ url('become-merchant') }}">Become a Seller</a></h6>
+                            <h6 class="font-family-body elementor-size-default">
                                 {{-- If the user is authenticated/logged in, show 'My Account', if not, show 'Login/Register' --}} 
                                 @if (\Illuminate\Support\Facades\Auth::check()) {{-- Determining If The Current User Is Authenticated: https://laravel.com/docs/9.x/authentication#determining-if-the-current-user-is-authenticated --}}
-                                    <a class="my-account-link" href="{{ url('user/account') }}">My Account</a>
+                                    <a class="my-account-link font-family-body" href="{{ url('user/account') }}">My Account</a>
                                     <ul class="my-account-sub-menu">
-                                        <li><a href="{{ url('user/account') }}">Profile</a></li>
-                                        <li><a href="{{ url('user/orders') }}">Order List</a></li>
-                                        <li><a href="{{ url('user/chats') }}">Chats</a></li>
-                                        <li><a href="{{ url('user/logout') }}">Log out</a></li>
+                                        <li><a href="{{ url('user/account') }}" class="font-family-body">Profile</a></li>
+                                        <li><a href="{{ url('user/orders') }}" class="font-family-body">Order List</a></li>
+                                        <li><a href="{{ url('user/chats') }}" class="font-family-body">Chats</a></li>
+                                        <li><a href="{{ url('user/logout') }}" class="font-family-body">Log out</a></li>
                                     </ul>
                                 @else
-                                    <a href="{{ url('user/login-register') }}">Login / Register</a>
+                                    <a href="{{ url('user/login-register') }}" class="font-family-body">Login / Register</a>
                                 @endif
                             </h6>
                            
@@ -248,8 +248,8 @@ $sections = \App\Models\Section::sections();
                                 class="elementor-nav-menu--main elementor-nav-menu__container elementor-nav-menu--layout-horizontal e--pointer-underline e--animation-fade">
                                 <ul id="menu-1-ba4b160" class="elementor-nav-menu">
                                     @foreach ($sections as $section)
-                                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-41">
-                                        <a href="{{ url('products/collection/' . strtolower($section['name'])) }}" class="elementor-item">{{ $section['name']}}</a>
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-41 font-family-secondary-title">
+                                        <a href="{{ url('products/collection/' . strtolower($section['name'])) }}" class="elementor-item font-family-secondary-title">{{ $section['name']}}</a>
                                     </li>
                                     @endforeach
                                 </ul>
