@@ -206,7 +206,7 @@
 .elementor-682
   .elementor-element.elementor-element-67825cd
   .elementor-heading-title {
-  color: var(--e-global-color-secondary);
+  color: #000;
   font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
@@ -2203,3 +2203,17 @@ html {
 .elementor-682 .font-family-body {
 	font-family: var(--font-family-body);
 }
+
+.elementor-682 .elementor-element.elementor-element-826026e .product-name{
+  font-size: large;
+}
+
+.elementor-682 .elementor-element.elementor-element-826026e .product-price{
+  font-size: medium;
+}
+
+.elementor-682 .elementor-element.elementor-element-67825cd .product-store-name{
+  color: #000 !important;
+  font-size: small;
+}
+

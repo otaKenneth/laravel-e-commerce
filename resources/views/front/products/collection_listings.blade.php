@@ -46,7 +46,7 @@
                                 @isset($_GET['search'])
                                 <input type="hidden" name="search" value="{{ $_GET['search'] }}">
                                 @endisset
-                                <select id="sort_by" name="sortby">
+                                <select id="sort_by" name="sortby" class="elementor-secondary-title">
                                     <option value="date-1">Date, new to old</option>
                                     <option value="date-2">Date, old to new</option>
                                     <option value="price-1">Price, low to high</option>
@@ -205,7 +205,7 @@
         <div id="product-loading-indicator" class="product-loading-dots" style="display: none;">
             <span></span><span></span><span></span>
         </div>
-        <div id="no-more-products" class="no-more-products" style="display:none; width:100%; clear:both; text-align:center; padding:1em; margin-top:2em; color:gray;">
+        <div id="no-more-products" class="no-more-products font-family-body" style="display:none; width:100%; clear:both; text-align:center; padding:1em; margin-top:2em; color:gray;">
             No more products to load.
         </div>
         <div id="load-more-products-trigger"></div>

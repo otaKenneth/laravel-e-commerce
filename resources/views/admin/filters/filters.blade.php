@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body font-family-body">
                             <h4 class="card-title">Filters</h4>
                             <a href="{{ url('admin/filters-values') }}"  style="max-width: 163px; float: right; display: inline-block" class="btn btn-block btn-primary">View Filter Values</a>
                             <a href="{{ url('admin/add-edit-filter') }}" style="max-width: 169px; float: left;  display: inline-block" class="btn btn-block btn-primary">Add Filter Column</a>
