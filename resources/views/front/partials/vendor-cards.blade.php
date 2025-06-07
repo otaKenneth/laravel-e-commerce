@@ -27,7 +27,7 @@
             data-element_type="widget"
             data-widget_type="heading.default">
             <div class="elementor-widget-container">
-                <h5 class="elementor-heading-title elementor-size-default">{{$vendor->vendorbusinessdetails->shop_name}}</h5>
+                <h5 class="elementor-secondary-title elementor-size-default">{{$vendor->vendorbusinessdetails->shop_name}}</h5>
             </div>
         </div>
 
@@ -71,7 +71,7 @@
                         display: inline-block
                     }
                 </style>
-                <p>{{$vendor->name}}<br>
+                <p class="font-family-body">{{$vendor->name}}<br>
                     {{$vendor->vendorbusinessdetails->shop_address}}, {{$vendor->vendorbusinessdetails->shop_city}},
                     {{$vendor->vendorbusinessdetails->shop_state}}, {{$vendor->vendorbusinessdetails->shop_country}}<br>
                     {{$vendor->vendorbusinessdetails->shop_mobile}}
@@ -96,7 +96,7 @@
                     data-element_type="widget"
                     data-widget_type="text-editor.default">
                     <div class="elementor-widget-container">
-                        <p>
+                        <p class="font-family-body">
                             <strong>{{$avg_rating}}</strong> based on {{$vendor->ratingsCount()}} reviews
                         </p>
                     </div>
@@ -222,7 +222,7 @@
             data-element_type="widget"
             data-widget_type="text-editor.default">
             <div class="elementor-widget-container">
-                <p>
+                <p class="font-family-body">
                     <strong>No Reviews</strong>
                 </p>
             </div>

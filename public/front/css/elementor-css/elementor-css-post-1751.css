@@ -46,7 +46,7 @@
   .elementor-element.elementor-element-9ed0446
   .elementor-heading-title {
   color: var(--e-global-color-primary);
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 52px;
   font-weight: 500;
 }
@@ -112,7 +112,7 @@
   .elementor-element.elementor-element-bde2533
   .elementor-heading-title {
   color: var(--e-global-color-secondary);
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 18px;
   font-weight: 600;
   text-transform: none;
@@ -125,7 +125,7 @@
 }
 .elementor-1751 .elementor-element.elementor-element-77f2f47 {
   text-align: center;
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -156,7 +156,7 @@
   --padding-inline-end: 0px;
 }
 .elementor-1751 .elementor-element.elementor-element-70dd1ff {
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -167,7 +167,7 @@
 }
 .elementor-1751 .elementor-element.elementor-element-ac041c4 {
   text-align: center;
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -177,7 +177,7 @@
   margin: -16px 0px -15px 0px;
 }
 .elementor-1751 .elementor-element.elementor-element-58fa36b .elementor-button {
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
@@ -228,7 +228,7 @@
   .elementor-element.elementor-element-0ca8e46
   .elementor-heading-title {
   color: var(--e-global-color-secondary);
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 18px;
   font-weight: 600;
   text-transform: none;
@@ -241,7 +241,7 @@
 }
 .elementor-1751 .elementor-element.elementor-element-b9951ab {
   text-align: center;
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -272,7 +272,7 @@
   --padding-inline-end: 0px;
 }
 .elementor-1751 .elementor-element.elementor-element-2b0193d {
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -283,7 +283,7 @@
 }
 .elementor-1751 .elementor-element.elementor-element-73e99ef {
   text-align: center;
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -293,7 +293,7 @@
   margin: -16px 0px -15px 0px;
 }
 .elementor-1751 .elementor-element.elementor-element-5d6b641 .elementor-button {
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
@@ -344,7 +344,7 @@
   .elementor-element.elementor-element-c5f0c19
   .elementor-heading-title {
   color: var(--e-global-color-secondary);
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 18px;
   font-weight: 600;
   text-transform: none;
@@ -357,7 +357,7 @@
 }
 .elementor-1751 .elementor-element.elementor-element-945920a {
   text-align: center;
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -388,7 +388,7 @@
   --padding-inline-end: 0px;
 }
 .elementor-1751 .elementor-element.elementor-element-4cbe942 {
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -399,7 +399,7 @@
 }
 .elementor-1751 .elementor-element.elementor-element-fcdd944 {
   text-align: center;
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -409,7 +409,7 @@
   margin: -16px 0px -15px 0px;
 }
 .elementor-1751 .elementor-element.elementor-element-a43bc99 .elementor-button {
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
@@ -460,7 +460,7 @@
   .elementor-element.elementor-element-a9ed55c
   .elementor-heading-title {
   color: var(--e-global-color-secondary);
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 18px;
   font-weight: 600;
   text-transform: none;
@@ -473,7 +473,7 @@
 }
 .elementor-1751 .elementor-element.elementor-element-627cb80 {
   text-align: center;
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -504,7 +504,7 @@
   --padding-inline-end: 0px;
 }
 .elementor-1751 .elementor-element.elementor-element-7380f87 {
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -515,7 +515,7 @@
 }
 .elementor-1751 .elementor-element.elementor-element-88965b3 {
   text-align: center;
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -525,7 +525,7 @@
   margin: -16px 0px -15px 0px;
 }
 .elementor-1751 .elementor-element.elementor-element-ab6f088 .elementor-button {
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
@@ -576,7 +576,7 @@
   .elementor-element.elementor-element-65482b0
   .elementor-heading-title {
   color: var(--e-global-color-secondary);
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 18px;
   font-weight: 600;
   text-transform: none;
@@ -589,7 +589,7 @@
 }
 .elementor-1751 .elementor-element.elementor-element-4fa5a56 {
   text-align: center;
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -620,7 +620,7 @@
   --padding-inline-end: 0px;
 }
 .elementor-1751 .elementor-element.elementor-element-e73eabf {
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -631,7 +631,7 @@
 }
 .elementor-1751 .elementor-element.elementor-element-c7f4a9d {
   text-align: center;
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -641,7 +641,7 @@
   margin: -16px 0px -15px 0px;
 }
 .elementor-1751 .elementor-element.elementor-element-71e9d8f .elementor-button {
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
@@ -692,7 +692,7 @@
   .elementor-element.elementor-element-3ff8b5f
   .elementor-heading-title {
   color: var(--e-global-color-secondary);
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 18px;
   font-weight: 600;
   text-transform: none;
@@ -705,7 +705,7 @@
 }
 .elementor-1751 .elementor-element.elementor-element-085056a {
   text-align: center;
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -736,7 +736,7 @@
   --padding-inline-end: 0px;
 }
 .elementor-1751 .elementor-element.elementor-element-a118c2c {
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -747,7 +747,7 @@
 }
 .elementor-1751 .elementor-element.elementor-element-1c94727 {
   text-align: center;
-  font-family: "Louis George Cafe", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 14px;
   font-weight: 400;
 }
@@ -757,7 +757,7 @@
   margin: -16px 0px -15px 0px;
 }
 .elementor-1751 .elementor-element.elementor-element-5595359 .elementor-button {
-  font-family: "Lexend", Sans-serif;
+  font-family: var(--font-family-main-title);
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
@@ -1106,4 +1106,23 @@
     40% {
         opacity: 1;
     }
+}
+
+.elementor-1751 .elementor-element.elementor-element-bde2533 .elementor-secondary-title{
+  font-size: large;
+  font-family: var(--font-family-secondary-title);
+}
+
+.elementor-1751 .elementor-element.elementor-element-77f2f47 .font-family-body {
+  font-family: var(--font-family-body);
+  font-size: smaller;
+}
+
+.elementor-1751 .elementor-element.elementor-element-70dd1ff .font-family-body {
+  font-family: var(--font-family-body);
+  font-size: smaller;
+}
+
+.elementor-button-text {
+  font-family: var(--font-family-secondary-title);
 }
