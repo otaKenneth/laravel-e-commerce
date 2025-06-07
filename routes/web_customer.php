@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 // Second: FRONT section routes:
 Route::namespace('App\Http\Controllers\Front')->group(function() {
+
+    // first 19: genna
+
     Route::get('/', ['as' => 'home', 'uses' => 'IndexController@index']);
 
     Route::get('/getKSContainerContent', 'IndexController@getKSContainerContent');
@@ -57,6 +60,8 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::get('management', 'IndexController@aboutUsManagement')->name('front.user.management');
 
     Route::get('privacy-policy', 'IndexController@privacyPolicy')->name('front.user.privacy-policy');
+
+    // second 19: adrian
 
     Route::get('terms-and-conditions', 'IndexController@termsAndConditions')->name('front.user.terms-and-conditions');
 
@@ -131,6 +136,8 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
         // Edit Delivery Addresses (Page refresh and fill in the <input> fields with the authenticated/logged in user Delivery Addresses from the `delivery_addresses` database table when clicking on the Edit button) in front/products/delivery_addresses.blade.php (which is 'include'-ed in front/products/checkout.blade.php) via AJAX, check front/js/custom.js
         Route::post('get-delivery-address', 'AddressController@getDeliveryAddress');
+
+        // third 19: joshua
 
         // Save Delivery Addresses via AJAX (save the delivery addresses of the authenticated/logged-in user in `delivery_addresses` database table when submitting the HTML Form) in front/products/delivery_addresses.blade.php (which is 'include'-ed in front/products/checkout.blade.php) via AJAX, check front/js/custom.js
         Route::post('save-delivery-address', 'AddressController@saveDeliveryAddress');
