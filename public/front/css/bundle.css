@@ -17,13 +17,6 @@ h1, h2, h3, h4, h5, h6 {
 /**
  * Basic styles for links
  */
-a {
-  color: #292929; }
-  a:hover {
-    color: #d90429;
-    text-decoration: none; }
-  a:focus {
-    outline: none; }
 
 a:not([href]):not([tabindex]) {
   color: #292929;

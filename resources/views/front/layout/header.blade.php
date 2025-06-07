@@ -193,19 +193,19 @@ $sections = \App\Models\Section::sections();
                                     gap: 20px;
                                 }
                             </style>
-                            <h6 class="font-family-body elementor-size-default"><a href="{{ url('become-merchant') }}">Become a Seller</a></h6>
+                            <h6 class="font-family-body elementor-size-default"><a class="text-white font-family-body" href="{{ url('become-merchant') }}">Become a Seller</a></h6>
                             <h6 class="font-family-body elementor-size-default">
                                 {{-- If the user is authenticated/logged in, show 'My Account', if not, show 'Login/Register' --}} 
                                 @if (\Illuminate\Support\Facades\Auth::check()) {{-- Determining If The Current User Is Authenticated: https://laravel.com/docs/9.x/authentication#determining-if-the-current-user-is-authenticated --}}
                                     <a class="my-account-link font-family-body" href="{{ url('user/account') }}">My Account</a>
                                     <ul class="my-account-sub-menu">
-                                        <li><a href="{{ url('user/account') }}" class="font-family-body">Profile</a></li>
-                                        <li><a href="{{ url('user/orders') }}" class="font-family-body">Order List</a></li>
-                                        <li><a href="{{ url('user/chats') }}" class="font-family-body">Chats</a></li>
-                                        <li><a href="{{ url('user/logout') }}" class="font-family-body">Log out</a></li>
+                                        <li><a class="text-white font-family-body" href="{{ url('user/account') }}" class="font-family-body">Profile</a></li>
+                                        <li><a class="text-white font-family-body" href="{{ url('user/orders') }}" class="font-family-body">Order List</a></li>
+                                        <li><a class="text-white font-family-body" href="{{ url('user/chats') }}" class="font-family-body">Chats</a></li>
+                                        <li><a class="text-white font-family-body" href="{{ url('user/logout') }}" class="font-family-body">Log out</a></li>
                                     </ul>
                                 @else
-                                    <a href="{{ url('user/login-register') }}" class="font-family-body">Login / Register</a>
+                                    <a class="text-white font-family-body" href="{{ url('user/login-register') }}" class="font-family-body">Login / Register</a>
                                 @endif
                             </h6>
                            

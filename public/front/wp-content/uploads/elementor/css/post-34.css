@@ -185,6 +185,7 @@
   border-radius: 3px;
 }
 .elementor-34 .elementor-element.elementor-element-7cd9cbb {
+  color: #fff !important; 
   text-align: right;
 }
 .elementor-34
@@ -276,7 +277,7 @@
   .elementor-element.elementor-element-ba4b160
   .elementor-nav-menu
   .elementor-item {
-  font-family: var(--font-family-heading-title);
+  font-family: var(--font-family-secondary-title);
   font-size: 12px;
   font-weight: 400;
 }
@@ -631,7 +632,7 @@
   font-family: var(--font-family-heading-title) !important;
 }
 
-.elementor-34 .elementor-element.elementor-element-7cd9cbb .font-family-body {
+.elementor-34 .header-links-custom .font-family-body{
   font-family: var(--font-family-body) !important;
   color: #fff !important; 
 }
