@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\NinjaTestController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Admin')->group(function() {
@@ -132,7 +133,10 @@ Route::middleware(['web'])->prefix('/admin')->namespace('App\Http\Controllers\Ad
         Route::post('finance/income_statement', 'ReportsController@salesReports');
         Route::put('finance/update-income-statement-status', 'ReportsController@salesReportsUpdateStatus');
     
-    
+        Route::get('/test-ninjavan-token', 'NinjaTestController@testToken');
+        Route::get('/test-shipment', 'NinjaTestController@testShipment');
+        Route::get('/ninjatrack','NinjaTestController@trackShipment');
+
         // Newsletter Subscribers module
         // Render admin/subscribers/subscribers.blade.php page (Show all Newsletter subscribers in the Admin Panel)
         Route::get('newsletter', 'NewsletterController@subscribers');

@@ -223,4 +223,10 @@ return [
 
     'seller_base_url' => env('APP_SELLER_URL'),
 
+    'ninjavan' => [
+        'api_id' => env('NINJAVAN_CLIENT_ID'),
+        'api_url' => env('NINJAVAN_API_URL'),
+        'api_key' => env('NINJAVAN_CLIENT_KEY'),
+        'access_token' => env('NINJAVAN_ACCESS_TOKEN'),
+    ],
 ];

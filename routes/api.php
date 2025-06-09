@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -80,7 +81,7 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
 
     Route::post('/paymongo/webhook', 'APIController@paymongoPaymentStatus');
 
-    Route::post('/lalamove/webhook', 'APIController@lalamoveDeliveryStatus');
+    Route::post('/lalamove/webhook', 'APIController@lalamoveDeliveryStatus');   
 });
 
 //Route::get('/api/products/search', 'App\Http\Controllers\Front\ProductsController@apiIndex')->name('api.products.searchable');
