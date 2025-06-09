@@ -62,19 +62,8 @@
                     @else
                         Merchant Finances
                     @endif
-                        
                     </h3>
-                    <form method="GET" action="{{ url()->current() }}" style="display:inline;">
-                        <input type="hidden" name="report_type" value="current">
-                        <button id="showCurrentReportBtn" class="btn btn-primary">Current Month Report</button>
-                    </form>
-
-                    <form method="GET" action="{{ url()->current() }}" style="display:inline;">
-                        <input type="hidden" name="report_type" value="previous">
-                        <button id="showPreviousReportBtn" class="btn btn-secondary">Previous Months Report</button>
-                    </form>
-                    <br>
-                    <div id="salesReportTable" style="display: none;">
+                    
                     <div class="card">
                         <form name="admin.sales_transaction_form" method="post" action="{{ url('admin/finance/income_statement') }}">
                             @csrf
@@ -135,10 +124,14 @@
                                 </div>
                             </div>
                             @if ($auth_type !== 'vendor')
-                                <input type="submit" value="Save">
+                            <button type="button" class="btn btn-success generateWeeklyReport">
+                                Generate & Save Weekly Report
+                            </button>
+                            @endif
+                            @if ($auth_type !== 'vendor')
+                                <input type="button" value="Save" class="btn btn-primary saveWeeklyReport">
                             @endif
                         </form>
-                    </div>
                     </div>
                 </div>
             </div>
@@ -154,17 +147,6 @@
         </footer>        
         <!-- partial -->
     </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const reportType = urlParams.get('report_type');
-
-        if (reportType === 'current' || reportType === 'previous') {
-            document.getElementById('salesReportTable').style.display = 'block';
-        }
-    });
-</script>
-
     {{-- <script>
     const breakdown = @json($productBreakdown);
      // Calculate the total revenue from the breakdown
@@ -177,7 +159,4 @@
     const releaseItems = @json($release_items_by_date);
     console.log("Release Items Breakdown:", releaseItems);
 </script> --}}
-
-
-    
 @endsection

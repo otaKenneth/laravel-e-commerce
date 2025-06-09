@@ -1286,13 +1286,57 @@ $(document).ready(function() {
                 });
             });
             */
-    
+
     
     
         });
     }
-        
 
+        // AJAX for Generate Weekly Report button
+        $(document).on('click', '.generateWeeklyReport', function () {
+        $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'post',
+                url: '/admin/finance/generate-weekly-report',
+                success: function (resp) {
+                    if (resp.status == 0) {
+                        alert('No transactions found for this week.');
+                    } else if (resp.status == 1) {
+                        alert('Weekly income statement has been generated and saved.');
+                        location.reload();
+                    }
+                },
+                error: function (err) {
+                    console.error(err);
+                    alert('An error occurred while generating the report.');
+                }
+            });
+        });
+
+        // AJAX for Generate Weekly Report button
+        $(document).on('click', '.saveWeeklyReport', function () {
+        $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'post',
+                url: '/admin/finance/save-weekly-report',
+                success: function (resp) {
+                    if (resp.status == 0) {
+                        alert('Unexpected error occurred. Please try again later.');
+                    } else if (resp.status == 1) {
+                        alert('Weekly income statement has been saved.');
+                        location.reload();
+                    }
+                },
+                error: function (err) {
+                    console.error(err);
+                    alert('An error occurred while generating the report.');
+                }
+            });
+        });
 
         function attachAddOptionListener(addButton) {
             addButton.addEventListener('click', function() {
