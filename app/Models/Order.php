@@ -210,6 +210,143 @@ class Order extends Model
             'message' => $message
         ];
     }
+    /**
+     * Push Order to NinjaVan API
+     * 
+     * @param array $ninjavanData Array containing order and recipient details
+     * @param int $order_id Order ID
+     * @return array NinjaVan API response
+     */
+    public static function pushOrder_to_Ninjavan($ninjavanData, $order_id)
+    {
+        // 1. Prepare API credentials and endpoint
+        $client_id = config('app.ninjavan.client_id');
+        $client_key = config('app.ninjavan.client_key');
+        $api_url = config('app.ninjavan.api_url');
+
+        // 2. Get OAuth2 access token
+        $token_url = $api_url . '/2.0/oauth/access_token';
+        $token_data = config('app.ninjavan.access_token');
+
+        $ch = curl_init($token_url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($token_data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/x-www-form-urlencoded'
+        ]);
+        $token_response = curl_exec($ch);
+        curl_close($ch);
+
+        $token_result = json_decode($token_response, true);
+        if (empty($token_result['access_token'])) {
+            \Log::error('NinjaVan: Failed to get access token', ['response' => $token_response]);
+            return [
+                'status' => false,
+                'message' => 'Failed to get NinjaVan access token',
+                'response' => $token_response
+            ];
+        }
+        $access_token = $token_result['access_token'];
+
+        // Get quotation from NinjaVanAPIHelper if not provided
+        if (empty($ninjavanData['quotation'])) {
+            // Use the helper to get the quotation
+            $helper = new \App\Helpers\NinjaVanAPIHelper();
+            $quotationResult = $helper->getCustomerShippingQuote(
+            $ninjavanData['order'],
+            $ninjavanData['vendor_id'],
+            $ninjavanData['service_level'], // this is required to be selected by the user in front end
+            $ninjavanData['pickup_date'] ?? date('Y-m-d'),
+            $ninjavanData['pickup_timeslot'] ?? '09:00-18:00',
+            $ninjavanData['pickup_instructions'] ?? '',
+            $ninjavanData['delivery_instructions'] ?? ''
+            );
+            // If your helper returns $this, you may need to get the actual quotation data from a property or method.
+            // For example, if the helper sets $this->quotation, use:
+            $quotation = $quotationResult->quotation ?? [];
+        } else {
+            $quotation = $ninjavanData['quotation'];
+        }
+
+        $payload = [
+            'service_type' => $ninjavanData['service_type'],
+            'requested_tracking_number' => $ninjavanData['tracking_number'],
+            'reference' => [
+            'merchant_order_number' => (string)$order_id
+            ],
+            'from' => [
+            'name' => $ninjavanData['sender']['name'],
+            'phone_number' => $ninjavanData['sender']['phone'],
+            'email' => $ninjavanData['sender']['email'],
+            'address' => [
+                'address1' => $ninjavanData['sender']['address1'],
+                'address2' => $ninjavanData['sender']['address2'] ?? '',
+                'city' => $ninjavanData['sender']['city'],
+                'state' => $ninjavanData['sender']['state'],
+                'country' => $ninjavanData['sender']['country'],
+                'postcode' => $ninjavanData['sender']['postcode'],
+            ]
+            ],
+            'to' => [
+            'name' => $ninjavanData['recipient']['name'],
+            'phone_number' => $ninjavanData['recipient']['phone'],
+            'email' => $ninjavanData['recipient']['email'],
+            'address' => [
+                'address1' => $ninjavanData['recipient']['address1'],
+                'address2' => $ninjavanData['recipient']['address2'] ?? '',
+                'city' => $ninjavanData['recipient']['city'],
+                'state' => $ninjavanData['recipient']['state'],
+                'country' => $ninjavanData['recipient']['country'],
+                'postcode' => $ninjavanData['recipient']['postcode'],
+            ]
+            ],
+            'parcel_job' => [
+            'is_pickup_required' => true,
+            'pickup_date' => $ninjavanData['pickup_date'] ?? date('Y-m-d'),
+            'pickup_timeslot' => $ninjavanData['pickup_timeslot'] ?? '09:00-18:00',
+            'delivery_start_date' => $ninjavanData['delivery_start_date'] ?? date('Y-m-d'),
+            'delivery_timeslot' => $ninjavanData['delivery_timeslot'] ?? '09:00-18:00',
+            'remarks' => $ninjavanData['remarks'] ?? '',
+            'cash_on_delivery' => [
+                'amount' => $ninjavanData['cod_amount'] ?? 0,
+                'currency' => $ninjavanData['currency'] ?? 'PHP'
+            ],
+            'delivery_instructions' => $ninjavanData['delivery_instructions'] ?? '',
+            'parcels' => $ninjavanData['parcels'],
+            'quotation' => $quotation // attach quotation from helper
+            ]
+        ];
+
+        // 4. Send order creation request
+        $order_url = $api_url . '/2.0/orders';
+        $ch = curl_init($order_url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $access_token
+        ]);
+        $order_response = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $order_result = json_decode($order_response, true);
+
+        // 5. Log and return
+        \Log::info('NinjaVan Order Response', [
+            'payload' => $payload,
+            'response' => $order_result,
+            'http_code' => $http_code
+        ]);
+
+        return [
+            'status' => $http_code == 200,
+            'message' => $http_code == 200 ? 'Order pushed to NinjaVan' : 'Failed to push order to NinjaVan',
+            'response' => $order_result
+        ];
+    }
 
     // Lalamove API Integration
     public static function pushOrder_to_Lalamove($lalamove_data, $order_id) {

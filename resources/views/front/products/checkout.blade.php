@@ -141,6 +141,20 @@
                                     data-element_type="widget"
                                     data-widget_type="html.default"
                                 >
+                                <div class="elementor-widget-container">
+                                        <div class="shipping-method">
+                                            <input
+                                                type="radio"
+                                                id="ninjavan"
+                                                name="shipping_method"
+                                                value="ninjavan"
+                                                checked
+                                            >
+                                            <label for="ninjavan" style="cursor:pointer;">
+                                                <strong>NinjaVan</strong>
+                                            </label>
+                                            <br/>
+
                                     <div class="elementor-widget-container">
                                         <div class="shipping-method">
                                             <input
@@ -410,4 +424,5 @@
 
 <script>
     var LALAMOVE = @json(config('app.lalamove'))
+    var NINJAVAN = @json(config('app.ninjavan'))
 </script>

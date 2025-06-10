@@ -8,12 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\LalamoveAPIBodyHelper;
+use App\Helpers\NinjaVanAPIHelper;
 
 class OrderController extends Controller
 {
     // Note: In the Admin Panel, in the Orders Management section, if the authenticated/logged-in user is 'vendor', we'll show the orders of the products added by/related to that 'vendor' ONLY, but if the authenticated/logged-in user is 'admin', we'll show ALL orders    
 
     private $lalamoveAPI_Helper;
+    private $ninjavanAPI_Helper;
 
     // Render admin/orders/orders.blade.php page (Orders Management section) in the Admin Panel    
     public function orders() {

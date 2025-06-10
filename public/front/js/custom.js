@@ -944,6 +944,10 @@ $(document).ready(function() {
         var coupon_amount    = parseFloat($(this).attr('coupon_amount'));    // using Custom HTML data attributes (data-*)// using Custom HTML data attributes (data-*)
         var shipping_method = $('input[name="shipping_method"]:checked').val();
 
+        if (shipping_method == 'ninjavan') {
+            $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add').removeClass('hidden');
+        }
+
         if (shipping_method == 'lalamove') {
             $('#shipToLabel, #addressesList, #delivery-addresses, #ship-to-different-address, #ship-to-different-address-add').removeClass('hidden');
         }
