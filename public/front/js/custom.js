@@ -53,6 +53,10 @@ function addSubscriber() {
     });
 }
 
+// infinite scroll for vendors page
+let vendorsPage = 1;
+let vendorsPageLoading = false;
+
 // infinite scroll for products page
 let productPage = 1;
 let productPageLoading = false;
@@ -77,12 +81,12 @@ function initializeObserver() {
 }
 
 function loadMoreVendors() {
-    if (loading) return;
-    loading = true;
+    if (vendorsPageLoading) return;
+    vendorsPageLoading = true;
 
     document.getElementById("merchant-loading-indicator").style.display = "flex";
 
-    fetch("?page=" + page, {
+    fetch("?page=" + vendorsPage, {
         headers: { "X-Requested-With": "XMLHttpRequest" }
     })
     .then(response => response.json())
@@ -96,7 +100,7 @@ function loadMoreVendors() {
             document.getElementById("vendor-list-1").insertAdjacentHTML("beforeend", newVendors);
 
             if (data.nextPage) {
-                page = data.nextPage;
+                vendorsPage = data.nextPage;
 
             } else {
                 if (observer) observer.disconnect();
@@ -107,7 +111,7 @@ function loadMoreVendors() {
     })
     .catch(error => console.error("Error loading vendors:", error))
     .finally(() => {
-        loading = false
+        vendorsPageLoading = false
         document.getElementById("merchant-loading-indicator").style.display = "none";
     });
 }
