@@ -19,6 +19,7 @@ use App\Models\Vendor;
 use App\Models\Brand;
 use App\Models\Wishlist;
 use App\Helpers\LalamoveAPIBodyHelper;
+use App\Helpers\NinjaVanAPIHelper;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
@@ -886,6 +887,7 @@ class ProductsController extends Controller
     public function checkout(Request $request)
     {
         $this->lalamoveAPI_Helper = new LalamoveAPIBodyHelper;
+        $this->ninjaVanAPI_Helper = new NinjaVanAPIHelper;
         $paymongo = new PaymongoAPIHelper;
 
         // Fetch all of the world countries from the database table `countries`
@@ -968,6 +970,7 @@ class ProductsController extends Controller
             // Check if the Prepaid PIN code of that Delivery Address of the user exists in `prepaid_pincodes` table
             $deliveryAddresses[$key]['prepaidpincodeCount'] = DB::table('prepaid_pincodes')->where('pincode', $value['pincode'])->count(); // Note that    $value['pincode']    denotes the `pincode` of the `delivery_addresses` table
         }
+        
 
         if ($request->isMethod('post')) { // if the <form> in front/products/checkout.blade.php is submitted (the HTML Form that the user submits to submit their Delivery Address and Payment Method)
             $data = $request->all();
