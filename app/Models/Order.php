@@ -314,7 +314,7 @@ class Order extends Model
             ],
             'delivery_instructions' => $ninjavanData['delivery_instructions'] ?? '',
             'parcels' => $ninjavanData['parcels'],
-            'quotation' => $quotation // attach quotation from helper
+            'quotation' => $quotation 
             ]
         ];
 

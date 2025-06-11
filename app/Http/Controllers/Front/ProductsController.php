@@ -954,6 +954,15 @@ class ProductsController extends Controller
             $shippingCharges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $value['country']);
 
             $selectedDeliveryAddress = $value;
+            // Append/Add the Shipping Charge of every Delivery Address (depending on the 'country' of the Delivery Addresss) to the $deliveryAddresses array
+            $this->ninjaVanAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
+            $deliveryAddresses[$key]['shipping_charges'] = $shippingCharges + $this->ninjaVanAPI_Helper->total_delivery_fee;
+            if ($request->isMethod('post')) {
+                if ($value['id'] == $request->address_id)
+                    $shipping_charges = $this->ninjaVanAPI_Helper->total_delivery_fee;
+            } else {
+                if ($key == 0) $shipping_charges = $this->ninjaVanAPI_Helper->total_delivery_fee;
+            }
             $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
             // Append/Add the Shipping Charge of every Delivery Address (depending on the 'country' of the Delivery Addresss) to the $deliveryAddresses array
             $deliveryAddresses[$key]['shipping_charges'] = $shippingCharges + $this->lalamoveAPI_Helper->total_delivery_fee;
@@ -1127,7 +1136,6 @@ class ProductsController extends Controller
             } else if ($data['shipping_method'] == 'j&t') {
                 $shipping_charges = 150.00;
             }
-
             // Grand Total (`grand_total`)
             $grand_total = $total_price + $shipping_charges - Session::get('couponAmount');
 

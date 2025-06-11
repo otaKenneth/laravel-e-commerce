@@ -13,16 +13,10 @@ class NinjaVanAPIHelper
     protected $api_key;
     protected $api_client_id;
     protected $access_token;
-    
+    protected $data;
     public $priceBreakdown = [], $quotation = [], $total_delivery_fee = 0.0, $sender,  $recipient;
 
     // Available service levels with their delivery timelines
-    const SERVICE_LEVELS = [
-        'Standard' => '+3 days',
-        'Express' => '+2 days',
-        'Sameday' => '+0 days',
-        'Nextday' => '+1 day'
-    ];
 
     public function __construct()
     {
@@ -71,29 +65,6 @@ class NinjaVanAPIHelper
             throw new \Exception('Shipping calculation failed: ' . $e->getMessage());
         }
     }
-
-    /**
-     * Calculate delivery cost from quotation
-     */
-    public function getCalculatedCost(): array
-    {
-        if (empty($this->quotation)) {
-            throw new \Exception('No quotation data available');
-        }
-
-        $this->priceBreakdown = collect($this->quotation)
-            ->pluck('quote.price_breakdown')
-            ->toArray();
-
-        $this->total_delivery_fee = collect($this->quotation)
-            ->sum('quote.price_breakdown.total_amount');
-
-        return [
-            'total' => $this->total_delivery_fee,
-            'breakdown' => $this->priceBreakdown
-        ];
-    }
-
     protected function buildParcelJob(
         Order $order,
         Vendor $vendor,
@@ -142,6 +113,8 @@ class NinjaVanAPIHelper
             "contact_number" => $vendorDetails->shop_phone ?? '0000000000',
             "email" => $vendorDetails->vendor->email ?? 'vendor@example.com',
             "address1" => $vendorDetails->shop_address,
+            "address2" => $vendorDetails->shop_address2 ?? '',
+            "area" => $vendorDetails->shop_area ?? '',
             "city" => $vendorDetails->shop_city,
             "state" => $vendorDetails->shop_state,
             "country" => $vendorDetails->country,
@@ -158,6 +131,8 @@ class NinjaVanAPIHelper
             "contact_number" => $order->mobile,
             "email" => $order->email,
             "address1" => $order->address,
+            "address2" => $vendorDetails->shop_address2 ?? '',
+            "area" => $vendorDetails->shop_area ?? '',
             "city" => $order->city,
             "state" => $order->state,
             "country" => $order->country,
@@ -167,18 +142,60 @@ class NinjaVanAPIHelper
         ];
     }
 
-    protected function validateServiceLevel(string $serviceLevel): void
+
+
+    
+
+    public function setQuoteData(array $data)
     {
-        if (!array_key_exists($serviceLevel, self::SERVICE_LEVELS)) {
-            throw new \Exception("Invalid service level selected");
-        }
+        $this->data = $data;
+        return $this;
     }
 
-    protected function calculateDeliveryDate(string $pickupDate, string $serviceLevel): string
+    public function getTotal_PriceBreakdown()
     {
-        return Carbon::parse($pickupDate)
-            ->modify(self::SERVICE_LEVELS[$serviceLevel])
-            ->format('Y-m-d');
+        $actual_weight = $this->data['total_weight'];
+        $deliveryAddress = $this->data['selectedDeliveryAddress'];
+        $final_weight = ceil($actual_weight); // Round up to next whole number
+        $region = $this->getDestinationRegion($deliveryAddress['region']);
+
+        $fee = $this->computeShippingRate($final_weight, $region);
+
+        $this->total_delivery_fee = $fee;
+        return $this;
+    }
+
+    protected function getDestinationRegion($region)
+    {
+        $region = strtolower($region);
+
+        if (str_contains($region, 'metro manila') || str_contains($region, 'ncr')) return 'MM';
+        if (str_contains($region, 'gma') || str_contains($region, 'nlz') || str_contains($region, 'slz')) return 'GMA';
+        if (str_contains($region, 'visayas')) return 'VIS';
+        if (str_contains($region, 'mindanao')) return 'MIN';
+
+        return 'MM'; // default
+    }
+
+    protected function computeShippingRate($weight, $region)
+    {
+        // Rates matrix
+        $rates = [
+            'MM' => [1 => 60, 3 => 80, 'add' => 25],
+            'GMA' => [1 => 110, 3 => 180, 'add' => 80],
+            'VIS' => [1 => 110, 3 => 180, 'add' => 80],
+            'MIN' => [1 => 110, 3 => 180, 'add' => 80],
+        ];
+
+        $rate = $rates[$region];
+
+        if ($weight <= 1) {
+            return $rate[1];
+        } elseif ($weight <= 3) {
+            return $rate[3];
+        } else {
+            return $rate[3] + ($weight - 3) * $rate['add'];
+        }
     }
 
     protected function parseTimeSlot(string $pickupTime): array

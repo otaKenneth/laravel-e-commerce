@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\LalamoveAPIBodyHelper;
 use App\Helpers\NinjaVanAPIHelper;
+use App\Services\NinjaVanService;
 
 class OrderController extends Controller
 {
@@ -16,6 +17,12 @@ class OrderController extends Controller
 
     private $lalamoveAPI_Helper;
     private $ninjavanAPI_Helper;
+    protected $ninjaVanService;
+
+    public function __construct(NinjaVanService $ninjaVanService)
+    {
+        $this->ninjaVanService = $ninjaVanService;
+    }
 
     // Render admin/orders/orders.blade.php page (Orders Management section) in the Admin Panel    
     public function orders() {
