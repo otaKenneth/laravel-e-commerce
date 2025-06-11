@@ -61,7 +61,7 @@
                                     <input type="hidden" name="queried_id" value="1070">
                                     <div class="elementor-form-fields-wrapper elementor-labels-">
                                         <div class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_f6badbe elementor-col-100">
-                                            <h6>
+                                            <h6 class="font-family-secondary-title">
                                                 <b>PERSONAL DETAILS</b>
                                             </h6>
                                         </div>
@@ -106,7 +106,7 @@
                                         </div>
                                         <div class="personal-address flex-box-input-wrapper">
                                             <div class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_1bf80f6 elementor-col-100">
-                                                <p style="margin: 15px 0 0 0">
+                                                <p style="margin: 15px 0 0 0" class="font-family-secondary-title">
                                                     <b>Address</b>
                                                 </p>
                                             </div>
@@ -198,7 +198,7 @@
                                         </div>
                                         <div class="business-details flex-box-input-wrapper">
                                             <div class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_2edf570 elementor-col-100">
-                                                <h6 style="margin-top: 50px">
+                                                <h6 style="margin-top: 50px" class="font-family-secondary-title">
                                                     <b>BUSINESS INFORMATION</b>
                                                 </h6>
                                             </div>
@@ -214,7 +214,7 @@
                                                 >
                                             </div>
                                             <div class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_b134bdc elementor-col-100">
-                                                <p style="margin: 15px 0 0 0">
+                                                <p style="margin: 15px 0 0 0" class="font-family-secondary-title">
                                                     <b>Address</b>
                                                 </p>
                                             </div>
@@ -351,7 +351,7 @@
                                                 >
                                             </div>
                                             <div class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_8d8e292 elementor-col-100">
-                                                <span style="margin-top: 20px; display: block;">
+                                                <span style="margin-top: 20px; display: block;" class="font-family-secondary-title">
                                                     <b>License</b>
                                                 </span>
                                             </div>
@@ -368,7 +368,7 @@
                                                 >
                                             </div>
                                             <div class="elementor-field-type-html elementor-field-group elementor-column elementor-field-group-field_48f1af0 elementor-col-100">
-                                                <span style="margin-top: 20px; display: block;">
+                                                <span style="margin-top: 20px; display: block;" class="font-family-secondary-title">
                                                     <b>Proof</b>
                                                 </span>
                                             </div>
@@ -396,7 +396,7 @@
                                                             required="required"
                                                             aria-required="true"
                                                         >
-                                                        <label for="form-field-field_e55c601-0" >Accept Our <a target="_blank" style="color: #121212 !important; text-decoration: underline;" href="{{ url('terms-and-conditions') }}">Terms and Conditions</a></label>
+                                                        <label for="form-field-field_e55c601-0" class="font-family-secondary-title" >Accept Our <a target="_blank" style="color: #121212 !important; text-decoration: underline;" href="{{ url('terms-and-conditions') }}">Terms and Conditions</a></label>
                                                     </span>
                                                 </div>
                                             </div>
