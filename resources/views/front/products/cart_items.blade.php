@@ -13,9 +13,9 @@
             <table width="100%">
                 <thead>
                     <tr>
-                        <th>PRODUCT</th>
-                        <th>QUANTITY</th>
-                        <th class="align-right">TOTAL</th>
+                        <th class="font-family-secondary">PRODUCT</th>
+                        <th class="font-family-secondary">QUANTITY</th>
+                        <th class="font-family-secondary align-right">TOTAL</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,7 +24,7 @@
 
                     @if (count($getCartItems) == 0)
                         <tr>
-                            <td colspan="3">No Cart Items.</td>
+                            <td colspan="3 font-family-body">No Cart Items.</td>
                         </tr>
                     @else
                     @foreach ($getCartItems as $item)
@@ -227,20 +227,20 @@
                     <div class="elementor-widget-container">
                         <table>
                             <tr>
-                                <th class="align-left" colspan="2">
+                                <th class="align-left font-family-secondary-title" colspan="2">
                                     <b>CART TOTALS</b>
                                 </th>
                             </tr>
                             <tr>
-                                <td>Sub total</td>
+                                <td class="font-family-secondary-title">Sub total</td>
                                 <td>₱{{number_format($total_price, 2)}}</td>
                             </tr>
                             <tr>
-                                <td class="couponCode">Coupon Amount</td>
+                                <td class="couponCode font-family-secondary-title">Coupon Amount</td>
                                 <td>₱<span class="couponAmount">0.00</span></td>
                             </tr>
                             <tr>
-                                <td style="padding-top: 40px">
+                                <td style="padding-top: 40px" class="font-family-secondary-title">
                                     <b>GRAND TOTAL</b>
                                 </td>
                                 <td style="padding-top: 40px">
