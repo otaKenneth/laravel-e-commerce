@@ -19,6 +19,7 @@ use App\Models\Vendor;
 use App\Models\Brand;
 use App\Models\Wishlist;
 use App\Helpers\LalamoveAPIBodyHelper;
+use App\Helpers\NinjaVanHelper;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
@@ -28,6 +29,7 @@ use function Clue\StreamFilter\append;
 class ProductsController extends Controller
 {
     private $lalamoveAPI_Helper;
+    private $ninjaVanAPI_Helper;
     // match() method is used for the HTTP 'GET' requests to render listing.blade.php page and the HTTP 'POST' method for the AJAX request of the Sorting Filter or the HTML Form submission and jQuery for the Sorting Filter WITHOUT AJAX, AND ALSO for submitting the Search Form in listing.blade.php    // e.g.    /men    or    /computers
     public function listing(Request $request)
     {
@@ -886,6 +888,7 @@ class ProductsController extends Controller
     public function checkout(Request $request)
     {
         $this->lalamoveAPI_Helper = new LalamoveAPIBodyHelper;
+        $this->ninjavanAPI_Helper = new NinjaVanHelper;
         $paymongo = new PaymongoAPIHelper;
 
         // Fetch all of the world countries from the database table `countries`
@@ -948,18 +951,32 @@ class ProductsController extends Controller
         $shipping_charges = 0;
         // Calculating the Shipping Charges of every one of the user's Delivery Addresses (depending on the 'country' of the Delivery Address)
         foreach ($deliveryAddresses as $key => $value) {
-            $shippingCharges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $value['country']);
-
+            // Get base shipping charges based on country
+            $baseShippingCharges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $value['country']);
+            // Calculate Lalamove charges
             $selectedDeliveryAddress = $value;
             $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
-            // Append/Add the Shipping Charge of every Delivery Address (depending on the 'country' of the Delivery Addresss) to the $deliveryAddresses array
-            $deliveryAddresses[$key]['shipping_charges'] = $shippingCharges + $this->lalamoveAPI_Helper->total_delivery_fee;
-            if ($request->isMethod('post')) {
-                if ($value['id'] == $request->address_id)
-                    $shipping_charges = $this->lalamoveAPI_Helper->total_delivery_fee;
+            $lalamoveCharges = $this->lalamoveAPI_Helper->total_delivery_fee + $baseShippingCharges;
+            // dd($lalamoveCharges);
+
+            // Calculate NinjaVan charges
+            $ninjavanCharges = NinjaVanHelper::calculateShippingCharge($total_weight, $value['state']);
+            // For backward compatibility
+            // Store only the provider fees (no base charges)
+            $deliveryAddresses[$key]['lalamove_shipping_charges'] = $lalamoveCharges;
+
+            $deliveryAddresses[$key]['ninjavan_shipping_charges'] = $ninjavanCharges;
+
+            // Determine final shipping charges based on selected method
+            if ($request->isMethod('post') && $value['id'] == $request->address_id) {
+                $shipping_charges = ($request->shipping_method == 'ninjavan') 
+                    ? $ninjavanCharges 
+                    : $lalamoveCharges;
             } else {
-                if ($key == 0) $shipping_charges = $this->lalamoveAPI_Helper->total_delivery_fee;
+                // Default to Lalamove if no selection
+                $shipping_charges = ($key == 0) ? $lalamoveCharges : 0;
             }
+            $deliveryAddresses[$key]['shipping_charges'] = $shipping_charges;
 
             // Checking PIN code availability of BOTH COD and Prepaid PIN codes in BOTH `cod_pincodes` and `prepaid_pincodes` tables
             // Check if the COD PIN code of that Delivery Address of the user exists in `cod_pincodes` table
@@ -1122,6 +1139,9 @@ class ProductsController extends Controller
                 $shipping_charges = 0;
             } else if ($data['shipping_method'] == 'j&t') {
                 $shipping_charges = 150.00;
+            } else if ($data['shipping_method'] == 'ninjavan') {
+                $ninjavan = new NinjaVanHelper;
+                $shipping_charges += $ninjavan->calculateFromAddress($total_weight, $value['state']);
             }
 
             // Grand Total (`grand_total`)

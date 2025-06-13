@@ -102,6 +102,8 @@
                                                 class="address"
                                                 name="preferred_address-{{$deliveryAddress['user_id']}}"
                                                 value="{{$deliveryAddress['id']}}"
+                                                lalamove_shipping="{{ $deliveryAddress['lalamove_shipping_charges'] ?? 0 }}"
+                                                ninjavan_shipping="{{ $deliveryAddress['ninjavan_shipping_charges'] ?? 0 }}"
                                                 shipping_charges="{{number_format($deliveryAddress['shipping_charges'], 2)}}"
                                                 total_price="{{str_replace(",", "", $sub_total)}}"
                                                 coupon_amount="{{Session::get('couponAmount')}}"
@@ -152,6 +154,16 @@
                                             >
                                             <label for="lalamove" style="cursor:pointer;">
                                                 <strong>Lalamove</strong>
+                                            </label>
+                                            <br/>
+                                            <input
+                                                type="radio"
+                                                id="ninjavan"
+                                                name="shipping_method"
+                                                value="ninjavan"
+                                            >
+                                            <label for="ninjavan" style="cursor:pointer;">
+                                                <strong>NinjaVan</strong>
                                             </label>
                                             <br/>
                                             <input
