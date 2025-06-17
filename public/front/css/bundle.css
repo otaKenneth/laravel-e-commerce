@@ -3576,6 +3576,7 @@ ul.filter-categories ul{
 .mini-cart-list > li > a .mini-item-price,
 .mini-shop-total .mini-total-price{
   color: black !important;
+  font-family: var(--font-family-body);
 }
 .mini-action-anchors .cart-anchor{
   border-radius: 100px;
@@ -3590,4 +3591,14 @@ ul.filter-categories ul{
 }
 .mini-cart .mini-cart-header button:before{
   color: black;
+}
+.mini-cart h1 {
+  font-family: var(--font-family-main-title);
+  font-size: 1rem;
+}
+.mini-cart .mini-shop-total span {
+  font-family: var(--font-family-secondary-title);
+}
+.mini-cart .mini-action-anchors a {
+  font-family: var(--font-family-secondary-title);
 }

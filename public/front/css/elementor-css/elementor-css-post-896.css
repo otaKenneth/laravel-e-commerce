@@ -605,9 +605,13 @@ body
 /* End Custom Fonts CSS */
 
 .elementor-896 .elementor-button-text {
-    font-family: var(--font-family-secondary);
+    font-family: var(--font-family-secondary-title);
 }
 
 .elementor-896 .font-family-body {
     font-family: var(--font-family-body);
+}
+
+.elementor-896 .font-family-secondary-title {
+    font-family: var(--font-family-secondary-title);
 }
