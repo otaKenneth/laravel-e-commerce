@@ -370,6 +370,9 @@
   }
 }
 /* End custom CSS */
+.elementor-1656 .font-family-body {
+    font-family: var(--font-family-body);
+}
 
 .elementor-1656 .elementor-element.elementor-element-5f0d9zz .font-family-body {
     font-family: var(--font-family-body);
