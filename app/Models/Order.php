@@ -285,4 +285,64 @@ class Order extends Model
         return $json_decoded_response;
     }
 
+    //NinjaVan Integration
+    public static function pushOrder_to_Ninjavan($ninjavanData, $order_id)
+{
+    $body = json_encode([
+        'service_type' => $ninjavanData['service_type'],
+        'reference_id' => $order_id,
+        'pickup' => [
+            'contact_name' => $ninjavanData['pickup_address']['name'],
+            'contact_phone' => formatPhoneNumber($ninjavanData['pickup_address']['phone']),
+            'email' => $ninjavanData['pickup_address']['email'],
+            'address' => $ninjavanData['pickup_address']['address'],
+            'coordinates' => $ninjavanData['pickup_address']['coordinates'],
+            'instructions' => $ninjavanData['pickup_address']['instructions'] ?? '',
+            'scheduled_at' => $ninjavanData['pickup_date'] . 'T' . $ninjavanData['pickup_time'] . ':00+08:00'
+        ],
+        'delivery' => [
+            'contact_name' => $ninjavanData['delivery_address']['name'],
+            'contact_phone' => formatPhoneNumber($ninjavanData['delivery_address']['phone']),
+            'email' => $ninjavanData['delivery_address']['email'],
+            'address' => $ninjavanData['delivery_address']['address'],
+            'coordinates' => $ninjavanData['delivery_address']['coordinates'],
+            'instructions' => $ninjavanData['delivery_address']['instructions'] ?? ''
+        ],
+        'parcel' => [
+            'weight' => $ninjavanData['parcel']['weight'], // in grams
+            'dimensions' => $ninjavanData['parcel']['dimensions']
+        ],
+        'metadata' => [
+            'order_id' => $order_id,
+            'platform' => 'Kapiton Store'
+        ]
+    ]);
+
+    \Log::info("Push Order to NinjaVan: " . $body);
+
+    $client_id = config('app.ninjavan.client_id');
+    $client_secret = config('app.ninjavan.client_secret');
+    $access_token = self::getAccessToken(); // assume you have a token retrieval or caching system
+
+    $curl = curl_init();
+    curl_setopt_array($curl, [
+        CURLOPT_URL => config('app.ninjavan.api_url') . '/orders',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 10,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => $body,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: Bearer {$access_token}"
+        ],
+    ]);
+
+    $response = curl_exec($curl);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+
+    \Log::info("NinjaVan API Response ({$httpCode}): " . $response);
+
+    return json_decode($response, true);
+}
 }

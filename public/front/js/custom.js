@@ -1006,6 +1006,20 @@ $(document).ready(function() {
             shipping_charges = parseFloat($(this).attr('lalamove_shipping') || 0);
         } else if (shipping_method === 'ninjavan') {
             shipping_charges = parseFloat($(this).attr('ninjavan_shipping') || 0);
+            $(document).ready(function () {
+            $('input[name="shipping_method"]').on('change', function () {
+                if ($(this).val() === 'ninjavan') {
+                    $('#ninjavan-options').removeClass('hidden');
+                } else {
+                    $('#ninjavan-options').addClass('hidden');
+                }
+            });
+
+            // Show on page load if already selected
+            if ($('input[name="shipping_method"]:checked').val() === 'ninjavan') {
+                $('#ninjavan-options').removeClass('hidden');
+            }
+    });
         } else if (shipping_method === 'j&t') {
             shipping_charges = 150;
         } else if (shipping_method === 'pickup') {
@@ -1101,6 +1115,13 @@ $(document).ready(function() {
             'payment_gateway': $('.checkout-form input[name^="payment_gateway"]:checked').val(),
             'accept': true
         };
+
+        if (shippingMethod === 'ninjavan') {
+        Object.assign(data, {
+            ninjavan_service_level: form.find('input[name="ninjavan_service_level"]:checked').val(),
+            pickup_timeslot: $('#pickup_timeslot').val()
+        });
+    }
 
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token

@@ -149,4 +149,69 @@ class NinjaVanHelper
         'Maguindanao' => 'MIN',
         'Sarangani' => 'MIN',
     ];
+
+    public function getQuotation($orderDetails, $vendor_id)
+    {
+        $order = \App\Models\Order::find($orderDetails->order_id);
+        $user_model = new \App\Models\User;
+        $vendor_model = new \App\Models\Vendor;
+
+        // Get vendor details
+        $vendor = $vendor_model->with('vendorbusinessdetails')->find($vendor_id);
+
+        if (empty($vendor->vendorbusinessdetails['lat']) || empty($vendor->vendorbusinessdetails['long'])) {
+            \Log::info("Vendor Business Details: " . json_encode($vendor->vendorbusinessdetails));
+            return (object) [
+                'errors' => [
+                    'message' => "Latitude and Longitude for Vendor Business Detail is required."
+                ],
+            ];
+        }
+
+        // Prepare sender and recipient addresses
+        $sender_address = [
+            'name' => $vendor->vendorbusinessdetails->shop_name,
+            'address' => $vendor->vendorbusinessdetails->shop_address,
+            'city' => $vendor->vendorbusinessdetails->shop_city,
+            'province' => $vendor->vendorbusinessdetails->shop_state,
+            'country' => $vendor->vendorbusinessdetails->country,
+            'postalCode' => $vendor->vendorbusinessdetails->shop_pincode,
+            'lat' => (string) $vendor->vendorbusinessdetails['lat'],
+            'lng' => (string) $vendor->vendorbusinessdetails['long'],
+        ];
+
+        $recipient_address = [
+            'name' => $order->name ?? '',
+            'address' => $order->address,
+            'city' => $order->city,
+            'province' => $order->state,
+            'country' => $order->country,
+            'postalCode' => $order->pincode,
+            'lat' => (string) $order->lat,
+            'lng' => (string) $order->lng,
+        ];
+
+        // Calculate shipping charge using NinjaVanHelper
+        $shipping_charge = self::calculateShippingCharge(
+            (float) $order->total_weight,
+            $order->state
+        );
+
+        // Prepare quotation response (simulate NinjaVan API response)
+        $quotation = [
+            'shipping_charge' => $shipping_charge,
+            'currency' => 'PHP',
+            'sender' => $sender_address,
+            'recipient' => $recipient_address,
+            'weight_kg' => (float) $order->total_weight,
+            'zone' => self::getZoneFromProvince($order->state),
+        ];
+
+        \Log::info("NinjaVan Quotation: " . json_encode($quotation));
+
+        return (object) [
+            'quotation' => $quotation
+        ];
+    }
+    
 }

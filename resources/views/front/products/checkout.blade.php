@@ -161,11 +161,30 @@
                                                 id="ninjavan"
                                                 name="shipping_method"
                                                 value="ninjavan"
-                                            >
+                                            />
                                             <label for="ninjavan" style="cursor:pointer;">
                                                 <strong>NinjaVan</strong>
                                             </label>
-                                            <br/>
+
+                                            <!-- Options -->
+                                            <div
+                                                id="ninjavan-options"
+                                                class="hidden"
+                                                style="margin-top: 15px;"
+                                            >
+                                                <h6><strong>NinjaVan Service Level:</strong></h6>
+                                                <div class="ninjavan-service-levels">    
+                                                    <label><input type="radio" name="ninjavan_service_level" value="Standard" checked> Standard</label><br>
+                                                    <label><input type="radio" name="ninjavan_service_level" value="Sameday"> Same Day</label><br>
+                                                    <label><input type="radio" name="ninjavan_service_level" value="Express"> Express</label><br>
+                                                    <label><input type="radio" name="ninjavan_service_level" value="Nextday"> Next Day</label><br>
+                                                </div>
+                                                <div class="ninjavan-pickup-time" style="margin-top:10px; margin-left: 20px;">
+                                                    <label for="pickup_timeslot"><strong>Pickup Time:</strong></label><br>
+                                                    <input type="time" name="pickup_timeslot" id="pickup_timeslot" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <br>
                                             <input
                                                 type="radio"
                                                 id="jnt"
@@ -420,6 +439,24 @@
 
 @endsection
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     var LALAMOVE = @json(config('app.lalamove'))
+    var NINJAVAN = @json(config('app.ninjavan'))
+    $(document).ready(function () {
+        function toggleNinjaVanOptions() {
+            const selected = $('input[name="shipping_method"]:checked').val();
+            if (selected === 'ninjavan') {
+                $('#ninjavan-options').removeClass('hidden');
+            } else {
+                $('#ninjavan-options').addClass('hidden');
+            }
+        }
+
+        // Run on page load
+        toggleNinjaVanOptions();
+
+        // Run on change
+        $('input[name="shipping_method"]').on('change', toggleNinjaVanOptions);
+    });
 </script>

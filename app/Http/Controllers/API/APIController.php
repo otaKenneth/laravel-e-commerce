@@ -1052,5 +1052,18 @@ class APIController extends Controller
         
         return response()->json(['status' => 'success'], 200);
     }
+    public function receiveNinjaVanWebhook(Request $request)
+    {
+        // Get all incoming data
+        $data = $request->all();
 
+        // Log it to laravel.log so you can inspect it later
+        \Log::info("NinjaVan Webhook Data Received:", $data);
+
+        // Also return it as JSON response (optional)
+        return response()->json([
+            'status' => 'received',
+            'data' => $data
+        ], 200);
+    }
 }
