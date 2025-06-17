@@ -11,12 +11,14 @@
     padding: 0 20px;
 }
 .policy-page-outer h1{
+    font-family: var(--font-family-main-title);
     text-align: center;
     margin-bottom: 30px;
 }
 .policy-page-outer h2{
     font-size: 20px;
     margin-top: 30px;
+    font-family: var(--font-family-secondary-title);
 }
 .policy-wrap{
     background-color: #f0f5f0;
@@ -27,6 +29,8 @@
 }
 .policy-page-outer p{
     text-align: justify;
+    font-family: var(--font-family-body);
+    font-size: 0.9rem;
 }
 .heading-italize{
     font-weight: bold;
