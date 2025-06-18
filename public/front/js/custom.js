@@ -1116,13 +1116,6 @@ $(document).ready(function() {
             'accept': true
         };
 
-        if (shippingMethod === 'ninjavan') {
-        Object.assign(data, {
-            ninjavan_service_level: form.find('input[name="ninjavan_service_level"]:checked').val(),
-            pickup_timeslot: $('#pickup_timeslot').val()
-        });
-    }
-
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // X-CSRF-TOKEN: https://laravel.com/docs/9.x/csrf#csrf-x-csrf-token
             url    : '/checkout', // check this route in web.php

@@ -882,7 +882,23 @@ class ProductsController extends Controller
         }
     }
 
+    public function testToken(NinjavanHelper $ninjavan)
+    {
+        try {
+            $token = $ninjavan->getAccessToken();
+            return response()->json(['access_token' => $token]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
+    public function testNinjaVanOrder()
+    {
+        $ninjavan = new NinjaVanHelper(); // instantiate the helper
+        $response = $ninjavan->createOrder(); // call the method
+
+    return response()->json($response); // return as JSON for testing
+    }
 
     // Checkout page (using match() method for the 'GET' request for rendering the front/products/checkout.blade.php page or the 'POST' request for the HTML Form submission in the same page) (for submitting the user's Delivery Address and Payment Method))
     public function checkout(Request $request)

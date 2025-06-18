@@ -179,10 +179,6 @@
                                                     <label><input type="radio" name="ninjavan_service_level" value="Express"> Express</label><br>
                                                     <label><input type="radio" name="ninjavan_service_level" value="Nextday"> Next Day</label><br>
                                                 </div>
-                                                <div class="ninjavan-pickup-time" style="margin-top:10px; margin-left: 20px;">
-                                                    <label for="pickup_timeslot"><strong>Pickup Time:</strong></label><br>
-                                                    <input type="time" name="pickup_timeslot" id="pickup_timeslot" class="form-control" required>
-                                                </div>
                                             </div>
                                             <br>
                                             <input

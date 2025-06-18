@@ -178,8 +178,6 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
         // Add Rating & Review on a product in front/products/detail.blade.php
         Route::post('add-rating', 'RatingController@addRating');
 
-        Route::post('/webhook/ninjavan', ['APIController@receiveNinjaVanWebhook']);
-
 
         // PayPal routes:
         // PayPal payment gateway integration in Laravel (this route is accessed from checkout() method in Front/ProductsController.php). Rendering front/paypal/paypal.blade.php page

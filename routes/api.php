@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\API\APIController; // Import the APIController class to use it in the routes
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -60,6 +60,10 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
     Route::post('logout-user', 'APIController@logoutUser');
 
 
+    Route::post('/webhook/ninjavan', [APIController::class, 'receiveNinjaVanWebhook']);
+    Route::get('/test-ninjavan-webhook', [APIController::class, 'testNinjaVanWebhook']);
+    Route::get('/test-ninjavan-order', [App\Http\Controllers\Front\ProductsController::class, 'testNinjaVanOrder']);
+    Route::get('/test-ninjavan-token', [App\Http\Controllers\Front\ProductsController::class, 'testToken']);
 
 
     // API Endpoints/Routes using "Laravel Passport" package Authentication:

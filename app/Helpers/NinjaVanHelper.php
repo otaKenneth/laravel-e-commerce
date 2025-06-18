@@ -2,8 +2,14 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+
 class NinjaVanHelper
 {
+    protected $bearer_token;
+    protected $sandbox_url;
     /**
      * Calculate shipping charges based on actual weight and destination zone.
      *
@@ -213,5 +219,131 @@ class NinjaVanHelper
             'quotation' => $quotation
         ];
     }
+ 
     
+    public function createOrder(){
+    $url = config('services.ninjavan.api_url') . "/4.2/orders";
+    $accessToken = config('services.ninjavan.access_token');
+
+    $payload = [
+        "reference" => [
+            "merchant_order_number" => "TESTORDER-" . now()->timestamp
+        ],
+        "marketplace" => [
+        "seller_id" => "Kapiton-Marketplace",
+        "seller_company_name"=> "John Doe Shop"
+    ],
+        "service_type" => "Marketplace",
+        "service_level" => "Standard", // ✅ Should be a string
+        "requested_tracking_number" => "TEST1234",
+        "from" => [
+            "name" => "Cellphone Range IU",
+            "phone_number" => "09653265656",
+            "email" => "support@cellphonesrange.com.ph",
+            "address" => [
+                "address1" => "#12 Test Address",
+                "city" => "Mandaluyong City",
+                "state" => "Metro Manila",
+                "country" => "PH",
+                "postcode" => "1500"
+            ]
+        ],
+        "to" => [
+            "name" => "Adrian Nebasa",
+            "phone_number" => "+639452073341",
+            "email" => "adrian@example.com",
+            "address" => [
+                "address1" => "Sunshine City Plaza 100",
+                "city" => "Mandaluyong City",
+                "state" => "Metro Manila",
+                "country" => "PH",
+                "postcode" => "1500"
+            ]
+        ],
+        "parcel_job" => [
+            "pickup_date" => "2025-06-18",
+            "pickup_timeslot" => [
+                "start_time" => "09:00",
+                "end_time" => "12:00",
+                "timezone" => "Asia/Manila"
+            ],
+            "delivery_start_date" => "2025-06-19",
+            "delivery_timeslot" => [
+                "start_time" => "15:00",
+                "end_time" => "18:00",
+                "timezone" => "Asia/Manila"
+            ],
+            "dimensions" => [
+                "weight" => 1
+            ],
+            "items" => [
+                [
+                    "item_description" => "Smartphone 11",
+                    "quantity" => 1,
+                    "is_dangerous_good" => false
+                ]
+            ]
+        ]
+    ];
+       try {
+    // Load config values
+    $ninjavanConfig = config('app.ninjavan');
+
+    $accessToken = $ninjavanConfig['access_token'];
+    $baseUrl = rtrim($ninjavanConfig['api_url'], '/'); // Ensure no trailing slash
+    $orderUrl = $baseUrl . '/4.2/orders';
+
+    // Send the request to NinjaVan
+    $response = Http::withToken($accessToken)
+        ->timeout(15)
+        ->post($orderUrl, $payload);
+
+    // Check response
+    if ($response->successful()) {
+        $responseData = $response->json();
+        Log::info("NinjaVan Test Order Created", $responseData);
+        return $responseData;
+    } else {
+        Log::warning("NinjaVan responded with error", ['status' => $response->status(), 'body' => $response->body()]);
+        return ['error' => $response->body()];
+    }
+
+} catch (\Exception $e) {
+    Log::error("NinjaVan Order Creation Failed", ['error' => $e->getMessage()]);
+    return ['error' => $e->getMessage()];
+}
+}
+
+public function getAccessToken()
+    {
+        // Check if token is cached
+        if (Cache::has('ninjavan_access_token')) {
+            return Cache::get('ninjavan_access_token');
+        }
+
+        // Set endpoint
+        $url = config('app.ninjavan.api_url') . '/2.0/oauth/access_token';
+
+        // Send POST request
+        $response = Http::asForm()->post($url, [
+            'client_id' => config('app.ninjavan.client_id'),
+            'client_secret' => config('app.ninjavan.client_key'),
+            'grant_type' => 'client_credentials',
+        ]);
+
+        // Error handling
+        if (!$response->successful()) {
+            throw new \Exception('Failed to retrieve token: ' . $response->body());
+        }
+
+        // Parse response
+        $data = $response->json();
+        $accessToken = $data['access_token'];
+        $expiresIn = $data['expires_in'];
+
+        // Cache token
+        Cache::put('ninjavan_access_token', $accessToken, now()->addSeconds($expiresIn - 60));
+
+        return $accessToken;
+    }
 }

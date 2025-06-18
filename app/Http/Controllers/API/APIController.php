@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class APIController extends Controller
 {
@@ -1052,15 +1053,88 @@ class APIController extends Controller
         
         return response()->json(['status' => 'success'], 200);
     }
+    public function ninjaVanWebhook(Request $request)
+    {
+        $data = $request->all();
+        \Log::info('Webhook received from NinjaVan', ['payload' => $data]);
+
+        if ($data['eventType'] == 'ORDER_STATUS_CHANGED' && isset($data['data']['order'])) {
+            $ninjaVanOrder = $data['data']['order'];
+            $trackingNumber = $ninjaVanOrder['trackingNumber'] ?? null;
+            $statusMessage = $ninjaVanOrder['status'] ?? null;
+
+            if (empty($trackingNumber)) {
+                \Log::warning('No tracking number in NinjaVan order data.');
+                return response()->json(['message' => 'Missing tracking number'], 422);
+            }
+
+            // Fetch orders matching the tracking number
+            $orderProducts = \App\Models\OrdersProduct::where('tracking_number', $trackingNumber)->get();
+
+            if ($orderProducts->isEmpty()) {
+                \Log::warning('No order found for tracking number: ' . $trackingNumber);
+                return response()->json(['message' => 'Order not found'], 404);
+            }
+
+            // Status mapping from NinjaVan to internal values
+            $statusMap = [
+                'Pending Pickup' => 'PENDING_PICKUP',
+                'Picked Up, In Transit To Origin Hub' => 'IN_TRANSIT',
+                'On Vehicle for Delivery' => 'OUT_FOR_DELIVERY',
+                'Delivered, Received by Customer' => 'DELIVERED',
+                'Cancelled' => 'CANCELLED',
+                'Returned to Sender' => 'RETURNED',
+                'Delivery Exception, Parcel Lost' => 'LOST',
+                'Delivery Exception, Parcel Damaged' => 'DAMAGED',
+                'Delivery Exception, Return to Sender Initiated' => 'RTS_INITIATED',
+            ];
+
+            $internalStatus = $statusMap[$statusMessage] ?? 'IN_TRANSIT'; // fallback
+
+            foreach ($orderProducts as $order) {
+                // Update item_status
+                $order->item_status = $internalStatus;
+                $order->save();
+
+                // Log status update
+                \App\Models\OrdersLog::create([
+                    'order_id' => $order->order_id,
+                    'order_item_id' => $order->id,
+                    'order_status' => 'NINJAVAN - ' . $statusMessage
+                ]);
+            }
+
+            return response()->json(['message' => 'Webhook processed.'], 200);
+        }
+
+        \Log::warning('Invalid NinjaVan Webhook format.');
+        return response()->json(['message' => 'Invalid format or missing data.'], 400);
+    }
+
+    
+    public function testNinjaVanWebhook()
+    {
+        // Use the correct URL and port where your Laravel app is running
+        $response = Http::post('http://host.docker.internal:9000/api/webhook/ninjavan', [
+            'event_type' => 'tracking.status',
+            'payload' => [
+                'tracking_number' => 'NV123456789',
+                'status' => 'in_transit'
+            ]
+        ]);
+
+        return response()->json([
+            'message' => 'Test webhook sent to /webhook/ninjavan',
+            'response_from_webhook' => json_decode($response->body(), true)
+        ]);
+    }
+
     public function receiveNinjaVanWebhook(Request $request)
     {
-        // Get all incoming data
         $data = $request->all();
 
-        // Log it to laravel.log so you can inspect it later
         \Log::info("NinjaVan Webhook Data Received:", $data);
 
-        // Also return it as JSON response (optional)
         return response()->json([
             'status' => 'received',
             'data' => $data
