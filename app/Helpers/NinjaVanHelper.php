@@ -197,6 +197,9 @@ class NinjaVanHelper
             'lng' => (string) $order->lng,
         ];
 
+        $parcel_job = [
+
+        ];
         // Calculate shipping charge using NinjaVanHelper
         $shipping_charge = self::calculateShippingCharge(
             (float) $order->total_weight,
@@ -205,114 +208,121 @@ class NinjaVanHelper
 
         // Prepare quotation response (simulate NinjaVan API response)
         $quotation = [
-            'shipping_charge' => $shipping_charge,
-            'currency' => 'PHP',
-            'sender' => $sender_address,
-            'recipient' => $recipient_address,
+            'marketplace' => [
+                'seller_id' => $vendor->vendorbusinessdetails->vendor_id,
+                'seller_company_name' => $vendor->vendorbusinessdetails->shop_name,
+            ],
+            'service_type' => 'Marketplace',
+            'service_level' => $orderDetails->service_level ?? 'Standard',
+            'requestedTrackingNumber' => 'TEST-' . now()->timestamp,
+            'reference'=> ['merchant_order_number' => $orderDetails->orderId],
+            'from' => $sender_address,
+            'to' => $recipient_address,
+            'parcel' => $parcel_job,
             'weight_kg' => (float) $order->total_weight,
             'zone' => self::getZoneFromProvince($order->state),
         ];
 
         \Log::info("NinjaVan Quotation: " . json_encode($quotation));
-
+        $this->recipient = $user_model->find($order->user_id);
         return (object) [
             'quotation' => $quotation
         ];
     }
  
     
-    public function createOrder(){
-    $url = config('services.ninjavan.api_url') . "/4.2/orders";
-    $accessToken = config('services.ninjavan.access_token');
+//     public function createOrder(){
+//     $url = config('services.ninjavan.api_url') . "/4.2/orders";
+//     $accessToken = config('services.ninjavan.access_token');
 
-    $payload = [
-        "reference" => [
-            "merchant_order_number" => "TESTORDER-" . now()->timestamp
-        ],
-        "marketplace" => [
-        "seller_id" => "Kapiton-Marketplace",
-        "seller_company_name"=> "John Doe Shop"
-    ],
-        "service_type" => "Marketplace",
-        "service_level" => "Standard", // ✅ Should be a string
-        "requested_tracking_number" => "TEST1234",
-        "from" => [
-            "name" => "Cellphone Range IU",
-            "phone_number" => "09653265656",
-            "email" => "support@cellphonesrange.com.ph",
-            "address" => [
-                "address1" => "#12 Test Address",
-                "city" => "Mandaluyong City",
-                "state" => "Metro Manila",
-                "country" => "PH",
-                "postcode" => "1500"
-            ]
-        ],
-        "to" => [
-            "name" => "Adrian Nebasa",
-            "phone_number" => "+639452073341",
-            "email" => "adrian@example.com",
-            "address" => [
-                "address1" => "Sunshine City Plaza 100",
-                "city" => "Mandaluyong City",
-                "state" => "Metro Manila",
-                "country" => "PH",
-                "postcode" => "1500"
-            ]
-        ],
-        "parcel_job" => [
-            "pickup_date" => "2025-06-18",
-            "pickup_timeslot" => [
-                "start_time" => "09:00",
-                "end_time" => "12:00",
-                "timezone" => "Asia/Manila"
-            ],
-            "delivery_start_date" => "2025-06-19",
-            "delivery_timeslot" => [
-                "start_time" => "15:00",
-                "end_time" => "18:00",
-                "timezone" => "Asia/Manila"
-            ],
-            "dimensions" => [
-                "weight" => 1
-            ],
-            "items" => [
-                [
-                    "item_description" => "Smartphone 11",
-                    "quantity" => 1,
-                    "is_dangerous_good" => false
-                ]
-            ]
-        ]
-    ];
-       try {
-    // Load config values
-    $ninjavanConfig = config('app.ninjavan');
+//     $payload = [
+//         "reference" => [
+//             "merchant_order_number" => "TESTORDER-" . now()->timestamp
+//         ],
+//         "marketplace" => [
+//         "seller_id" => "Kapiton-Marketplace",
+//         "seller_company_name"=> "John Doe Shop"
+//     ],
+//         "service_type" => "Marketplace",
+//         "service_level" => "Standard", // ✅ Should be a string
+//         "requested_tracking_number" => "TEST1234",
+//         "from" => [
+//             "name" => "Cellphone Range IU",
+//             "phone_number" => "09653265656",
+//             "email" => "support@cellphonesrange.com.ph",
+//             "address" => [
+//                 "address1" => "#12 Test Address",
+//                 "city" => "Mandaluyong City",
+//                 "state" => "Metro Manila",
+//                 "country" => "PH",
+//                 "postcode" => "1500"
+//             ]
+//         ],
+//         "to" => [
+//             "name" => "Adrian Nebasa",
+//             "phone_number" => "+639452073341",
+//             "email" => "adrian@example.com",
+//             "address" => [
+//                 "address1" => "Sunshine City Plaza 100",
+//                 "city" => "Mandaluyong City",
+//                 "state" => "Metro Manila",
+//                 "country" => "PH",
+//                 "postcode" => "1500"
+//             ]
+//         ],
+//         "parcel_job" => [
+//             "pickup_date" => "2025-06-18",
+//             "pickup_timeslot" => [
+//                 "start_time" => "09:00",
+//                 "end_time" => "12:00",
+//                 "timezone" => "Asia/Manila"
+//             ],
+//             "delivery_start_date" => "2025-06-19",
+//             "delivery_timeslot" => [
+//                 "start_time" => "15:00",
+//                 "end_time" => "18:00",
+//                 "timezone" => "Asia/Manila"
+//             ],
+//             "dimensions" => [
+//                 "weight" => 1
+//             ],
+//             "items" => [
+//                 [
+//                     "item_description" => "Smartphone 11",
+//                     "quantity" => 1,
+//                     "is_dangerous_good" => false
+//                 ]
+//             ]
+//         ]
+//     ];
+//        try {
+//     // Load config values
+//     $ninjavanConfig = config('app.ninjavan');
 
-    $accessToken = $ninjavanConfig['access_token'];
-    $baseUrl = rtrim($ninjavanConfig['api_url'], '/'); // Ensure no trailing slash
-    $orderUrl = $baseUrl . '/4.2/orders';
+//     $accessToken = $ninjavanConfig['access_token'];
+//     $baseUrl = rtrim($ninjavanConfig['api_url'], '/'); // Ensure no trailing slash
+//     $orderUrl = $baseUrl . '/4.2/orders';
 
-    // Send the request to NinjaVan
-    $response = Http::withToken($accessToken)
-        ->timeout(15)
-        ->post($orderUrl, $payload);
+//     // Send the request to NinjaVan
+//     $response = Http::withToken($accessToken)
+//         ->timeout(15)
+//         ->post($orderUrl, $payload);
 
-    // Check response
-    if ($response->successful()) {
-        $responseData = $response->json();
-        Log::info("NinjaVan Test Order Created", $responseData);
-        return $responseData;
-    } else {
-        Log::warning("NinjaVan responded with error", ['status' => $response->status(), 'body' => $response->body()]);
-        return ['error' => $response->body()];
-    }
+//     // Check response
+//     if ($response->successful()) {
+//         $responseData = $response->json();
+//         Log::info("NinjaVan Test Order Created", $responseData);
+//         return $responseData;
+//     } else {
+//         Log::warning("NinjaVan responded with error", ['status' => $response->status(), 'body' => $response->body()]);
+//         return ['error' => $response->body()];
+//     }
 
-} catch (\Exception $e) {
-    Log::error("NinjaVan Order Creation Failed", ['error' => $e->getMessage()]);
-    return ['error' => $e->getMessage()];
-}
-}
+// } catch (\Exception $e) {
+//     Log::error("NinjaVan Order Creation Failed", ['error' => $e->getMessage()]);
+//     return ['error' => $e->getMessage()];
+// }
+// }
 
 public function getAccessToken()
     {

@@ -288,40 +288,62 @@ class Order extends Model
     //NinjaVan Integration
     public static function pushOrder_to_Ninjavan($ninjavanData, $order_id)
 {
-    $body = json_encode([
-        'service_type' => $ninjavanData['service_type'],
-        'reference_id' => $order_id,
-        'pickup' => [
-            'contact_name' => $ninjavanData['pickup_address']['name'],
-            'contact_phone' => formatPhoneNumber($ninjavanData['pickup_address']['phone']),
-            'email' => $ninjavanData['pickup_address']['email'],
-            'address' => $ninjavanData['pickup_address']['address'],
-            'coordinates' => $ninjavanData['pickup_address']['coordinates'],
-            'instructions' => $ninjavanData['pickup_address']['instructions'] ?? '',
-            'scheduled_at' => $ninjavanData['pickup_date'] . 'T' . $ninjavanData['pickup_time'] . ':00+08:00'
+    $payload = [
+        "reference" => [
+            "merchant_order_number" => "ORDER-" . now()->timestamp . "-{$order_id}"
         ],
-        'delivery' => [
-            'contact_name' => $ninjavanData['delivery_address']['name'],
-            'contact_phone' => formatPhoneNumber($ninjavanData['delivery_address']['phone']),
-            'email' => $ninjavanData['delivery_address']['email'],
-            'address' => $ninjavanData['delivery_address']['address'],
-            'coordinates' => $ninjavanData['delivery_address']['coordinates'],
-            'instructions' => $ninjavanData['delivery_address']['instructions'] ?? ''
+        "marketplace" => [
+            "seller_id" => $ninjavanData->seller_id,
+            "seller_company_name" => $ninjavanData->seller_company_name
         ],
-        'parcel' => [
-            'weight' => $ninjavanData['parcel']['weight'], // in grams
-            'dimensions' => $ninjavanData['parcel']['dimensions']
+        "service_type" => "Marketplace",
+        "service_level" => $ninjavanData->service_level ?? "Standard",
+        "requested_tracking_number" => $ninjavanData->tracking_number ?? null,
+        "from" => [
+            "name" => $ninjavanData->sender->name,
+            "phone_number" => $ninjavanData->sender->mobile,
+            "email" => $ninjavanData->sender->email,
+            "address" => [
+                "address1" => $ninjavanData->sender->address1,
+                "city" => $ninjavanData->sender->city,
+                "state" => $ninjavanData->sender->state,
+                "country" => "SG",
+                "postcode" => $ninjavanData->sender->postcode
+            ]
         ],
-        'metadata' => [
-            'order_id' => $order_id,
-            'platform' => 'Kapiton Store'
+        "to" => [
+            "name" => $ninjavanData->recipient->name,
+            "phone_number" => $ninjavanData->recipient->mobile,
+            "email" => $ninjavanData->recipient->email,
+            "address" => [
+                "address1" => $ninjavanData->recipient->address1,
+                "city" => $ninjavanData->recipient->city,
+                "state" => $ninjavanData->recipient->state,
+                "country" => "SG",
+                "postcode" => $ninjavanData->recipient->postcode
+            ]
+        ],
+        "parcel_job" => [
+            "pickup_date" => $ninjavanData->pickup_date,
+            "pickup_timeslot" => [
+                "start_time" => $ninjavanData->pickup_timeslot->start_time,
+                "end_time" => $ninjavanData->pickup_timeslot->end_time,
+                "timezone" => "Asia/Manila"
+            ],
+            "delivery_start_date" => $ninjavanData->delivery_start_date,
+            "delivery_timeslot" => [
+                "start_time" => $ninjavanData->delivery_timeslot->start_time,
+                "end_time" => $ninjavanData->delivery_timeslot->end_time,
+                "timezone" => "Asia/Manila"
+            ],
+            "dimensions" => [
+                "weight" => $ninjavanData->parcel_weight ?? 1
+            ],
+            "items" => $ninjavanData->items // expects array of items
         ]
-    ]);
+    ];
 
-    \Log::info("Push Order to NinjaVan: " . $body);
-
-    $client_id = config('app.ninjavan.client_id');
-    $client_secret = config('app.ninjavan.client_secret');
+    \Log::info("Pushing order to NinjaVan:", $payload);
     $access_token = self::getAccessToken(); // assume you have a token retrieval or caching system
 
     $curl = curl_init();
@@ -330,7 +352,7 @@ class Order extends Model
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 10,
         CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => $body,
+        CURLOPT_POSTFIELDS => $payload,
         CURLOPT_HTTPHEADER => [
             'Content-Type: application/json',
             "Authorization: Bearer {$access_token}"

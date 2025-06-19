@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\LalamoveAPIBodyHelper;
+use App\Helpers\NinjaVanHelper;
+
 
 class OrderController extends Controller
 {
@@ -336,6 +338,31 @@ class OrderController extends Controller
             }
         }
     }
+
+    private function productForNinjaVanDelivery($data) {
+    $orderDetails = \App\Models\OrdersProduct::find($data['order_item_id']);
+
+    $this->ninjaVan_Helper = new NinjaVanHelper;
+
+    // Step 1: Get quotation (optional, if NinjaVan requires it first)
+    $quotationData = $this->ninjaVan_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
+
+    if (isset($quotationData['errors'])) {
+        return redirect()->back()->withErrors($quotationData['errors']);
+    }
+
+    // Step 2: Push the order to NinjaVan
+    $pushResult = \App\Models\Order::pushOrder_to_NinjaVan($quotationData, $orderDetails->order_id);
+
+    if (isset($pushResult['errors'])) {
+        Session::put('error_message', collect($pushResult['errors'])->pluck('message')->toArray());
+        return redirect()->back();
+    } else {
+        $orderDetails->courier_name = $pushResult['data']['tracking_url'] ?? 'NinjaVan';
+        $orderDetails->tracking_number = $pushResult['data']['tracking_number'] ?? 'N/A';
+        $orderDetails->save();
+    }
+}
 
     private function paymongoRefundOrder($orderId) {
         $order = \App\Models\Order::find($orderId)->first();

@@ -1056,7 +1056,7 @@ class APIController extends Controller
     public function ninjaVanWebhook(Request $request)
     {
         $data = $request->all();
-        \Log::info('Webhook received from NinjaVan', ['payload' => $data]);
+        \Log::info('Webhook received from NinjaVan' . json_encode($data));
 
         if ($data['eventType'] == 'ORDER_STATUS_CHANGED' && isset($data['data']['order'])) {
             $ninjaVanOrder = $data['data']['order'];
@@ -1068,40 +1068,30 @@ class APIController extends Controller
                 return response()->json(['message' => 'Missing tracking number'], 422);
             }
 
-            // Fetch orders matching the tracking number
             $orderProducts = \App\Models\OrdersProduct::where('tracking_number', $trackingNumber)->get();
 
             if ($orderProducts->isEmpty()) {
-                \Log::warning('No order found for tracking number: ' . $trackingNumber);
+                \Log::warning("No order found for tracking number: $trackingNumber");
                 return response()->json(['message' => 'Order not found'], 404);
             }
-
-            // Status mapping from NinjaVan to internal values
-            $statusMap = [
-                'Pending Pickup' => 'PENDING_PICKUP',
-                'Picked Up, In Transit To Origin Hub' => 'IN_TRANSIT',
-                'On Vehicle for Delivery' => 'OUT_FOR_DELIVERY',
-                'Delivered, Received by Customer' => 'DELIVERED',
-                'Cancelled' => 'CANCELLED',
-                'Returned to Sender' => 'RETURNED',
-                'Delivery Exception, Parcel Lost' => 'LOST',
-                'Delivery Exception, Parcel Damaged' => 'DAMAGED',
-                'Delivery Exception, Return to Sender Initiated' => 'RTS_INITIATED',
-            ];
-
-            $internalStatus = $statusMap[$statusMessage] ?? 'IN_TRANSIT'; // fallback
+            
+            $internalStatus = $this->ninjaVanDeliveryStatus($statusMessage);
 
             foreach ($orderProducts as $order) {
-                // Update item_status
                 $order->item_status = $internalStatus;
                 $order->save();
 
-                // Log status update
+                // 📝 Better logging
+                \Log::info("Order #{$order->id} (Tracking: $trackingNumber) updated to status: $internalStatus");
+
                 \App\Models\OrdersLog::create([
                     'order_id' => $order->order_id,
                     'order_item_id' => $order->id,
                     'order_status' => 'NINJAVAN - ' . $statusMessage
                 ]);
+
+                // (Optional) 🔔 Notify user if needed
+                // $this->notifyUserOfStatusChange($order, $internalStatus);
             }
 
             return response()->json(['message' => 'Webhook processed.'], 200);
@@ -1111,22 +1101,21 @@ class APIController extends Controller
         return response()->json(['message' => 'Invalid format or missing data.'], 400);
     }
 
-    
-    public function testNinjaVanWebhook()
+    protected function ninjaVanDeliveryStatus($statusMessage)
     {
-        // Use the correct URL and port where your Laravel app is running
-        $response = Http::post('http://host.docker.internal:9000/api/webhook/ninjavan', [
-            'event_type' => 'tracking.status',
-            'payload' => [
-                'tracking_number' => 'NV123456789',
-                'status' => 'in_transit'
-            ]
-        ]);
+        $statusMap = [
+            'pending pickup' => 'PENDING_PICKUP',
+            'picked up, in transit to origin hub' => 'IN_TRANSIT',
+            'on vehicle for delivery' => 'OUT_FOR_DELIVERY',
+            'delivered, received by customer' => 'DELIVERED',
+            'delivered, collected by customer' => 'DELIVERED',
+            'delivered, left at doorstep' => 'DELIVERED',
+            'cancelled' => 'CANCELLED',
+        ];
 
-        return response()->json([
-            'message' => 'Test webhook sent to /webhook/ninjavan',
-            'response_from_webhook' => json_decode($response->body(), true)
-        ]);
+        $normalized = strtolower(trim($statusMessage));
+
+        return $statusMap[$normalized] ?? 'IN_TRANSIT';
     }
 
     public function receiveNinjaVanWebhook(Request $request)
