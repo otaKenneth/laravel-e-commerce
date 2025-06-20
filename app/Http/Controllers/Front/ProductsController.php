@@ -20,6 +20,7 @@ use App\Models\Brand;
 use App\Models\Wishlist;
 use App\Helpers\LalamoveAPIBodyHelper;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 
 use function Clue\StreamFilter\append;
@@ -29,7 +30,7 @@ class ProductsController extends Controller
     private $lalamoveAPI_Helper;
     // match() method is used for the HTTP 'GET' requests to render listing.blade.php page and the HTTP 'POST' method for the AJAX request of the Sorting Filter or the HTML Form submission and jQuery for the Sorting Filter WITHOUT AJAX, AND ALSO for submitting the Search Form in listing.blade.php    // e.g.    /men    or    /computers
     public function listing(Request $request)
-    { // using the Dynamic Routes with the foreach loop
+    {
         $currentPage = $request->get('page', 1);
         Paginator::currentPageResolver(function () use ($currentPage) {
             return $currentPage;
@@ -41,56 +42,95 @@ class ProductsController extends Controller
         $shopBanner = '';
 
         try {
+            $collection = Product::query();
+
             switch ($type) {
                 case 'collection':
                     $result = $this->getCollectionBySection($name, $request->all());
+                    if (isset($result['collection'])) {
+                        $collection = $result['collection'];
+                        unset($result['collection']);
+                    }
+                    if (is_array($result)) {
+                        extract($result);
+                    }
                     break;
                 case 'category':
                     $result = $this->getCollectionByCategory($name, $request->all());
+                    if (isset($result['collection'])) {
+                        $collection = $result['collection'];
+                        unset($result['collection']);
+                    }
+                    if (is_array($result)) {
+                        extract($result);
+                    }
                     break;
                 case 'vendor':
                     $vendor = Vendor::find($name);
+                    if (!$vendor) {
+                        abort(404);
+                    }
                     $shopBanner = $vendor->vendorbusinessdetails->shop_banner;
                     $pageTitle = "{$vendor->vendorbusinessdetails->shop_name}";
                     $result = $this->vendorListing($vendor, $request->all());
+                    if (isset($result['collection'])) {
+                        $collection = $result['collection'];
+                        unset($result['collection']);
+                    }
+                    if (is_array($result)) {
+                        extract($result);
+                    }
                     break;
                 case 'search':
-                    $result = $this->filter($request->all());
+                    $filters = ProductsFilter::productFilters();
+                    $categoryDetails = ['catIds' => []];
+                    $meta_title = 'Search Results';
+                    $meta_description = 'Products matching your search criteria.';
+                    $meta_keywords = 'search, products';
                     break;
-
                 default:
-                    # code...
+                    $collection = Product::with('brand', 'vendor')->where('status', 1)->inRandomOrder();
+                    $filters = ProductsFilter::productFilters();
+                    $categoryDetails = ['catIds' => []];
+                    $meta_title = 'All Products';
+                    $meta_description = 'Browse all our products.';
+                    $meta_keywords = 'products, shop';
                     break;
             }
 
-            // collection, filters, categoryDetails, meta_title, meta_description, meta_keywords
-            if (is_array($result)) {
-                extract($result);
-            } else {
-                return redirect('/products/collection/all');
-            }
+            // Apply filters universally AFTER the base collection is set for any type
+            $collection = $this->processFilters($collection, $request->all());
 
             $totalCount = $collection->count();
 
-            // here remove pagination
-            $collection = $collection->inRandomOrder()->paginate(12); //Randomize all the product display
-            // dd($filters);
+            $collection = $collection->paginate(12)->appends($request->query());
 
+            //dd($collection);
+            // Check if it's an AJAX request
             if ($request->ajax()) {
+                $html = view('front.partials.product-cards')
+                    ->with(compact('collection'))
+                    ->render(); // Render the HTML
+
                 return response()->json([
-                    'html' => view('front.partials.product-cards', compact('collection',))->render(),
-                    'nextPage' => $currentPage + 1
+                    'html' => $html,
+                    'nextPage' => $collection->currentPage() < $collection->lastPage() ? $collection->currentPage() + 1 : null,
+                    'totalCount' => $totalCount,
+                    'lastPage' => $collection->lastPage(),
                 ]);
             }
 
-            // final return
+            // For initial page load (not AJAX), return the full view
             return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner', 'totalCount'));
         } catch (\Exception $e) {
-            Log::info("Product Listing: " . $e);
-
-            return redirect('/products/collection/all');
+            Log::info("Product Listing: " . $e->getMessage() . " on line " . $e->getLine() . " in " . $e->getFile()); // Log more details
+            if ($request->ajax()) {
+                return response()->json(['error' => 'An error occurred while loading products.'], 500);
+            }
+            return redirect('/products/collection/all')->with('error', 'Could not load products.');
         }
     }
+
 
     public function filter($data)
     {
@@ -1396,9 +1436,12 @@ class ProductsController extends Controller
     private function getCollectionBySection($section, $data)
     {
         $sectionModel = new \App\Models\Section;
+        $collection = Product::query(); // Initialize as a query builder
+
         if ($section !== "all") {
             $sectionCategories = $sectionModel->whereRaw('LOWER(name) = ?', [strtolower($section)])->where('status', 1);
 
+            // Assuming getProductsBySectionName also returns a query builder
             $collection = Product::getProductsBySectionName($section);
         } else {
             $sectionCategories = $sectionModel->where('status', 1);
@@ -1419,23 +1462,39 @@ class ProductsController extends Controller
                 'categoryDetails' => $catDetails
             ];
         } else {
-            return false;
+            // If no categories found for the section, return an empty collection or handle it
+            return [
+                "collection" => Product::whereRaw('1=0'), // Return an empty query builder
+                "filters" => [],
+                "categoryDetails" => ['catIds' => []],
+                "meta_title" => "No Products Found",
+                "meta_description" => "No products found for this section.",
+                "meta_keywords" => "no products",
+            ];
         }
 
-        $meta_title       = "Kapiton $section Collection";
+        // IMPORTANT: Remove or rethink these meta_descriptions and meta_keywords calculations
+        // if $collection is a query builder here, calling ->get() will execute it prematurely.
+        // These should ideally be based on static values, or retrieved from the section/category itself.
+        // If you MUST derive them from products, consider getting them from the *final* paginated collection
+        // in the `listing` method, or from a *subset* of the collection.
 
-        $meta_descriptions = $collection->get()->pluck('meta_description');
-        $meta_description = implode($meta_descriptions->toArray());
+        $meta_title         = "Kapiton " . ucfirst($section) . " Collection";
+        $meta_description   = "Browse the best products in the " . ucfirst($section) . " collection.";
+        $meta_keywords      = "Kapiton, " . $section . ", products, shop";
 
-        $meta_keywordss = $collection->get()->pluck('meta_keywords');
-        $meta_keywords    = implode($meta_keywordss->toArray());
-
+        // You can call getAvailableFilters here, passing the current query builder
+        // Ensure getAvailableFilters does NOT call ->get() or ->count() on the main $collection
+        // if it needs to apply further filters. It should work on the query builder.
         $filters = $this->getAvailableFilters($catDetails, $collection);
 
-        $collection = $this->processFilters($collection, $data);
+
+        // DO NOT process filters here if the main listing method will do it.
+        // $collection = $this->processFilters($collection, $data); // <--- REMOVE THIS LINE IF listing() method handles it.
+        // The listing method should be the one to apply filters after getting the base query from these helper methods.
 
         return [
-            "collection" => $collection,
+            "collection" => $collection, // This should be a Query Builder
             "filters" => $filters,
             "categoryDetails" => $categoryDetails,
             "meta_title" => $meta_title,
@@ -1446,17 +1505,13 @@ class ProductsController extends Controller
 
     private function getCollectionByCategory($category, $data)
     {
-        // $_GET['sort'] = $data['sort'];
-        // dd($url);
         $categoryCount = Category::where([
             'url'    => $category,
             'status' => 1
         ])->count();
-        // dd($categoryCount);
 
-        if ($categoryCount > 0) { // if the category entered as a URL in the browser address bar exists
-            // Get the entered URL in the browser address bar category details
-            $categoryDetails = Category::categoryDetails($category); // get the categories of the opened $url (get categories depending on the $url)
+        if ($categoryCount > 0) {
+            $categoryDetails = Category::categoryDetails($category);
 
             $collection = Product::with('brand')
                 ->whereIn('category_id', $categoryDetails['catIds'])
@@ -1464,10 +1519,9 @@ class ProductsController extends Controller
                 ->whereHas('vendor', function ($query) {
                     $query->where('status', 1);
                 });
-            // moving the paginate() method after checking for the sorting filter <form>    // Paginating Eloquent Results: https://laravel.com/docs/9.x/pagination#paginating-eloquent-results    // Displaying Pagination Results Using Bootstrap: https://laravel.com/docs/9.x/pagination#using-bootstrap        // https://laravel.com/docs/9.x/queries#additional-where-clauses    // using the brand() relationship method in Product.php
 
-            // Sorting Filter WITHOUT AJAX (using HTML <form> and jQuery) in front/products/listing.blade.php
-            if (isset($_GET['sort']) && !empty($_GET['sort'])) { // if the URL query string parameters contain '&sort=someValue'    // 'sort' is the 'name' HTML attribute of the <select> box
+            // Sorting Filter WITHOUT AJAX - KEEP THIS PART
+            if (isset($_GET['sort']) && !empty($_GET['sort'])) {
                 if ($_GET['sort'] == 'product_latest') {
                     $collection->orderBy('products.id', 'Desc');
                 } elseif ($_GET['sort'] == 'price_lowest') {
@@ -1482,15 +1536,17 @@ class ProductsController extends Controller
             }
 
             $filters = $this->getAvailableFilters($categoryDetails['categoryDetails'], $collection);
-            $collection = $this->processFilters($collection, $data);
+            // DO NOT process filters here if the main listing method will do it.
+            // $collection = $this->processFilters($collection, $data); // <--- REMOVE THIS LINE IF listing() method handles it.
 
-            // Dynamic SEO (HTML meta tags): Check the HTML <meta> tags and <title> tag in front/layout/layout.blade.php
-            $meta_title       = $categoryDetails['categoryDetails']['meta_title'];
-            $meta_description = $categoryDetails['categoryDetails']['meta_description'];
-            $meta_keywords    = $categoryDetails['categoryDetails']['meta_keywords'];
+
+            // Dynamic SEO (HTML meta tags): Similar to above, make them static or derive differently
+            $meta_title       = $categoryDetails['categoryDetails']['meta_title'] ?? "Kapiton " . ucfirst($category) . " Products";
+            $meta_description = $categoryDetails['categoryDetails']['meta_description'] ?? "Browse products in the " . ucfirst($category) . " category.";
+            $meta_keywords    = $categoryDetails['categoryDetails']['meta_keywords'] ?? "Kapiton, " . $category . ", shop";
 
             return [
-                "collection" => $collection,
+                "collection" => $collection, // This should be a Query Builder
                 "filters" => $filters,
                 "categoryDetails" => $categoryDetails,
                 "meta_title" => $meta_title,
@@ -1498,7 +1554,7 @@ class ProductsController extends Controller
                 "meta_keywords" => $meta_keywords,
             ];
         } else {
-            abort(404); // we will create the 404 page later on    // https://laravel.com/docs/9.x/helpers#method-abort
+            abort(404);
         }
     }
 
@@ -1512,11 +1568,15 @@ class ProductsController extends Controller
     {
         $filters = [];
 
-        // Fetch all parent categories with subcategories
-        $allParentCategories = \App\Models\Category::with('subCategories')
-            ->where('parent_id', 0)
-            ->where('status', 1)
-            ->get();
+        // Normalize category data
+        if (isset($categoryDetails['categories'])) {
+            $filters['categories'] = $categoryDetails['categories'];
+        } elseif (isset($categoryDetails['category_name'])) {
+            $filters['categories'] = [$categoryDetails];
+        } else {
+            $temp = collect($categoryDetails)->pluck('categories')->toArray();
+            $filters['categories'] = array_merge(...$temp);
+        }
 
         // Determine active category URL
         $activeCategoryUrl = null;
@@ -1528,6 +1588,12 @@ class ProductsController extends Controller
             $flat = collect($categoryDetails)->flatten(1);
             $activeCategoryUrl = $flat->first()['url'] ?? null;
         }
+
+        // Fetch all parent categories with subcategories
+        $allParentCategories = \App\Models\Category::with('subCategories')
+            ->where('parent_id', 0)
+            ->where('status', 1)
+            ->get();
 
         // Build full category tree with active status
         $filters['categories'] = $allParentCategories->map(function ($cat) use ($activeCategoryUrl) {
@@ -1544,22 +1610,32 @@ class ProductsController extends Controller
             ];
         })->toArray();
 
-        // Load product data
+        // Load full product data with required relations
         $selection = $products->select('*')->with([
             'brand',
             'attributes' => function ($query) {
                 $query->select('product_id', 'size');
             },
             'vendor'
-        ])->get()->toArray();
+        ])->get();
 
-        // Add sizes and colors
-        $filters['sizes'] = collect($selection)->pluck('attributes.*.size')->flatten()->filter()->unique()->values()->toArray();
-        $filters['color'] = collect($selection)->pluck('product_color')->filter()->unique()->values()->toArray();
+        // Extract unique sizes
+        $filters['sizes'] = $selection->pluck('attributes.*.size')
+            ->flatten()
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+
+        // Extract unique colors
+        $filters['color'] = $selection->pluck('product_color')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
 
         return $filters;
     }
-
 
     private function old_processFilters($categoryProducts, $data)
     {
@@ -1609,9 +1685,6 @@ class ProductsController extends Controller
             $categoryProducts->whereIn('products.id', $productIds);
         }
 
-
-
-
         // Size, price, color, brand, … are also Dynamic Filters, but won't be managed like the other Dynamic Filters, but we will manage every filter of them from the suitable respective database table, like the 'size' Filter from the `products_attributes` database table, 'color' Filter and `price` Filter from `products` table, 'brand' Filter from `brands` table
         // Fourth: the 'brand' filter (from `products` and `brands` database table)
         if (isset($data['brand']) && !empty($data['brand'])) { // coming from the AJAX call in front/js/custom.js    // example:    $data['brand'] = 'Large'
@@ -1621,60 +1694,70 @@ class ProductsController extends Controller
         }
     }
 
-    private function processFilters($collection, $data)
+    private function processFilters(Builder $collection, $data) // Type-hint $collection as Builder
     {
         if ($data !== null) {
-            if (isset($data['color'])) {
-                $collection->orWhereIn('product_color', $data['color']);
+
+            // Apply price filter first, as it's a fundamental range
+            if (isset($data['price_min']) && isset($data['price_max'])) {
+                $minPrice = (float) $data['price_min'];
+                $maxPrice = (float) $data['price_max'];
+                $collection->whereBetween('product_price', [$minPrice, $maxPrice]);
             }
 
-            if (isset($data['brands'])) {
+            // Apply color filter
+            if (isset($data['color']) && !empty($data['color'])) {
+                $collection->whereIn('product_color', $data['color']);
+            }
+
+            // Apply brands filter
+            if (isset($data['brands']) && !empty($data['brands'])) {
                 $brandModel = new Brand;
                 $brandIds = $brandModel->select('id')->whereIn('name', $data['brands'])->get()->pluck('id')->toArray();
-                $collection->orWhereIn('brand_id', $brandIds);
+                $collection->whereIn('brand_id', $brandIds);
             }
 
-            if (isset($data['sizes'])) {
-                $prodAttributeModel = new ProductsAttribute;
-                $attributeIds = $prodAttributeModel->whereIn('size', $data['sizes'])->get()->pluck('product_id')->toArray();
-                $collection->orWhereIn('id', $attributeIds);
+            // Apply sizes filter
+            if (isset($data['sizes']) && !empty($data['sizes'])) {
+                $collection->whereHas('attributes', function (Builder $query) use ($data) {
+                    $query->whereIn('size', $data['sizes']);
+                });
             }
 
-            // features
-            $productFilters = ProductsFilter::productFilters(); // Get all the (enabled/active) Filters    // (Another way to go is using an AJAX call to get the $productFilters!)
+            // Features (dynamic filters)
+            $productFilters = ProductsFilter::productFilters();
             foreach ($productFilters as $key => $filter) {
                 if (isset($filter['filter_column']) && isset($data[$filter['filter_column']]) && !empty($filter['filter_column']) && !empty($data[$filter['filter_column']])) {
                     $collection->whereJsonContains("features->" . $filter['filter_column'], $data[$filter['filter_column']]);
                 }
             }
 
+            // Sorting - This section will now properly sort the *filtered* results
             if (isset($data['sortby'])) {
-                // sorts
                 switch ($data['sortby']) {
                     case 'date-1':
-                        $collection->orderBy('created_at');
+                        $collection->orderBy('created_at', 'asc');
                         break;
                     case 'date-2':
-                        $collection->orderByDesc('created_at');
+                        $collection->orderBy('created_at', 'desc');
                         break;
                     case 'price-1':
-                        $collection->orderBy('product_price');
+                        $collection->orderBy('product_price', 'asc');
                         break;
                     case 'price-2':
-                        $collection->orderByDesc('product_price');
+                        $collection->orderBy('product_price', 'desc');
                         break;
                     case 'alphabetically-A':
-                        $collection->orderBy('product_name');
+                        $collection->orderBy('product_name', 'asc');
                         break;
                     case 'alphabetically-Z':
-                        $collection->orderByDesc('product_name');
+                        $collection->orderBy('product_name', 'desc');
                         break;
                     case 'rating':
-                        $collection->orderBy('ratings');
+                        $collection->orderBy('ratings', 'desc');
                         break;
-
                     default:
-                        # code...
+                        // No specific sort, or default order
                         break;
                 }
             }
