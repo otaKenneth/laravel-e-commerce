@@ -1100,6 +1100,28 @@ class APIController extends Controller
         \Log::warning('Invalid NinjaVan Webhook format.');
         return response()->json(['message' => 'Invalid format or missing data.'], 400);
     }
+    public function handleNinjavan(Request $request)
+    {
+        $rawJson = file_get_contents('php://input');
+        $cleanJson = rtrim($rawJson);
+        \Log::debug('Raw JSON from php://input', ['data' => $cleanJson]);
+        $hmacHeader = $request->header('X-Ninjavan-Hmac-Sha256');
+        $clientSecret = config('app.ninjavan.client_key');
+
+        $calculatedHmac = base64_encode(hash_hmac('sha256', $cleanJson, $clientSecret, true));
+
+        if (!hash_equals($hmacHeader, $calculatedHmac)) {
+            \Log::warning('Ninja Van webhook signature invalid.', [
+                'received' => $hmacHeader,
+                'expected' => $calculatedHmac,
+            ]);
+            return response('Invalid signature', 403);
+        }
+
+        \Log::info('Webhook verified.', ['payload' => json_decode($cleanJson, true)]);
+        return response('OK', 200);
+    }
+
 
     protected function ninjaVanDeliveryStatus($statusMessage)
     {

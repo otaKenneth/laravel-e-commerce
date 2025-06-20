@@ -176,29 +176,49 @@ class NinjaVanHelper
 
         // Prepare sender and recipient addresses
         $sender_address = [
-            'name' => $vendor->vendorbusinessdetails->shop_name,
-            'address' => $vendor->vendorbusinessdetails->shop_address,
+            'address1' => $vendor->vendorbusinessdetails->shop_address,
+            'address2' => '',
             'city' => $vendor->vendorbusinessdetails->shop_city,
-            'province' => $vendor->vendorbusinessdetails->shop_state,
+            'area' => $vendor->vendorbusinessdetails->shop_state,
+            'state' => $vendor->vendorbusinessdetails->shop_state,
             'country' => $vendor->vendorbusinessdetails->country,
-            'postalCode' => $vendor->vendorbusinessdetails->shop_pincode,
-            'lat' => (string) $vendor->vendorbusinessdetails['lat'],
-            'lng' => (string) $vendor->vendorbusinessdetails['long'],
+            'postCode' => $vendor->vendorbusinessdetails->shop_pincode,
         ];
 
         $recipient_address = [
-            'name' => $order->name ?? '',
-            'address' => $order->address,
-            'city' => $order->city,
-            'province' => $order->state,
-            'country' => $order->country,
-            'postalCode' => $order->pincode,
-            'lat' => (string) $order->lat,
-            'lng' => (string) $order->lng,
+            'address1' => $user_model->find($order->user_id)->address,
+            'address2' => '',
+            'city' => $user_model->find($order->user_id)->city,
+            'area' =>$user_model->find($order->user_id)->state,
+            'state' =>$user_model->find($order->user_id)->state,
+            'country' => $user_model->find($order->user_id)->country,
+            'postCode' => $user_model->find($order->user_id)->pincode,
         ];
 
         $parcel_job = [
-
+            "is_pickup_required"=> true,
+            "pickup_service_type"=>"Scheduled",
+            "pickup_service_level"=>"Standard",
+            "pickup_date"=> now()->timestamp,
+            "pickup_timeslot"=> [
+                "start_time"=>"09:00",
+                "end_time"=> "12:00",
+                "timezone"=> "Asia/Manila"
+            ],
+            "pickup_instructions"=> "Pickup with care!",
+            "delivery_instructions"=> "If recipient is not around, leave parcel in power riser.",
+            "delivery_start_date"=> now()->addDays(3)->timestamp,
+            "delivery_timeslot"=> [
+                "start_time"=>"09:00",
+                "end_time"=> "12:00",
+                "timezone"=> "Asia/Manila"
+            ],
+            "dimensions"=>['weight'=> (float) $order->total_weight],
+            "items"=> [ 
+                    "item_description" => "Order #" . $orderDetails->orderId . " - " . $order->order_items()->pluck('product_name')->implode(', '),
+                    "quantity" => $orderDetails->total_qty,
+                    "is_dangerous_good" => false,
+            ],
         ];
         // Calculate shipping charge using NinjaVanHelper
         $shipping_charge = self::calculateShippingCharge(
@@ -216,8 +236,18 @@ class NinjaVanHelper
             'service_level' => $orderDetails->service_level ?? 'Standard',
             'requestedTrackingNumber' => 'TEST-' . now()->timestamp,
             'reference'=> ['merchant_order_number' => $orderDetails->orderId],
-            'from' => $sender_address,
-            'to' => $recipient_address,
+            'from' => [
+                'name' => $vendor->vendorbusinessdetails->shop_name,
+                'phone_number' => $vendor->vendorbusinessdetails->shop_mobile,
+                'email' => $vendor->vendorbusinessdetails->shop_email,
+                'address'=>$sender_address,
+            ], 
+            'to' => [
+                'name' => $user_model->find($order->user_id)->name,
+                'phone_number' => $user_model->find($order->user_id)->mobile,
+                'email' => $user_model->find($order->user_id)->email,
+                'address'=>$recipient_address,
+            ],
             'parcel' => $parcel_job,
             'weight_kg' => (float) $order->total_weight,
             'zone' => self::getZoneFromProvince($order->state),
@@ -230,6 +260,48 @@ class NinjaVanHelper
         ];
     }
  
+    public function processNinjavanQuotation(array $body)
+{
+    $clientId = config('app.ninjavan.client_id');
+    $clientSecret = config('app.ninjavan.client_secret');
+    $apiUrl = config('app.ninjavan.api_url');
+
+    // Step 1: Get Bearer Token
+    $tokenResponse = $this->getAccessToken(); // Assume this returns access_token as string
+    if (!$tokenResponse || empty($tokenResponse->access_token)) {
+        \Log::error("Failed to get NinjaVan access token.");
+        return (object) ['errors' => ['message' => 'Access token error']];
+    }
+
+    $accessToken = $tokenResponse->access_token;
+
+    // Step 2: Make quotation request
+    $endpoint = '/orders/quotation'; // Use correct path based on API version
+    $url = rtrim($apiUrl, '/') . $endpoint;
+
+    $curl = curl_init();
+    curl_setopt_array($curl, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 10,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => json_encode($body),
+        CURLOPT_HTTPHEADER => [
+            'Authorization: Bearer ' . $accessToken,
+            'Content-Type: application/json',
+            'Accept: application/json',
+        ],
+    ]);
+
+    $response = curl_exec($curl);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+
+    \Log::info("NinjaVan Quotation Response ($httpCode): $response");
+
+    return json_decode($response);
+}
+
     
 //     public function createOrder(){
 //     $url = config('services.ninjavan.api_url') . "/4.2/orders";
@@ -326,34 +398,31 @@ class NinjaVanHelper
 
 public function getAccessToken()
     {
-        // Check if token is cached
-        if (Cache::has('ninjavan_access_token')) {
-            return Cache::get('ninjavan_access_token');
-        }
+    $clientId = config('app.ninjavan.client_id');
+    $clientSecret = config('app.ninjavan.client_key');
+    $url = config('app.ninjavan.api_url'). '/2.0/oauth/access_token'; // e.g. https://api-sandbox.ninjavan.co/2.0/oauth/token
 
-        // Set endpoint
-        $url = config('app.ninjavan.api_url') . '/2.0/oauth/access_token';
+    $body = [
+        'client_id' => $clientId,
+        'client_secret' => $clientSecret,
+        'grant_type' => 'client_credentials',
+    ];
 
-        // Send POST request
-        $response = Http::asForm()->post($url, [
-            'client_id' => config('app.ninjavan.client_id'),
-            'client_secret' => config('app.ninjavan.client_key'),
-            'grant_type' => 'client_credentials',
-        ]);
+    $curl = curl_init();
+    curl_setopt_array($curl, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => http_build_query($body),
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/x-www-form-urlencoded',
+        ],
+    ]);
 
-        // Error handling
-        if (!$response->successful()) {
-            throw new \Exception('Failed to retrieve token: ' . $response->body());
-        }
+    $response = curl_exec($curl);
+    curl_close($curl);
 
-        // Parse response
-        $data = $response->json();
-        $accessToken = $data['access_token'];
-        $expiresIn = $data['expires_in'];
-
-        // Cache token
-        Cache::put('ninjavan_access_token', $accessToken, now()->addSeconds($expiresIn - 60));
-
-        return $accessToken;
+    \Log::info("NinjaVan Token Response: " . $response);
+    return json_decode($response);
     }
 }

@@ -286,85 +286,65 @@ class Order extends Model
     }
 
     //NinjaVan Integration
-    public static function pushOrder_to_Ninjavan($ninjavanData, $order_id)
-{
-    $payload = [
-        "reference" => [
-            "merchant_order_number" => "ORDER-" . now()->timestamp . "-{$order_id}"
-        ],
-        "marketplace" => [
-            "seller_id" => $ninjavanData->seller_id,
-            "seller_company_name" => $ninjavanData->seller_company_name
-        ],
-        "service_type" => "Marketplace",
-        "service_level" => $ninjavanData->service_level ?? "Standard",
-        "requested_tracking_number" => $ninjavanData->tracking_number ?? null,
-        "from" => [
-            "name" => $ninjavanData->sender->name,
-            "phone_number" => $ninjavanData->sender->mobile,
-            "email" => $ninjavanData->sender->email,
-            "address" => [
-                "address1" => $ninjavanData->sender->address1,
-                "city" => $ninjavanData->sender->city,
-                "state" => $ninjavanData->sender->state,
-                "country" => "SG",
-                "postcode" => $ninjavanData->sender->postcode
-            ]
-        ],
-        "to" => [
-            "name" => $ninjavanData->recipient->name,
-            "phone_number" => $ninjavanData->recipient->mobile,
-            "email" => $ninjavanData->recipient->email,
-            "address" => [
-                "address1" => $ninjavanData->recipient->address1,
-                "city" => $ninjavanData->recipient->city,
-                "state" => $ninjavanData->recipient->state,
-                "country" => "SG",
-                "postcode" => $ninjavanData->recipient->postcode
-            ]
-        ],
-        "parcel_job" => [
-            "pickup_date" => $ninjavanData->pickup_date,
-            "pickup_timeslot" => [
-                "start_time" => $ninjavanData->pickup_timeslot->start_time,
-                "end_time" => $ninjavanData->pickup_timeslot->end_time,
-                "timezone" => "Asia/Manila"
+    public static function pushOrder_to_Ninjavan($orderDetails, $vendor_id)
+    {
+        $quotationData = app(\App\Helpers\NinjavanHelper::class)->getQuotation($orderDetails, $vendor_id);
+
+        // Handle errors
+        if (isset($quotationData->errors)) {
+            \Log::error('NinjaVan Quotation Error', ['error' => $quotationData->errors]);
+            return ['error' => $quotationData->errors];
+        }   
+
+        $quotation = $quotationData->quotation;
+
+        $payload = [
+            'marketplace' => $quotation['marketplace'],
+            'service_type' => $quotation['service_type'],
+            'service_level' => $quotation['service_level'],
+            'requested_tracking_number' => $quotation['requestedTrackingNumber'],
+            'reference' => [
+                'merchant_order_number' => $quotation['reference']['merchant_order_number']
             ],
-            "delivery_start_date" => $ninjavanData->delivery_start_date,
-            "delivery_timeslot" => [
-                "start_time" => $ninjavanData->delivery_timeslot->start_time,
-                "end_time" => $ninjavanData->delivery_timeslot->end_time,
-                "timezone" => "Asia/Manila"
+            'from' => $quotation['from'],
+            'to' => $quotation['to'],
+            'parcel_job' => [
+                'pickup_date' => \Carbon\Carbon::createFromTimestamp($quotation['parcel']['pickup_date'])->format('Y-m-d'),
+                'pickup_timeslot' => $quotation['parcel']['pickup_timeslot'],
+                'pickup_instructions' => $quotation['parcel']['pickup_instructions'],
+                'delivery_instructions' => $quotation['parcel']['delivery_instructions'],
+                'delivery_start_date' => \Carbon\Carbon::createFromTimestamp($quotation['parcel']['delivery_start_date'])->format('Y-m-d'),
+                'delivery_timeslot' => $quotation['parcel']['delivery_timeslot'],
+                'dimensions' => $quotation['parcel']['dimensions'],
+                'items' => [$quotation['parcel']['items']], // wrapped in array
             ],
-            "dimensions" => [
-                "weight" => $ninjavanData->parcel_weight ?? 1
+        ];
+
+        \Log::info('Final NinjaVan Payload', $payload);
+
+        $accessToken = self::getAccessToken();
+
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => config('app.ninjavan.api_url') . '/orders',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 15,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($payload),
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Accept: application/json',
+                "Authorization: Bearer {$accessToken}"
             ],
-            "items" => $ninjavanData->items // expects array of items
-        ]
-    ];
+        ]);
 
-    \Log::info("Pushing order to NinjaVan:", $payload);
-    $access_token = self::getAccessToken(); // assume you have a token retrieval or caching system
+        $response = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
 
-    $curl = curl_init();
-    curl_setopt_array($curl, [
-        CURLOPT_URL => config('app.ninjavan.api_url') . '/orders',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT => 10,
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => $payload,
-        CURLOPT_HTTPHEADER => [
-            'Content-Type: application/json',
-            "Authorization: Bearer {$access_token}"
-        ],
-    ]);
+        \Log::info("NinjaVan API Response ($httpCode)", ['response' => $response]);
 
-    $response = curl_exec($curl);
-    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    curl_close($curl);
+        return json_decode($response, true);
+    }
 
-    \Log::info("NinjaVan API Response ({$httpCode}): " . $response);
-
-    return json_decode($response, true);
-}
 }

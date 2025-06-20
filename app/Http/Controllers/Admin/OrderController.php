@@ -16,6 +16,7 @@ class OrderController extends Controller
     // Note: In the Admin Panel, in the Orders Management section, if the authenticated/logged-in user is 'vendor', we'll show the orders of the products added by/related to that 'vendor' ONLY, but if the authenticated/logged-in user is 'admin', we'll show ALL orders    
 
     private $lalamoveAPI_Helper;
+    private $ninjaVan_Helper;
 
     // Render admin/orders/orders.blade.php page (Orders Management section) in the Admin Panel    
     public function orders() {
@@ -342,17 +343,17 @@ class OrderController extends Controller
     private function productForNinjaVanDelivery($data) {
     $orderDetails = \App\Models\OrdersProduct::find($data['order_item_id']);
 
-    $this->ninjaVan_Helper = new NinjaVanHelper;
+    $this->ninjaVanAPI_Helper = new NinjaVanHelper;
 
     // Step 1: Get quotation (optional, if NinjaVan requires it first)
-    $quotationData = $this->ninjaVan_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
+    $all_ninjavan_data = $this->ninjaVan_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
 
     if (isset($quotationData['errors'])) {
-        return redirect()->back()->withErrors($quotationData['errors']);
+        return redirect()->back()->withErrors($all_ninjavan_data['errors']);
     }
 
     // Step 2: Push the order to NinjaVan
-    $pushResult = \App\Models\Order::pushOrder_to_NinjaVan($quotationData, $orderDetails->order_id);
+    $pushResult = \App\Models\Order::pushOrder_to_NinjaVan($all_ninjavan_data, $orderDetails->order_id);
 
     if (isset($pushResult['errors'])) {
         Session::put('error_message', collect($pushResult['errors'])->pluck('message')->toArray());
