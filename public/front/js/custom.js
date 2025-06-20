@@ -53,11 +53,16 @@ function addSubscriber() {
     });
 }
 
-// infinite scroll for merchants page
-let page = 2;  // since page 1 is loaded
-let loading = false;
-let observer;
+// infinite scroll for vendors page
+let vendorsPage = 1;
+let vendorsPageLoading = false;
 
+// infinite scroll for products page
+let productPage = 1;
+let productPageLoading = false;
+let productObserver;
+let lastPage = null;
+ 
 function initializeObserver() {
     let target = document.getElementById("load-more-merchants-trigger");
 
@@ -76,12 +81,12 @@ function initializeObserver() {
 }
 
 function loadMoreVendors() {
-    if (loading) return;
-    loading = true;
+    if (vendorsPageLoading) return;
+    vendorsPageLoading = true;
 
     document.getElementById("merchant-loading-indicator").style.display = "flex";
-    
-    fetch("?page=" + page, {
+
+    fetch("?page=" + vendorsPage, {
         headers: { "X-Requested-With": "XMLHttpRequest" }
     })
     .then(response => response.json())
@@ -95,8 +100,8 @@ function loadMoreVendors() {
             document.getElementById("vendor-list-1").insertAdjacentHTML("beforeend", newVendors);
 
             if (data.nextPage) {
-                page = data.nextPage;
-                
+                vendorsPage = data.nextPage;
+
             } else {
                 if (observer) observer.disconnect();
                 document.getElementById("no-more-merchants").style.display = "block";
@@ -106,74 +111,104 @@ function loadMoreVendors() {
     })
     .catch(error => console.error("Error loading vendors:", error))
     .finally(() => {
-        loading = false
+        vendorsPageLoading = false
         document.getElementById("merchant-loading-indicator").style.display = "none";
     });
 }
 
-
-// infinite scroll for products page
-let productPage = 2;  // since page 1 is loaded
-let productPageLoading = false;
-let prdouctObserver;
+function getInitialLastPage() {
+    const lastPageMeta = document.querySelector('meta[name="last-page"]');
+    if (lastPageMeta) {
+        return parseInt(lastPageMeta.content);
+    }
+    return null; // Or a default if you know there's at least one page
+}
 
 function initializeProductObserver() {
     let target = document.getElementById("load-more-products-trigger");
 
-    if (!target) return; 
+    if (!target) return;
 
-    observer = new IntersectionObserver((entries) => {
+    // Set initial lastPage when the observer is initialized
+    if (lastPage === null) {
+        lastPage = getInitialLastPage();
+    }
+
+    productObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                console.log("intersecting");
+                console.log("Intersecting, loading more products...");
                 loadMoreProducts();
             }
         });
-    }, { threshold: 1.0 });
+    }, { threshold: 0.1 });
 
-    observer.observe(target);
+    productObserver.observe(target);
 }
 
 function loadMoreProducts() {
-    if (productPageLoading) return;
+    // Stop loading if already loading or if we've reached the last page
+    if (productPageLoading || (lastPage !== null && productPage >= lastPage)) {
+        console.log("No more products to load or already loading.");
+        document.getElementById("product-loading-indicator").style.display = "none"; 
+        document.getElementById("no-more-products").style.display = "block"; 
+        if (productObserver) productObserver.disconnect(); 
+        return;
+    }
+
     productPageLoading = true;
-    
     document.getElementById("product-loading-indicator").style.display = "flex";
-    
-    fetch("?page=" + productPage, {
+
+    const currentFilters = $('#form-products-listing-filter').serialize();
+    console.log("Serialized Filters:", currentFilters);
+
+    const url = window.location.origin + window.location.pathname + '?' + currentFilters + '&page=' + (productPage + 1);
+
+    console.log("Fetching URL for page " + (productPage + 1) + ": " + url);
+
+    fetch(url, {
         headers: { "X-Requested-With": "XMLHttpRequest" }
     })
     .then(response => {
-        if (!response.ok) throw new Error("Network response was not ok");
-        return response.json();; // Only parse once
+        if (!response.ok) {
+            console.error("Network response was not ok:", response.status, response.statusText);
+            return response.text().then(text => { throw new Error(text); }); 
+        }
+        return response.json();
     })
     .then(data => {
-        
+        // Update lastPage from the response
+        if (data.lastPage !== undefined) {
+            lastPage = data.lastPage;
+        }
+
         if (!data.html || data.html.trim() === "") {
-            if (observer) observer.disconnect();
+            // No HTML means no more products, or an empty response
+            if (productObserver) productObserver.disconnect();
             document.getElementById("no-more-products").style.display = "block";
+            console.log("No more products to load (empty HTML or no more pages).");
         } else {
             let newProducts = data.html;
             document.getElementById("container-product_list").insertAdjacentHTML("beforeend", newProducts);
 
+            // Re-initialize Elementor hooks for newly added elements
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = newProducts;
-
             const newProductElements = tempDiv.querySelectorAll('.single_product_card');
-
             newProductElements.forEach(function(el) {
-                if (typeof elementorFrontend !== 'undefined') {
-                    if (elementorFrontend.hooks && elementorFrontend.hooks.doAction) {
-                        elementorFrontend.hooks.doAction('frontend/element_ready/global', jQuery(el));
-                    }
+                if (typeof elementorFrontend !== 'undefined' && elementorFrontend.hooks && elementorFrontend.hooks.doAction) {
+                    elementorFrontend.hooks.doAction('frontend/element_ready/global', jQuery(el));
                 }
             });
 
+            // Increment productPage only if more pages are available, otherwise disconnect observer
             if (data.nextPage) {
                 productPage = data.nextPage;
+                console.log("Successfully loaded page " + productPage + ". Next page: " + data.nextPage);
             } else {
-                if (observer) observer.disconnect();
+                if (productObserver) productObserver.disconnect();
                 document.getElementById("no-more-products").style.display = "block";
+                console.log("Successfully loaded last page (" + productPage + "). No more pages.");
             }
         }
     })
@@ -186,15 +221,87 @@ function loadMoreProducts() {
     });
 }
 
+
 // jQuery
 $(document).ready(function() {
     // Show our Preloader/Loader/Loading Page/Preloading Screen ALL THE TIME FOR TESTING!
     // $('.loader').show();
 
+    // infinite scroll for merchantes nd products page
     initializeProductObserver()
-    // infinite scroll for merchantes page
     initializeObserver()
 
+    $('#form-products-listing-filter').on('submit', function(e) {
+        // Reset state for new filter application
+        productPage = 1;
+        lastPage = null; // Reset lastPage
+    });
+
+    // header layout
+    let lastScrollY = $('body').scrollTop();
+    const header = document.getElementById('pageHeader');
+    header.style.setProperty('position', 'sticky', 'important');
+    header.style.setProperty('top', '0', 'important');
+    header.style.setProperty('left', '0', 'important');
+    header.style.setProperty('width', '100%', 'important'); 
+    header.style.setProperty('z-index', '50', 'important');
+
+    $(window).on('scroll', function () {
+        const currentScrollY = $(window).scrollTop(); 
+
+        const header = document.getElementById('pageHeader');
+        const earlyDevHeader = document.getElementById('earlyDevHeader');
+
+        if (currentScrollY > lastScrollY && currentScrollY > 150) {
+            header.style.transform = 'translateY(-100%)';
+            header.style.setProperty('transition', 'transform 0.3s ease', 'important');
+        } else if (currentScrollY < lastScrollY) {
+            header.style.transform = 'translateY(0)';
+            header.style.setProperty('transition', 'transform 0.3s ease', 'important');
+
+            if (currentScrollY != 0){
+                earlyDevHeader.style.transform = 'translateY(-100%)';
+                earlyDevHeader.style.height = '0';
+                earlyDevHeader.style.overflow = 'hidden';
+            } else {
+                earlyDevHeader.style.transform = 'translateY(0)';
+                earlyDevHeader.style.height = 'auto'; 
+                earlyDevHeader.style.overflow = 'visible';
+                earlyDevHeader.style.setProperty('transition', 'transform 0.5s ease', 'important');
+            }
+        }
+
+        lastScrollY = currentScrollY;
+    });
+
+    // body scrolls on the products page
+    $('body').on('scroll', function() {
+
+        const currentScrollY = $('body').scrollTop();
+        const header = document.getElementById('pageHeader');
+        const earlyDevHeader = document.getElementById('earlyDevHeader');
+        
+        if (currentScrollY > lastScrollY && currentScrollY > 150) {
+            header.style.transform = 'translateY(-100%)';
+            header.style.setProperty('transition', 'transform 0.3s ease', 'important');
+        } else if (currentScrollY < lastScrollY) {
+            header.style.transform = 'translateY(0)';
+            header.style.setProperty('transition', 'transform 0.3s ease', 'important');
+            
+            if (currentScrollY != 0){
+                earlyDevHeader.style.transform = 'translateY(-100%)';
+                earlyDevHeader.style.height = '0';
+                earlyDevHeader.style.overflow = 'hidden';
+            } else {
+                earlyDevHeader.style.transform = 'translateY(0)';
+                earlyDevHeader.style.height = 'auto'; 
+                earlyDevHeader.style.overflow = 'visible';
+                earlyDevHeader.style.setProperty('transition', 'transform 0.5s ease', 'important');
+            }
+        }
+
+        lastScrollY = currentScrollY;
+    });
 
     // the <select> box in front/products/detail.blade.php (to show the correct related `price` and `stock` depending on the selected `size` (from the `products_attributes` table))
     $('#getPrice').change(function() {
@@ -1144,45 +1251,83 @@ $(document).ready(function() {
         max: 1000,
         values: [0, 1000],
         slide: function(event, ui) {
-          $(".filter_outer_container #slide-price-min").text(ui.values[0]);
-          $(".filter_outer_container #slide-price-max").text(ui.values[1]);
+            $(".filter_outer_container #slide-price-min").text(ui.values[0]);
+            $(".filter_outer_container #slide-price-max").text(ui.values[1]);
+            $("#hidden_price_min").val(ui.values[0]);
+            $("#hidden_price_max").val(ui.values[1]);
         }
     });
 
-    // Display initial values
-    $(".filter_outer_container #slide-price-min").text($(".filter_outer_container #slide-price-range").slider("values", 0));
-    $(".filter_outer_container #slide-price-max").text($(".filter_outer_container #slide-price-range").slider("values", 1));
+    const initialMin = parseInt($("#hidden_price_min").val()) || $(".filter_outer_container #slide-price-range").slider("values", 0);
+    const initialMax = parseInt($("#hidden_price_max").val()) || $(".filter_outer_container #slide-price-range").slider("values", 1);
 
-    $('#form-productReview').on('submit', (e) => {
-        e.preventDefault();
+    $(".filter_outer_container #slide-price-min").text(initialMin);
+    $(".filter_outer_container #slide-price-max").text(initialMax);
 
-        var formdata = $(e.currentTarget).serialize();
+    // Also update hidden inputs on initial load with default slider values
+    $("#hidden_price_min").val(initialMin);
+    $("#hidden_price_max").val(initialMax);
+
+
+    // Handle the form submission for filters
+    $('#form-products-listing-filter').on('submit', function(e) {
+
+        // Reset page for new filter application
+        productPage = 1;
+        // Disconnect existing observer if it's observing, then re-initialize after products are loaded
+        if (productObserver) {
+            productObserver.disconnect();
+        }
+        document.getElementById("no-more-products").style.display = "none"; // Hide 'no more products' message
+
+        var formData = $(this).serialize(); // Get all form data, including the hidden price inputs
+
+        console.log('Filter form submitted with data:', formData);
 
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: "/add-rating",
-            type: "POST",
-            data: formdata,
+            url: window.location.href,
+            type: "GET",
+            data: formData,
             success: function (resp) {
-                $('.popup_review_order.elementor-491 .close_image_review_popup').click();
-                if (resp && resp.success) {
-                    $('#e-success-modal').modal('toggle');
-                    $("#e-success-modal .modal-body .message").text(resp.message);
-                    setTimeout(() => {
-                        $('#e-success-modal').modal('toggle');
-                    }, 1500);
+                if (resp && resp.html) {
+
+                    $('#container-product_list').html(resp.html); 
+                    console.log('Products updated successfully with filters.');
+
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = resp.html;
+                    const newProductElements = tempDiv.querySelectorAll('.single_product_card');
+                    newProductElements.forEach(function(el) {
+                        if (typeof elementorFrontend !== 'undefined' && elementorFrontend.hooks && elementorFrontend.hooks.doAction) {
+                            elementorFrontend.hooks.doAction('frontend/element_ready/global', jQuery(el));
+                        }
+                    });
+
+                    // If there's a next page, update the productPage and re-initialize observer
+                    if (resp.nextPage) {
+                        productPage = resp.nextPage;
+                        initializeProductObserver(); // Re-initialize observer for newly loaded products
+                    } else {
+                        // No more pages, disconnect observer and show no more products message
+                        if (productObserver) productObserver.disconnect();
+                        document.getElementById("no-more-products").style.display = "block";
+                    }
+
                 } else {
-                    $('#error-modal').modal('toggle');
-                    $("#error-modal .modal-body .message").text(resp.message);
-                    setTimeout(() => {
-                        $('#error-modal').modal('toggle');
-                    }, 1500);
+                    console.log('No HTML response for product cards received.');
+                    $('#container-product_list').empty(); 
+                    if (productObserver) productObserver.disconnect();
+                    document.getElementById("no-more-products").style.display = "block";
                 }
-            }, error: function (err) {
-                console.log(err)
+            },
+            error: function (err) {
+                console.error('AJAX error applying filters:', err);
+                alert('Error applying filters. Please try again.');
             }
         });
-    })
+    });
+
 
     $("#write_review_btn").click(function(event) {
         event.preventDefault();
