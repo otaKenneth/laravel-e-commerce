@@ -16,6 +16,7 @@
         flex-direction: column;
     }
     .email-confirmed-outer p{
+        font-family: var(--font-family-body);
         font-size: 20px;
         max-width: 480px;
         margin-left: auto;
@@ -32,6 +33,7 @@
             height: 210px !important;
         }
         .email-confirmed-outer p{
+            font-family: var(--font-family-body);
             font-size: 18px;
         }
     }

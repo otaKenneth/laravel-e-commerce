@@ -12,6 +12,8 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                mainHeading: ['Montserrat', ...defaultTheme.fontFamily.sans],
+                secondaryHeading: ['Lexend', ...defaultTheme.fontFamily.sans],
                 body: ['Poppins', ...defaultTheme.fontFamily.sans]
             },
         },

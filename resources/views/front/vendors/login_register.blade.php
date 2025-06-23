@@ -7,14 +7,14 @@
     <div class="page-style-a">
         <div class="container">
             <div class="page-intro">
-                <h2>Account</h2>
+                <h2 class="font-mainHeading">Account</h2>
                 <ul class="bread-crumb">
                     <li class="has-separator">
                         <i class="ion ion-md-home"></i>
-                        <a href="index.html">Home</a>
+                        <a href="index.html" class="font-secondaryHeading">Home</a>
                     </li>
                     <li class="is-marked">
-                        <a href="account.html">Account</a>
+                        <a href="account.html" class="font-secondaryHeading">Account</a>
                     </li>
                 </ul>
             </div>
