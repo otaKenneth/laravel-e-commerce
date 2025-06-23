@@ -25,40 +25,42 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Customizing The Pagination View Using Bootstrap (displaying Laravel pagination using Bootstrap pagination): https://laravel.com/docs/9.x/pagination#using-bootstrap
         \Illuminate\Pagination\Paginator::useBootstrap();
 
-        // Retrieve the Google Cloud Storage configuration from the filesystems.php config file
+        if (app()->runningInConsole()) {
+            return; // Avoid running GCS logic during composer scripts and artisan commands like `package:discover`
+        }
+
         $gcsConfig = config('filesystems.disks.gcs');
 
-        // Create a StorageClient instance using the configuration
+        if (!$gcsConfig || empty($gcsConfig['project_id']) || empty($gcsConfig['key_file']) || empty($gcsConfig['bucket'])) {
+            \Log::warning('GCS config is incomplete or missing');
+            return;
+        }
+
         $storage = new StorageClient([
             'projectId' => $gcsConfig['project_id'],
             'keyFilePath' => $gcsConfig['key_file'],
-            'credentials' => CredentialsLoader::makeCredentials(['https://www.googleapis.com/auth/cloud-platform'], json_decode(file_get_contents($gcsConfig['key_file']), true))
         ]);
 
-        // Specify your bucket name from the configuration
         $bucketName = $gcsConfig['bucket'];
         $bucket = $storage->bucket($bucketName);
 
-        // Define the default image URL
         $defaultImagePath = 'front/images/product/no-available-image.jpg';
         try {
             $defaultImageUrl = $bucket->object($defaultImagePath)->signedUrl(new \DateTime('+1 hour'));
-            // Log the signed URL for debugging
         } catch (\Exception $e) {
             \Log::error('Error generating signed URL: ' . $e->getMessage());
+            $defaultImageUrl = asset($defaultImagePath);
         }
 
-        // Share the storage instance and bucket name with all views
         view()->share([
             'defaultImage' => $defaultImageUrl,
             'getSignedUrl' => function ($objectName, $expiration = '+1 hour') use ($bucket) {
                 return $this->getSignedUrl($bucket, $objectName, $expiration);
             },
             'getImage' => function ($filepath, $imageName) use ($bucket) {
-                if (env('APP_ENV') == "development") {
+                if (env('APP_ENV') === "development") {
                     if (!empty($imageName) && file_exists($filepath . $imageName)) {
                         return asset($filepath . $imageName);
                     } else {
