@@ -269,7 +269,7 @@ button:-moz-focusring {
 button {
   display: inline-block;
   font-weight: 400;
-  color: #c36;
+  color: #fff;
   text-align: center;
   white-space: nowrap;
   -webkit-user-select: none;
@@ -294,7 +294,7 @@ button:focus {
 button:focus,
 button:hover {
   color: #fff;
-  background-color: #c36;
+  background-color: #c36 !important;
   text-decoration: none;
 }
 [type="button"]:not(:disabled),
