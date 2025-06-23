@@ -87,7 +87,7 @@ class NinjaVanHelper
 
     public static function calculateFromAddress(float $weightKg, array $address): float
     {
-    return self::calculateShippingCharge($weightKg, $address['state'] ?? '');
+    return self::calculateShippingCharge($weightKg, $address['state']);
     }
 
     /**
@@ -156,14 +156,22 @@ class NinjaVanHelper
         'Sarangani' => 'MIN',
     ];
 
+
+    protected $quoteData = [];
+    protected $recipient;
+
+    public function setQuoteData(array $quoteData)
+    {
+        $this->quoteData = $quoteData;
+        return $this;
+    }
+
     public function getQuotation($orderDetails, $vendor_id)
     {
-        $order = \App\Models\Order::find($orderDetails->order_id);
-        $user_model = new \App\Models\User;
-        $vendor_model = new \App\Models\Vendor;
-
-        // Get vendor details
-        $vendor = $vendor_model->with('vendorbusinessdetails')->find($vendor_id);
+        $orderDetails = $this->quoteData['orderDetails'];
+        $order = $this->quoteData['order'];
+        $vendor = $this->quoteData['vendor'];
+        $user = $this->quoteData['user'];
 
         if (empty($vendor->vendorbusinessdetails['lat']) || empty($vendor->vendorbusinessdetails['long'])) {
             \Log::info("Vendor Business Details: " . json_encode($vendor->vendorbusinessdetails));
@@ -174,7 +182,6 @@ class NinjaVanHelper
             ];
         }
 
-        // Prepare sender and recipient addresses
         $sender_address = [
             'address1' => $vendor->vendorbusinessdetails->shop_address,
             'address2' => '',
@@ -183,50 +190,57 @@ class NinjaVanHelper
             'state' => $vendor->vendorbusinessdetails->shop_state,
             'country' => $vendor->vendorbusinessdetails->country,
             'postCode' => $vendor->vendorbusinessdetails->shop_pincode,
+            'coordinates' => [
+                'lat' => (string) $vendor->vendorbusinessdetails->lat,
+                'lng' => (string) $vendor->vendorbusinessdetails->lng
+            ],
         ];
 
         $recipient_address = [
-            'address1' => $user_model->find($order->user_id)->address,
+            'address1' => $user->address,
             'address2' => '',
-            'city' => $user_model->find($order->user_id)->city,
-            'area' =>$user_model->find($order->user_id)->state,
-            'state' =>$user_model->find($order->user_id)->state,
-            'country' => $user_model->find($order->user_id)->country,
-            'postCode' => $user_model->find($order->user_id)->pincode,
+            'city' => $user->city,
+            'area' => $user->state,
+            'state' => $user->state,
+            'country' => $user->country,
+            'postCode' => $user->pincode,
+            'coordinates' => [
+                'lat' => (string) $order->lat,
+                'lng' => (string) $order->lng
+            ],
         ];
 
         $parcel_job = [
-            "is_pickup_required"=> true,
-            "pickup_service_type"=>"Scheduled",
-            "pickup_service_level"=>"Standard",
-            "pickup_date"=> now()->timestamp,
-            "pickup_timeslot"=> [
-                "start_time"=>"09:00",
-                "end_time"=> "12:00",
-                "timezone"=> "Asia/Manila"
+            "is_pickup_required" => true,
+            "pickup_service_type" => "Scheduled",
+            "pickup_service_level" => "Standard",
+            "pickup_date" => now()->timestamp,
+            "pickup_timeslot" => [
+                "start_time" => "09:00",
+                "end_time" => "12:00",
+                "timezone" => "Asia/Manila"
             ],
-            "pickup_instructions"=> "Pickup with care!",
-            "delivery_instructions"=> "If recipient is not around, leave parcel in power riser.",
-            "delivery_start_date"=> now()->addDays(3)->timestamp,
-            "delivery_timeslot"=> [
-                "start_time"=>"09:00",
-                "end_time"=> "12:00",
-                "timezone"=> "Asia/Manila"
+            "pickup_instructions" => "Pickup with care!",
+            "delivery_instructions" => "If recipient is not around, leave parcel in power riser.",
+            "delivery_start_date" => now()->addDays(3)->timestamp,
+            "delivery_timeslot" => [
+                "start_time" => "09:00",
+                "end_time" => "12:00",
+                "timezone" => "Asia/Manila"
             ],
-            "dimensions"=>['weight'=> (float) $order->total_weight],
-            "items"=> [ 
-                    "item_description" => "Order #" . $orderDetails->orderId . " - " . $order->order_items()->pluck('product_name')->implode(', '),
-                    "quantity" => $orderDetails->total_qty,
-                    "is_dangerous_good" => false,
+            "dimensions" => ['weight' => (float) $order->total_weight],
+            "items" => [
+                "item_description" => "Order #" . $orderDetails->orderId . " - " . $order->order_items()->pluck('product_name')->implode(', '),
+                "quantity" => $orderDetails->total_qty,
+                "is_dangerous_good" => false,
             ],
         ];
-        // Calculate shipping charge using NinjaVanHelper
+
         $shipping_charge = self::calculateShippingCharge(
             (float) $order->total_weight,
             $order->state
         );
 
-        // Prepare quotation response (simulate NinjaVan API response)
         $quotation = [
             'marketplace' => [
                 'seller_id' => $vendor->vendorbusinessdetails->vendor_id,
@@ -235,18 +249,18 @@ class NinjaVanHelper
             'service_type' => 'Marketplace',
             'service_level' => $orderDetails->service_level ?? 'Standard',
             'requestedTrackingNumber' => 'TEST-' . now()->timestamp,
-            'reference'=> ['merchant_order_number' => $orderDetails->orderId],
+            'reference' => ['merchant_order_number' => $orderDetails->orderId],
             'from' => [
                 'name' => $vendor->vendorbusinessdetails->shop_name,
                 'phone_number' => $vendor->vendorbusinessdetails->shop_mobile,
                 'email' => $vendor->vendorbusinessdetails->shop_email,
-                'address'=>$sender_address,
-            ], 
+                'address' => $sender_address,
+            ],
             'to' => [
-                'name' => $user_model->find($order->user_id)->name,
-                'phone_number' => $user_model->find($order->user_id)->mobile,
-                'email' => $user_model->find($order->user_id)->email,
-                'address'=>$recipient_address,
+                'name' => $user->name,
+                'phone_number' => $user->mobile,
+                'email' => $user->email,
+                'address' => $recipient_address,
             ],
             'parcel' => $parcel_job,
             'weight_kg' => (float) $order->total_weight,
@@ -254,7 +268,8 @@ class NinjaVanHelper
         ];
 
         \Log::info("NinjaVan Quotation: " . json_encode($quotation));
-        $this->recipient = $user_model->find($order->user_id);
+        $this->recipient = $user;
+
         return (object) [
             'quotation' => $quotation
         ];
@@ -400,7 +415,7 @@ public function getAccessToken()
     {
     $clientId = config('app.ninjavan.client_id');
     $clientSecret = config('app.ninjavan.client_key');
-    $url = config('app.ninjavan.api_url'). '/2.0/oauth/access_token'; // e.g. https://api-sandbox.ninjavan.co/2.0/oauth/token
+    $url = config('app.ninjavan.api_url'). '/2.0/oauth/access_token';
 
     $body = [
         'client_id' => $clientId,

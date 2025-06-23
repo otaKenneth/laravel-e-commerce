@@ -286,17 +286,10 @@ class Order extends Model
     }
 
     //NinjaVan Integration
-    public static function pushOrder_to_Ninjavan($orderDetails, $vendor_id)
+    public static function pushOrder_to_Ninjavan($ninjavan_data, $order_id)
     {
-        $quotationData = app(\App\Helpers\NinjavanHelper::class)->getQuotation($orderDetails, $vendor_id);
-
-        // Handle errors
-        if (isset($quotationData->errors)) {
-            \Log::error('NinjaVan Quotation Error', ['error' => $quotationData->errors]);
-            return ['error' => $quotationData->errors];
-        }   
-
-        $quotation = $quotationData->quotation;
+        $ninjavan_quotation = $ninjavan_data->quotation->data;
+        $quotation = $ninjavan_quotation->quotation;
 
         $payload = [
             'marketplace' => $quotation['marketplace'],
@@ -316,7 +309,7 @@ class Order extends Model
                 'delivery_start_date' => \Carbon\Carbon::createFromTimestamp($quotation['parcel']['delivery_start_date'])->format('Y-m-d'),
                 'delivery_timeslot' => $quotation['parcel']['delivery_timeslot'],
                 'dimensions' => $quotation['parcel']['dimensions'],
-                'items' => [$quotation['parcel']['items']], // wrapped in array
+                'items' => [$quotation['parcel']['items']], 
             ],
         ];
 

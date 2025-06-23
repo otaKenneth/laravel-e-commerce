@@ -965,19 +965,17 @@ class ProductsController extends Controller
 
         $selectedDeliveryAddress = null;
         $shipping_charges = 0;
+        $shipping_method = null;
         // Calculating the Shipping Charges of every one of the user's Delivery Addresses (depending on the 'country' of the Delivery Address)
         foreach ($deliveryAddresses as $key => $value) {
             // Get base shipping charges based on country
             $baseShippingCharges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $value['country']);
             // Calculate Lalamove charges
             $selectedDeliveryAddress = $value;
+            
             $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
             $lalamoveCharges = $this->lalamoveAPI_Helper->total_delivery_fee + $baseShippingCharges;
-            // dd($lalamoveCharges);
-
-            // Calculate NinjaVan charges
             $ninjavanCharges = NinjaVanHelper::calculateShippingCharge($total_weight, $value['state']);
-            // For backward compatibility
             // Store only the provider fees (no base charges)
             $deliveryAddresses[$key]['lalamove_shipping_charges'] = $lalamoveCharges;
 
@@ -985,13 +983,32 @@ class ProductsController extends Controller
 
             // Determine final shipping charges based on selected method
             if ($request->isMethod('post') && $value['id'] == $request->address_id) {
-                $shipping_charges = ($request->shipping_method == 'ninjavan') 
-                    ? $ninjavanCharges 
-                    : $lalamoveCharges;
-            } else {
-                // Default to Lalamove if no selection
-                $shipping_charges = ($key == 0) ? $lalamoveCharges : 0;
+                if ($request->shipping_method == 'ninjavan') {
+                    $shipping_charges = $ninjavanCharges;
+                    $shipping_method = 'ninjavan';
+                } elseif ($request->shipping_method == 'lalamove') {
+                    $shipping_charges = $lalamoveCharges;
+                    $shipping_method = 'lalamove';
+                } else {
+               if ($key == 0) {
+                if ($request->shipping_method == 'ninjavan') {
+                    $shipping_charges = $ninjavanCharges;
+                    $shipping_method = 'ninjavan';
+                } elseif ($request->shipping_method == 'lalamove') {
+                    $shipping_charges = $lalamoveCharges;
+                    $shipping_method = 'lalamove';
+                } else {
+                    $shipping_charges = 0;
+                }
             }
+        }
+    }
+                \Log::info("Shipping method selected", [
+                    'method' => $request->shipping_method,
+                    'address_id' => $request->address_id ?? 'N/A'
+                ]);
+            $deliveryAddresses[$key]['selected'] = true;
+            $deliveryAddresses[$key]['selected_shipping_method'] = $shipping_method;
             $deliveryAddresses[$key]['shipping_charges'] = $shipping_charges;
 
             // Checking PIN code availability of BOTH COD and Prepaid PIN codes in BOTH `cod_pincodes` and `prepaid_pincodes` tables
@@ -1157,7 +1174,7 @@ class ProductsController extends Controller
                 $shipping_charges = 150.00;
             } else if ($data['shipping_method'] == 'ninjavan') {
                 $ninjavan = new NinjaVanHelper;
-                $shipping_charges += $ninjavan->calculateFromAddress($total_weight, $value['state']);
+                $shipping_charges = $ninjavan->calculateFromAddress($total_weight, $value);
             }
 
             // Grand Total (`grand_total`)
@@ -1301,7 +1318,7 @@ class ProductsController extends Controller
                     $description .= "Coupon Amount - " . Session::get('couponAmount');
                 }
                 $resp = $paymongo->setItems($getCartItems)
-                    ->setDeliveryFee($shipping_charges)
+                    ->setDeliveryFee($shipping_charges, $request->shipping_method ?? 'Lalamove')
                     ->set("description", $description)
                     ->set("payment_method_types", ["card", "brankas_bdo", "gcash", "grab_pay", "paymaya"])
                     ->set("billing", [
@@ -1318,7 +1335,12 @@ class ProductsController extends Controller
                         "phone" => $deliveryAddress['mobile']
                     ])
                     ->createSession();
-
+                    \Log::info("Paymongo: Creating session", [
+                        'order_id' => $order->id ?? 'N/A',
+                        'shipping_method' => $request->shipping_method ?? 'Lalamove',
+                        'shipping_charges' => $shipping_charges
+                    ]);
+                        
                 // create response for frontend
                 $return_respose = [
                     'success' => false,

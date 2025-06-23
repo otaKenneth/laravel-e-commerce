@@ -66,13 +66,13 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
     Route::get('/test-ninjavan-order', [App\Http\Controllers\Front\ProductsController::class, 'testNinjaVanOrder']);
     Route::get('/test-ninjavan-token', [App\Http\Controllers\Front\ProductsController::class, 'testToken']);
     Route::post('/generate-ninjavan-hmac', function (Request $request) {
-    $payload = $request->input('payload');
-    $secret = config('app.ninjavan.client_key');
+        $payload = $request->input('payload');
+        $secret = config('app.ninjavan.client_key');
 
-    $signature = base64_encode(hash_hmac('sha256', $payload, $secret, true));
+        $signature = base64_encode(hash_hmac('sha256', $payload, $secret, true));
 
-    return response()->json(['signature' => $signature]);
-});
+        return response()->json(['signature' => $signature]);
+    });
 
 
 

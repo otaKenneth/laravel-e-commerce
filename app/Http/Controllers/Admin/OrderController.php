@@ -16,7 +16,7 @@ class OrderController extends Controller
     // Note: In the Admin Panel, in the Orders Management section, if the authenticated/logged-in user is 'vendor', we'll show the orders of the products added by/related to that 'vendor' ONLY, but if the authenticated/logged-in user is 'admin', we'll show ALL orders    
 
     private $lalamoveAPI_Helper;
-    private $ninjaVan_Helper;
+    private $ninjaVanAPI_Helper;
 
     // Render admin/orders/orders.blade.php page (Orders Management section) in the Admin Panel    
     public function orders() {
@@ -256,6 +256,9 @@ class OrderController extends Controller
                     if ($orderDetails['shipping_method'] == 'lalamove') {
                         $this->productForDelivery($data);
                     }
+                    if ($orderDetails['shipping_method'] == 'ninjavan') {
+                        $this->productForNinjaVanDelivery($data);
+                    }
             } elseif (!empty($data['item_courier_name']) && !empty($data['item_tracking_number'])) { // if a 'vendor' or 'admin' Updates the Order "Item Status" to 'Shipped' in admin/orders/order_details.blade.php, and submits both Courier Name and Tracking Number HTML input fields, include the Courier Name and Tracking Nubmer data in the email (send them with the email)
                 $email = $deliveryDetails['email'];
 
@@ -346,9 +349,9 @@ class OrderController extends Controller
     $this->ninjaVanAPI_Helper = new NinjaVanHelper;
 
     // Step 1: Get quotation (optional, if NinjaVan requires it first)
-    $all_ninjavan_data = $this->ninjaVan_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
+    $all_ninjavan_data = $this->ninjaVanAPI_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
 
-    if (isset($quotationData['errors'])) {
+    if (isset($all_ninjavan_data['errors'])) {
         return redirect()->back()->withErrors($all_ninjavan_data['errors']);
     }
 
@@ -360,7 +363,7 @@ class OrderController extends Controller
         return redirect()->back();
     } else {
         $orderDetails->courier_name = $pushResult['data']['tracking_url'] ?? 'NinjaVan';
-        $orderDetails->tracking_number = $pushResult['data']['tracking_number'] ?? 'N/A';
+        $orderDetails->tracking_number = $pushResult['data']['tracking_number'];
         $orderDetails->save();
     }
 }
