@@ -892,14 +892,6 @@ class ProductsController extends Controller
         }
     }
 
-    public function testNinjaVanOrder()
-    {
-        $ninjavan = new NinjaVanHelper(); // instantiate the helper
-        $response = $ninjavan->createOrder(); // call the method
-
-    return response()->json($response); // return as JSON for testing
-    }
-
     // Checkout page (using match() method for the 'GET' request for rendering the front/products/checkout.blade.php page or the 'POST' request for the HTML Form submission in the same page) (for submitting the user's Delivery Address and Payment Method))
     public function checkout(Request $request)
     {
@@ -966,8 +958,10 @@ class ProductsController extends Controller
         $selectedDeliveryAddress = null;
         $shipping_charges = 0;
         $shipping_method = null;
+        
         // Calculating the Shipping Charges of every one of the user's Delivery Addresses (depending on the 'country' of the Delivery Address)
         foreach ($deliveryAddresses as $key => $value) {
+            $ninjavanHelper = new NinjaVanHelper; // instantiate the NinjaVanHelper
             // Get base shipping charges based on country
             $baseShippingCharges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $value['country']);
             // Calculate Lalamove charges
@@ -975,6 +969,8 @@ class ProductsController extends Controller
             
             $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
             $lalamoveCharges = $this->lalamoveAPI_Helper->total_delivery_fee + $baseShippingCharges;
+            $quoteData = compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems");
+            $ninjavanHelper->setQuoteData($quoteData);
             $ninjavanCharges = NinjaVanHelper::calculateShippingCharge($total_weight, $value['state']);
             // Store only the provider fees (no base charges)
             $deliveryAddresses[$key]['lalamove_shipping_charges'] = $lalamoveCharges;

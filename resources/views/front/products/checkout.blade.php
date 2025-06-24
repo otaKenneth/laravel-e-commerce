@@ -150,7 +150,7 @@
                                                 id="lalamove"
                                                 name="shipping_method"
                                                 value="lalamove"
-                                                checked
+                                                
                                             >
                                             <label for="lalamove" style="cursor:pointer;">
                                                 <strong>Lalamove</strong>
@@ -161,6 +161,7 @@
                                                 id="ninjavan"
                                                 name="shipping_method"
                                                 value="ninjavan"
+                                                checked
                                             />
                                             <label for="ninjavan" style="cursor:pointer;">
                                                 <strong>NinjaVan</strong>

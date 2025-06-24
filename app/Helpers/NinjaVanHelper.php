@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Cache;
 
 class NinjaVanHelper
 {
+    protected $processNinjaVan;
+    protected $ninjaVanResponse;
     protected $bearer_token;
     protected $sandbox_url;
     /**
@@ -160,151 +162,275 @@ class NinjaVanHelper
     protected $quoteData = [];
     protected $recipient;
 
-    public function setQuoteData(array $quoteData)
-    {
-        $this->quoteData = $quoteData;
-        return $this;
-    }
-
-    public function getQuotation($orderDetails, $vendor_id)
-    {
-        $orderDetails = $this->quoteData['orderDetails'];
-        $order = $this->quoteData['order'];
-        $vendor = $this->quoteData['vendor'];
-        $user = $this->quoteData['user'];
-
-        if (empty($vendor->vendorbusinessdetails['lat']) || empty($vendor->vendorbusinessdetails['long'])) {
-            \Log::info("Vendor Business Details: " . json_encode($vendor->vendorbusinessdetails));
-            return (object) [
-                'errors' => [
-                    'message' => "Latitude and Longitude for Vendor Business Detail is required."
-                ],
-            ];
-        }
-
-        $sender_address = [
-            'address1' => $vendor->vendorbusinessdetails->shop_address,
-            'address2' => '',
-            'city' => $vendor->vendorbusinessdetails->shop_city,
-            'area' => $vendor->vendorbusinessdetails->shop_state,
-            'state' => $vendor->vendorbusinessdetails->shop_state,
-            'country' => $vendor->vendorbusinessdetails->country,
-            'postCode' => $vendor->vendorbusinessdetails->shop_pincode,
-            'coordinates' => [
-                'lat' => (string) $vendor->vendorbusinessdetails->lat,
-                'lng' => (string) $vendor->vendorbusinessdetails->lng
-            ],
-        ];
-
-        $recipient_address = [
-            'address1' => $user->address,
-            'address2' => '',
-            'city' => $user->city,
-            'area' => $user->state,
-            'state' => $user->state,
-            'country' => $user->country,
-            'postCode' => $user->pincode,
-            'coordinates' => [
-                'lat' => (string) $order->lat,
-                'lng' => (string) $order->lng
-            ],
-        ];
-
-        $parcel_job = [
-            "is_pickup_required" => true,
-            "pickup_service_type" => "Scheduled",
-            "pickup_service_level" => "Standard",
-            "pickup_date" => now()->timestamp,
-            "pickup_timeslot" => [
-                "start_time" => "09:00",
-                "end_time" => "12:00",
-                "timezone" => "Asia/Manila"
-            ],
-            "pickup_instructions" => "Pickup with care!",
-            "delivery_instructions" => "If recipient is not around, leave parcel in power riser.",
-            "delivery_start_date" => now()->addDays(3)->timestamp,
-            "delivery_timeslot" => [
-                "start_time" => "09:00",
-                "end_time" => "12:00",
-                "timezone" => "Asia/Manila"
-            ],
-            "dimensions" => ['weight' => (float) $order->total_weight],
-            "items" => [
-                "item_description" => "Order #" . $orderDetails->orderId . " - " . $order->order_items()->pluck('product_name')->implode(', '),
-                "quantity" => $orderDetails->total_qty,
-                "is_dangerous_good" => false,
-            ],
-        ];
-
-        $shipping_charge = self::calculateShippingCharge(
-            (float) $order->total_weight,
-            $order->state
-        );
-
-        $quotation = [
-            'marketplace' => [
-                'seller_id' => $vendor->vendorbusinessdetails->vendor_id,
-                'seller_company_name' => $vendor->vendorbusinessdetails->shop_name,
-            ],
-            'service_type' => 'Marketplace',
-            'service_level' => $orderDetails->service_level ?? 'Standard',
-            'requestedTrackingNumber' => 'TEST-' . now()->timestamp,
-            'reference' => ['merchant_order_number' => $orderDetails->orderId],
-            'from' => [
-                'name' => $vendor->vendorbusinessdetails->shop_name,
-                'phone_number' => $vendor->vendorbusinessdetails->shop_mobile,
-                'email' => $vendor->vendorbusinessdetails->shop_email,
-                'address' => $sender_address,
-            ],
-            'to' => [
-                'name' => $user->name,
-                'phone_number' => $user->mobile,
-                'email' => $user->email,
-                'address' => $recipient_address,
-            ],
-            'parcel' => $parcel_job,
-            'weight_kg' => (float) $order->total_weight,
-            'zone' => self::getZoneFromProvince($order->state),
-        ];
-
-        \Log::info("NinjaVan Quotation: " . json_encode($quotation));
-        $this->recipient = $user;
-
-        return (object) [
-            'quotation' => $quotation
-        ];
-    }
- 
-    public function processNinjavanQuotation(array $body)
+    public function setQuoteData(array $data)
 {
-    $clientId = config('app.ninjavan.client_id');
-    $clientSecret = config('app.ninjavan.client_secret');
-    $apiUrl = config('app.ninjavan.api_url');
+    $this->quoteData = $data;
+    \Log::info("NinjaVan Quote Data: " . json_encode($this->quoteData));
 
-    // Step 1: Get Bearer Token
-    $tokenResponse = $this->getAccessToken(); // Assume this returns access_token as string
-    if (!$tokenResponse || empty($tokenResponse->access_token)) {
-        \Log::error("Failed to get NinjaVan access token.");
-        return (object) ['errors' => ['message' => 'Access token error']];
+    // Extract data from the NinjaVan Quote Data
+    $selectedDeliveryAddress = $this->quoteData['selectedDeliveryAddress'];
+    $pickupAddresses = $this->quoteData['pickupAddresses'];
+    $totalWeight = $this->quoteData['total_weight'];
+    $totalQty = $this->quoteData['total_qty'];
+    $categories = $this->quoteData['categories'];
+    $getCartItems = $this->quoteData['getCartItems'];
+
+    $pickup = $pickupAddresses[0]; // assuming only 1 pickup address
+    $shop_fulladdress = $pickup['shop_fulladdress'] ?? '';
+
+    // Break down full address by commas
+    $addressParts = explode(',', $shop_fulladdress);
+
+    // Clean up each part (remove spaces)
+    $addressParts = array_map('trim', $addressParts);
+
+    // Assign based on expected format:
+    // 0 - address1, 1 - city, 2 - state, 3 - country, 4 - postCode
+    $sender_address = [
+        'address1'   => $addressParts[0] ?? '',
+        'area'       => $addressParts[2] ?? '',
+        'city'       => $addressParts[1] ?? '',
+        'state'      => $addressParts[2] ?? '',
+        'country'    => $addressParts[3] ?? '',
+        'postCode'   => $addressParts[4] ?? '',
+        'address2'   => '',
+        'coordinates' => [
+            'lat' => (string) ($pickup['lat'] ?? ''),
+            'lng' => (string) ($pickup['long'] ?? ''),
+        ],
+    ];
+
+
+    $recipientAddress = [
+        'address1' => $selectedDeliveryAddress['address'],
+        'address2' => '',
+        'city' => $selectedDeliveryAddress['city'],
+        'area' => $selectedDeliveryAddress['state'],
+        'state' => $selectedDeliveryAddress['state'],
+        'country' => $selectedDeliveryAddress['country'],
+        'postCode' => $selectedDeliveryAddress['pincode'],
+        'coordinates' => [
+            'lat' => (string)$selectedDeliveryAddress['lat'],
+            'lng' => (string)$selectedDeliveryAddress['lng']
+        ]
+    ];
+
+    // Prepare the parcel information
+    $parcelJob = [
+        'is_pickup_required' => true,
+        'pickup_service_type' => 'Scheduled',
+        'pickup_service_level' => 'Standard',
+        'pickup_date' => now()->format('Y-m-d'),
+        'pickup_timeslot' => [
+            'start_time' => '09:00',
+            'end_time' => '12:00',
+            'timezone' => 'Asia/Manila'
+        ],
+        'pickup_instructions' => 'Pickup with care!',
+        'delivery_instructions' => 'If recipient is not around, leave parcel in power riser.',
+        'delivery_start_date' => now()->addDays(3)->format('Y-m-d'),
+        'delivery_timeslot' => [
+            'start_time' => '09:00',
+            'end_time' => '12:00',
+            'timezone' => 'Asia/Manila'
+        ],
+        'dimensions' => ['weight' => (float)$totalWeight],
+        'items' => [
+            [
+                'item_description' => 'Order #' . $getCartItems[0]['id'] . ' - ' . implode(', ', array_column($getCartItems, 'product_name')),
+                'quantity' => $totalQty,
+                'is_dangerous_good' => false
+            ],   
+        ],
+    ];
+
+    // Build the NinjaVan API payload
+    $payload = [
+        'marketplace' => [
+            'seller_id' => $pickupAddresses[0]['vendor_id'],
+            'seller_company_name' => $pickupAddresses[0]['shop_name'],
+        ],
+        'service_type' => 'Marketplace',
+        'service_level' => $this->quoteData['service_level'] ?? 'Standard',
+        'requested_tracking_number' => 'TEST' . substr(now()->timestamp, 0, 5),
+        'reference' => ['merchant_order_number' => $getCartItems[0]['session_id']],
+        'from' => [
+            'name' => $pickupAddresses[0]['shop_name'],
+            'phone_number' => $pickupAddresses[0]['shop_mobile'],
+            'email' => $pickupAddresses[0]['shop_email'],
+            'address' => $sender_address
+        ],
+        'to' => [
+            'name' => $selectedDeliveryAddress['name'],
+            'phone_number' => $selectedDeliveryAddress['mobile'],
+            'email' => $selectedDeliveryAddress['email'] ?? '',
+            'address' => $recipientAddress
+        ],
+        'parcel_job' => $parcelJob,
+    ];
+
+    // Log the payload for debugging
+    \Log::info("NinjaVan API Payload: " . json_encode($payload));
+
+    // Send the request to NinjaVan API
+    $response = $this->processNinjaVan($payload);
+
+    // Save the response if needed
+    $this->ninjaVanResponse = $response;
+
+    return $this;
+}
+
+
+    /**
+ * Get a NinjaVan quotation for an order.
+ *
+ * @param array $quoteData
+ * @return object
+ */
+public function getQuotation(array $quoteData,$orderDetails)
+{
+    $orderDetails = $quoteData['orderDetails'];
+    $order = $quoteData['order'];
+    $user = $quoteData['user'];
+    $vendor = $quoteData['vendor'];
+
+    if (empty($vendor->vendorbusinessdetails['lat']) || empty($vendor->vendorbusinessdetails['long'])) {
+        \Log::info("Vendor Business Details: " . json_encode($vendor->vendorbusinessdetails));
+        return (object) [
+            'errors' => [
+                'message' => "Latitude and Longitude for Vendor Business Detail is required."
+            ],
+        ];
     }
 
-    $accessToken = $tokenResponse->access_token;
+    $sender_address = [
+        'address1' => $vendor->vendorbusinessdetails->shop_address,
+        'address2' => '',
+        'city' => $vendor->vendorbusinessdetails->shop_city,
+        'area' => $vendor->vendorbusinessdetails->shop_state,
+        'state' => $vendor->vendorbusinessdetails->shop_state,
+        'country' => $vendor->vendorbusinessdetails->country,
+        'postCode' => $vendor->vendorbusinessdetails->shop_pincode,
+        'coordinates' => [
+            'lat' => (string) $vendor->vendorbusinessdetails->lat,
+            'lng' => (string) $vendor->vendorbusinessdetails->lng
+        ],
+    ];
 
-    // Step 2: Make quotation request
-    $endpoint = '/orders/quotation'; // Use correct path based on API version
+    $recipient_address = [
+        'address1' => $user->address,
+        'address2' => '',
+        'city' => $user->city,
+        'area' => $user->state,
+        'state' => $user->state,
+        'country' => $user->country,
+        'postCode' => $user->pincode,
+        'coordinates' => [
+            'lat' => (string) $order->lat,
+            'lng' => (string) $order->lng
+        ],
+    ];
+
+    $parcel_job = [
+        "is_pickup_required" => true,
+        "pickup_service_type" => "Scheduled",
+        "pickup_service_level" => "Standard",
+        "pickup_date" => now()->timestamp,
+        "pickup_timeslot" => [
+            "start_time" => "09:00",
+            "end_time" => "12:00",
+            "timezone" => "Asia/Manila"
+        ],
+        "pickup_instructions" => "Pickup with care!",
+        "delivery_instructions" => "If recipient is not around, leave parcel in power riser.",
+        "delivery_start_date" => now()->addDays(3)->timestamp,
+        "delivery_timeslot" => [
+            "start_time" => "09:00",
+            "end_time" => "12:00",
+            "timezone" => "Asia/Manila"
+        ],
+        "dimensions" => ['weight' => (float) $order->total_weight],
+        "items" => [
+            "item_description" => "Order #" . $orderDetails->orderId . " - " . $order->order_items()->pluck('product_name')->implode(', '),
+            "quantity" => $orderDetails->total_qty,
+            "is_dangerous_good" => false,
+        ],
+    ];
+
+    $shipping_charge = self::calculateShippingCharge(
+        (float) $order->total_weight,
+        $order->state
+    );
+
+    $quotation = [
+        'marketplace' => [
+            'seller_id' => $vendor->vendorbusinessdetails->vendor_id,
+            'seller_company_name' => $vendor->vendorbusinessdetails->shop_name,
+        ],
+        'service_type' => 'Marketplace',
+        'service_level' => $orderDetails->service_level ?? 'Standard',
+        'requestedTrackingNumber' => 'TEST-' . now()->timestamp,
+        'reference' => ['merchant_order_number' => $orderDetails->orderId],
+        'from' => [
+            'name' => $vendor->vendorbusinessdetails->shop_name,
+            'phone_number' => $vendor->vendorbusinessdetails->shop_mobile,
+            'email' => $vendor->vendorbusinessdetails->shop_email,
+            'address' => $sender_address,
+        ],
+        'to' => [
+            'name' => $user->name,
+            'phone_number' => $user->mobile,
+            'email' => $user->email,
+            'address' => $recipient_address,
+        ],
+        'parcel' => $parcel_job,
+        'weight_kg' => (float) $order->total_weight,
+        'zone' => self::getZoneFromProvince($order->state),
+        'shipping_charge' => $shipping_charge,
+    ];
+
+    \Log::info("NinjaVan Quotation Payload: " . json_encode($quotation));
+    $this->recipient = $user;
+
+    // Save the outgoing payload
+    $this->processNinjaVan = $quotation;
+
+    // Send request to NinjaVan
+    $response = $this->processNinjaVan($quotation);
+
+    // Save the NinjaVan API response as well (optional but useful for later use)
+    $this->ninjaVanResponse = $response;
+
+    return $response;
+}
+ 
+public function processNinjaVan($body)
+{
+    \Log::info("Process NinjaVan Quotation API Payload: " . json_encode($body));
+    $apiUrl = config('app.ninjavan.api_url'); // e.g. https://api-sandbox.ninjavan.co/SG
+
+    $tokenResponse = config('app.ninjavan.access_token'); // Assumes this returns an object with 'access_token'
+
+    $endpoint = '/4.2/orders'; // Use the correct version/path as needed
     $url = rtrim($apiUrl, '/') . $endpoint;
 
     $curl = curl_init();
     curl_setopt_array($curl, [
         CURLOPT_URL => $url,
         CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
         CURLOPT_TIMEOUT => 10,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HEADER => false,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS => json_encode($body),
         CURLOPT_HTTPHEADER => [
-            'Authorization: Bearer ' . $accessToken,
             'Content-Type: application/json',
             'Accept: application/json',
+            'Authorization: Bearer ' . $tokenResponse,
         ],
     ]);
 
@@ -312,10 +438,11 @@ class NinjaVanHelper
     $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     curl_close($curl);
 
-    \Log::info("NinjaVan Quotation Response ($httpCode): $response");
+    \Log::info("Process NinjaVan Quotation Response". $response);
 
     return json_decode($response);
 }
+
 
     
 //     public function createOrder(){
