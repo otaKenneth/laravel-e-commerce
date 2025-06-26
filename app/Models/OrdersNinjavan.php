@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class OrderNinjavan extends Model
+class OrdersNinjavan extends Model
 {
 
     
     // Use correct table name if it doesn't follow Laravel's plural convention
-    protected $table = 'order_ninjavan';
+    protected $table = 'orders_ninjavan';
 
     // If you want to allow mass assignment for specific fields
   protected $fillable = [
@@ -32,7 +32,7 @@ class OrderNinjavan extends Model
 ];
 
     // If the table doesn't use created_at and updated_at timestamps
-    public $timestamps = false;
+    public $timestamps = true;
 
     // Relationships (optional but recommended)
     public function order()

@@ -1206,14 +1206,14 @@ class ProductsController extends Controller
 
             $order->save(); // INSERT data INTO the `orders` table
             // 2. Save to `order_ninjavan` table
-            $data = session('ninjavan_quote_data'); // retrieve quoteData from session
+            $quoteData = session('ninjavan_quote_data'); // retrieve quoteData from session
 
-            if ($order->shipping_method === 'ninjavan' && $data) {
-                $getCartItems = $data['getCartItems'];
+            if ($order->shipping_method === 'ninjavan' && $quoteData) {
+                $getCartItems = $quoteData['getCartItems'];
                 $productIds = array_column($getCartItems, 'product_id');
 
                 // Get product names by ID
-                $productNames = \App\Models\Product::whereIn('id', $productIds)
+                $productNames = Product::whereIn('id', $productIds)
                     ->pluck('product_name', 'id') // [product_id => name]
                     ->toArray();
 
@@ -1224,22 +1224,22 @@ class ProductsController extends Controller
 
                 $itemDescription = 'Order #' . $getCartItems[0]['id'] . ' - ' . implode(', ', $orderedProductNames);
 
-                $orderNinjaVan = new \App\Models\OrderNinjavan;
+                $orderNinjaVan = new \App\Models\OrdersNinjavan;
 
                 $orderNinjaVan->order_id                = $order->id;
                 $orderNinjaVan->merchant_order_number   = $getCartItems[0]['session_id'] ?? $order->id;
-                $orderNinjaVan->service_level           = $data['service_level']?? 'Standard'; 
+                $orderNinjaVan->service_level           = $quoteData['service_level']?? 'Standard'; 
                 $orderNinjaVan->pickup_date             = now()->format('Y-m-d');
                 $orderNinjaVan->pickup_time_start       = '09:00';
                 $orderNinjaVan->pickup_time_end         = '12:00';
-                $orderNinjaVan->pickup_instructions     = $data['pickup_instructions'] ?? 'Pickup with care!';
+                $orderNinjaVan->pickup_instructions     = $quoteData['pickup_instructions'] ?? 'Pickup with care!';
                 $orderNinjaVan->delivery_start_date     = now()->addDays(3)->format('Y-m-d');
                 $orderNinjaVan->delivery_time_start     = '09:00';
                 $orderNinjaVan->delivery_time_end       = '12:00';
-                $orderNinjaVan->delivery_instructions   = $data['delivery_instructions'] ?? 'Please deliver with care!';
-                $orderNinjaVan->weight                  = $data['total_weight'];
+                $orderNinjaVan->delivery_instructions   = $quoteData['delivery_instructions'] ?? 'Please deliver with care!';
+                $orderNinjaVan->weight                  = $quoteData['total_weight'];
                 $orderNinjaVan->item_description        = $itemDescription;
-                $orderNinjaVan->quantity                = $data['total_qty'];
+                $orderNinjaVan->quantity                = $quoteData['total_qty'];
                 $orderNinjaVan->save();
             }
             // Get the last generated `id` of the the last inserted order in the `orders` table (to be able to store it in the `order_id` column in the `orders_products` table)
