@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
 use App\Models\ProductsAttribute;
 use App\Models\ProductsFilter;
 use App\Models\Category;
@@ -971,6 +970,7 @@ class ProductsController extends Controller
             $lalamoveCharges = $this->lalamoveAPI_Helper->total_delivery_fee + $baseShippingCharges;
             $quoteData = array_merge(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"),  ['user_id' => auth()->id()]);
             $ninjavanHelper->setQuoteData($quoteData);
+            session(['ninjavan_quote_data' => $quoteData]);
             $ninjavanCharges = NinjaVanHelper::calculateShippingCharge($total_weight, $value['state']);
             // Store only the provider fees (no base charges)
             $deliveryAddresses[$key]['lalamove_shipping_charges'] = $lalamoveCharges;
@@ -1182,7 +1182,6 @@ class ProductsController extends Controller
 
             // INSERT the data we collected INTO the `orders` database table
             $order = new \App\Models\Order; // Create a new Order.php model object (represents the `orders` table)
-
             // Assign the $order data to be INSERT-ed INTO the `orders` table
             $order->user_id          = Auth::user()->id; // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
             $order->name             = $deliveryAddress['name'];
@@ -1206,7 +1205,43 @@ class ProductsController extends Controller
             $order->grand_total      = $grand_total;
 
             $order->save(); // INSERT data INTO the `orders` table
+            // 2. Save to `order_ninjavan` table
+            $data = session('ninjavan_quote_data'); // retrieve quoteData from session
 
+            if ($order->shipping_method === 'ninjavan' && $data) {
+                $getCartItems = $data['getCartItems'];
+                $productIds = array_column($getCartItems, 'product_id');
+
+                // Get product names by ID
+                $productNames = \App\Models\Product::whereIn('id', $productIds)
+                    ->pluck('product_name', 'id') // [product_id => name]
+                    ->toArray();
+
+                // Build item description
+                $orderedProductNames = array_map(function ($item) use ($productNames) {
+                    return $productNames[$item['product_id']] ?? 'Unknown Product';
+                }, $getCartItems);
+
+                $itemDescription = 'Order #' . $getCartItems[0]['id'] . ' - ' . implode(', ', $orderedProductNames);
+
+                $orderNinjaVan = new \App\Models\OrderNinjavan;
+
+                $orderNinjaVan->order_id                = $order->id;
+                $orderNinjaVan->merchant_order_number   = $getCartItems[0]['session_id'] ?? $order->id;
+                $orderNinjaVan->service_level           = $data['service_level']?? 'Standard'; 
+                $orderNinjaVan->pickup_date             = now()->format('Y-m-d');
+                $orderNinjaVan->pickup_time_start       = '09:00';
+                $orderNinjaVan->pickup_time_end         = '12:00';
+                $orderNinjaVan->pickup_instructions     = $data['pickup_instructions'] ?? 'Pickup with care!';
+                $orderNinjaVan->delivery_start_date     = now()->addDays(3)->format('Y-m-d');
+                $orderNinjaVan->delivery_time_start     = '09:00';
+                $orderNinjaVan->delivery_time_end       = '12:00';
+                $orderNinjaVan->delivery_instructions   = $data['delivery_instructions'] ?? 'Please deliver with care!';
+                $orderNinjaVan->weight                  = $data['total_weight'];
+                $orderNinjaVan->item_description        = $itemDescription;
+                $orderNinjaVan->quantity                = $data['total_qty'];
+                $orderNinjaVan->save();
+            }
             // Get the last generated `id` of the the last inserted order in the `orders` table (to be able to store it in the `order_id` column in the `orders_products` table)
             $order_id = DB::getPdo()->lastInsertId();
 
