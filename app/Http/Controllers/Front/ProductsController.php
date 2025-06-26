@@ -969,7 +969,7 @@ class ProductsController extends Controller
             
             $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
             $lalamoveCharges = $this->lalamoveAPI_Helper->total_delivery_fee + $baseShippingCharges;
-            $quoteData = compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems");
+            $quoteData = array_merge(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"),  ['user_id' => auth()->id()]);
             $ninjavanHelper->setQuoteData($quoteData);
             $ninjavanCharges = NinjaVanHelper::calculateShippingCharge($total_weight, $value['state']);
             // Store only the provider fees (no base charges)

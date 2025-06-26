@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Helpers;
-
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
+
 
 class NinjaVanHelper
 {
@@ -174,15 +173,22 @@ class NinjaVanHelper
     $totalQty = $this->quoteData['total_qty'];
     $categories = $this->quoteData['categories'];
     $getCartItems = $this->quoteData['getCartItems'];
+    $user = \App\Models\User::find($this->quoteData['user_id']);
 
-    $pickup = $pickupAddresses[0]; // assuming only 1 pickup address
+    $pickup = $pickupAddresses[0];
     $shop_fulladdress = $pickup['shop_fulladdress'] ?? '';
-
-    // Break down full address by commas
     $addressParts = explode(',', $shop_fulladdress);
-
-    // Clean up each part (remove spaces)
     $addressParts = array_map('trim', $addressParts);
+    $productIds = array_column($getCartItems, 'product_id');
+
+    $productNames = \App\Models\Product::whereIn('id', $productIds)
+        ->pluck('product_name', 'id') // [product_id => name]
+        ->toArray();
+
+    $orderedProductNames = array_map(function ($item) use ($productNames) {
+        return $productNames[$item['product_id']] ?? 'Unknown Product';
+    }, $getCartItems);
+    $itemDescription = 'Order #' . $getCartItems[0]['id'] . ' - ' . implode(', ', $orderedProductNames);
 
     // Assign based on expected format:
     // 0 - address1, 1 - city, 2 - state, 3 - country, 4 - postCode
@@ -237,7 +243,7 @@ class NinjaVanHelper
         'dimensions' => ['weight' => (float)$totalWeight],
         'items' => [
             [
-                'item_description' => 'Order #' . $getCartItems[0]['id'] . ' - ' . implode(', ', array_column($getCartItems, 'product_name')),
+                'item_description' => 'Order #' . $getCartItems[0]['id'] . ' - ' . implode(', ', $orderedProductNames),
                 'quantity' => $totalQty,
                 'is_dangerous_good' => false
             ],   
@@ -252,7 +258,7 @@ class NinjaVanHelper
         ],
         'service_type' => 'Marketplace',
         'service_level' => $this->quoteData['service_level'] ?? 'Standard',
-        'requested_tracking_number' => 'TEST' . substr(now()->timestamp, 0, 5),
+        'requested_tracking_number' => Str::upper(Str::random(3)) . substr(now()->timestamp, 0, 6),
         'reference' => ['merchant_order_number' => $getCartItems[0]['session_id']],
         'from' => [
             'name' => $pickupAddresses[0]['shop_name'],
@@ -263,7 +269,7 @@ class NinjaVanHelper
         'to' => [
             'name' => $selectedDeliveryAddress['name'],
             'phone_number' => $selectedDeliveryAddress['mobile'],
-            'email' => $selectedDeliveryAddress['email'] ?? '',
+            'email' => $user['email'],
             'address' => $recipientAddress
         ],
         'parcel_job' => $parcelJob,
@@ -352,7 +358,7 @@ public function getQuotation(array $quoteData,$orderDetails)
         ],
         "dimensions" => ['weight' => (float) $order->total_weight],
         "items" => [
-            "item_description" => "Order #" . $orderDetails->orderId . " - " . $order->order_items()->pluck('product_name')->implode(', '),
+            'item_description' => 'Order #' . $orderDetails->orderId . ' - ' . implode(', ', array_column($orderDetails->getCartItems, 'product_name')),
             "quantity" => $orderDetails->total_qty,
             "is_dangerous_good" => false,
         ],

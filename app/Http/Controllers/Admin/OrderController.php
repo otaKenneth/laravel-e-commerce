@@ -344,29 +344,28 @@ class OrderController extends Controller
     }
 
     private function productForNinjaVanDelivery($data) {
-    $orderDetails = \App\Models\OrdersProduct::find($data['order_item_id']);
+        $orderDetails = \App\Models\OrdersProduct::find($data['order_item_id']);
 
-    $this->ninjaVanAPI_Helper = new NinjaVanHelper;
+        $this->ninjaVanAPI_Helper = new NinjaVanHelper;
 
-    // Step 1: Get quotation (optional, if NinjaVan requires it first)
-    $all_ninjavan_data = $this->ninjaVanAPI_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
+        $all_ninjavan_data = $this->ninjaVanAPI_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
 
-    if (isset($all_ninjavan_data['errors'])) {
-        return redirect()->back()->withErrors($all_ninjavan_data['errors']);
-    }
+        if (isset($all_ninjavan_data['errors'])) {
+            return redirect()->back()->withErrors($all_ninjavan_data['errors']);
+        }
 
-    // Step 2: Push the order to NinjaVan
-    $pushResult = \App\Models\Order::pushOrder_to_NinjaVan($all_ninjavan_data, $orderDetails->order_id);
+        // Step 2: Push the order to NinjaVan
+        $pushResult = \App\Models\Order::pushOrder_to_NinjaVan($all_ninjavan_data, $orderDetails->order_id);
 
-    if (isset($pushResult['errors'])) {
-        Session::put('error_message', collect($pushResult['errors'])->pluck('message')->toArray());
-        return redirect()->back();
-    } else {
-        $orderDetails->courier_name = $pushResult['data']['tracking_url'] ?? 'NinjaVan';
-        $orderDetails->tracking_number = $pushResult['data']['tracking_number'];
-        $orderDetails->save();
-    }
-}
+        if (isset($pushResult['errors'])) {
+            Session::put('error_message', collect($pushResult['errors'])->pluck('message')->toArray());
+            return redirect()->back();
+        } else {
+            $orderDetails->courier_name = $pushResult['data']['tracking_url'] ?? 'NinjaVan';
+            $orderDetails->tracking_number = $pushResult['data']['tracking_number'];
+            $orderDetails->save();
+        }
+    }   
 
     private function paymongoRefundOrder($orderId) {
         $order = \App\Models\Order::find($orderId)->first();
