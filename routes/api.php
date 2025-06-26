@@ -81,4 +81,7 @@ Route::namespace('App\Http\Controllers\API')->group(function() { // Route Groups
     Route::post('/paymongo/webhook', 'APIController@paymongoPaymentStatus');
 
     Route::post('/lalamove/webhook', 'APIController@lalamoveDeliveryStatus');
+
+
+    Route::get('index', 'IndexController@index'); // API Endpoint: GET http://
 });
