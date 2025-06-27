@@ -53,11 +53,68 @@ function addSubscriber() {
     });
 }
 
+// infinite scroll for vendors page
+let vendorsPage = 1;
+let vendorsPageLoading = false;
+
 // infinite scroll for products page
 let productPage = 1;
 let productPageLoading = false;
 let productObserver;
-let lastPage = null; 
+let lastPage = null;
+ 
+function initializeObserver() {
+    let target = document.getElementById("load-more-merchants-trigger");
+
+    if (!target) return; 
+
+    observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                console.log("intersecting");
+                loadMoreVendors();
+            }
+        });
+    }, { threshold: 1.0 });
+
+    observer.observe(target);
+}
+
+function loadMoreVendors() {
+    if (vendorsPageLoading) return;
+    vendorsPageLoading = true;
+
+    document.getElementById("merchant-loading-indicator").style.display = "flex";
+
+    fetch("?page=" + vendorsPage, {
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.html.trim() === "") {
+            if (observer) observer.disconnect();
+            document.getElementById("no-more-merchants").style.display = "block";
+
+        } else {
+            let newVendors = data.html;
+            document.getElementById("vendor-list-1").insertAdjacentHTML("beforeend", newVendors);
+
+            if (data.nextPage) {
+                vendorsPage = data.nextPage;
+
+            } else {
+                if (observer) observer.disconnect();
+                document.getElementById("no-more-merchants").style.display = "block";
+
+            }
+        }
+    })
+    .catch(error => console.error("Error loading vendors:", error))
+    .finally(() => {
+        vendorsPageLoading = false
+        document.getElementById("merchant-loading-indicator").style.display = "none";
+    });
+}
 
 function getInitialLastPage() {
     const lastPageMeta = document.querySelector('meta[name="last-page"]');

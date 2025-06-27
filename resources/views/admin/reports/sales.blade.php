@@ -62,9 +62,8 @@
                     @else
                         Merchant Finances
                     @endif
-                        
                     </h3>
-
+                    
                     <div class="card">
                         <form name="admin.sales_transaction_form" method="post" action="{{ url('admin/finance/income_statement') }}">
                             @csrf
@@ -125,7 +124,12 @@
                                 </div>
                             </div>
                             @if ($auth_type !== 'vendor')
-                                <input type="submit" value="Save">
+                            <button type="button" class="btn btn-success generateWeeklyReport">
+                                Generate & Save Weekly Report
+                            </button>
+                            @endif
+                            @if ($auth_type !== 'vendor')
+                                <input type="button" value="Save" class="btn btn-primary saveWeeklyReport">
                             @endif
                         </form>
                     </div>
@@ -143,8 +147,16 @@
         </footer>        
         <!-- partial -->
     </div>
+    {{-- <script>
+    const breakdown = @json($productBreakdown);
+     // Calculate the total revenue from the breakdown
+    const totalRevenue = breakdown.reduce((sum, item) => sum + parseFloat(item.total_revenue), 0);
+
+    console.log("Revenue Breakdown:", breakdown);
+    console.log("Total Revenue: ₱" + totalRevenue.toLocaleString());
 
 
-
-    
+    const releaseItems = @json($release_items_by_date);
+    console.log("Release Items Breakdown:", releaseItems);
+</script> --}}
 @endsection
