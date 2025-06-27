@@ -994,6 +994,21 @@ $(document).ready(function() {
         $('input[name^="preferred_address"]:checked').trigger('change');
     });
 
+    $(document).ready(function () {
+        // Show/hide NinjaVan options on shipping method change
+        $('input[name="shipping_method"]').on('change', function () {
+            if ($(this).val() === 'ninjavan') {
+                $('#ninjavan-options').removeClass('hidden');
+            } else {
+                $('#ninjavan-options').addClass('hidden');
+            }
+        });
+
+        if ($('input[name="shipping_method"]:checked').val() === 'ninjavan') {
+            $('#ninjavan-options').removeClass('hidden');
+        }
+    });
+
     // Calculate the Grand Total, Shipping Charges and Coupon Amount and displaying them depending on the chosen Delivery Address in front/products/checkout.blade.php
     $('input[name^="preferred_address"]').bind('change', function() {
         var shipping_charges = 0 ; // using Custom HTML data attributes (data-*)
@@ -1001,25 +1016,11 @@ $(document).ready(function() {
         var coupon_amount    = parseFloat($(this).attr('coupon_amount'));    // using Custom HTML data attributes (data-*)// using Custom HTML data attributes (data-*)
         var shipping_method = $('input[name="shipping_method"]:checked').val();
 
-        // Dynamically fetch the correct shipping charge based on selected method
+
         if (shipping_method === 'lalamove') {
-            shipping_charges = parseFloat($(this).attr('lalamove_shipping') || 0);
+        shipping_charges = parseFloat($(this).attr('lalamove_shipping') || 0);
         } else if (shipping_method === 'ninjavan') {
             shipping_charges = parseFloat($(this).attr('ninjavan_shipping') || 0);
-            $(document).ready(function () {
-            $('input[name="shipping_method"]').on('change', function () {
-                if ($(this).val() === 'ninjavan') {
-                    $('#ninjavan-options').removeClass('hidden');
-                } else {
-                    $('#ninjavan-options').addClass('hidden');
-                }
-            });
-
-            // Show on page load if already selected
-            if ($('input[name="shipping_method"]:checked').val() === 'ninjavan') {
-                $('#ninjavan-options').removeClass('hidden');
-            }
-    });
         } else if (shipping_method === 'j&t') {
             shipping_charges = 150;
         } else if (shipping_method === 'pickup') {
@@ -1112,6 +1113,7 @@ $(document).ready(function() {
         let data = {
             'address_id': $('.checkout-form input[name^="preferred_address"]:checked').val(),
             'shipping_method': $('.checkout-form input[name^="shipping_method"]:checked').val(),
+            'ninjavan_service_level': $('.checkout-form input[name^="ninjavan_service_level"]:checked').val(),
             'payment_gateway': $('.checkout-form input[name^="payment_gateway"]:checked').val(),
             'accept': true
         };

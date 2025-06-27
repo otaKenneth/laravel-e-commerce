@@ -257,7 +257,7 @@ class NinjaVanHelper
             'seller_company_name' => $pickupAddresses[0]['shop_name'],
         ],
         'service_type' => 'Marketplace',
-        'service_level' => $this->quoteData['service_level'] ?? 'Standard',
+        'service_level' => $this->quoteData['service_level'],
         'requested_tracking_number' => Str::upper(Str::random(3)) . substr(now()->timestamp, 0, 6),
         'reference' => ['merchant_order_number' => $getCartItems[0]['session_id']],
         'from' => [
@@ -277,6 +277,11 @@ class NinjaVanHelper
 
     // Log the payload for debugging
     \Log::info("NinjaVan API Payload: " . json_encode($payload));
+
+    // Get access token
+    $accessTokenResponse = $this->getAccessToken();
+    $accessToken = $accessTokenResponse->access_token;
+    $this->bearer_token = $accessToken;
 
     // Send the request to NinjaVan API
     $response = $this->processNinjaVan($payload);
@@ -375,7 +380,7 @@ public function getQuotation(array $quoteData,$orderDetails)
             'seller_company_name' => $vendor->vendorbusinessdetails->shop_name,
         ],
         'service_type' => 'Marketplace',
-        'service_level' => $orderDetails->service_level ?? 'Standard',
+        'service_level' => $orderDetails->service_level,
         'requestedTrackingNumber' => 'TEST-' . now()->timestamp,
         'reference' => ['merchant_order_number' => $orderDetails->orderId],
         'from' => [
@@ -448,101 +453,6 @@ public function processNinjaVan($body)
 
     return json_decode($response);
 }
-
-
-    
-//     public function createOrder(){
-//     $url = config('services.ninjavan.api_url') . "/4.2/orders";
-//     $accessToken = config('services.ninjavan.access_token');
-
-//     $payload = [
-//         "reference" => [
-//             "merchant_order_number" => "TESTORDER-" . now()->timestamp
-//         ],
-//         "marketplace" => [
-//         "seller_id" => "Kapiton-Marketplace",
-//         "seller_company_name"=> "John Doe Shop"
-//     ],
-//         "service_type" => "Marketplace",
-//         "service_level" => "Standard", // ✅ Should be a string
-//         "requested_tracking_number" => "TEST1234",
-//         "from" => [
-//             "name" => "Cellphone Range IU",
-//             "phone_number" => "09653265656",
-//             "email" => "support@cellphonesrange.com.ph",
-//             "address" => [
-//                 "address1" => "#12 Test Address",
-//                 "city" => "Mandaluyong City",
-//                 "state" => "Metro Manila",
-//                 "country" => "PH",
-//                 "postcode" => "1500"
-//             ]
-//         ],
-//         "to" => [
-//             "name" => "Adrian Nebasa",
-//             "phone_number" => "+639452073341",
-//             "email" => "adrian@example.com",
-//             "address" => [
-//                 "address1" => "Sunshine City Plaza 100",
-//                 "city" => "Mandaluyong City",
-//                 "state" => "Metro Manila",
-//                 "country" => "PH",
-//                 "postcode" => "1500"
-//             ]
-//         ],
-//         "parcel_job" => [
-//             "pickup_date" => "2025-06-18",
-//             "pickup_timeslot" => [
-//                 "start_time" => "09:00",
-//                 "end_time" => "12:00",
-//                 "timezone" => "Asia/Manila"
-//             ],
-//             "delivery_start_date" => "2025-06-19",
-//             "delivery_timeslot" => [
-//                 "start_time" => "15:00",
-//                 "end_time" => "18:00",
-//                 "timezone" => "Asia/Manila"
-//             ],
-//             "dimensions" => [
-//                 "weight" => 1
-//             ],
-//             "items" => [
-//                 [
-//                     "item_description" => "Smartphone 11",
-//                     "quantity" => 1,
-//                     "is_dangerous_good" => false
-//                 ]
-//             ]
-//         ]
-//     ];
-//        try {
-//     // Load config values
-//     $ninjavanConfig = config('app.ninjavan');
-
-//     $accessToken = $ninjavanConfig['access_token'];
-//     $baseUrl = rtrim($ninjavanConfig['api_url'], '/'); // Ensure no trailing slash
-//     $orderUrl = $baseUrl . '/4.2/orders';
-
-//     // Send the request to NinjaVan
-//     $response = Http::withToken($accessToken)
-//         ->timeout(15)
-//         ->post($orderUrl, $payload);
-
-//     // Check response
-//     if ($response->successful()) {
-//         $responseData = $response->json();
-//         Log::info("NinjaVan Test Order Created", $responseData);
-//         return $responseData;
-//     } else {
-//         Log::warning("NinjaVan responded with error", ['status' => $response->status(), 'body' => $response->body()]);
-//         return ['error' => $response->body()];
-//     }
-
-// } catch (\Exception $e) {
-//     Log::error("NinjaVan Order Creation Failed", ['error' => $e->getMessage()]);
-//     return ['error' => $e->getMessage()];
-// }
-// }
 
 public function getAccessToken()
     {

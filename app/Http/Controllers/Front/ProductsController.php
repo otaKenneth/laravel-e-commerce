@@ -957,6 +957,7 @@ class ProductsController extends Controller
         $selectedDeliveryAddress = null;
         $shipping_charges = 0;
         $shipping_method = null;
+        $service_level = null;
         
         // Calculating the Shipping Charges of every one of the user's Delivery Addresses (depending on the 'country' of the Delivery Address)
         foreach ($deliveryAddresses as $key => $value) {
@@ -968,7 +969,8 @@ class ProductsController extends Controller
             
             $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
             $lalamoveCharges = $this->lalamoveAPI_Helper->total_delivery_fee + $baseShippingCharges;
-            $quoteData = array_merge(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"),  ['user_id' => auth()->id()]);
+            $ninjavan_service_level = $request->ninjavan_service_level;
+            $quoteData = array_merge(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"), ['user_id' => auth()->id(), 'service_level' => $ninjavan_service_level]);
             $ninjavanHelper->setQuoteData($quoteData);
             session(['ninjavan_quote_data' => $quoteData]);
             $ninjavanCharges = NinjaVanHelper::calculateShippingCharge($total_weight, $value['state']);
@@ -982,6 +984,7 @@ class ProductsController extends Controller
                 if ($request->shipping_method == 'ninjavan') {
                     $shipping_charges = $ninjavanCharges;
                     $shipping_method = 'ninjavan';
+                    $service_level = $ninjavan_service_level;
                 } elseif ($request->shipping_method == 'lalamove') {
                     $shipping_charges = $lalamoveCharges;
                     $shipping_method = 'lalamove';
@@ -1001,7 +1004,8 @@ class ProductsController extends Controller
     }
                 \Log::info("Shipping method selected", [
                     'method' => $request->shipping_method,
-                    'address_id' => $request->address_id ?? 'N/A'
+                    'address_id' => $request->address_id ?? 'N/A',
+                    'service_level' => $ninjavan_service_level ?? 'N/A'
                 ]);
             $deliveryAddresses[$key]['selected'] = true;
             $deliveryAddresses[$key]['selected_shipping_method'] = $shipping_method;
@@ -1207,6 +1211,7 @@ class ProductsController extends Controller
             $order->save(); // INSERT data INTO the `orders` table
             // 2. Save to `order_ninjavan` table
             $quoteData = session('ninjavan_quote_data'); // retrieve quoteData from session
+            
 
             if ($order->shipping_method === 'ninjavan' && $quoteData) {
                 $getCartItems = $quoteData['getCartItems'];
@@ -1228,7 +1233,7 @@ class ProductsController extends Controller
 
                 $orderNinjaVan->order_id                = $order->id;
                 $orderNinjaVan->merchant_order_number   = $getCartItems[0]['session_id'] ?? $order->id;
-                $orderNinjaVan->service_level           = $quoteData['service_level']?? 'Standard'; 
+                $orderNinjaVan->service_level           = $quoteData['service_level'] ?? $request->ninjavan_service_level ; 
                 $orderNinjaVan->pickup_date             = now()->format('Y-m-d');
                 $orderNinjaVan->pickup_time_start       = '09:00';
                 $orderNinjaVan->pickup_time_end         = '12:00';
