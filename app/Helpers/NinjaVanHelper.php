@@ -278,11 +278,6 @@ class NinjaVanHelper
     // Log the payload for debugging
     \Log::info("NinjaVan API Payload: " . json_encode($payload));
 
-    // Get access token
-    $accessTokenResponse = $this->getAccessToken();
-    $accessToken = $accessTokenResponse->access_token;
-    $this->bearer_token = $accessToken;
-
     // Send the request to NinjaVan API
     $response = $this->processNinjaVan($payload);
 

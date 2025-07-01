@@ -60,19 +60,12 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
     Route::post('logout-user', 'APIController@logoutUser');
 
 
-    Route::post('/webhook/ninjavan', [APIController::class, 'receiveNinjaVanWebhook']);
+    Route::post('/webhook/ninjavan', [APIController::class, 'ninjaVanWebhook']);
     Route::post('/webhook/ninjavan_test', [APIController::class, 'handleNinjavan']);
     Route::get('/test-ninjavan-webhook', [APIController::class, 'testNinjaVanWebhook']);
     Route::get('/test-ninjavan-order', [App\Http\Controllers\Front\ProductsController::class, 'testNinjaVanOrder']);
     Route::get('/test-ninjavan-token', [App\Http\Controllers\Front\ProductsController::class, 'testToken']);
-    Route::post('/generate-ninjavan-hmac', function (Request $request) {
-        $payload = $request->input('payload');
-        $secret = config('app.ninjavan.client_key');
-
-        $signature = base64_encode(hash_hmac('sha256', $payload, $secret, true));
-
-        return response()->json(['signature' => $signature]);
-    });
+    Route::post('/webhook/ninjavan_test', [APIController::class, 'receiveNinjaVanWebhook']);
 
 
 

@@ -969,8 +969,7 @@ class ProductsController extends Controller
             
             $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
             $lalamoveCharges = $this->lalamoveAPI_Helper->total_delivery_fee + $baseShippingCharges;
-            $ninjavan_service_level = $request->ninjavan_service_level;
-            $quoteData = array_merge(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"), ['user_id' => auth()->id(), 'service_level' => $ninjavan_service_level]);
+            $quoteData = array_merge(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"), ['user_id' => auth()->id()]);
             $ninjavanHelper->setQuoteData($quoteData);
             session(['ninjavan_quote_data' => $quoteData]);
             $ninjavanCharges = NinjaVanHelper::calculateShippingCharge($total_weight, $value['state']);
@@ -984,7 +983,6 @@ class ProductsController extends Controller
                 if ($request->shipping_method == 'ninjavan') {
                     $shipping_charges = $ninjavanCharges;
                     $shipping_method = 'ninjavan';
-                    $service_level = $ninjavan_service_level;
                 } elseif ($request->shipping_method == 'lalamove') {
                     $shipping_charges = $lalamoveCharges;
                     $shipping_method = 'lalamove';
@@ -1233,7 +1231,7 @@ class ProductsController extends Controller
 
                 $orderNinjaVan->order_id                = $order->id;
                 $orderNinjaVan->merchant_order_number   = $getCartItems[0]['session_id'] ?? $order->id;
-                $orderNinjaVan->service_level           = $quoteData['service_level'] ?? $request->ninjavan_service_level ; 
+                $orderNinjaVan->service_level           = 'STANDARD' ; 
                 $orderNinjaVan->pickup_date             = now()->format('Y-m-d');
                 $orderNinjaVan->pickup_time_start       = '09:00';
                 $orderNinjaVan->pickup_time_end         = '12:00';

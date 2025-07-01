@@ -166,21 +166,6 @@
                                             <label for="ninjavan" style="cursor:pointer;">
                                                 <strong>NinjaVan</strong>
                                             </label>
-
-                                            <!-- Options -->
-                                            <div
-                                                id="ninjavan-options"
-                                                class="hidden"
-                                                style="margin-top: 15px;"
-                                            >
-                                                <h6><strong>NinjaVan Service Level:</strong></h6>
-                                                <div class="ninjavan-service-levels">    
-                                                    <label><input type="radio" name="ninjavan_service_level" value="Standard" checked> Standard</label><br>
-                                                    <label><input type="radio" name="ninjavan_service_level" value="Sameday"> Same Day</label><br>
-                                                    <label><input type="radio" name="ninjavan_service_level" value="Express"> Express</label><br>
-                                                    <label><input type="radio" name="ninjavan_service_level" value="Nextday"> Next Day</label><br>
-                                                </div>
-                                            </div>
                                             <br>
                                             <input
                                                 type="radio"

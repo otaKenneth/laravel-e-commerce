@@ -994,21 +994,6 @@ $(document).ready(function() {
         $('input[name^="preferred_address"]:checked').trigger('change');
     });
 
-    $(document).ready(function () {
-        // Show/hide NinjaVan options on shipping method change
-        $('input[name="shipping_method"]').on('change', function () {
-            if ($(this).val() === 'ninjavan') {
-                $('#ninjavan-options').removeClass('hidden');
-            } else {
-                $('#ninjavan-options').addClass('hidden');
-            }
-        });
-
-        if ($('input[name="shipping_method"]:checked').val() === 'ninjavan') {
-            $('#ninjavan-options').removeClass('hidden');
-        }
-    });
-
     // Calculate the Grand Total, Shipping Charges and Coupon Amount and displaying them depending on the chosen Delivery Address in front/products/checkout.blade.php
     $('input[name^="preferred_address"]').bind('change', function() {
         var shipping_charges = 0 ; // using Custom HTML data attributes (data-*)
@@ -1113,7 +1098,6 @@ $(document).ready(function() {
         let data = {
             'address_id': $('.checkout-form input[name^="preferred_address"]:checked').val(),
             'shipping_method': $('.checkout-form input[name^="shipping_method"]:checked').val(),
-            'ninjavan_service_level': $('.checkout-form input[name^="ninjavan_service_level"]:checked').val(),
             'payment_gateway': $('.checkout-form input[name^="payment_gateway"]:checked').val(),
             'accept': true
         };
