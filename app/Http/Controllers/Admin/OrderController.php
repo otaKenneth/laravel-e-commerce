@@ -320,8 +320,12 @@ class OrderController extends Controller
         // dd('Inside Automatic Shipping Process if statement in updateOrderStatus() method in Admin/OrderController.php<br>');
         // echo 'Inside Automatic Shipping Process if statement in updateOrderStatus() method in Admin/OrderController.php<br>';
         // exit;
+        $this->ninjaVanAPI_Helper = new NinjaVanHelper;
         $all_lalamove_data = $this->lalamoveAPI_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
+        $all_ninjavan_data = $this->ninjaVanAPI_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
 
+        // dd($all_lalamove_data);
+        // dd($all_ninjavan_data);
         if (is_object($all_lalamove_data) && isset($all_lalamove_data->quotation->errors)) {
             return redirect()->back()->withErrors($all_lalamove_data->quotation->errors);
         } elseif (is_array($all_lalamove_data) && isset($all_lalamove_data['errors'])) {
@@ -343,15 +347,13 @@ class OrderController extends Controller
         }
     }
 
-   private function productForNinjaVanDelivery($data)
-{
-    $orderDetails = \App\Models\OrdersProduct::find($data['order_item_id']);
-    $order = $orderDetails->order;
-    $vendor = Auth::guard('admin')->user();
+   private function productForNinjaVanDelivery($data){
+        $orderDetails = \App\Models\OrdersProduct::find($data['order_item_id']);
 
-    $ninjaVanHelper = new \App\Helpers\NinjaVanHelper;
-    $quotationResult = $ninjaVanHelper->getQuotation($orderDetails, $vendor->id);
+    $this->ninjaVanAPI_Helper = new NinjaVanHelper;
+    $quotationResult = $this->ninjaVanAPI_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
 
+    dd($quotationResult);
     if (
         (is_object($quotationResult) && isset($quotationResult->quotation['errors'])) ||
         (is_array($quotationResult) && isset($quotationResult['errors'])) ||
@@ -359,13 +361,12 @@ class OrderController extends Controller
     ) {
         $errors = is_object($quotationResult) ? $quotationResult->quotation['errors'] : $quotationResult['errors'];
         return redirect()->back()->withErrors($errors ?? ['Something went wrong. Please contact the administrator.']);
-    }
-
+    }else{
     $pushResult = \App\Models\Order::pushOrder_to_NinjaVan($quotationResult, $order->id);
-
     if (isset($pushResult['errors'])) {
         Session::put('error_message', collect($pushResult['errors'])->pluck('message')->toArray());
         return redirect()->back();
+    }
     }
 
     $orderDetails->courier_name = $pushResult['data']['tracking_url'] ?? 'NinjaVan';

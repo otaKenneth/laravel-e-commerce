@@ -243,7 +243,7 @@ class NinjaVanHelper
         'dimensions' => ['weight' => (float)$totalWeight],
         'items' => [
             [
-                'item_description' => 'Order #' . $getCartItems[0]['id'] . ' - ' . implode(', ', $orderedProductNames),
+                'item_description' => $itemDescription,
                 'quantity' => $totalQty,
                 'is_dangerous_good' => false
             ],   
@@ -302,7 +302,7 @@ public function getQuotation($orderDetails, $vendor_id)
         'city' => $vendor->vendorbusinessdetails->shop_city,
         'area' => $vendor->vendorbusinessdetails->shop_state,
         'state' => $vendor->vendorbusinessdetails->shop_state,
-        'country' => $vendor->vendorbusinessdetails->country,
+        'country' => $vendor->vendorbusinessdetails->shop_country,
         'postCode' => $vendor->vendorbusinessdetails->shop_pincode,
         'coordinates' => [
             'lat' => (string) $vendor->vendorbusinessdetails->lat,
@@ -324,7 +324,6 @@ public function getQuotation($orderDetails, $vendor_id)
         ],
     ];
 
-    $productName = optional($orderDetails->order_product->product)->product_name;
 
     $quotation = [
         'marketplace' => [
@@ -342,7 +341,7 @@ public function getQuotation($orderDetails, $vendor_id)
             'address' => $vendorAddress,
         ],
         'to' => [
-            'name' => $user->name,
+            'name' => trim(($user->first_name) . ' ' . ($user->last_name)),
             'phone_number' => $user->mobile,
             'email' => $user->email,
             'address' => $recipientAddress,
@@ -367,7 +366,7 @@ public function getQuotation($orderDetails, $vendor_id)
             ],
             'dimensions' => ['weight' => (float) $order->total_weight],
             'items' => [[
-                'item_description' => 'Order #' . $order->id . ' - ' . $productName,
+                'item_description' => 'Order #' . $order->id,
                 'quantity' => $orderDetails->product_qty,
                 'is_dangerous_good' => false,
             ]],
