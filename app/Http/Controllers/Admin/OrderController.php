@@ -362,17 +362,19 @@ class OrderController extends Controller
         $errors = is_object($quotationResult) ? $quotationResult->quotation['errors'] : $quotationResult['errors'];
         return redirect()->back()->withErrors($errors ?? ['Something went wrong. Please contact the administrator.']);
     }else{
-    $pushResult = \App\Models\Order::pushOrder_to_NinjaVan($quotationResult, $order->id);
+    $pushResult = \App\Models\Order::pushOrder_to_NinjaVan($quotationResult, $orderDetails->id);
     if (isset($pushResult['errors'])) {
         Session::put('error_message', collect($pushResult['errors'])->pluck('message')->toArray());
         return redirect()->back();
     }
-    }
+
 
     $orderDetails->courier_name = $pushResult['data']['tracking_url'] ?? 'NinjaVan';
     $orderDetails->tracking_number = $pushResult['data']['tracking_number'] ?? null;
     $orderDetails->save();
-} 
+    
+    }   
+}
 
 
  

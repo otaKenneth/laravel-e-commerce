@@ -164,8 +164,6 @@ class NinjaVanHelper
     public function setQuoteData(array $data)
 {
     $this->quoteData = $data;
-    \Log::info("NinjaVan Quote Data: " . json_encode($this->quoteData));
-
     // Extract data from the NinjaVan Quote Data
     $selectedDeliveryAddress = $this->quoteData['selectedDeliveryAddress'];
     $pickupAddresses = $this->quoteData['pickupAddresses'];
@@ -279,7 +277,8 @@ class NinjaVanHelper
     \Log::info("NinjaVan API Payload: " . json_encode($payload));
 
     // Send the request to NinjaVan API
-    $response = $this->processNinjaVan($payload);
+    // $response = $this->processNinjaVan($payload);
+    $response[] = $this->processNinjaVan(json_encode(['data' => $payload]));
 
     // Save the response if needed
     $this->ninjaVanResponse = $response;
@@ -290,11 +289,13 @@ class NinjaVanHelper
 public function getQuotation($orderDetails, $vendor_id)
 {
     $order = \App\Models\Order::find($orderDetails->order_id);
-    $vendor_model = new \App\Models\Vendor;
-    $user_model = new \App\Models\User;
+    $vendor = \App\Models\Vendor::with('vendorbusinessdetails')->find($vendor_id);
+    $user = \App\Models\User::find($order->user_id);
 
-    $vendor = $vendor_model->with('vendorbusinessdetails')->find($vendor_id);
-    $user = $user_model->find($order->user_id);
+    if (empty($vendor->vendorbusinessdetails['lat']) || empty($vendor->vendorbusinessdetails['long'])) {
+        \Log::info("Vendor Business Details: " . json_encode($vendor->vendorbusinessdetails));
+        return (object) ['errors' => ['message' => 'Latitude and Longitude for Vendor Business Detail is required.']];
+    }
 
     $vendorAddress = [
         'address1' => $vendor->vendorbusinessdetails->shop_address,
@@ -302,7 +303,7 @@ public function getQuotation($orderDetails, $vendor_id)
         'city' => $vendor->vendorbusinessdetails->shop_city,
         'area' => $vendor->vendorbusinessdetails->shop_state,
         'state' => $vendor->vendorbusinessdetails->shop_state,
-        'country' => $vendor->vendorbusinessdetails->shop_country,
+        'country' => $vendor->vendorbusinessdetails->country,
         'postCode' => $vendor->vendorbusinessdetails->shop_pincode,
         'coordinates' => [
             'lat' => (string) $vendor->vendorbusinessdetails->lat,
@@ -324,6 +325,11 @@ public function getQuotation($orderDetails, $vendor_id)
         ],
     ];
 
+    // Assume pickup_date, pickup_start_time, pickup_end_time are stored in orderDetails or passed elsewhere
+    $pickupDate = $orderDetails->pickup_date ?? now()->format('Y-m-d');
+    $pickupStartTime = $orderDetails->pickup_start_time ?? '09:00';
+    $pickupEndTime = $orderDetails->pickup_end_time ?? '12:00';
+    $deliveryDate = now()->addDays(3)->format('Y-m-d');
 
     $quotation = [
         'marketplace' => [
@@ -341,7 +347,7 @@ public function getQuotation($orderDetails, $vendor_id)
             'address' => $vendorAddress,
         ],
         'to' => [
-            'name' => trim(($user->first_name) . ' ' . ($user->last_name)),
+            'name' => trim($user->first_name . ' ' . $user->last_name),
             'phone_number' => $user->mobile,
             'email' => $user->email,
             'address' => $recipientAddress,
@@ -350,18 +356,18 @@ public function getQuotation($orderDetails, $vendor_id)
             'is_pickup_required' => true,
             'pickup_service_type' => 'Scheduled',
             'pickup_service_level' => 'Standard',
-            'pickup_date' => now()->format('Y-m-d'),
+            'pickup_date' => $pickupDate,
             'pickup_timeslot' => [
-                'start_time' => '09:00',
-                'end_time' => '12:00',
+                'start_time' => $pickupStartTime,
+                'end_time' => $pickupEndTime,
                 'timezone' => 'Asia/Manila',
             ],
             'pickup_instructions' => 'Pickup with care!',
             'delivery_instructions' => 'Leave in power riser if recipient unavailable.',
-            'delivery_start_date' => now()->addDays(3)->format('Y-m-d'),
+            'delivery_start_date' => $deliveryDate,
             'delivery_timeslot' => [
                 'start_time' => '09:00',
-                'end_time' => '12:00',
+                'end_time' => '18:00',
                 'timezone' => 'Asia/Manila',
             ],
             'dimensions' => ['weight' => (float) $order->total_weight],
@@ -385,6 +391,7 @@ public function getQuotation($orderDetails, $vendor_id)
         'response' => $response,
     ];
 }
+
 
 
  

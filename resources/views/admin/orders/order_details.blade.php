@@ -510,21 +510,33 @@
                                             <td>
                                                 
                                                 {{-- Note: The `order_statuses` table contains all kinds of order statuses (that can be updated by 'admin'-s ONLY in `orders` table) like: pending, in progress, shipped, canceled, ...etc. In `order_statuses` table, the `name` column can be: 'New', 'Pending', 'Canceled', 'In Progress', 'Shipped', 'Partially Shipped', 'Delivered', 'Partially Delivered' and 'Paid'. 'Partially Shipped': If one order has products from different vendors, and one vendor has shipped their product to the customer while other vendor (or vendors) didn't!. 'Partially Delivered': if one order has products from different vendors, and one vendor has shipped and DELIVERED their product to the customer while other vendor (or vendors) didn't!    // The `order_item_statuses` table contains all kinds of order statuses (that can be updated by both 'vendor'-s and 'admin'-s in `orders_products` table) like: pending, in progress, shipped, canceled, ...etc. --}}
-                                                <form action="{{ url('admin/update-order-item-status') }}" method="post">  {{-- can be updated by both 'vendor'-s and 'admin'-s. This is in contrast to 'Update Order Status' which can be updated by 'admin'-s ONLY --}}
-                                                    @csrf {{-- Preventing CSRF Requests: https://laravel.com/docs/9.x/csrf#preventing-csrf-requests --}}
-
+                                                <form action="{{ url('admin/update-order-item-status') }}" method="post">
+                                                    @csrf
                                                     <input type="hidden" name="order_item_id" value="{{ $product['id'] }}">
 
                                                     <select id="order_item_status" name="order_item_status" required>
                                                         <option value="">Select</option>
                                                         @foreach ($orderItemStatuses as $status)
-                                                            <option value="{{ $status['name'] }}"  @if (!empty($product['item_status']) && $product['item_status'] == $status['name']) selected @endif>{{ $status['name'] }}</option>
+                                                            <option value="{{ $status['name'] }}" @if (!empty($product['item_status']) && $product['item_status'] == $status['name']) selected @endif>{{ $status['name'] }}</option>
                                                         @endforeach
                                                     </select>
+                                                    @if(strtolower($orderDetails['shipping_method']) === 'ninjavan')
+                                                    <input type="date" name="pickup_date" value="{{ $orderDetails['pickup_date']}}" required>
+                                                    <select name="pickup_timeslot" required>
+                                                        <option value="">Select Timeslot</option>
+                                                        <option value="09:00-12:00">09:00 to 12:00</option>
+                                                        <option value="09:00-18:00">09:00 to 18:00</option>
+                                                        <option value="09:00-22:00">09:00 to 22:00</option>
+                                                        <option value="12:00-15:00">12:00 to 15:00</option>
+                                                        <option value="15:00-18:00">15:00 to 18:00</option>
+                                                        <option value="18:00-22:00">18:00 to 22:00</option>
+                                                    </select>
+                                                    @endif
+                                                    <input style="width: 110px" type="text" name="item_courier_name" id="item_courier_name" placeholder="Item Courier Name"
+                                                        @if (!empty($product['courier_name'])) value="{{ $product['courier_name'] }}" @endif>
 
-                                                    {{-- // Note: There are two types of Shipping Process: "manual" and "automatic". "Manual" is in the case like small businesses, where the courier arrives at the owner warehouse to to pick up the order for shipping, and the small business owner takes the shipment details (like courier name, tracking number, ...) from the courier, and inserts those details themselves in the Admin Panel when they "Update Order Status" Section (by an 'admin') or "Update Item Status" Section (by a 'vendor' or 'admin') (in admin/orders/order_details.blade.php). With "automatic" shipping process, we're integrating third-party APIs and orders go directly to the shipping partner, and the updates comes from the courier's end, and orders are automatically delivered to customers --}}
-                                                    <input style="width: 110px" type="text" name="item_courier_name"    id="item_courier_name"    placeholder="Item Courier Name"    @if (!empty($product['courier_name']))    value="{{ $product['courier_name'] }}"    @endif> {{-- This input field will only show up when 'Shipped' <option> is selected. Check admin/js/custom.js --}}
-                                                    <input style="width: 110px" type="text" name="item_tracking_number" id="item_tracking_number" placeholder="Item Tracking Number" @if (!empty($product['tracking_number'])) value="{{ $product['tracking_number'] }}" @endif> {{-- This input field will only show up when 'Shipped' <option> is selected. Check admin/js/custom.js --}}
+                                                    <input style="width: 110px" type="text" name="item_tracking_number" id="item_tracking_number" placeholder="Item Tracking Number"
+                                                        @if (!empty($product['tracking_number'])) value="{{ $product['tracking_number'] }}" @endif>
 
                                                     <button type="submit">Update</button>
                                                 </form>
