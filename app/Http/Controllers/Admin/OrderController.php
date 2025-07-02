@@ -43,7 +43,7 @@ class OrderController extends Controller
                 'orders_products' => function($query) use ($vendor_id) { // function () use ()     syntax: https://www.php.net/manual/en/functions.anonymous.php#:~:text=the%20use%20language%20construct     // 'orders_products' is the Relationship method name in Order.php model
                     $query->where('vendor_id', $vendor_id); // `vendor_id` in `orders_products` table
                 }
-            ])->where('order_status', '!=', 'Payment Pending')
+            ])
             ->orderBy('id', 'Desc')->get()->toArray();
             // dd($orders);
 
@@ -343,29 +343,38 @@ class OrderController extends Controller
         }
     }
 
-    private function productForNinjaVanDelivery($data) {
-        $orderDetails = \App\Models\OrdersProduct::find($data['order_item_id']);
+   private function productForNinjaVanDelivery($data)
+{
+    $orderDetails = \App\Models\OrdersProduct::find($data['order_item_id']);
+    $order = $orderDetails->order;
+    $vendor = Auth::guard('admin')->user();
 
-        $this->ninjaVanAPI_Helper = new NinjaVanHelper;
+    $ninjaVanHelper = new \App\Helpers\NinjaVanHelper;
+    $quotationResult = $ninjaVanHelper->getQuotation($orderDetails, $vendor->id);
 
-        $all_ninjavan_data = $this->ninjaVanAPI_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
+    if (
+        (is_object($quotationResult) && isset($quotationResult->quotation['errors'])) ||
+        (is_array($quotationResult) && isset($quotationResult['errors'])) ||
+        empty($quotationResult)
+    ) {
+        $errors = is_object($quotationResult) ? $quotationResult->quotation['errors'] : $quotationResult['errors'];
+        return redirect()->back()->withErrors($errors ?? ['Something went wrong. Please contact the administrator.']);
+    }
 
-        if (isset($all_ninjavan_data['errors'])) {
-            return redirect()->back()->withErrors($all_ninjavan_data['errors']);
-        }
+    $pushResult = \App\Models\Order::pushOrder_to_NinjaVan($quotationResult, $order->id);
 
-        // Step 2: Push the order to NinjaVan
-        $pushResult = \App\Models\Order::pushOrder_to_NinjaVan($all_ninjavan_data, $orderDetails->order_id);
+    if (isset($pushResult['errors'])) {
+        Session::put('error_message', collect($pushResult['errors'])->pluck('message')->toArray());
+        return redirect()->back();
+    }
 
-        if (isset($pushResult['errors'])) {
-            Session::put('error_message', collect($pushResult['errors'])->pluck('message')->toArray());
-            return redirect()->back();
-        } else {
-            $orderDetails->courier_name = $pushResult['data']['tracking_url'] ?? 'NinjaVan';
-            $orderDetails->tracking_number = $pushResult['data']['tracking_number'];
-            $orderDetails->save();
-        }
-    }   
+    $orderDetails->courier_name = $pushResult['data']['tracking_url'] ?? 'NinjaVan';
+    $orderDetails->tracking_number = $pushResult['data']['tracking_number'] ?? null;
+    $orderDetails->save();
+} 
+
+
+ 
 
     private function paymongoRefundOrder($orderId) {
         $order = \App\Models\Order::find($orderId)->first();

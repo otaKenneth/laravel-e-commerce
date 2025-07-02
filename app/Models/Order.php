@@ -288,8 +288,15 @@ class Order extends Model
     //NinjaVan Integration
     public static function pushOrder_to_Ninjavan($ninjavan_data, $order_id)
     {
-        $ninjavan_quotation = $ninjavan_data->quotation->data;
-        $quotation = $ninjavan_quotation->quotation;
+        // Fix: Access quotation as array if $ninjavan_data is an array, or decode object to array
+        if (is_object($ninjavan_data) && isset($ninjavan_data->quotation)) {
+            $quotation = $ninjavan_data->quotation['data']['quotation'];
+        } elseif (is_array($ninjavan_data) && isset($ninjavan_data['quotation'])) {
+            $quotation = $ninjavan_data['quotation']['data']['quotation'];
+        } else {
+            // fallback or throw exception
+            throw new \Exception('Invalid ninjavan_data structure: quotation not found');
+        }
 
         $payload = [
             'marketplace' => $quotation['marketplace'],
@@ -301,19 +308,10 @@ class Order extends Model
             ],
             'from' => $quotation['from'],
             'to' => $quotation['to'],
-            'parcel_job' => [
-                'pickup_date' => \Carbon\Carbon::createFromTimestamp($quotation['parcel']['pickup_date'])->format('Y-m-d'),
-                'pickup_timeslot' => $quotation['parcel']['pickup_timeslot'],
-                'pickup_instructions' => $quotation['parcel']['pickup_instructions'],
-                'delivery_instructions' => $quotation['parcel']['delivery_instructions'],
-                'delivery_start_date' => \Carbon\Carbon::createFromTimestamp($quotation['parcel']['delivery_start_date'])->format('Y-m-d'),
-                'delivery_timeslot' => $quotation['parcel']['delivery_timeslot'],
-                'dimensions' => $quotation['parcel']['dimensions'],
-                'items' => [$quotation['parcel']['items']], 
-            ],
+            'parcel_job' => $quotation['parcel_job'],
         ];
 
-        \Log::info('Final NinjaVan Payload', $payload);
+        \Log::info("Push Order to NinjaVan:", $payload);
 
         $accessToken = self::getAccessToken();
 
@@ -335,9 +333,8 @@ class Order extends Model
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
-        \Log::info("NinjaVan API Response ($httpCode)", ['response' => $response]);
+        \Log::info("NinjaVan API Response ({$httpCode})", ['response' => $response]);
 
         return json_decode($response, true);
     }
-
 }
