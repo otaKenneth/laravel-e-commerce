@@ -521,16 +521,18 @@
                                                         @endforeach
                                                     </select>
                                                     @if(strtolower($orderDetails['shipping_method']) === 'ninjavan')
-                                                    <input type="date" name="pickup_date" value="{{ $orderDetails['pickup_date']}}" required>
-                                                    <select name="pickup_timeslot" required>
-                                                        <option value="">Select Timeslot</option>
-                                                        <option value="09:00-12:00">09:00 to 12:00</option>
-                                                        <option value="09:00-18:00">09:00 to 18:00</option>
-                                                        <option value="09:00-22:00">09:00 to 22:00</option>
-                                                        <option value="12:00-15:00">12:00 to 15:00</option>
-                                                        <option value="15:00-18:00">15:00 to 18:00</option>
-                                                        <option value="18:00-22:00">18:00 to 22:00</option>
-                                                    </select>
+                                                    <input type="date" name="pickup_date" value="{{ $orderDetails['ninjavan_order']['pickup_date'] ?? '' }}" required>
+                                                        <select name="pickup_timeslot" required>
+                                                            <option value="">Select Timeslot</option>
+                                                            @php $selectedTimeslot = $orderDetails['ninjavan_order']['pickup_timeslot'] ?? '' @endphp
+                                                            <option value="09:00-12:00" @selected($selectedTimeslot === '09:00-12:00')>09:00 to 12:00</option>
+                                                            <option value="09:00-18:00" @selected($selectedTimeslot === '09:00-18:00')>09:00 to 18:00</option>
+                                                            <option value="09:00-22:00" @selected($selectedTimeslot === '09:00-22:00')>09:00 to 22:00</option>
+                                                            <option value="12:00-15:00" @selected($selectedTimeslot === '12:00-15:00')>12:00 to 15:00</option>
+                                                            <option value="15:00-18:00" @selected($selectedTimeslot === '15:00-18:00')>15:00 to 18:00</option>
+                                                            <option value="18:00-22:00" @selected($selectedTimeslot === '18:00-22:00')>18:00 to 22:00</option>
+                                                        </select>
+
                                                     @endif
                                                     <input style="width: 110px" type="text" name="item_courier_name" id="item_courier_name" placeholder="Item Courier Name"
                                                         @if (!empty($product['courier_name'])) value="{{ $product['courier_name'] }}" @endif>

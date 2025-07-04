@@ -161,7 +161,7 @@ class NinjaVanHelper
     protected $quoteData = [];
     protected $recipient;
 
-    public function setQuoteData(array $data)
+    public function setQuoteData(array $data, array $pickupDetails = [])
 {
     $this->quoteData = $data;
     // Extract data from the NinjaVan Quote Data
@@ -171,13 +171,17 @@ class NinjaVanHelper
     $totalQty = $this->quoteData['total_qty'];
     $categories = $this->quoteData['categories'];
     $getCartItems = $this->quoteData['getCartItems'];
-    $user = \App\Models\User::find($this->quoteData['user_id']);
-
+    $user = \App\Models\User::find($selectedDeliveryAddress['user_id']);
     $pickup = $pickupAddresses[0];
     $shop_fulladdress = $pickup['shop_fulladdress'] ?? '';
     $addressParts = explode(',', $shop_fulladdress);
     $addressParts = array_map('trim', $addressParts);
     $productIds = array_column($getCartItems, 'product_id');
+
+    $pickupDate = $pickupDetails['pickup_date'] ?? now()->format('Y-m-d');
+    $pickupStartTime = $pickupDetails['pickup_start_time'] ?? '';
+    $pickupEndTime = $pickupDetails['pickup_end_time'] ?? '';
+    $deliveryDate =\Carbon\Carbon::parse($pickupDate)->addDays(3)->format('Y-m-d');
 
     $productNames = \App\Models\Product::whereIn('id', $productIds)
         ->pluck('product_name', 'id') // [product_id => name]
@@ -224,18 +228,18 @@ class NinjaVanHelper
         'is_pickup_required' => true,
         'pickup_service_type' => 'Scheduled',
         'pickup_service_level' => 'Standard',
-        'pickup_date' => now()->format('Y-m-d'),
+        'pickup_date' => $pickupDate,
         'pickup_timeslot' => [
-            'start_time' => '09:00',
-            'end_time' => '12:00',
+            'start_time' => $pickupStartTime,
+            'end_time' => $pickupEndTime,
             'timezone' => 'Asia/Manila'
         ],
         'pickup_instructions' => 'Pickup with care!',
-        'delivery_instructions' => 'If recipient is not around, leave parcel in power riser.',
-        'delivery_start_date' => now()->addDays(3)->format('Y-m-d'),
+        'delivery_instructions' => 'Handle with care.',
+        'delivery_start_date' =>\Carbon\Carbon::parse($pickupDate)->addDays(3)->format('Y-m-d'),
         'delivery_timeslot' => [
             'start_time' => '09:00',
-            'end_time' => '12:00',
+            'end_time' => '18:00',
             'timezone' => 'Asia/Manila'
         ],
         'dimensions' => ['weight' => (float)$totalWeight],
@@ -267,7 +271,7 @@ class NinjaVanHelper
         'to' => [
             'name' => $selectedDeliveryAddress['name'],
             'phone_number' => $selectedDeliveryAddress['mobile'],
-            'email' => $user['email'],
+            'email' => $user-> email,
             'address' => $recipientAddress
         ],
         'parcel_job' => $parcelJob,
@@ -276,22 +280,16 @@ class NinjaVanHelper
     // Log the payload for debugging
     \Log::info("NinjaVan API Payload: " . json_encode($payload));
 
-    // Send the request to NinjaVan API
-    // $response = $this->processNinjaVan($payload);
-    $response[] = $this->processNinjaVan(json_encode(['data' => $payload]));
-
-    // Save the response if needed
-    $this->ninjaVanResponse = $response;
-
     return $this;
 }
 
-public function getQuotation($orderDetails, $vendor_id)
+public function getQuotation($orderDetails, $vendor_id, $pickupDetails=[])
 {
     $order = \App\Models\Order::find($orderDetails->order_id);
     $vendor = \App\Models\Vendor::with('vendorbusinessdetails')->find($vendor_id);
     $user = \App\Models\User::find($order->user_id);
 
+    
     if (empty($vendor->vendorbusinessdetails['lat']) || empty($vendor->vendorbusinessdetails['long'])) {
         \Log::info("Vendor Business Details: " . json_encode($vendor->vendorbusinessdetails));
         return (object) ['errors' => ['message' => 'Latitude and Longitude for Vendor Business Detail is required.']];
@@ -303,7 +301,7 @@ public function getQuotation($orderDetails, $vendor_id)
         'city' => $vendor->vendorbusinessdetails->shop_city,
         'area' => $vendor->vendorbusinessdetails->shop_state,
         'state' => $vendor->vendorbusinessdetails->shop_state,
-        'country' => $vendor->vendorbusinessdetails->country,
+        'country' => $vendor->vendorbusinessdetails->shop_country,
         'postCode' => $vendor->vendorbusinessdetails->shop_pincode,
         'coordinates' => [
             'lat' => (string) $vendor->vendorbusinessdetails->lat,
@@ -312,24 +310,24 @@ public function getQuotation($orderDetails, $vendor_id)
     ];
 
     $recipientAddress = [
-        'address1' => $user->address,
+        'address1' => $order->address,
         'address2' => '',
-        'city' => $user->city,
-        'area' => $user->state,
-        'state' => $user->state,
-        'country' => $user->country,
-        'postCode' => $user->pincode,
+        'city' => $order->city,
+        'area' => $order->state,
+        'state' => $order->state,
+        'country' => $order->country,
+        'postCode' => $order->pincode,
         'coordinates' => [
             'lat' => (string) $order->lat,
             'lng' => (string) $order->lng,
         ],
     ];
 
-    // Assume pickup_date, pickup_start_time, pickup_end_time are stored in orderDetails or passed elsewhere
-    $pickupDate = $orderDetails->pickup_date ?? now()->format('Y-m-d');
-    $pickupStartTime = $orderDetails->pickup_start_time ?? '09:00';
-    $pickupEndTime = $orderDetails->pickup_end_time ?? '12:00';
-    $deliveryDate = now()->addDays(3)->format('Y-m-d');
+    
+    $pickupDate = $pickupDetails['pickup_date'] ?? now()->format('Y-m-d');
+    $pickupStartTime = $pickupDetails['pickup_start_time'] ?? '';
+    $pickupEndTime = $pickupDetails['pickup_end_time'] ?? '';
+    $deliveryDate =\Carbon\Carbon::parse($pickupDate)->addDays(3)->format('Y-m-d');
 
     $quotation = [
         'marketplace' => [
@@ -337,7 +335,7 @@ public function getQuotation($orderDetails, $vendor_id)
             'seller_company_name' => $vendor->vendorbusinessdetails->shop_name,
         ],
         'service_type' => 'Marketplace',
-        'service_level' => $orderDetails->service_level ?? 'Standard',
+        'service_level' => 'Standard',
         'requestedTrackingNumber' => Str::upper(Str::random(3)) . substr(now()->timestamp, 0, 6),
         'reference' => ['merchant_order_number' => $order->id],
         'from' => [
@@ -347,7 +345,7 @@ public function getQuotation($orderDetails, $vendor_id)
             'address' => $vendorAddress,
         ],
         'to' => [
-            'name' => trim($user->first_name . ' ' . $user->last_name),
+            'name' => $order->name,
             'phone_number' => $user->mobile,
             'email' => $user->email,
             'address' => $recipientAddress,
@@ -363,7 +361,7 @@ public function getQuotation($orderDetails, $vendor_id)
                 'timezone' => 'Asia/Manila',
             ],
             'pickup_instructions' => 'Pickup with care!',
-            'delivery_instructions' => 'Leave in power riser if recipient unavailable.',
+            'delivery_instructions' => 'Handle with care.',
             'delivery_start_date' => $deliveryDate,
             'delivery_timeslot' => [
                 'start_time' => '09:00',

@@ -969,9 +969,8 @@ class ProductsController extends Controller
             
             $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
             $lalamoveCharges = $this->lalamoveAPI_Helper->total_delivery_fee + $baseShippingCharges;
-            $quoteData = array_merge(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"), ['user_id' => auth()->id()]);
+            $quoteData = compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems");
             $ninjavanHelper->setQuoteData($quoteData);
-            session(['ninjavan_quote_data' => $quoteData]);
             $ninjavanCharges = NinjaVanHelper::calculateShippingCharge($total_weight, $value['state']);
             // Store only the provider fees (no base charges)
             $deliveryAddresses[$key]['lalamove_shipping_charges'] = $lalamoveCharges;
@@ -1000,11 +999,6 @@ class ProductsController extends Controller
             }
         }
     }
-                \Log::info("Shipping method selected", [
-                    'method' => $request->shipping_method,
-                    'address_id' => $request->address_id ?? 'N/A',
-                    'service_level' => $ninjavan_service_level ?? 'N/A'
-                ]);
             $deliveryAddresses[$key]['selected'] = true;
             $deliveryAddresses[$key]['selected_shipping_method'] = $shipping_method;
             $deliveryAddresses[$key]['shipping_charges'] = $shipping_charges;
@@ -1208,45 +1202,48 @@ class ProductsController extends Controller
 
             $order->save(); // INSERT data INTO the `orders` table
             // 2. Save to `order_ninjavan` table
-            $quoteData = session('ninjavan_quote_data'); // retrieve quoteData from session
-            
+            if ($order->shipping_method === 'ninjavan' && !empty($quoteData)) {
+                $ninjaVanCartItems = $quoteData['getCartItems'] ?? [];
+                if (empty($ninjaVanCartItems)) {
+                    \Log::warning('NinjaVan quote data missing cart items.');
+                    return; // or handle fallback
+                }
 
-            if ($order->shipping_method === 'ninjavan' && $quoteData) {
-                $getCartItems = $quoteData['getCartItems'];
-                $productIds = array_column($getCartItems, 'product_id');
+                $productIds = array_column($ninjaVanCartItems, 'product_id');
 
                 // Get product names by ID
                 $productNames = Product::whereIn('id', $productIds)
-                    ->pluck('product_name', 'id') // [product_id => name]
+                    ->pluck('product_name', 'id')
                     ->toArray();
 
                 // Build item description
                 $orderedProductNames = array_map(function ($item) use ($productNames) {
                     return $productNames[$item['product_id']] ?? 'Unknown Product';
-                }, $getCartItems);
+                }, $ninjaVanCartItems);
 
-                $itemDescription = 'Order #' . $getCartItems[0]['id'] . ' - ' . implode(', ', $orderedProductNames);
+                $itemDescription = 'Order #' . ($ninjaVanCartItems[0]['id'] ?? $order->id) . ' - ' . implode(', ', $orderedProductNames);
 
                 $orderNinjaVan = new \App\Models\OrdersNinjavan;
 
                 $orderNinjaVan->order_id                = $order->id;
-                $orderNinjaVan->merchant_order_number   = $getCartItems[0]['session_id'] ?? $order->id;
-                $orderNinjaVan->service_level           = 'STANDARD' ; 
-                $orderNinjaVan->pickup_date             = now()->format('Y-m-d');
-                $orderNinjaVan->pickup_time_start       = '09:00';
-                $orderNinjaVan->pickup_time_end         = '12:00';
+                $orderNinjaVan->merchant_order_number   = $ninjaVanCartItems[0]['session_id'] ?? $order->id;
+                $orderNinjaVan->service_level           = 'Standard';
+                $orderNinjaVan->pickup_date             = $pickupDate ?? now()->format('Y-m-d');
+                $orderNinjaVan->pickup_time_start       = $pickupStart ?? '';
+                $orderNinjaVan->pickup_time_end         = $pickupEnd ?? '';
                 $orderNinjaVan->pickup_instructions     = $quoteData['pickup_instructions'] ?? 'Pickup with care!';
-                $orderNinjaVan->delivery_start_date     = now()->addDays(3)->format('Y-m-d');
+                $orderNinjaVan->delivery_start_date     = $deliveryDate ?? now()->addDays(3)->format('Y-m-d');
                 $orderNinjaVan->delivery_time_start     = '09:00';
-                $orderNinjaVan->delivery_time_end       = '12:00';
+                $orderNinjaVan->delivery_time_end       = '18:00';
                 $orderNinjaVan->delivery_instructions   = $quoteData['delivery_instructions'] ?? 'Please deliver with care!';
-                $orderNinjaVan->weight                  = $quoteData['total_weight'];
+                $orderNinjaVan->weight                  = $quoteData['total_weight'] ?? 0;
                 $orderNinjaVan->item_description        = $itemDescription;
-                $orderNinjaVan->quantity                = $quoteData['total_qty'];
+                $orderNinjaVan->quantity                = $quoteData['total_qty'] ?? 0;
+
                 $orderNinjaVan->save();
             }
             // Get the last generated `id` of the the last inserted order in the `orders` table (to be able to store it in the `order_id` column in the `orders_products` table)
-            $order_id = DB::getPdo()->lastInsertId();
+            $order_id = $order->id;
 
 
             // INSERT/Fill in the data of the order in the `orders_products` table (after filling in the `orders` table)

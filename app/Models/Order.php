@@ -32,6 +32,10 @@ class Order extends Model
         return $this->hasOne(Payment::class);
     }
 
+    public function ninjavanOrder(){
+    return $this->hasOne(OrdersNinjavan::class, 'order_id', 'id');
+}
+
     // Shiprocket API Integration! Shiprocket needs an "order_items" key/name in the JSON request, so we create this relationship method specifically for this matter (in order for the $getResults array in pushOrder() method in APIController.php to have the key/name of "order_items")
     // Relationship of an Order `orders` table with Order_Products `orders_products` table (every Order has many Order_Products)    
     public function order_items() {    
@@ -312,8 +316,9 @@ class Order extends Model
         ];
 
         \Log::info("Push Order to NinjaVan:", $payload);
+        //dd($payload);
 
-        $accessToken = self::getAccessToken();
+        $accessToken = config('app.ninjavan.api_token');
 
         $curl = curl_init();
         curl_setopt_array($curl, [
