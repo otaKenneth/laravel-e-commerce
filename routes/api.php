@@ -89,5 +89,3 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
 
     Route::post('/lalamove/webhook', 'APIController@lalamoveDeliveryStatus');
 });
-
-//Route::get('/api/products/search', 'App\Http\Controllers\Front\ProductsController@apiIndex')->name('api.products.searchable');
