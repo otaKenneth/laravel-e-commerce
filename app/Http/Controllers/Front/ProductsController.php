@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
 use App\Models\ProductsAttribute;
 use App\Models\ProductsFilter;
 use App\Models\Category;
@@ -20,6 +19,7 @@ use App\Models\Brand;
 use App\Models\Wishlist;
 use App\Models\Section;
 use App\Helpers\LalamoveAPIBodyHelper;
+use App\Helpers\NinjaVanHelper;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
@@ -29,6 +29,7 @@ use function Clue\StreamFilter\append;
 class ProductsController extends Controller
 {
     private $lalamoveAPI_Helper;
+    private $ninjaVanAPI_Helper;
     // match() method is used for the HTTP 'GET' requests to render listing.blade.php page and the HTTP 'POST' method for the AJAX request of the Sorting Filter or the HTML Form submission and jQuery for the Sorting Filter WITHOUT AJAX, AND ALSO for submitting the Search Form in listing.blade.php    // e.g.    /men    or    /computers
     public function listing(Request $request)
     {
@@ -1005,12 +1006,21 @@ class ProductsController extends Controller
         }
     }
 
-
+    public function testToken(NinjavanHelper $ninjavan)
+    {
+        try {
+            $token = $ninjavan->getAccessToken();
+            return response()->json(['access_token' => $token]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
     // Checkout page (using match() method for the 'GET' request for rendering the front/products/checkout.blade.php page or the 'POST' request for the HTML Form submission in the same page) (for submitting the user's Delivery Address and Payment Method))
     public function checkout(Request $request)
     {
         $this->lalamoveAPI_Helper = new LalamoveAPIBodyHelper;
+        $this->ninjavanAPI_Helper = new NinjaVanHelper;
         $paymongo = new PaymongoAPIHelper;
 
         // Fetch all of the world countries from the database table `countries`
@@ -1071,20 +1081,52 @@ class ProductsController extends Controller
 
         $selectedDeliveryAddress = null;
         $shipping_charges = 0;
+        $shipping_method = null;
+        $service_level = null;
+        
         // Calculating the Shipping Charges of every one of the user's Delivery Addresses (depending on the 'country' of the Delivery Address)
         foreach ($deliveryAddresses as $key => $value) {
-            $shippingCharges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $value['country']);
-
+            $ninjavanHelper = new NinjaVanHelper; // instantiate the NinjaVanHelper
+            // Get base shipping charges based on country
+            $baseShippingCharges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $value['country']);
+            // Calculate Lalamove charges
             $selectedDeliveryAddress = $value;
+            
             $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
-            // Append/Add the Shipping Charge of every Delivery Address (depending on the 'country' of the Delivery Addresss) to the $deliveryAddresses array
-            $deliveryAddresses[$key]['shipping_charges'] = $shippingCharges + $this->lalamoveAPI_Helper->total_delivery_fee;
-            if ($request->isMethod('post')) {
-                if ($value['id'] == $request->address_id)
-                    $shipping_charges = $this->lalamoveAPI_Helper->total_delivery_fee;
-            } else {
-                if ($key == 0) $shipping_charges = $this->lalamoveAPI_Helper->total_delivery_fee;
+            $lalamoveCharges = $this->lalamoveAPI_Helper->total_delivery_fee + $baseShippingCharges;
+            $quoteData = compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems");
+            $ninjavanHelper->setQuoteData($quoteData);
+            $ninjavanCharges = NinjaVanHelper::calculateShippingCharge($total_weight, $value['state']);
+            // Store only the provider fees (no base charges)
+            $deliveryAddresses[$key]['lalamove_shipping_charges'] = $lalamoveCharges;
+
+            $deliveryAddresses[$key]['ninjavan_shipping_charges'] = $ninjavanCharges;
+
+            // Determine final shipping charges based on selected method
+            if ($request->isMethod('post') && $value['id'] == $request->address_id) {
+                if ($request->shipping_method == 'ninjavan') {
+                    $shipping_charges = $ninjavanCharges;
+                    $shipping_method = 'ninjavan';
+                } elseif ($request->shipping_method == 'lalamove') {
+                    $shipping_charges = $lalamoveCharges;
+                    $shipping_method = 'lalamove';
+                } else {
+               if ($key == 0) {
+                if ($request->shipping_method == 'ninjavan') {
+                    $shipping_charges = $ninjavanCharges;
+                    $shipping_method = 'ninjavan';
+                } elseif ($request->shipping_method == 'lalamove') {
+                    $shipping_charges = $lalamoveCharges;
+                    $shipping_method = 'lalamove';
+                } else {
+                    $shipping_charges = 0;
+                }
             }
+        }
+    }
+            $deliveryAddresses[$key]['selected'] = true;
+            $deliveryAddresses[$key]['selected_shipping_method'] = $shipping_method;
+            $deliveryAddresses[$key]['shipping_charges'] = $shipping_charges;
 
             // Checking PIN code availability of BOTH COD and Prepaid PIN codes in BOTH `cod_pincodes` and `prepaid_pincodes` tables
             // Check if the COD PIN code of that Delivery Address of the user exists in `cod_pincodes` table
@@ -1247,6 +1289,9 @@ class ProductsController extends Controller
                 $shipping_charges = 0;
             } else if ($data['shipping_method'] == 'j&t') {
                 $shipping_charges = 150.00;
+            } else if ($data['shipping_method'] == 'ninjavan') {
+                $ninjavan = new NinjaVanHelper;
+                $shipping_charges = $ninjavan->calculateFromAddress($total_weight, $value);
             }
 
             // Grand Total (`grand_total`)
@@ -1258,7 +1303,6 @@ class ProductsController extends Controller
 
             // INSERT the data we collected INTO the `orders` database table
             $order = new \App\Models\Order; // Create a new Order.php model object (represents the `orders` table)
-
             // Assign the $order data to be INSERT-ed INTO the `orders` table
             $order->user_id          = Auth::user()->id; // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
             $order->name             = $deliveryAddress['name'];
@@ -1282,9 +1326,49 @@ class ProductsController extends Controller
             $order->grand_total      = $grand_total;
 
             $order->save(); // INSERT data INTO the `orders` table
+            // 2. Save to `order_ninjavan` table
+            if ($order->shipping_method === 'ninjavan' && !empty($quoteData)) {
+                $ninjaVanCartItems = $quoteData['getCartItems'] ?? [];
+                if (empty($ninjaVanCartItems)) {
+                    \Log::warning('NinjaVan quote data missing cart items.');
+                    return; // or handle fallback
+                }
 
+                $productIds = array_column($ninjaVanCartItems, 'product_id');
+
+                // Get product names by ID
+                $productNames = Product::whereIn('id', $productIds)
+                    ->pluck('product_name', 'id')
+                    ->toArray();
+
+                // Build item description
+                $orderedProductNames = array_map(function ($item) use ($productNames) {
+                    return $productNames[$item['product_id']] ?? 'Unknown Product';
+                }, $ninjaVanCartItems);
+
+                $itemDescription = 'Order #' . ($ninjaVanCartItems[0]['id'] ?? $order->id) . ' - ' . implode(', ', $orderedProductNames);
+
+                $orderNinjaVan = new \App\Models\OrdersNinjavan;
+
+                $orderNinjaVan->order_id                = $order->id;
+                $orderNinjaVan->merchant_order_number   = $ninjaVanCartItems[0]['session_id'] ?? $order->id;
+                $orderNinjaVan->service_level           = 'Standard';
+                $orderNinjaVan->pickup_date             = $pickupDate ?? now()->format('Y-m-d');
+                $orderNinjaVan->pickup_time_start       = $pickupStart ?? '';
+                $orderNinjaVan->pickup_time_end         = $pickupEnd ?? '';
+                $orderNinjaVan->pickup_instructions     = $quoteData['pickup_instructions'] ?? 'Pickup with care!';
+                $orderNinjaVan->delivery_start_date     = $deliveryDate ?? now()->addDays(3)->format('Y-m-d');
+                $orderNinjaVan->delivery_time_start     = '09:00';
+                $orderNinjaVan->delivery_time_end       = '18:00';
+                $orderNinjaVan->delivery_instructions   = $quoteData['delivery_instructions'] ?? 'Please deliver with care!';
+                $orderNinjaVan->weight                  = $quoteData['total_weight'] ?? 0;
+                $orderNinjaVan->item_description        = $itemDescription;
+                $orderNinjaVan->quantity                = $quoteData['total_qty'] ?? 0;
+
+                $orderNinjaVan->save();
+            }
             // Get the last generated `id` of the the last inserted order in the `orders` table (to be able to store it in the `order_id` column in the `orders_products` table)
-            $order_id = DB::getPdo()->lastInsertId();
+            $order_id = $order->id;
 
 
             // INSERT/Fill in the data of the order in the `orders_products` table (after filling in the `orders` table)
@@ -1390,7 +1474,7 @@ class ProductsController extends Controller
                     $description .= "Coupon Amount - " . Session::get('couponAmount');
                 }
                 $resp = $paymongo->setItems($getCartItems)
-                    ->setDeliveryFee($shipping_charges)
+                    ->setDeliveryFee($shipping_charges, $request->shipping_method ?? 'Lalamove')
                     ->set("description", $description)
                     ->set("payment_method_types", ["card", "brankas_bdo", "gcash", "grab_pay", "paymaya"])
                     ->set("billing", [
@@ -1407,7 +1491,12 @@ class ProductsController extends Controller
                         "phone" => $deliveryAddress['mobile']
                     ])
                     ->createSession();
-
+                    \Log::info("Paymongo: Creating session", [
+                        'order_id' => $order->id ?? 'N/A',
+                        'shipping_method' => $request->shipping_method ?? 'Lalamove',
+                        'shipping_charges' => $shipping_charges
+                    ]);
+                        
                 // create response for frontend
                 $return_respose = [
                     'success' => false,

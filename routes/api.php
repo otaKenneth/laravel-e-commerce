@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\APIController; // Import the APIController class to use it in the routes
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -58,6 +59,13 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
     // Log out a user and Delete their current Access Token (POST)    // API Endpoint:    POST http://127.0.0.1:8000/api/logout-user    // Whenever a new user registers a new account using our Registration API Endpoint, we'll generate an Access Token for them to use and send with all their subsequent HTTP Requests (and will store it in the `api_token` column in `users` table). Note: Whenever the user logs in, we'll generate a new Access Token (that acts the same as a browser Session (i.e. Both Session and Access Token are sent from the client to the server with EVERY HTTP Request), except the fact that there's no browser Session here!) that will replace the old one in the `api_token` column in `users` table. This token will be valid only till the user logs out and then expires (by deleting it from the `api_token` column in the `users` database table when the user logs out)    // User must send an "Authorization" HTTP Header with all their subsequent HTTP Requests with the value of the "Bearer" Accesss Token that they received in the HTTP Response when they first logged in or when they first registered their brand-new account. The "Bearer" Access Token should be sent in the following form:    "Bearer xxxxxxxxxxxxxxxxxx"    where xxxxxxxxxxxxxxxxxx is the "Bearer" Access Token value.    // Note: In Postman, JSON data are submitted using Curly Braces {} and an "ids" Wrapping Object and Square Brackets [])    // No fields must be submitted by the user (from Postman) here! That's because the user will be identified through their Access Token sent (as 'Authorization' HTTP Header) with their HTTP Request to the server. Note: Data can be posted/sent/submitted in Postman using a GET/POST/PUT/PATCH/DELETE request using TWO ways: First: "form-data" (resembles the HTML Form <input> fields (key/value pairs) and their "name" and "value" <input> HTML tag attributes, and you can retrieve those data in the backend using the Superglobals $_POST and $_FILES), Second: "raw" (through which you can decide the data type of the whole HTTP Request Body (e.g. JSON, HTML, ...etc), and you can retrieve those data in the backend using, for example if data were JSON, json_decode() function and then access the JSON key/value pairs as follows:    $jsonImageAttributes->filename    )    
     Route::post('logout-user', 'APIController@logoutUser');
 
+
+    Route::post('/webhook/ninjavan', [APIController::class, 'ninjaVanWebhook']);
+    Route::post('/webhook/ninjavan_test', [APIController::class, 'handleNinjavan']);
+    Route::get('/test-ninjavan-webhook', [APIController::class, 'testNinjaVanWebhook']);
+    Route::get('/test-ninjavan-order', [App\Http\Controllers\Front\ProductsController::class, 'testNinjaVanOrder']);
+    Route::get('/test-ninjavan-token', [App\Http\Controllers\Front\ProductsController::class, 'testToken']);
+    Route::post('/webhook/ninjavan_test', [APIController::class, 'receiveNinjaVanWebhook']);
 
 
 
