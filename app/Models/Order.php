@@ -32,6 +32,10 @@ class Order extends Model
         return $this->hasOne(Payment::class);
     }
 
+    public function ninjavanOrder(){
+    return $this->hasOne(OrdersNinjavan::class, 'order_id', 'id');
+}
+
     // Shiprocket API Integration! Shiprocket needs an "order_items" key/name in the JSON request, so we create this relationship method specifically for this matter (in order for the $getResults array in pushOrder() method in APIController.php to have the key/name of "order_items")
     // Relationship of an Order `orders` table with Order_Products `orders_products` table (every Order has many Order_Products)    
     public function order_items() {    
@@ -285,4 +289,57 @@ class Order extends Model
         return $json_decoded_response;
     }
 
+    //NinjaVan Integration
+    public static function pushOrder_to_Ninjavan($ninjavan_data, $order_id)
+    {
+        // Fix: Access quotation as array if $ninjavan_data is an array, or decode object to array
+        if (is_object($ninjavan_data) && isset($ninjavan_data->quotation)) {
+            $quotation = $ninjavan_data->quotation['data']['quotation'];
+        } elseif (is_array($ninjavan_data) && isset($ninjavan_data['quotation'])) {
+            $quotation = $ninjavan_data['quotation']['data']['quotation'];
+        } else {
+            // fallback or throw exception
+            throw new \Exception('Invalid ninjavan_data structure: quotation not found');
+        }
+
+        $payload = [
+            'marketplace' => $quotation['marketplace'],
+            'service_type' => $quotation['service_type'],
+            'service_level' => $quotation['service_level'],
+            'requested_tracking_number' => $quotation['requestedTrackingNumber'],
+            'reference' => [
+                'merchant_order_number' => $quotation['reference']['merchant_order_number']
+            ],
+            'from' => $quotation['from'],
+            'to' => $quotation['to'],
+            'parcel_job' => $quotation['parcel_job'],
+        ];
+
+        \Log::info("Push Order to NinjaVan:", $payload);
+        //dd($payload);
+
+        $accessToken = config('app.ninjavan.api_token');
+
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => config('app.ninjavan.api_url') . '/orders',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 15,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($payload),
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Accept: application/json',
+                "Authorization: Bearer {$accessToken}"
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+
+        \Log::info("NinjaVan API Response ({$httpCode})", ['response' => $response]);
+
+        return json_decode($response, true);
+    }
 }

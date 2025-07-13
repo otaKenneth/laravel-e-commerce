@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
 use App\Models\ProductsAttribute;
 use App\Models\ProductsFilter;
 use App\Models\Category;
@@ -18,8 +17,11 @@ use App\Models\Product;
 use App\Models\Vendor;
 use App\Models\Brand;
 use App\Models\Wishlist;
+use App\Models\Section;
 use App\Helpers\LalamoveAPIBodyHelper;
+use App\Helpers\NinjaVanHelper;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 
 use function Clue\StreamFilter\append;
@@ -27,9 +29,10 @@ use function Clue\StreamFilter\append;
 class ProductsController extends Controller
 {
     private $lalamoveAPI_Helper;
+    private $ninjaVanAPI_Helper;
     // match() method is used for the HTTP 'GET' requests to render listing.blade.php page and the HTTP 'POST' method for the AJAX request of the Sorting Filter or the HTML Form submission and jQuery for the Sorting Filter WITHOUT AJAX, AND ALSO for submitting the Search Form in listing.blade.php    // e.g.    /men    or    /computers
     public function listing(Request $request)
-    { // using the Dynamic Routes with the foreach loop
+    {
         $currentPage = $request->get('page', 1);
         Paginator::currentPageResolver(function () use ($currentPage) {
             return $currentPage;
@@ -39,85 +42,233 @@ class ProductsController extends Controller
         $name = $request->any;
         $pageTitle = $name;
         $shopBanner = '';
+        $searchResultSource = '';
+
+        // Default values for common variables
+        $collection = Product::query();
+        $filters = ProductsFilter::productFilters();
+        $categoryDetails = ['catIds' => []];
+        $meta_title = 'All Products';
+        $meta_description = 'Browse all our products.';
+        $meta_keywords = 'products, shop';
 
         try {
+            $resultData = [];
+
             switch ($type) {
                 case 'collection':
-                    $result = $this->getCollectionBySection($name, $request->all());
+                    $resultData = $this->getCollectionBySection($name, $request->all());
                     break;
                 case 'category':
-                    $result = $this->getCollectionByCategory($name, $request->all());
+                    $resultData = $this->getCollectionByCategory($name, $request->all());
                     break;
                 case 'vendor':
                     $vendor = Vendor::find($name);
+                    if (!$vendor) {
+                        abort(404);
+                    }
                     $shopBanner = $vendor->vendorbusinessdetails->shop_banner;
                     $pageTitle = "{$vendor->vendorbusinessdetails->shop_name}";
-                    $result = $this->vendorListing($vendor, $request->all());
+                    $resultData = $this->vendorListing($vendor, $request->all());
                     break;
                 case 'search':
-                    $result = $this->filter($request->all());
+                    $searchTerm = $request->input('search');
+                    $resultData = $this->filter(['search' => $searchTerm] + $request->all(), true);
+                    $pageTitle = "Search Results";
+                    $searchResultSource = $resultData['searchResultSource'] ?? 'database';
+                    $meta_title = !empty($searchTerm) ? "Search Results for '{$searchTerm}'" : 'Search Results';
+                    $meta_description = 'Products matching your search criteria.';
+                    $meta_keywords = 'search, products';
                     break;
-
                 default:
-                    # code...
+                    // Default behavior for 'all' or undefined types
+                    $collection = Product::with('brand', 'vendor')->where('status', 1);
                     break;
             }
 
-            // collection, filters, categoryDetails, meta_title, meta_description, meta_keywords
-            if (is_array($result)) {
-                extract($result);
-            } else {
-                return redirect('/products/collection/all');
+            // Extract common variables from resultData if they exist
+            if (is_array($resultData)) {
+                if (isset($resultData['collection'])) {
+                    $collection = $resultData['collection'];
+                }
+                // Overwrite defaults with any specific values from resultData
+                $filters = $resultData['filters'] ?? $filters;
+                $categoryDetails = $resultData['categoryDetails'] ?? $categoryDetails;
+                $meta_title = $resultData['meta_title'] ?? $meta_title;
+                $meta_description = $resultData['meta_description'] ?? $meta_description;
+                $meta_keywords = $resultData['meta_keywords'] ?? $meta_keywords;
+                $searchResultSource = $resultData['searchResultSource'] ?? $searchResultSource;
             }
 
-            $totalCount = $collection->count();
+            // Apply additional filters if needed
+            // $collection = $this->processFilters($collection, $request->all());
 
-            // here remove pagination
-            $collection = $collection->inRandomOrder()->paginate(12); //Randomize all the product display
-            // dd($filters);
+            // Paginate the collection - ensure it's a query builder
+            if ($collection instanceof \Illuminate\Database\Eloquent\Builder) {
+                $collection = $collection->paginate(12)->appends($request->query());
+            } else {
+                // If it's already paginated or a collection, handle accordingly
+                $collection = Product::whereIn('id', [])->paginate(12)->appends($request->query());
+            }
 
+            //dd($collection);
+            // Check if it's an AJAX request
             if ($request->ajax()) {
+                $html = view('front.partials.product-cards')
+                    ->with(compact('collection'))
+                    ->render();
+
                 return response()->json([
-                    'html' => view('front.partials.product-cards', compact('collection',))->render(),
-                    'nextPage' => $currentPage + 1
+                    'html' => $html,
+                    'nextPage' => $collection->hasMorePages() ? $collection->currentPage() + 1 : null,
+                    'lastPage' => $collection->lastPage(),
+                    'currentPage' => $collection->currentPage(),
+                    'total' => $collection->total(),
+                    'searchResultSource' => $searchResultSource,
                 ]);
             }
 
-            // final return
-            return view('front.products.collection_listings')->with(compact('pageTitle', 'categoryDetails', 'collection', 'type', 'filters', 'meta_title', 'meta_description', 'meta_keywords', 'shopBanner', 'totalCount'));
+            return view('front.products.collection_listings')->with(compact(
+                'pageTitle',
+                'categoryDetails',
+                'collection',
+                'type',
+                'filters',
+                'meta_title',
+                'meta_description',
+                'meta_keywords',
+                'shopBanner',
+                'searchResultSource',
+            ));
         } catch (\Exception $e) {
-            Log::info("Product Listing: " . $e);
+            Log::error("Product Listing Error: " . $e->getMessage() . " on line " . $e->getLine() . " in " . $e->getFile());
 
-            return redirect('/products/collection/all');
+            if ($request->ajax()) {
+                return response()->json(['error' => 'An error occurred while loading products.'], 500);
+            }
+            return redirect('/products/collection/all')->with('error', 'Could not load products.');
         }
     }
 
-    public function filter($data)
+    public function filter(array $data, bool $isSearch = true)
     {
-        $search_product = $data['search'];
+        $searchResultSource = 'database';
+        $catIds = [];
+        $sectionIds = [];
+        $filters = ProductsFilter::productFilters();
+        $collection = null;
 
-        // We join `products` table (at the `category_id` column) with `categoreis` table (becausee we're going to search `category_name` column in `categories` table)
-        // Note: It's best practice to name table columns with more verbose descriptive names (e.g. if the table name is `products`, then you should have a column called `product_id`, NOT `id`), and also, don't have repeated column names THROUGHOUT/ACROSS the tables of a certain (one) database (i.e. make all your database tables column names (throughout your database) UNIQUE (even columns in different tables!)). That's because of that problem that emerges when you join (JOIN clause) two tables which have the same column names, when you join them, the column names of the second table overrides the column names of the first table (similar column names override each other), leading to many problems. There are TWO ways/workarounds to tackle this problem
-        $collection = Product::with('brand', 'vendor')->join( // Joins: Inner Join Clause: https://laravel.com/docs/9.x/queries#inner-join-clause    // moving the paginate() method after checking for the sorting filter <form>    // Paginating Eloquent Results: https://laravel.com/docs/9.x/pagination#paginating-eloquent-results    // Displaying Pagination Results Using Bootstrap: https://laravel.com/docs/9.x/pagination#using-bootstrap        // https://laravel.com/docs/9.x/queries#additional-where-clauses    // using the brand() relationship method in Product.php model    // Eager Loading (using with() method): https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'brand' is the relationship method name in Product.php model
-            'categories', // `categories` table
-            'categories.id',
-            '=',
-            'products.category_id' // JOIN both `products` and `categories` tables at    `categories`.`id` = `products`.`category_id`
-        )->where(function ($query) use ($search_product) { // Constraining Eager Loads: https://laravel.com/docs/9.x/eloquent-relationships#constraining-eager-loads    // Subquery Where Clauses: https://laravel.com/docs/9.x/queries#subquery-where-clauses    // Advanced Subqueries: https://laravel.com/docs/9.x/eloquent#advanced-subqueries    // Eager Loading (using with() method): https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'brand' is the relationship method name in Product.php model    // function () use ()     syntax: https://www.php.net/manual/en/functions.anonymous.php#:~:text=the%20use%20language%20construct
-            // We'll search for the searched term by the user in the `product_name`, `product_code`, `product_color` and `description` columns in the `products` table and in the `category_name` column in the `categories` table
-            $query->where('products.product_name',    'like', '%' . $search_product . '%')  // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
-                ->orWhere('products.product_code',    'like', '%' . $search_product . '%')  // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
-                ->orWhere('products.description',     'like', '%' . $search_product . '%')  // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
-                ->orWhere('categories.category_name', 'like', '%' . $search_product . '%'); // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
-        })->where('products.status', 1)
-            ->whereHas('vendor', function ($query) {
-                $query->where('status', 1);
-            })->selectRaw('*, categories.id as category_id');
+        // Try MeiliSearch first for search queries
+        if ($isSearch && !empty($data['search'])) {
+            $searchTerm = $data['search'];
 
-        $catIds = $collection->get()->pluck('category_id')->toArray();
+            try {
+                $meiliFilters = [];
 
-        $sectionModel = new \App\Models\Section;
-        $sectionIds = $collection->get()->pluck('section_id')->unique()->toArray();
+                // Add category filter if provided
+                if (!empty($data['category_id'])) {
+                    $meiliFilters[] = 'category_id = ' . (int) $data['category_id'];
+                }
+
+                // Add vendor status filter
+                $meiliFilters[] = 'status = 1';
+
+                $searchResults = Product::search($searchTerm, function ($meiliSearch, $query, $options) use ($meiliFilters, $data) {
+                    $options['attributesToHighlight'] = ['product_name', 'description'];
+                    $options['attributesToSearchOn'] = ['product_name', 'description'];
+
+                    if (!empty($meiliFilters)) {
+                        $options['filter'] = $meiliFilters;
+                    }
+
+                    // Add sorting if provided
+                    if (!empty($data['sort'])) {
+                        $options['sort'] = [$data['sort']];
+                    }
+
+                    return $meiliSearch->search($query, $options);
+                });
+
+                // Get the results without pagination first to extract IDs
+                $searchHits = $searchResults->take(1000); // Get more results to work with
+
+                if ($searchHits->count() > 0) {
+                    // Extract product IDs from MeiliSearch results
+                    $productIds = $searchHits->pluck('id')->toArray();
+
+                    // Create Eloquent query with the MeiliSearch result IDs
+                    $collection = Product::with('brand', 'vendor', 'category')
+                        ->whereIn('id', $productIds)
+                        ->where('status', 1)
+                        ->whereHas('vendor', function ($query) {
+                            $query->where('status', 1);
+                        });
+
+                    // Maintain MeiliSearch order by using orderByRaw
+                    if (!empty($productIds)) {
+                        $idsOrder = implode(',', $productIds);
+                        $collection = $collection->orderByRaw("FIELD(id, $idsOrder)");
+                    }
+
+                    $searchResultSource = 'meilisearch';
+
+                    // Extract category and section IDs from the search results
+                    $catIds = $searchHits->pluck('category_id')->unique()->filter()->toArray();
+                    $sectionIds = $searchHits->pluck('section_id')->unique()->filter()->toArray();
+                } else {
+                    // No results from MeiliSearch, fall back to database
+                    $collection = null;
+                    $searchResultSource = 'database_fallback';
+                }
+            } catch (\Exception $e) {
+                Log::warning("MeiliSearch failed for search term '{$searchTerm}': " . $e->getMessage() . ". Falling back to database search.");
+                $collection = null;
+                $searchResultSource = 'database_fallback';
+            }
+        }
+
+        // Fallback to database search or if MeiliSearch failed
+        if ($searchResultSource === 'database' || $searchResultSource === 'database_fallback' || $collection === null) {
+            $collection = Product::with('brand', 'vendor')
+                ->join('categories', 'categories.id', '=', 'products.category_id')
+                ->where('products.status', 1)
+                ->whereHas('vendor', function ($query) {
+                    $query->where('status', 1);
+                });
+
+            // Apply search filters for database search
+            if (!empty($data['search'])) {
+                $searchTerm = $data['search'];
+                $collection->where(function ($query) use ($searchTerm) {
+                    $query->where('products.product_name', 'like', '%' . $searchTerm . '%')
+                        ->orWhere('products.description', 'like', '%' . $searchTerm . '%')
+                        ->orWhere('categories.category_name', 'like', '%' . $searchTerm . '%');
+                });
+            }
+
+            // Apply category filter
+            if (!empty($data['category_id'])) {
+                $collection->where('products.category_id', $data['category_id']);
+            }
+
+            $collection->select('products.*', 'categories.id as category_id');
+
+            $searchResultSource = $searchResultSource === 'database_fallback' ? 'database_fallback' : 'database';
+        }
+
+        // Apply additional filters (uncomment and implement processFilters if needed)
+        // $collection = $this->processFilters($collection, $data);
+
+        // Get category and section IDs if not already set (for database queries)
+        if (empty($catIds) && $collection instanceof \Illuminate\Database\Eloquent\Builder) {
+            // Get a sample of results to extract category/section info
+            $sampleResults = $collection->limit(100)->get();
+            $catIds = $sampleResults->pluck('category_id')->unique()->filter()->toArray();
+            $sectionIds = $sampleResults->pluck('section_id')->unique()->filter()->toArray();
+        }
+
+        // Build category details
+        $sectionModel = new Section();
         $sectionCategories = $sectionModel->whereIn('id', $sectionIds);
         $catDetails = $sectionCategories->with('categories')->get()->toArray();
 
@@ -126,17 +277,33 @@ class ProductsController extends Controller
             'categoryDetails' => $catDetails
         ];
 
-        $meta_title       = "Search {$search_product}";
+        // Build meta information
+        $meta_title = !empty($data['search']) ? "Search Results for '{$data['search']}'" : "Products Listing";
 
-        $meta_descriptions = $collection->get()->pluck('meta_description');
-        $meta_description = implode($meta_descriptions->toArray());
+        // Get current products for meta information
+        if ($collection instanceof \Illuminate\Database\Eloquent\Builder) {
+            $currentProducts = $collection->limit(50)->get(); // Limit for performance
+        } else {
+            $currentProducts = collect();
+        }
 
-        $meta_keywordss = $collection->get()->pluck('meta_keywords');
-        $meta_keywords    = implode($meta_keywordss->toArray());
+        $meta_descriptions = $currentProducts->pluck('meta_description')->filter()->unique();
+        $meta_description = $meta_descriptions->isNotEmpty()
+            ? implode(', ', $meta_descriptions->take(3)->toArray())
+            : 'Find great products at our store.';
 
-        $filters = $this->getAvailableFilters($catDetails, $collection);
-        $collection = $this->processFilters($collection, $data);
-        $collection->selectRaw('*, categories.id as category_id');
+        $meta_keywordss = $currentProducts->pluck('meta_keywords')->filter()->unique();
+        $meta_keywords = $meta_keywordss->isNotEmpty()
+            ? implode(', ', $meta_keywordss->take(10)->toArray())
+            : 'products, shop, online store';
+
+        // Get filters
+        $flatCategoryDetails = collect($catDetails)
+            ->pluck('categories')
+            ->flatten(1)
+            ->first();
+
+        $filters = $this->getAvailableFilters($flatCategoryDetails ?? [], $collection);
 
         return [
             "collection" => $collection,
@@ -145,10 +312,9 @@ class ProductsController extends Controller
             "meta_title" => $meta_title,
             "meta_description" => $meta_description,
             "meta_keywords" => $meta_keywords,
+            "searchResultSource" => $searchResultSource,
         ];
     }
-
-
 
     // Render Single Product Detail Page in front/products/detail.blade.php
     public function detail($id)
@@ -840,12 +1006,21 @@ class ProductsController extends Controller
         }
     }
 
-
+    public function testToken(NinjavanHelper $ninjavan)
+    {
+        try {
+            $token = $ninjavan->getAccessToken();
+            return response()->json(['access_token' => $token]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
     // Checkout page (using match() method for the 'GET' request for rendering the front/products/checkout.blade.php page or the 'POST' request for the HTML Form submission in the same page) (for submitting the user's Delivery Address and Payment Method))
     public function checkout(Request $request)
     {
         $this->lalamoveAPI_Helper = new LalamoveAPIBodyHelper;
+        $this->ninjavanAPI_Helper = new NinjaVanHelper;
         $paymongo = new PaymongoAPIHelper;
 
         // Fetch all of the world countries from the database table `countries`
@@ -906,20 +1081,52 @@ class ProductsController extends Controller
 
         $selectedDeliveryAddress = null;
         $shipping_charges = 0;
+        $shipping_method = null;
+        $service_level = null;
+        
         // Calculating the Shipping Charges of every one of the user's Delivery Addresses (depending on the 'country' of the Delivery Address)
         foreach ($deliveryAddresses as $key => $value) {
-            $shippingCharges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $value['country']);
-
+            $ninjavanHelper = new NinjaVanHelper; // instantiate the NinjaVanHelper
+            // Get base shipping charges based on country
+            $baseShippingCharges = \App\Models\ShippingCharge::getShippingCharges($total_weight, $value['country']);
+            // Calculate Lalamove charges
             $selectedDeliveryAddress = $value;
+            
             $this->lalamoveAPI_Helper->setQuoteData(compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems"))->getTotal_PriceBreakdown();
-            // Append/Add the Shipping Charge of every Delivery Address (depending on the 'country' of the Delivery Addresss) to the $deliveryAddresses array
-            $deliveryAddresses[$key]['shipping_charges'] = $shippingCharges + $this->lalamoveAPI_Helper->total_delivery_fee;
-            if ($request->isMethod('post')) {
-                if ($value['id'] == $request->address_id)
-                    $shipping_charges = $this->lalamoveAPI_Helper->total_delivery_fee;
-            } else {
-                if ($key == 0) $shipping_charges = $this->lalamoveAPI_Helper->total_delivery_fee;
+            $lalamoveCharges = $this->lalamoveAPI_Helper->total_delivery_fee + $baseShippingCharges;
+            $quoteData = compact("selectedDeliveryAddress", "pickupAddresses", "total_weight", "total_qty", "categories", "getCartItems");
+            $ninjavanHelper->setQuoteData($quoteData);
+            $ninjavanCharges = NinjaVanHelper::calculateShippingCharge($total_weight, $value['state']);
+            // Store only the provider fees (no base charges)
+            $deliveryAddresses[$key]['lalamove_shipping_charges'] = $lalamoveCharges;
+
+            $deliveryAddresses[$key]['ninjavan_shipping_charges'] = $ninjavanCharges;
+
+            // Determine final shipping charges based on selected method
+            if ($request->isMethod('post') && $value['id'] == $request->address_id) {
+                if ($request->shipping_method == 'ninjavan') {
+                    $shipping_charges = $ninjavanCharges;
+                    $shipping_method = 'ninjavan';
+                } elseif ($request->shipping_method == 'lalamove') {
+                    $shipping_charges = $lalamoveCharges;
+                    $shipping_method = 'lalamove';
+                } else {
+               if ($key == 0) {
+                if ($request->shipping_method == 'ninjavan') {
+                    $shipping_charges = $ninjavanCharges;
+                    $shipping_method = 'ninjavan';
+                } elseif ($request->shipping_method == 'lalamove') {
+                    $shipping_charges = $lalamoveCharges;
+                    $shipping_method = 'lalamove';
+                } else {
+                    $shipping_charges = 0;
+                }
             }
+        }
+    }
+            $deliveryAddresses[$key]['selected'] = true;
+            $deliveryAddresses[$key]['selected_shipping_method'] = $shipping_method;
+            $deliveryAddresses[$key]['shipping_charges'] = $shipping_charges;
 
             // Checking PIN code availability of BOTH COD and Prepaid PIN codes in BOTH `cod_pincodes` and `prepaid_pincodes` tables
             // Check if the COD PIN code of that Delivery Address of the user exists in `cod_pincodes` table
@@ -1082,6 +1289,9 @@ class ProductsController extends Controller
                 $shipping_charges = 0;
             } else if ($data['shipping_method'] == 'j&t') {
                 $shipping_charges = 150.00;
+            } else if ($data['shipping_method'] == 'ninjavan') {
+                $ninjavan = new NinjaVanHelper;
+                $shipping_charges = $ninjavan->calculateFromAddress($total_weight, $value);
             }
 
             // Grand Total (`grand_total`)
@@ -1093,7 +1303,6 @@ class ProductsController extends Controller
 
             // INSERT the data we collected INTO the `orders` database table
             $order = new \App\Models\Order; // Create a new Order.php model object (represents the `orders` table)
-
             // Assign the $order data to be INSERT-ed INTO the `orders` table
             $order->user_id          = Auth::user()->id; // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
             $order->name             = $deliveryAddress['name'];
@@ -1117,9 +1326,49 @@ class ProductsController extends Controller
             $order->grand_total      = $grand_total;
 
             $order->save(); // INSERT data INTO the `orders` table
+            // 2. Save to `order_ninjavan` table
+            if ($order->shipping_method === 'ninjavan' && !empty($quoteData)) {
+                $ninjaVanCartItems = $quoteData['getCartItems'] ?? [];
+                if (empty($ninjaVanCartItems)) {
+                    \Log::warning('NinjaVan quote data missing cart items.');
+                    return; // or handle fallback
+                }
 
+                $productIds = array_column($ninjaVanCartItems, 'product_id');
+
+                // Get product names by ID
+                $productNames = Product::whereIn('id', $productIds)
+                    ->pluck('product_name', 'id')
+                    ->toArray();
+
+                // Build item description
+                $orderedProductNames = array_map(function ($item) use ($productNames) {
+                    return $productNames[$item['product_id']] ?? 'Unknown Product';
+                }, $ninjaVanCartItems);
+
+                $itemDescription = 'Order #' . ($ninjaVanCartItems[0]['id'] ?? $order->id) . ' - ' . implode(', ', $orderedProductNames);
+
+                $orderNinjaVan = new \App\Models\OrdersNinjavan;
+
+                $orderNinjaVan->order_id                = $order->id;
+                $orderNinjaVan->merchant_order_number   = $ninjaVanCartItems[0]['session_id'] ?? $order->id;
+                $orderNinjaVan->service_level           = 'Standard';
+                $orderNinjaVan->pickup_date             = $pickupDate ?? now()->format('Y-m-d');
+                $orderNinjaVan->pickup_time_start       = $pickupStart ?? '';
+                $orderNinjaVan->pickup_time_end         = $pickupEnd ?? '';
+                $orderNinjaVan->pickup_instructions     = $quoteData['pickup_instructions'] ?? 'Pickup with care!';
+                $orderNinjaVan->delivery_start_date     = $deliveryDate ?? now()->addDays(3)->format('Y-m-d');
+                $orderNinjaVan->delivery_time_start     = '09:00';
+                $orderNinjaVan->delivery_time_end       = '18:00';
+                $orderNinjaVan->delivery_instructions   = $quoteData['delivery_instructions'] ?? 'Please deliver with care!';
+                $orderNinjaVan->weight                  = $quoteData['total_weight'] ?? 0;
+                $orderNinjaVan->item_description        = $itemDescription;
+                $orderNinjaVan->quantity                = $quoteData['total_qty'] ?? 0;
+
+                $orderNinjaVan->save();
+            }
             // Get the last generated `id` of the the last inserted order in the `orders` table (to be able to store it in the `order_id` column in the `orders_products` table)
-            $order_id = DB::getPdo()->lastInsertId();
+            $order_id = $order->id;
 
 
             // INSERT/Fill in the data of the order in the `orders_products` table (after filling in the `orders` table)
@@ -1225,7 +1474,7 @@ class ProductsController extends Controller
                     $description .= "Coupon Amount - " . Session::get('couponAmount');
                 }
                 $resp = $paymongo->setItems($getCartItems)
-                    ->setDeliveryFee($shipping_charges)
+                    ->setDeliveryFee($shipping_charges, $request->shipping_method ?? 'Lalamove')
                     ->set("description", $description)
                     ->set("payment_method_types", ["card", "brankas_bdo", "gcash", "grab_pay", "paymaya"])
                     ->set("billing", [
@@ -1242,7 +1491,12 @@ class ProductsController extends Controller
                         "phone" => $deliveryAddress['mobile']
                     ])
                     ->createSession();
-
+                    \Log::info("Paymongo: Creating session", [
+                        'order_id' => $order->id ?? 'N/A',
+                        'shipping_method' => $request->shipping_method ?? 'Lalamove',
+                        'shipping_charges' => $shipping_charges
+                    ]);
+                        
                 // create response for frontend
                 $return_respose = [
                     'success' => false,
@@ -1396,9 +1650,12 @@ class ProductsController extends Controller
     private function getCollectionBySection($section, $data)
     {
         $sectionModel = new \App\Models\Section;
+        $collection = Product::query(); // Initialize as a query builder
+
         if ($section !== "all") {
             $sectionCategories = $sectionModel->whereRaw('LOWER(name) = ?', [strtolower($section)])->where('status', 1);
 
+            // Assuming getProductsBySectionName also returns a query builder
             $collection = Product::getProductsBySectionName($section);
         } else {
             $sectionCategories = $sectionModel->where('status', 1);
@@ -1419,23 +1676,39 @@ class ProductsController extends Controller
                 'categoryDetails' => $catDetails
             ];
         } else {
-            return false;
+            // If no categories found for the section, return an empty collection or handle it
+            return [
+                "collection" => Product::whereRaw('1=0'), // Return an empty query builder
+                "filters" => [],
+                "categoryDetails" => ['catIds' => []],
+                "meta_title" => "No Products Found",
+                "meta_description" => "No products found for this section.",
+                "meta_keywords" => "no products",
+            ];
         }
 
-        $meta_title       = "Kapiton $section Collection";
+        // IMPORTANT: Remove or rethink these meta_descriptions and meta_keywords calculations
+        // if $collection is a query builder here, calling ->get() will execute it prematurely.
+        // These should ideally be based on static values, or retrieved from the section/category itself.
+        // If you MUST derive them from products, consider getting them from the *final* paginated collection
+        // in the `listing` method, or from a *subset* of the collection.
 
-        $meta_descriptions = $collection->get()->pluck('meta_description');
-        $meta_description = implode($meta_descriptions->toArray());
+        $meta_title         = "Kapiton " . ucfirst($section) . " Collection";
+        $meta_description   = "Browse the best products in the " . ucfirst($section) . " collection.";
+        $meta_keywords      = "Kapiton, " . $section . ", products, shop";
 
-        $meta_keywordss = $collection->get()->pluck('meta_keywords');
-        $meta_keywords    = implode($meta_keywordss->toArray());
-
+        // You can call getAvailableFilters here, passing the current query builder
+        // Ensure getAvailableFilters does NOT call ->get() or ->count() on the main $collection
+        // if it needs to apply further filters. It should work on the query builder.
         $filters = $this->getAvailableFilters($catDetails, $collection);
 
-        $collection = $this->processFilters($collection, $data);
+
+        // DO NOT process filters here if the main listing method will do it.
+        // $collection = $this->processFilters($collection, $data); // <--- REMOVE THIS LINE IF listing() method handles it.
+        // The listing method should be the one to apply filters after getting the base query from these helper methods.
 
         return [
-            "collection" => $collection,
+            "collection" => $collection, // This should be a Query Builder
             "filters" => $filters,
             "categoryDetails" => $categoryDetails,
             "meta_title" => $meta_title,
@@ -1446,17 +1719,13 @@ class ProductsController extends Controller
 
     private function getCollectionByCategory($category, $data)
     {
-        // $_GET['sort'] = $data['sort'];
-        // dd($url);
         $categoryCount = Category::where([
             'url'    => $category,
             'status' => 1
         ])->count();
-        // dd($categoryCount);
 
-        if ($categoryCount > 0) { // if the category entered as a URL in the browser address bar exists
-            // Get the entered URL in the browser address bar category details
-            $categoryDetails = Category::categoryDetails($category); // get the categories of the opened $url (get categories depending on the $url)
+        if ($categoryCount > 0) {
+            $categoryDetails = Category::categoryDetails($category);
 
             $collection = Product::with('brand')
                 ->whereIn('category_id', $categoryDetails['catIds'])
@@ -1464,10 +1733,9 @@ class ProductsController extends Controller
                 ->whereHas('vendor', function ($query) {
                     $query->where('status', 1);
                 });
-            // moving the paginate() method after checking for the sorting filter <form>    // Paginating Eloquent Results: https://laravel.com/docs/9.x/pagination#paginating-eloquent-results    // Displaying Pagination Results Using Bootstrap: https://laravel.com/docs/9.x/pagination#using-bootstrap        // https://laravel.com/docs/9.x/queries#additional-where-clauses    // using the brand() relationship method in Product.php
 
-            // Sorting Filter WITHOUT AJAX (using HTML <form> and jQuery) in front/products/listing.blade.php
-            if (isset($_GET['sort']) && !empty($_GET['sort'])) { // if the URL query string parameters contain '&sort=someValue'    // 'sort' is the 'name' HTML attribute of the <select> box
+            // Sorting Filter WITHOUT AJAX - KEEP THIS PART
+            if (isset($_GET['sort']) && !empty($_GET['sort'])) {
                 if ($_GET['sort'] == 'product_latest') {
                     $collection->orderBy('products.id', 'Desc');
                 } elseif ($_GET['sort'] == 'price_lowest') {
@@ -1482,15 +1750,17 @@ class ProductsController extends Controller
             }
 
             $filters = $this->getAvailableFilters($categoryDetails['categoryDetails'], $collection);
-            $collection = $this->processFilters($collection, $data);
+            // DO NOT process filters here if the main listing method will do it.
+            // $collection = $this->processFilters($collection, $data); // <--- REMOVE THIS LINE IF listing() method handles it.
 
-            // Dynamic SEO (HTML meta tags): Check the HTML <meta> tags and <title> tag in front/layout/layout.blade.php
-            $meta_title       = $categoryDetails['categoryDetails']['meta_title'];
-            $meta_description = $categoryDetails['categoryDetails']['meta_description'];
-            $meta_keywords    = $categoryDetails['categoryDetails']['meta_keywords'];
+
+            // Dynamic SEO (HTML meta tags): Similar to above, make them static or derive differently
+            $meta_title       = $categoryDetails['categoryDetails']['meta_title'] ?? "Kapiton " . ucfirst($category) . " Products";
+            $meta_description = $categoryDetails['categoryDetails']['meta_description'] ?? "Browse products in the " . ucfirst($category) . " category.";
+            $meta_keywords    = $categoryDetails['categoryDetails']['meta_keywords'] ?? "Kapiton, " . $category . ", shop";
 
             return [
-                "collection" => $collection,
+                "collection" => $collection, // This should be a Query Builder
                 "filters" => $filters,
                 "categoryDetails" => $categoryDetails,
                 "meta_title" => $meta_title,
@@ -1498,38 +1768,37 @@ class ProductsController extends Controller
                 "meta_keywords" => $meta_keywords,
             ];
         } else {
-            abort(404); // we will create the 404 page later on    // https://laravel.com/docs/9.x/helpers#method-abort
+            abort(404);
         }
     }
 
-    /**
-     * Get Available Filters
-     * will return available filters depending on section/category/vendor
-     *
-     * @return array $filters
-     */
     private function getAvailableFilters($categoryDetails, $products)
     {
         $filters = [];
 
-        // Fetch all parent categories with subcategories
-        $allParentCategories = \App\Models\Category::with('subCategories')
-            ->where('parent_id', 0)
-            ->where('status', 1)
-            ->get();
+        // Normalize category data
+        if (isset($categoryDetails['categories'])) {
+            $filters['categories'] = $categoryDetails['categories'];
+        } elseif (isset($categoryDetails['category_name'])) {
+            $filters['categories'] = [$categoryDetails];
+        } else {
+            $temp = collect($categoryDetails)->pluck('categories')->toArray();
+            $filters['categories'] = array_merge(...$temp);
+        }
 
         // Determine active category URL
         $activeCategoryUrl = null;
-        if (isset($categoryDetails['url'])) {
-            $activeCategoryUrl = $categoryDetails['url'];
-        } elseif (isset($categoryDetails['category_name'])) {
-            $activeCategoryUrl = $categoryDetails['url'] ?? null;
-        } elseif (is_array($categoryDetails)) {
+        if (is_array($categoryDetails)) {
             $flat = collect($categoryDetails)->flatten(1);
-            $activeCategoryUrl = $flat->first()['url'] ?? null;
+            $first = $flat->first();
+            if (is_array($first) && isset($first['url'])) {
+                $activeCategoryUrl = $first['url'];
+            }
+        } elseif (isset($categoryDetails['url'])) {
+            $activeCategoryUrl = $categoryDetails['url'];
         }
 
-        // Build full category tree with active status
+        // Build category filters
         $filters['categories'] = $allParentCategories->map(function ($cat) use ($activeCategoryUrl) {
             return [
                 'category_name' => $cat->category_name,
@@ -1544,21 +1813,77 @@ class ProductsController extends Controller
             ];
         })->toArray();
 
-        // Load product data
+        // Assume $products is always a builder
         $selection = $products->select('*')->with([
             'brand',
-            'attributes' => function ($query) {
-                $query->select('product_id', 'size');
-            },
+            'attributes' => fn($q) => $q->select('product_id', 'size'),
             'vendor'
-        ])->get()->toArray();
+        ])->get();
 
-        // Add sizes and colors
+        // Extract filters
         $filters['sizes'] = collect($selection)->pluck('attributes.*.size')->flatten()->filter()->unique()->values()->toArray();
         $filters['color'] = collect($selection)->pluck('product_color')->filter()->unique()->values()->toArray();
 
         return $filters;
     }
+
+
+    private function processFilters($collection, $data)
+    {
+        if ($data !== null) {
+            if (isset($data['color'])) {
+                $collection->whereIn('product_color', $data['color']);
+            }
+
+            if (isset($data['brands'])) {
+                $brandIds = Brand::whereIn('name', $data['brands'])->pluck('id')->toArray();
+                $collection->whereIn('brand_id', $brandIds);
+            }
+
+            if (isset($data['sizes'])) {
+                $attributeIds = ProductsAttribute::whereIn('size', $data['sizes'])->pluck('product_id')->toArray();
+                $collection->whereIn('id', $attributeIds);
+            }
+
+            // features
+            $productFilters = ProductsFilter::productFilters();
+            foreach ($productFilters as $key => $filter) {
+                if (isset($filter['filter_column']) && isset($data[$filter['filter_column']]) && !empty($filter['filter_column']) && !empty($data[$filter['filter_column']])) {
+                    $collection->whereJsonContains("features->" . $filter['filter_column'], $data[$filter['filter_column']]);
+                }
+            }
+
+            // sorting
+            if (isset($data['sortby'])) {
+                switch ($data['sortby']) {
+                    case 'date-1':
+                        $collection->orderBy('created_at');
+                        break;
+                    case 'date-2':
+                        $collection->orderByDesc('created_at');
+                        break;
+                    case 'price-1':
+                        $collection->orderBy('product_price');
+                        break;
+                    case 'price-2':
+                        $collection->orderByDesc('product_price');
+                        break;
+                    case 'alphabetically-A':
+                        $collection->orderBy('product_name');
+                        break;
+                    case 'alphabetically-Z':
+                        $collection->orderByDesc('product_name');
+                        break;
+                    case 'rating':
+                        $collection->orderBy('ratings');
+                        break;
+                }
+            }
+        }
+
+        return $collection;
+    }
+
 
 
     private function old_processFilters($categoryProducts, $data)
@@ -1609,9 +1934,6 @@ class ProductsController extends Controller
             $categoryProducts->whereIn('products.id', $productIds);
         }
 
-
-
-
         // Size, price, color, brand, … are also Dynamic Filters, but won't be managed like the other Dynamic Filters, but we will manage every filter of them from the suitable respective database table, like the 'size' Filter from the `products_attributes` database table, 'color' Filter and `price` Filter from `products` table, 'brand' Filter from `brands` table
         // Fourth: the 'brand' filter (from `products` and `brands` database table)
         if (isset($data['brand']) && !empty($data['brand'])) { // coming from the AJAX call in front/js/custom.js    // example:    $data['brand'] = 'Large'
@@ -1619,68 +1941,6 @@ class ProductsController extends Controller
 
             $categoryProducts->whereIn('products.id', $productIds); // `products.id` means that `products` is the table name (means grab the `id` column of the `products` table)
         }
-    }
-
-    private function processFilters($collection, $data)
-    {
-        if ($data !== null) {
-            if (isset($data['color'])) {
-                $collection->orWhereIn('product_color', $data['color']);
-            }
-
-            if (isset($data['brands'])) {
-                $brandModel = new Brand;
-                $brandIds = $brandModel->select('id')->whereIn('name', $data['brands'])->get()->pluck('id')->toArray();
-                $collection->orWhereIn('brand_id', $brandIds);
-            }
-
-            if (isset($data['sizes'])) {
-                $prodAttributeModel = new ProductsAttribute;
-                $attributeIds = $prodAttributeModel->whereIn('size', $data['sizes'])->get()->pluck('product_id')->toArray();
-                $collection->orWhereIn('id', $attributeIds);
-            }
-
-            // features
-            $productFilters = ProductsFilter::productFilters(); // Get all the (enabled/active) Filters    // (Another way to go is using an AJAX call to get the $productFilters!)
-            foreach ($productFilters as $key => $filter) {
-                if (isset($filter['filter_column']) && isset($data[$filter['filter_column']]) && !empty($filter['filter_column']) && !empty($data[$filter['filter_column']])) {
-                    $collection->whereJsonContains("features->" . $filter['filter_column'], $data[$filter['filter_column']]);
-                }
-            }
-
-            if (isset($data['sortby'])) {
-                // sorts
-                switch ($data['sortby']) {
-                    case 'date-1':
-                        $collection->orderBy('created_at');
-                        break;
-                    case 'date-2':
-                        $collection->orderByDesc('created_at');
-                        break;
-                    case 'price-1':
-                        $collection->orderBy('product_price');
-                        break;
-                    case 'price-2':
-                        $collection->orderByDesc('product_price');
-                        break;
-                    case 'alphabetically-A':
-                        $collection->orderBy('product_name');
-                        break;
-                    case 'alphabetically-Z':
-                        $collection->orderByDesc('product_name');
-                        break;
-                    case 'rating':
-                        $collection->orderBy('ratings');
-                        break;
-
-                    default:
-                        # code...
-                        break;
-                }
-            }
-        }
-
-        return $collection;
     }
 
     public function wishlistAdd(Request $request)

@@ -5,51 +5,74 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
-
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'product_name' => $this->product_name,
+            'description' => $this->description,
+            'product_price' => $this->product_price,
+            'product_color' => $this->product_color ?? null,
+            'status' => $this->status,
+            'category_id' => $this->category_id,
+            'section_id' => $this->section_id ?? null,
+            'vendor_id' => $this->vendor_id ?? null,
+        ];
+    }
 
     // Every 'product' belongs to a 'section'
-    public function section() {
+    public function section()
+    {
         return $this->belongsTo('App\Models\Section', 'section_id'); // 'section_id' is the foreign key
     }
 
     // Every 'product' belongs to a 'category'
-    public function category() {
+    public function category()
+    {
         return $this->belongsTo('App\Models\Category', 'category_id'); // 'category_id' is the foreign key
     }
 
-    public function brand() { // Every product belongs to some brand    // this relationship method is used in Front/ProductsController.php    
+    public function brand()
+    { // Every product belongs to some brand    // this relationship method is used in Front/ProductsController.php    
         return $this->belongsTo('App\Models\Brand', 'brand_id', 'id'); // 'brand_id' is the foreign key
     }
 
-    public function variants() {
+    public function variants()
+    {
         return $this->hasMany('App\Models\ProductsVariant');
     }
 
     // Every product has many attributes
-    public function attributes() {
+    public function attributes()
+    {
         return $this->hasMany('App\Models\ProductsAttribute');
     }
 
     // Every product has many images
-    public function images() {
+    public function images()
+    {
         return $this->hasMany('App\Models\ProductsImage');
     }
 
-    public function product_category_filters() {
+    public function product_category_filters()
+    {
         return $this->category()->with('filters');
     }
 
     // Relationship of a Product `products` table with Vendor `vendors` table (every product belongs to a vendor)    
-    public function vendor() {    
+    public function vendor()
+    {
         return $this->belongsTo('App\Models\Vendor', 'vendor_id')->with('vendorbusinessdetails'); // 'vendor_id' is the Foreign Key of the Relationship    
     }
 
-    public function ratings() {
+    public function ratings()
+    {
         return $this->hasMany(Rating::class, 'product_id', 'id');
     }
 
@@ -60,10 +83,11 @@ class Product extends Model
         return $prefix . '-' . $uniqueId;
     }
 
-    public static function product_computed_ratings ($product_id) {
+    public static function product_computed_ratings($product_id)
+    {
         $product_ratings = \App\Models\Rating::select('rating')->where('product_id', $product_id)->get()->toArray();
         $cnt = count($product_ratings);
-        
+
         $computed = 0;
         if ($cnt > 0) {
             $computed = array_sum(Arr::pluck($product_ratings, 'rating')) / $cnt;
@@ -74,7 +98,8 @@ class Product extends Model
 
 
     // A static method (to be able to be called directly without instantiating an object in index.blade.php) to determine the final price of a product because a product can have a discount from TWO things: either a `CATEGORY` discount or `PRODUCT` discout    
-    public static function getDiscountPrice($product_id) { // this method is called in front/index.blade.php
+    public static function getDiscountPrice($product_id)
+    { // this method is called in front/index.blade.php
         // Get the product PRICE, DISCOUNT and CATEGORY ID
         $productDetails = \App\Models\Product::select('product_price', 'product_discount', 'category_id')->where('id', $product_id)->first();
         $productDetails = json_decode(json_encode($productDetails), true); // convert the object to an array    
@@ -84,8 +109,8 @@ class Product extends Model
             // Get the product category discount `category_discount` from `categories` table using its `category_id` in `products` table
             $categoryDetails = \App\Models\Category::select('category_discount')->where('id', $productDetails['category_id'])->first();
             $categoryDetails = json_decode(json_encode($categoryDetails), true); // convert the object to an array    
-    
-            
+
+
             if ($productDetails['product_discount'] > 0) { // if there's a 'product_discount' (in `products` table) (i.e. discount is not zero 0)
                 // if there's a PRODUCT discount on the product itself
                 $discounted_price = $productDetails['product_price'] - ($productDetails['product_price'] * $productDetails['product_discount'] / 100);
@@ -101,8 +126,9 @@ class Product extends Model
     }
 
 
-    
-    public static function getDiscountAttributePrice($product_id, $color, $size) { // this method is called (used) in front/products/detail.blade.php and cart_items.blade.php and in applyCoupon() method in Front/ProudctsController.php
+
+    public static function getDiscountAttributePrice($product_id, $color, $size)
+    { // this method is called (used) in front/products/detail.blade.php and cart_items.blade.php and in applyCoupon() method in Front/ProudctsController.php
         // Get that product attributes from `products_attributes` table which has that specific `product_id` and `size`
         $proAttrPrice = \App\Models\ProductsAttribute::where([ // from `products_attributes` table
             'product_id' => $product_id,
@@ -128,7 +154,7 @@ class Product extends Model
             $final_price = $proAttrPrice['price'] - ($proAttrPrice['price'] * $catDetails['category_discount'] / 100);
             $discount = $proAttrPrice['price'] - $final_price; // the discount value = original price - price after discount
 
-        // Note: Didn't ACCOUNT FOR presence of discounts of BOTH `product_discount` (in `products` table) AND `category_discount` (in `categories` table) AT THE SAME TIME!!
+            // Note: Didn't ACCOUNT FOR presence of discounts of BOTH `product_discount` (in `products` table) AND `category_discount` (in `categories` table) AT THE SAME TIME!!
         } else { // there's no discount on neither `product_discount` (in `products` table) nor `category_discount` (in `categories` table)
             $final_price = $proAttrPrice['price'];
             $discount = 0;
@@ -144,7 +170,8 @@ class Product extends Model
 
 
 
-    public static function isProductNew($product_id) { 
+    public static function isProductNew($product_id)
+    {
         // Get the last (latest) three 3 added products ids
         $productIds = \App\Models\Product::select('id')->where('status', 1)->orderBy('id', 'Desc')->limit(3)->pluck('id');
         $productIds = json_decode(json_encode($productIds, true));
@@ -161,17 +188,19 @@ class Product extends Model
 
 
 
-    
-    public static function getProductImage($product_id) { // this method is used in front/orders/order_details.blade.php
+
+    public static function getProductImage($product_id)
+    { // this method is used in front/orders/order_details.blade.php
         $getProductImage = \App\Models\Product::select('product_image')->where('id', $product_id)->first()->toArray();
 
 
         return $getProductImage['product_image'];
     }
 
-    
+
     // Note: We need to prevent orders (upon checkout and payment) of the 'disabled' products (`status` = 0), where the product ITSELF can be disabled in admin/products/products.blade.php (by checking the `products` database table) or a product's attribute (`stock`) can be disabled in 'admin/attributes/add_edit_attributes.blade.php' (by checking the `products_attributes` database table). We also prevent orders of the out of stock / sold-out products (by checking the `products_attributes` database table)
-    public static function getProductStatus($product_id) {
+    public static function getProductStatus($product_id)
+    {
         $getProductStatus = Product::select('status')->where('id', $product_id)->first();
 
 
@@ -179,11 +208,13 @@ class Product extends Model
     }
 
     // Delete a product from Cart if it's 'disabled' (`status` = 0) or it's out of stock (sold out)    
-    public static function deleteCartProduct($product_id) {
+    public static function deleteCartProduct($product_id)
+    {
         Cart::where('product_id', $product_id)->delete();
     }
 
-    public static function getProductsBySectionName($section_name) {
+    public static function getProductsBySectionName($section_name)
+    {
         $section_id = \App\Models\Section::where('name', $section_name)->where('status', 1)->get('id')->toArray();
 
         return Product::where('section_id', $section_id)
@@ -193,5 +224,4 @@ class Product extends Model
             })
             ->with('vendor');
     }
-
 }

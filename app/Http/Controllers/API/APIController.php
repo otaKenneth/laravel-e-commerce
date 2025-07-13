@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class APIController extends Controller
 {
@@ -1052,5 +1053,102 @@ class APIController extends Controller
         
         return response()->json(['status' => 'success'], 200);
     }
+    public function ninjaVanWebhook(Request $request)
+    {
+        $data = $request->all();
+        \Log::info('Webhook received from NinjaVan' . json_encode($data));
 
+        if ($data['eventType'] == 'ORDER_STATUS_CHANGED' && isset($data['data']['order'])) {
+            $ninjaVanOrder = $data['data']['order'];
+            $trackingNumber = $ninjaVanOrder['trackingNumber'] ?? null;
+            $statusMessage = $ninjaVanOrder['status'] ?? null;
+
+            if (empty($trackingNumber)) {
+                \Log::warning('No tracking number in NinjaVan order data.');
+                return response()->json(['message' => 'Missing tracking number'], 422);
+            }
+
+            $orderProducts = \App\Models\OrdersProduct::where('tracking_number', $trackingNumber)->get();
+
+            if ($orderProducts->isEmpty()) {
+                \Log::warning("No order found for tracking number: $trackingNumber");
+                return response()->json(['message' => 'Order not found'], 404);
+            }
+            
+            $internalStatus = $this->ninjaVanDeliveryStatus($statusMessage);
+
+            foreach ($orderProducts as $order) {
+                $order->item_status = $internalStatus;
+                $order->save();
+
+                // 📝 Better logging
+                \Log::info("Order #{$order->id} (Tracking: $trackingNumber) updated to status: $internalStatus");
+
+                \App\Models\OrdersLog::create([
+                    'order_id' => $order->order_id,
+                    'order_item_id' => $order->id,
+                    'order_status' => 'NINJAVAN - ' . $statusMessage
+                ]);
+
+                // (Optional) 🔔 Notify user if needed
+                // $this->notifyUserOfStatusChange($order, $internalStatus);
+            }
+
+            return response()->json(['message' => 'Webhook processed.'], 200);
+        }
+
+        \Log::warning('Invalid NinjaVan Webhook format.');
+        return response()->json(['message' => 'Invalid format or missing data.'], 400);
+    }
+    public function handleNinjavan(Request $request)
+    {
+        $rawJson = file_get_contents('php://input');
+        $cleanJson = rtrim($rawJson);
+        \Log::debug('Raw JSON from php://input', ['data' => $cleanJson]);
+        $hmacHeader = $request->header('X-Ninjavan-Hmac-Sha256');
+        $clientSecret = config('app.ninjavan.client_key');
+
+        $calculatedHmac = base64_encode(hash_hmac('sha256', $cleanJson, $clientSecret, true));
+
+        if (!hash_equals($hmacHeader, $calculatedHmac)) {
+            \Log::warning('Ninja Van webhook signature invalid.', [
+                'received' => $hmacHeader,
+                'expected' => $calculatedHmac,
+            ]);
+            return response('Invalid signature', 403);
+        }
+
+        \Log::info('Webhook verified.', ['payload' => json_decode($cleanJson, true)]);
+        return response('OK', 200);
+    }
+
+
+    protected function ninjaVanDeliveryStatus($statusMessage)
+    {
+        $statusMap = [
+            'pending pickup' => 'PENDING_PICKUP',
+            'picked up, in transit to origin hub' => 'IN_TRANSIT',
+            'on vehicle for delivery' => 'OUT_FOR_DELIVERY',
+            'delivered, received by customer' => 'DELIVERED',
+            'delivered, collected by customer' => 'DELIVERED',
+            'delivered, left at doorstep' => 'DELIVERED',
+            'cancelled' => 'CANCELLED',
+        ];
+
+        $normalized = strtolower(trim($statusMessage));
+
+        return $statusMap[$normalized] ?? 'IN_TRANSIT';
+    }
+
+    public function receiveNinjaVanWebhook(Request $request)
+    {
+        $data = $request->all();
+
+        \Log::info("NinjaVan Webhook Data Received:", $data);
+
+        return response()->json([
+            'status' => 'received',
+            'data' => $data
+        ], 200);
+    }
 }

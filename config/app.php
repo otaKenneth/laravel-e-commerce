@@ -221,6 +221,13 @@ return [
         'api_secret' => env('LALAMOVE_API_SECRET')
     ],
 
+    'ninjavan' => [
+    'api_url' => env('NINJAVAN_API_URL'),
+    'client_id' => env('NINJAVAN_CLIENT_ID'),
+    'client_key' => env('NINJAVAN_CLIENT_KEY'),
+    'access_token' => env('NINJAVAN_ACCESS_TOKEN'),
+],
+
     'seller_base_url' => env('APP_SELLER_URL'),
 
 ];
