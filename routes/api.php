@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -82,6 +83,20 @@ Route::namespace('App\Http\Controllers\API')->group(function() { // Route Groups
 
     Route::post('/lalamove/webhook', 'APIController@lalamoveDeliveryStatus');
 
+    
+    // API Endpoint:    GET http://
+    Route::get('index', 'IndexController@index');
 
-    Route::get('index', 'IndexController@index'); // API Endpoint: GET http://
+    Route::prefix('products')->group(function () {
+        // Product listing with filters (GET)
+        Route::get('{type}/{any?}', 'V2_ProductsController@listing')
+        ->where('any', '.*')
+        ->name('listing');
+
+        // // Product detail (GET)
+        // Route::get('detail/{id}', [V2_ProductsController::class, 'detail']);
+
+        // // Get product price for attribute changes (POST)
+        // Route::get('price', [V2_ProductsController::class, 'getProductPrice']);
+    });
 });
