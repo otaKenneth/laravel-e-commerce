@@ -16,6 +16,8 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
         ->where('any', '.*')
         ->name('listing');
 
+    Route::get('/products/search', 'ProductsController@listing');
+
     // Vendor Login/Register
     Route::get('vendor/login-register', 'VendorController@loginRegister');  // render vendor login_register.blade.php page
 
@@ -177,6 +179,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
         // Add Rating & Review on a product in front/products/detail.blade.php
         Route::post('add-rating', 'RatingController@addRating');
+
 
         // PayPal routes:
         // PayPal payment gateway integration in Laravel (this route is accessed from checkout() method in Front/ProductsController.php). Rendering front/paypal/paypal.blade.php page

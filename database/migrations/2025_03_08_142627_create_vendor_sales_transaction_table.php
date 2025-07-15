@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('vendor_bank_details_id');
             $table->string('date_range');
-            $table->string('transaction_number');
+            $table->string('transaction_number')->nullable();
             $table->double('amount');
             $table->boolean('status');
             $table->json('order_ids');

@@ -102,6 +102,8 @@
                                                 class="address"
                                                 name="preferred_address-{{$deliveryAddress['user_id']}}"
                                                 value="{{$deliveryAddress['id']}}"
+                                                lalamove_shipping="{{ $deliveryAddress['lalamove_shipping_charges'] ?? 0 }}"
+                                                ninjavan_shipping="{{ $deliveryAddress['ninjavan_shipping_charges'] ?? 0 }}"
                                                 shipping_charges="{{number_format($deliveryAddress['shipping_charges'], 2)}}"
                                                 total_price="{{str_replace(",", "", $sub_total)}}"
                                                 coupon_amount="{{Session::get('couponAmount')}}"
@@ -148,12 +150,23 @@
                                                 id="lalamove"
                                                 name="shipping_method"
                                                 value="lalamove"
-                                                checked
+                                                
                                             >
                                             <label for="lalamove" style="cursor:pointer;">
                                                 <strong>Lalamove</strong>
                                             </label>
                                             <br/>
+                                            <input
+                                                type="radio"
+                                                id="ninjavan"
+                                                name="shipping_method"
+                                                value="ninjavan"
+                                                checked
+                                            />
+                                            <label for="ninjavan" style="cursor:pointer;">
+                                                <strong>NinjaVan</strong>
+                                            </label>
+                                            <br>
                                             <input
                                                 type="radio"
                                                 id="jnt"
@@ -408,6 +421,24 @@
 
 @endsection
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     var LALAMOVE = @json(config('app.lalamove'))
+    var NINJAVAN = @json(config('app.ninjavan'))
+    $(document).ready(function () {
+        function toggleNinjaVanOptions() {
+            const selected = $('input[name="shipping_method"]:checked').val();
+            if (selected === 'ninjavan') {
+                $('#ninjavan-options').removeClass('hidden');
+            } else {
+                $('#ninjavan-options').addClass('hidden');
+            }
+        }
+
+        // Run on page load
+        toggleNinjaVanOptions();
+
+        // Run on change
+        $('input[name="shipping_method"]').on('change', toggleNinjaVanOptions);
+    });
 </script>

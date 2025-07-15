@@ -3,17 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrdersNinjavan;
 use App\Models\Refunds;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\LalamoveAPIBodyHelper;
+use App\Helpers\NinjaVanHelper;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
     // Note: In the Admin Panel, in the Orders Management section, if the authenticated/logged-in user is 'vendor', we'll show the orders of the products added by/related to that 'vendor' ONLY, but if the authenticated/logged-in user is 'admin', we'll show ALL orders    
 
     private $lalamoveAPI_Helper;
+    private $ninjaVanAPI_Helper;
 
     // Render admin/orders/orders.blade.php page (Orders Management section) in the Admin Panel    
     public function orders() {
@@ -40,7 +44,7 @@ class OrderController extends Controller
                 'orders_products' => function($query) use ($vendor_id) { // function () use ()     syntax: https://www.php.net/manual/en/functions.anonymous.php#:~:text=the%20use%20language%20construct     // 'orders_products' is the Relationship method name in Order.php model
                     $query->where('vendor_id', $vendor_id); // `vendor_id` in `orders_products` table
                 }
-            ])->where('order_status', '!=', 'Payment Pending')
+            ])
             ->orderBy('id', 'Desc')->get()->toArray();
             // dd($orders);
 
@@ -238,7 +242,7 @@ class OrderController extends Controller
             $orderDetails  = \App\Models\Order::with([ // Eager Loading: https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'orders_products' is the relationship method name in Order.php model    // Constraining Eager Loads: https://laravel.com/docs/9.x/eloquent-relationships#constraining-eager-loads    // Subquery Where Clauses: https://laravel.com/docs/9.x/queries#subquery-where-clauses    // Advanced Subqueries: https://laravel.com/docs/9.x/eloquent#advanced-subqueries
                 'orders_products' => function($query) use ($order_item_id) { // function () use ()     syntax: https://www.php.net/manual/en/functions.anonymous.php#:~:text=the%20use%20language%20construct     // 'orders_products' is the Relationship method name in Order.php model
                     $query->where('id', $order_item_id); // `id` column in `orders_products` table
-                }
+                }, 'ninjavanOrder' 
             ])->where('id', $getOrderId['order_id'])->first()->toArray(); // Eager Loading: https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'orders_products' is the relationship method name in Order.php model
             // dd($orderDetails);
             // Note: Now in this case, updating the item status of one product will send an email to user but with telling the item statuses of all of the Order items (not ONLY the item with the status updated!). The solution to this is using a subquery (Constraining Eager Loads)
@@ -252,6 +256,9 @@ class OrderController extends Controller
                 (empty($data['item_courier_name']) && empty($data['item_tracking_number']))) {
                     if ($orderDetails['shipping_method'] == 'lalamove') {
                         $this->productForDelivery($data);
+                    }
+                    if ($orderDetails['shipping_method'] == 'ninjavan') {
+                        $this->productForNinjaVanDelivery($data);
                     }
             } elseif (!empty($data['item_courier_name']) && !empty($data['item_tracking_number'])) { // if a 'vendor' or 'admin' Updates the Order "Item Status" to 'Shipped' in admin/orders/order_details.blade.php, and submits both Courier Name and Tracking Number HTML input fields, include the Courier Name and Tracking Nubmer data in the email (send them with the email)
                 $email = $deliveryDetails['email'];
@@ -315,7 +322,9 @@ class OrderController extends Controller
         // echo 'Inside Automatic Shipping Process if statement in updateOrderStatus() method in Admin/OrderController.php<br>';
         // exit;
         $all_lalamove_data = $this->lalamoveAPI_Helper->getQuotation($orderDetails, Auth::guard('admin')->user()->vendor_id);
-
+        
+        // dd($all_lalamove_data);
+        // dd($all_ninjavan_data);
         if (is_object($all_lalamove_data) && isset($all_lalamove_data->quotation->errors)) {
             return redirect()->back()->withErrors($all_lalamove_data->quotation->errors);
         } elseif (is_array($all_lalamove_data) && isset($all_lalamove_data['errors'])) {
@@ -336,6 +345,72 @@ class OrderController extends Controller
             }
         }
     }
+
+   public function productForNinjaVanDelivery($data)
+{
+    $orderItem = \App\Models\OrdersProduct::find($data['order_item_id']);
+    $orderId = $orderItem->order_id;
+    $vendor_id = Auth::guard('admin')->user()->vendor_id; 
+    $pickupDate = request()->input('pickup_date'); 
+    $pickupDate = $pickupDetails['pickup_date'] ?? now()->format('Y-m-d');
+    $pickupDetails = [];
+    // Save pickup date & time from request if present
+    if (request()->has('pickup_date') && request()->has('pickup_timeslot')) {
+    [$startTime, $endTime] = explode('-', request()->input('pickup_timeslot'));
+    $pickupDate = request()->input('pickup_date');
+
+    // Save to DB
+    \DB::table('orders_ninjavan')
+        ->where('order_id', $orderId)
+        ->update([
+            'pickup_date' => $pickupDate,
+            'pickup_time_start' => $startTime,
+            'pickup_time_end' => $endTime,
+            'delivery_start_date' => Carbon::parse($pickupDate)->addDays(3)->format('Y-m-d'),
+        ]);
+    }
+
+    // ✅ Fetch updated pickup data
+    $ninjavan = OrdersNinjavan::where('order_id', $orderId)->first();
+
+    if (!$ninjavan || !$ninjavan->pickup_date || !$ninjavan->pickup_time_start || !$ninjavan->pickup_time_end) {
+        return redirect()->back()->withErrors(['Pickup date and time are required before pushing to NinjaVan.']);
+    }
+
+    // ✅ Pass updated pickup data to helper as array
+    $pickupDetails = [
+        'pickup_date' => $ninjavan->pickup_date,
+        'pickup_start_time' => $ninjavan->pickup_time_start,
+        'pickup_end_time' => $ninjavan->pickup_time_end,
+    ];
+
+    $this->ninjaVanAPI_Helper = new NinjaVanHelper;
+
+    $quotationResult = $this->ninjaVanAPI_Helper->getQuotation($orderItem, Auth::guard('admin')->user()->vendor_id, $pickupDetails);
+
+    if (
+        (is_object($quotationResult) && isset($quotationResult->quotation['errors'])) ||
+        (is_array($quotationResult) && isset($quotationResult['errors'])) ||
+        empty($quotationResult)
+    ) {
+        $errors = is_object($quotationResult) ? $quotationResult->quotation['errors'] : $quotationResult['errors'];
+        return redirect()->back()->withErrors($errors ?? ['Something went wrong.']);
+    }
+
+    $pushResult = \App\Models\Order::pushOrder_to_NinjaVan($quotationResult, $orderItem->id);
+
+    if (isset($pushResult['errors'])) {
+        Session::put('error_message', collect($pushResult['errors'])->pluck('message')->toArray());
+        return redirect()->back();
+    }
+
+    $orderItem->courier_name = $pushResult['data']['tracking_url'] ?? 'NinjaVan';
+    $orderItem->tracking_number = $pushResult['data']['tracking_number'] ?? null;
+    $orderItem->save();
+}
+
+
+ 
 
     private function paymongoRefundOrder($orderId) {
         $order = \App\Models\Order::find($orderId)->first();
