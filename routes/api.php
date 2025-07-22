@@ -106,4 +106,8 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
         // // Get product price for attribute changes (POST)
         // Route::get('price', [V2_ProductsController::class, 'getProductPrice']);
     });
+
+    // New Vendor Routes
+    Route::get('vendors', 'V2_VendorController@index');
+    Route::get('vendors/{id}', 'V2_VendorController@show');
 });
