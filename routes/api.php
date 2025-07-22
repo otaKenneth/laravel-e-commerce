@@ -92,7 +92,7 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
 
     
     // API Endpoint:    GET http://
-    Route::get('index', 'IndexController@index');
+    Route::get('index', 'V2_IndexController@index');
 
     Route::prefix('products')->group(function () {
         // Product listing with filters (GET)

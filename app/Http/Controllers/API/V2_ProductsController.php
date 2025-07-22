@@ -112,63 +112,6 @@ class V2_ProductsController extends Controller
         }
     }
 
-    // public function filter($data)
-    // {
-    //     $search_product = $data['search'];
-
-    //     // We join `products` table (at the `category_id` column) with `categoreis` table (becausee we're going to search `category_name` column in `categories` table)
-    //     // Note: It's best practice to name table columns with more verbose descriptive names (e.g. if the table name is `products`, then you should have a column called `product_id`, NOT `id`), and also, don't have repeated column names THROUGHOUT/ACROSS the tables of a certain (one) database (i.e. make all your database tables column names (throughout your database) UNIQUE (even columns in different tables!)). That's because of that problem that emerges when you join (JOIN clause) two tables which have the same column names, when you join them, the column names of the second table overrides the column names of the first table (similar column names override each other), leading to many problems. There are TWO ways/workarounds to tackle this problem
-    //     $collection = Product::with('brand', 'vendor')->join( // Joins: Inner Join Clause: https://laravel.com/docs/9.x/queries#inner-join-clause    // moving the paginate() method after checking for the sorting filter <form>    // Paginating Eloquent Results: https://laravel.com/docs/9.x/pagination#paginating-eloquent-results    // Displaying Pagination Results Using Bootstrap: https://laravel.com/docs/9.x/pagination#using-bootstrap        // https://laravel.com/docs/9.x/queries#additional-where-clauses    // using the brand() relationship method in Product.php model    // Eager Loading (using with() method): https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'brand' is the relationship method name in Product.php model
-    //         'categories', // `categories` table
-    //         'categories.id',
-    //         '=',
-    //         'products.category_id' // JOIN both `products` and `categories` tables at    `categories`.`id` = `products`.`category_id`
-    //     )->where(function ($query) use ($search_product) { // Constraining Eager Loads: https://laravel.com/docs/9.x/eloquent-relationships#constraining-eager-loads    // Subquery Where Clauses: https://laravel.com/docs/9.x/queries#subquery-where-clauses    // Advanced Subqueries: https://laravel.com/docs/9.x/eloquent#advanced-subqueries    // Eager Loading (using with() method): https://laravel.com/docs/9.x/eloquent-relationships#eager-loading    // 'brand' is the relationship method name in Product.php model    // function () use ()     syntax: https://www.php.net/manual/en/functions.anonymous.php#:~:text=the%20use%20language%20construct
-    //         // We'll search for the searched term by the user in the `product_name`, `product_code`, `product_color` and `description` columns in the `products` table and in the `category_name` column in the `categories` table
-    //         $query->where('products.product_name',    'like', '%' . $search_product . '%')  // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
-    //             ->orWhere('products.product_code',    'like', '%' . $search_product . '%')  // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
-    //             ->orWhere('products.description',     'like', '%' . $search_product . '%')  // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
-    //             ->orWhere('categories.category_name', 'like', '%' . $search_product . '%'); // 'like' SQL operator    // '%' SQL Wildcard Character    // Basic Where Clauses: Where Clauses: https://laravel.com/docs/9.x/queries#where-clauses
-    //     })->where('products.status', 1)
-    //         ->whereHas('vendor', function ($query) {
-    //             $query->where('status', 1);
-    //         })->selectRaw('*, categories.id as category_id');
-
-    //     $catIds = $collection->get()->pluck('category_id')->toArray();
-
-    //     $sectionModel = new \App\Models\Section;
-    //     $sectionIds = $collection->get()->pluck('section_id')->unique()->toArray();
-    //     $sectionCategories = $sectionModel->whereIn('id', $sectionIds);
-    //     $catDetails = $sectionCategories->with('categories')->get()->toArray();
-
-    //     $categoryDetails = [
-    //         'catIds' => $catIds,
-    //         'categoryDetails' => $catDetails
-    //     ];
-
-    //     $meta_title       = "Search {$search_product}";
-
-    //     $meta_descriptions = $collection->get()->pluck('meta_description');
-    //     $meta_description = implode($meta_descriptions->toArray());
-
-    //     $meta_keywordss = $collection->get()->pluck('meta_keywords');
-    //     $meta_keywords    = implode($meta_keywordss->toArray());
-
-    //     $filters = $this->getAvailableFilters($catDetails, $collection);
-    //     $collection = $this->processFilters($collection, $data);
-    //     $collection->selectRaw('*, categories.id as category_id');
-
-    //     return [
-    //         "collection" => $collection,
-    //         "filters" => $filters,
-    //         "categoryDetails" => $categoryDetails,
-    //         "meta_title" => $meta_title,
-    //         "meta_description" => $meta_description,
-    //         "meta_keywords" => $meta_keywords,
-    //     ];
-    // }
-
-
 
     // Render Single Product Detail Page in front/products/detail.blade.php
     public function detail($id)

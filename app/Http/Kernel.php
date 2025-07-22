@@ -21,7 +21,6 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\CorsMiddleware::class,
     ];
 
     /**
@@ -43,7 +42,6 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\CorsMiddleware::class,
         ],
     ];
 
@@ -71,6 +69,5 @@ class Kernel extends HttpKernel
         // Registering Middleware: Assigning Middleware To Routes: https://laravel.com/docs/9.x/middleware#assigning-middleware-to-routes
         'admin' => \App\Http\Middleware\Admin::class,
         'breadcrumbs' => \App\Http\Middleware\SetBreadcrumbs::class,
-        'cors' => \App\Http\Middleware\CorsMiddleware::class,
     ];
 }
