@@ -14,13 +14,10 @@ class V2_IndexController extends Controller
     public function index()
     {
         try {
-            // --- Fetch Data from Database ---
             $sliderBannersData = Banner::where('type', 'Slider')->where('status', 1)->get();
             $categoriesData = Category::where([['parent_id', 0], ['status', 1]])->get();
             $newProductsData = Product::orderBy('id', 'Desc')->where('status', 1)->limit(10)->get();
             $bestSellersData = Product::where(['is_bestseller' => 'Yes', 'status' => 1])->limit(5)->inRandomOrder()->get();
-
-            // --- Transform Data for the Frontend ---
 
             // Format Slider Banners
             $sliderBanners = $sliderBannersData->map(function ($banner) {
@@ -62,7 +59,6 @@ class V2_IndexController extends Controller
             $topProducts = $formatProducts($bestSellersData);
             $recentlyAddedProducts = $formatProducts($newProductsData);
 
-            // --- Return Final JSON Response ---
             return response()->json([
                 'success' => true,
                 'message' => 'Data fetched successfully',
