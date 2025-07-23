@@ -110,4 +110,9 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
     // New Vendor Routes
     Route::get('vendors', 'V2_VendorController@index');
     Route::get('vendors/{id}', 'V2_VendorController@show');
+
+    Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+    });
+
 });
