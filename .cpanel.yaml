@@ -1,0 +1,16 @@
+---
+deployment:
+  tasks:
+    # Set paths
+    - export DEPLOYPATH=/home/hryftate/repositories/kapiton-master
+    - export PUBLICPATH=/home/hryftate/public_html
+
+    # Make sure directories exist
+    - mkdir -p $DEPLOYPATH
+    - mkdir -p $PUBLICPATH
+
+    # Copy Laravel files excluding public/ to DEPLOYPATH
+    - /bin/rsync -av --exclude='public/' . $DEPLOYPATH
+
+    # Sync public/ folder to public_html
+    - /bin/rsync -av public/ $PUBLICPATH
