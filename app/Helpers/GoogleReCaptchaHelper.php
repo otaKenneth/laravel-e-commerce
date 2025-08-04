@@ -67,4 +67,16 @@ class GoogleReCaptchaHelper
             return response()->json(['message' => $e->getMessage()], 402);
         }
     }
+
+    private function getSignedUrl($bucket, $objectName, $expiration = "+1 hour") {
+        try {
+            $object = $bucket->object($objectName);
+            $signedUrl = $object->signedUrl(new \DateTime($expiration));
+            // Log the signed URL for debugging
+            return $signedUrl;
+        } catch (\Exception $e) {
+            \Log::error('Error generating signed URL for ' . $objectName . ': ' . $e->getMessage());
+            return $bucket->object('front/images/product/no-available-image.jpg')->signedUrl(new \DateTime('+1 hour'));
+        }
+    }
 }

@@ -93,6 +93,8 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
     
     // API Endpoint:    GET http://
     Route::get('index', 'V2_IndexController@index');
+    Route::get('product_image', 'V2_ProductsController@image');
+    Route::get('filters', 'V2_ProductsController@availableFilters');
 
     Route::prefix('products')->group(function () {
         // Product listing with filters (GET)

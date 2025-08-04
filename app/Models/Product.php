@@ -214,15 +214,26 @@ class Product extends Model
         Cart::where('product_id', $product_id)->delete();
     }
 
+    public static function getProducts()
+    {
+        return Product::with('vendor')
+            ->select(['id', 'product_name', 'product_price', 'product_image', 'vendor_id', 'section_id', 'category_id', 'product_discount'])
+            ->where('status', 1)
+            ->whereHas('vendor', function ($query) {
+                $query->where('status', 1);
+            });
+    }
+
     public static function getProductsBySectionName($section_name)
     {
         $section_id = \App\Models\Section::where('name', $section_name)->where('status', 1)->get('id')->toArray();
 
-        return Product::where('section_id', $section_id)
+        return Product::with('vendor')
+            ->select(['id', 'product_name', 'product_price', 'product_image', 'vendor_id', 'section_id', 'category_id', 'product_discount'])
+            ->where('section_id', $section_id)
             ->where('status', 1)
             ->whereHas('vendor', function ($query) {
                 $query->where('status', 1);
-            })
-            ->with('vendor');
+            });
     }
 }
