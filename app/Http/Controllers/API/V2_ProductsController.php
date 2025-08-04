@@ -92,14 +92,25 @@ class V2_ProductsController extends Controller
             $section_ids = $baseQuery->get()->pluck('id')->toArray();
             $category_discounts = Category::select(['id', 'category_discount'])
                 ->whereIn('section_id', $section_ids)
-                ->where('category_discount', '>', 0)
-                ->get()->toArray();
+                ->where('status', 1);
 
+            $other_filters = [];
+            $productFilters = ProductsFilter::productFilters();
+            $catIds = $category_discounts->get()->pluck('id')->toArray();
+            foreach ($productFilters as $key => $filter) {
+                $filterAvailable = ProductsFilter::filterAvailable($filter['id'], $catIds);
+                if ($filterAvailable == "Yes") {
+                    $other_filters[] = $filter;
+                }
+            }
+            
             $categoryDetails = [
-                'category_discount' => $category_discounts,
-                'category_details' => $catDetails
+                'category_discount' => $category_discounts->where('category_discount', '>', 0)->get()->toArray(),
+                'category_details' => $catDetails,
+                'other_filters' => $other_filters
             ];
         }
+
 
         $max_price = Product::selectRaw('MAX(product_price) as max_prod_price')->first();
 
@@ -114,8 +125,11 @@ class V2_ProductsController extends Controller
         $pageTitle = $name;
 
         switch ($type) {
-            case "collection":
+            case "collections":
                 $collection = $this->getCollectionBySection($name);
+                break;
+            case 'category':
+                $collection = $this->getCollectionByCategory($name, $request->all());
                 break;
             default:
                 break;
@@ -147,5 +161,41 @@ class V2_ProductsController extends Controller
         }
 
         return $collection;
+    }
+
+    private function getCollectionByCategory($category, $data)
+    {
+        $categoryCount = Category::where([
+            'url'    => $category,
+            'status' => 1
+        ])->count();
+
+        if ($categoryCount > 0) {
+            $categoryDetails = Category::categoryDetails($category);
+
+            $collection = Product::with('vendor')->where('status', 1)
+                ->select(['id', 'product_name', 'product_price', 'product_image', 'vendor_id', 'section_id', 'category_id', 'product_discount'])
+                ->whereIn('category_id', $categoryDetails['catIds'])
+                ->whereHas('vendor', function ($query) {
+                    $query->where('status', 1);
+                });
+
+            // Sorting Filter WITHOUT AJAX - KEEP THIS PART
+            if (isset($_GET['sort']) && !empty($_GET['sort'])) {
+                if ($_GET['sort'] == 'product_latest') {
+                    $collection->orderBy('products.id', 'Desc');
+                } elseif ($_GET['sort'] == 'price_lowest') {
+                    $collection->orderBy('products.product_price', 'Asc');
+                } elseif ($_GET['sort'] == 'price_highest') {
+                    $collection->orderBy('products.product_price', 'Desc');
+                } elseif ($_GET['sort'] == 'name_z_a') {
+                    $collection->orderBy('products.product_name', 'Desc');
+                } elseif ($_GET['sort'] == 'name_a_z') {
+                    $collection->orderBy('products.product_name', 'Asc');
+                }
+            }
+
+            return $collection; // This should be a Query Builder;
+        }
     }
 }

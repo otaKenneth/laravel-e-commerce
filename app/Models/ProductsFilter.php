@@ -43,7 +43,12 @@ class ProductsFilter extends Model
 
     // Get all the (enabled/active) Filters
     public static function productFilters() { 
-        $productFilters = \App\Models\ProductsFilter::with('filter_values')->where('status', 1)->get()->toArray(); // with('filter_values') is the relationship method name to get the values of a filter
+        $productFilters = \App\Models\ProductsFilter::with(['filter_values' => function ($query) {
+                return $query->select(['id', 'filter_id', 'filter_value']);
+            }])
+            ->select(['id', 'cat_ids', 'filter_name', 'filter_column'])
+            ->where('status', 1)->get()->toArray(); 
+            // with('filter_values') is the relationship method name to get the values of a filter
 
         return $productFilters;
     }
