@@ -198,4 +198,30 @@ class V2_ProductsController extends Controller
             return $collection; // This should be a Query Builder;
         }
     }
+
+    public function detail(Request $request, Product $product) {
+        $product->load(['vendor' => function ($query) {
+            return $query->select(['id', 'name', 'email', 'mobile']);
+        }, 'category' => function ($query) {
+            return $query->select(['category_discount', 'category_name', 'url', 'id']);
+        }, 'section' => function ($query) {
+            return $query->select(['id', 'name']);
+        }, 'variants.attributes' => function ($query) {
+            return $query->select(['products_attributes.id', 'product_id', 'color', 'size', 'sku', 'stock', 'price']);
+        }, 'variants' => function ($query) {
+            return $query->select(['products_variants.id', 'variant_name', 'product_id']);
+        }]);
+
+        if (!$product) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product not found.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $product
+        ]);
+    }
 }
