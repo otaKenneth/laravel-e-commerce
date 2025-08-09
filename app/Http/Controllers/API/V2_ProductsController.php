@@ -206,11 +206,19 @@ class V2_ProductsController extends Controller
             return $query->select(['category_discount', 'category_name', 'url', 'id']);
         }, 'section' => function ($query) {
             return $query->select(['id', 'name']);
-        }, 'variants.attributes' => function ($query) {
+        }, 'attributes' => function ($query) {
             return $query->select(['products_attributes.id', 'product_id', 'color', 'size', 'sku', 'stock', 'price']);
         }, 'variants' => function ($query) {
             return $query->select(['products_variants.id', 'variant_name', 'product_id']);
         }]);
+
+        $product_attributes = [];
+        $attributes = ProductsAttribute::where('product_id', $product->id)->get();
+        $variants = ["color", "size"];
+        foreach ($product->variants as $key => $variant) {
+            $color = $attributes->pluck($variants[$key])->unique()->toArray();
+            $product->variants[$key]->attributes = array_values($color);
+        }
 
         if (!$product) {
             return response()->json([
