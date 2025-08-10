@@ -232,4 +232,62 @@ class V2_ProductsController extends Controller
             'data' => $product
         ]);
     }
+
+    public function relatedProducts(Request $request, Product $product) {
+        $title = "Related Products";
+        $relatedProducts = Product::with('vendor', 'vendor.vendorbusinessdetails')
+            ->where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->where('status', 1)
+            ->select(['id', 'product_name', 'product_price', 'product_image', 'vendor_id', 'section_id', 'category_id'])
+            ->take(10)
+            ->get();
+
+        if ($relatedProducts->isEmpty()) {
+            $title = "Products from Same Vendor";
+            $relatedProducts = Product::with('vendor', 'vendor.vendorbusinessdetails')
+                ->where('vendor_id', $product->vendor_id)
+                ->where('id', '!=', $product->id)
+                ->where('status', 1)
+                ->select(['id', 'product_name', 'product_price', 'product_image', 'vendor_id', 'section_id', 'category_id'])
+                ->take(10)
+                ->get();
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'title' => $title,
+                'products' => $relatedProducts
+            ]
+        ]);
+    }
+
+    public function reviews(Request $request, Product $product) {
+        $reviews = $product->ratings()->with('user')
+            ->select(['id', 'product_id', 'user_id', 'rating', 'review', 'created_at'])
+            ->where('status', 1)
+            ->orderBy('created_at', 'desc');
+        $baseQuery = clone $reviews;
+        $sum_ratings = $baseQuery->sum('rating');
+        $reviews_count = $baseQuery->count();
+
+        if ($reviews_count > 0) { // if there's at least one rating for a product (if a product has been rated at least once)
+            $avgRating     = round($sum_ratings / $reviews_count, 2);
+            $avgStarRating = round($sum_ratings / $reviews_count); // for showing the "Stars" in HTML
+        } else {
+            $avgRating     = 0;
+            $avgStarRating = 0;
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'reviews' => $reviews->get()->toArray(),
+                'avg_rating' => $avgRating,
+                'avg_star_rating' => $avgStarRating,
+                'total_reviews' => $reviews_count
+            ]
+        ]);
+    }
 }

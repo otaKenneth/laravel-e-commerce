@@ -96,7 +96,9 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
     Route::get('product_image', 'V2_ProductsController@image');
     Route::get('filters', 'V2_ProductsController@availableFilters');
     Route::get('/product/{product}', 'V2_ProductsController@detail');
-    
+    Route::get('/product_related/{product}', 'V2_ProductsController@relatedProducts');
+    Route::get('/product_reviews/{product}', 'V2_ProductsController@reviews');
+
     Route::prefix('products')->group(function () {
         // Product listing with filters (GET)
         Route::get('{type}/{any?}', 'V2_ProductsController@listing')
