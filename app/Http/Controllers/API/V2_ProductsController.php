@@ -131,11 +131,16 @@ class V2_ProductsController extends Controller
             case 'category':
                 $collection = $this->getCollectionByCategory($name, $request->all());
                 break;
+            case 'vendor':
+                $collection = Product::with('vendor')
+                    ->where('vendor_id', $name)
+                    ->where('status', 1)
+                    ->select(['id', 'product_name', 'product_price', 'product_image', 'vendor_id', 'section_id', 'category_id', 'product_discount']);
             default:
                 break;
         }
 
-        $products = $collection->paginate(12)->toArray();
+        $products = $collection->inRandomOrder()->paginate(12)->toArray();
 
         return response()->json([
             "success" => true,
