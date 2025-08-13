@@ -63,7 +63,7 @@ class GoogleReCaptchaHelper
                 throw new \Exception('The action attribute in your reCAPTCHA tag does not match the action you are expecting to score');
             }
         } catch (\Exception $e) {
-            printf('CreateAssessment() call failed with the following error: ');
+            logger('CreateAssessment() call failed with the following error: '. $e->getMessage());
             return response()->json(['message' => $e->getMessage()], 402);
         }
     }

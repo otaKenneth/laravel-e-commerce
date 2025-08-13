@@ -5,8 +5,11 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
+use App\Helpers\GoogleReCaptchaHelper;
 
 class V2_VendorController extends Controller
 {
@@ -200,6 +203,127 @@ class V2_VendorController extends Controller
                 'error_code' => $e->getCode(),
                 'trace' => $e->getTraceAsString(),
             ], 500);
+        }
+    }
+
+    public function register (Request $request)
+    {
+        $data = $request->all();
+        $rules = [
+            'firstname' => ['required', 'regex:/^[a-zA-Z\s\-]+$/'],
+            'lastname' => ['required', 'regex:/^[a-zA-Z\s\-]+$/'],
+            'email' => 'required|email|unique:admins|unique:vendors',
+            'mobile' => 'required|min:10|numeric',
+            'shop_name' => ['required','regex:/^[a-zA-Z\s\-]+$/','unique:vendors_business_details,shop_name'],
+            'wdyfu' => 'required',
+            'g-recaptcha-response' => 'required|string',
+        ];
+
+        $customMessages = [ 
+            'name.required'             => 'Name is required',
+            'email.required'            => 'Email is required',
+            'email.unique'              => 'Email already exists',
+            'mobile.required'           => 'Mobile is required',
+            'mobile.unique'             => 'Mobile already exists',
+            'shop_name.required'  => 'Business Shop Name is required.',
+            'wdyfu' => 'Where did you find us?',
+            'g-recaptcha-response.required' => 'reCaptcha is required.',
+            'g-recaptcha-response.string' => 'reCaptcha is invalid.',
+        ];
+
+        $validator = Validator::make($data, $rules, $customMessages);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $gcsConfig = config('filesystems.disks.gcs');
+        $grecaptcha = new GoogleReCaptchaHelper;
+        $grecaptcha_resp = $grecaptcha->create_assessment(
+            $gcsConfig['key_file'],
+            $request->input('g-recaptcha-response'),
+            'stone-semiotics-416509',
+            'submit'
+        );
+
+        try {
+            DB::beginTransaction();
+                
+            $vendor = new \App\Models\Vendor;
+
+            $vendor->name   = $data['firstname'] . " " . $data['lastname'];
+            $vendor->mobile = $data['mobile'];
+            $vendor->email  = $data['email'];
+            $vendor->status = 0; 
+            $vendor->wdyfu = $data['wdyfu'];
+
+            date_default_timezone_set('Asia/Manila');
+            $vendor->created_at = date('Y-m-d H:i:s');
+            $vendor->updated_at = date('Y-m-d H:i:s');
+
+            // Save Vendor details
+            $vendor->save();
+
+            $vendor_id = DB::getPdo()->lastInsertId();
+
+            // Save Vendor details as admin
+            $admin = new \App\Models\Admin;
+
+            $admin->type      = 'vendor';
+            $admin->vendor_id = $vendor_id;
+            $admin->name      = $data['firstname'] . " " . $data['lastname'];
+            $admin->mobile    = $data['mobile'];
+            $admin->email     = $data['email'];
+
+            $initial_password = Str::random(12);
+            $admin->password  = bcrypt($initial_password);
+            $admin->status    = 0;
+
+            date_default_timezone_set('Asia/Manila');
+            $admin->created_at = date('Y-m-d H:i:s');
+            $admin->updated_at = date('Y-m-d H:i:s');
+
+            // Save Vendor details as admin
+            $admin->save();
+            
+            $business_details = new \App\Models\VendorsBusinessDetail;
+
+            $business_details->vendor_id = $vendor_id;
+            $business_details->shop_name = $data['shop_name'];
+
+            // Save Vendor business details 
+            $business_details->save();
+
+            // Send the Confirmation Email to the new vendor who has just registered    
+            $email = $data['email']; // the vendor's email
+
+            // The email message data/variables that will be passed in to the email view
+            $messageData = [
+                'email' => $data['email'],
+                'name'  => $data['firstname'] . " " . $data['lastname'],
+                'initial_password' => $initial_password,
+                'code'  => base64_encode($data['email'])
+            ];
+
+            \Illuminate\Support\Facades\Mail::send('emails.vendor_confirmation', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.vendor_confirmation' is the vendor_confirmation.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that vendor_confirmation.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                $message->to($email)->subject('Confirm your Vendor Account');
+            });
+
+            DB::commit();
+
+            $message = 'Thanks for registering as Vendor. Please confirm your email to have your account in-line for admin approval.';
+            return response()->json([
+                'success' => true,
+                'message' => $message
+            ], 200); // Not Implemented
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 402); // Not Implemented
         }
     }
 }
