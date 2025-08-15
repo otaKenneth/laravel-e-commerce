@@ -116,9 +116,10 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
     Route::get('vendors', 'V2_VendorController@index');
     Route::post('become_merchant', 'V2_VendorController@register');
     Route::get('vendors/{id}', 'V2_VendorController@show');
+    Route::get('vendor/confirm/{email}', 'V2_VendorController@confirmVendor');
 
     Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+        return $request->user();
     });
 
 });

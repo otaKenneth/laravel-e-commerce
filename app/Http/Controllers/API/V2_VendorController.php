@@ -4,8 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vendor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
@@ -325,5 +327,81 @@ class V2_VendorController extends Controller
                 'message' => $e->getMessage()
             ], 402); // Not Implemented
         }
+    }
+
+    public function confirmVendor($email) { // Confirm Vendor Account (the confirmation mail sent from 'vendor_confirmation.blade.php) from the mail by Mailtrap         // {code} $code is the base64 encoded vendor email with which they have registered which is a Route Parameters/URL Paramters which we received from the route: https://laravel.com/docs/9.x/routing#required-parameters    // this route is requested (accessed/opened) from inside the mail sent to vendor (vendor_confirmation.blade.php)
+        // Note: Vendor CONFIRMATION occurs automatically through vendor clicking on the confirmation link sent in the email, but vendor ACTIVATION (active/inactive/disabled) occurs manually where 'superadmin' or 'admin' activates the `status` from the Admin Panel in 'Admin Management' tab, then clicks Status. Also, Vendor CONFIRMATION is related to the `confirm` columns in BOTH `admins` and `vendors` tables, but vendor ACTIVATION (active/inactive/disabled) is related to the `status` columns in BOTH `admins` and `vendors` tables!
+        // Note: Vendor receives THREE emails: the first one when they register (please click on the confirmation link mail (in emails/vendor_confirmation.blade.php)), the second one when they click on the confirmation link sent in the first email (telling them that they have been confirmed and asking them to complete filling in their personal, business and bank details to get ACTIVATED/APPROVED (`status gets 1) (in emails/vendor_confirmed.blade.php)), the third email when the 'admin' or 'superadmin' manually activates (`status` becomes 1) the vendor from the Admin Panel from 'Admin Management' tab, then clicks Status (the email tells them they have been approved (activated and `status` became 1) and asks them to add their products on the website (in emails/vendor_approved.blade.php))
+        $message = "";
+        $email = base64_decode($email); // we use the opposite (decode()) of what we used in the vendorRegister() (encode) 
+
+        // For Security Reasons, check if the vendor email exists first (after the vendor has entered their mail while registering)
+        $vendorCount = \App\Models\Vendor::where('email', $email)->count();
+        if ($vendorCount > 0) { // if the vendor email exists
+            // Check if the vendor is already active
+            $vendorDetails = \App\Models\Vendor::where('email', $email)->first();
+            if ($vendorDetails->confirm == 'Yes') { // if the vendor is already confirmed
+
+                // Redirect vendor to vendor Login/Register page with an 'error' message
+                $message = 'Your Vendor Account is already confirmed. An admin from Kapiton Store is processing your details and will contact you soon. Please wait for their confirmation.';
+            } else { 
+                $initial_password = Str::random(12);
+                $password  = bcrypt($initial_password);
+
+                $messageData = [
+                    'email'  => $email,
+                    'name'   => $vendorDetails->name,
+                    'mobile' => $vendorDetails->mobile,
+                    'business_name' => $vendorDetails->vendorbusinessdetails->shop_name,
+                    'registration_date' => Carbon::now()->toFormattedDateString()
+                ];
+
+                try {
+                    \App\Models\Admin::where( 'email', $email)->update(['confirm' => 'Yes', 'password' => $password]);
+                    \App\Models\Vendor::where('email', $email)->update(['confirm' => 'Yes']);
+    
+                    \Illuminate\Support\Facades\Mail::send('emails.vendor_confirmed', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.vendor_confirmed' is the vendor_confirmed.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that vendor_confirmed.blade.php will use    // https://www.php.net/manual/en/functions.anonymous.php
+                        $message->to($email)->subject('You Vendor Account Confirmed');
+                    });
+    
+                    $admin_emails = \App\Models\Admin::where('type', 'superadmin')
+                        ->orWhere('type', 'admin')
+                        ->where('vendor_id', 0)
+                        ->get()->pluck('email')
+                        ->toArray();
+                    
+                    $messageData = [
+                        'email' => $vendorDetails->email,
+                        'initial_password' => $initial_password,
+                        'name'   => $vendorDetails->name,
+                        'mobile' => $vendorDetails->mobile,
+                        'registration_date' => Carbon::now()->toFormattedDateString()
+                    ];
+    
+                    \Illuminate\Support\Facades\Mail::send('emails.vendor_for_review', $messageData, function ($message) use ($admin_emails) {
+                        $message->to($admin_emails)->subject('A New Vendor Account is UP For Review');
+                    });
+                    $message = 'Your Vendor Email account is confirmed. An admin from Kapiton Store will contact you directly for more details.';
+
+                    return response()->json([
+                        "success" => true,
+                        "message" => $message
+                    ], 200);
+                } catch (\Exception $e) {
+                    $message = $e->getMessage();
+                    return response()->json([
+                        "success" => false,
+                        "message" => $message
+                    ], 402);
+                }
+            }
+        } else { 
+            $message = 'Something went wrong while verifying your account.';
+        }
+
+        return response()->json([
+            "success" => true,
+            "message" => $message
+        ], 200);
     }
 }
