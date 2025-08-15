@@ -117,6 +117,7 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
     Route::post('become_merchant', 'V2_VendorController@register');
     Route::get('vendors/{id}', 'V2_VendorController@show');
     Route::get('vendor/confirm/{email}', 'V2_VendorController@confirmVendor');
+    Route::post('forgot-password', 'AuthController@forgotPassword');
 
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
