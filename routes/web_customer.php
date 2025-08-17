@@ -92,16 +92,16 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::get('session-expired', 'IndexController@sessionExpired');
     
     // Render User Login/Register page (front/users/login_register.blade.php)
-    Route::get('user/login-register', ['as' => 'login', 'uses' => 'UserController@loginRegister']); // 'as' => 'login'    is Giving this route a name 'login' route in order for the 'auth' middleware ('auth' middleware is the Authenticate.php) to redirect to the right page
+    // Route::get('user/login-register', ['as' => 'login', 'uses' => 'UserController@loginRegister']); // 'as' => 'login'    is Giving this route a name 'login' route in order for the 'auth' middleware ('auth' middleware is the Authenticate.php) to redirect to the right page
 
     // User Registration (in front/users/login_register.blade.php) <form> submission using an AJAX request. Check front/js/custom.js
-    Route::match(['get', 'post'], 'user/register', ['as' => 'user_register', 'uses' => 'UserController@userRegister']);
+    // Route::match(['get', 'post'], 'user/register', ['as' => 'user_register', 'uses' => 'UserController@userRegister']);
 
     // User Login (in front/users/login_register.blade.php) <form> submission using an AJAX request. Check front/js/custom.js
-    Route::post('user/login', 'UserController@userLogin');
+    // Route::post('user/login', 'UserController@userLogin');
 
     // User logout (This route is accessed from Logout tab in the drop-down menu in the header (in front/layout/header.blade.php))
-    Route::get('user/logout', 'UserController@userLogout');
+    // Route::get('user/logout', 'UserController@userLogout');
 
     // User Forgot Password Functionality (this route is accessed from the <a> tag in front/users/login_register.blade.php through a 'GET' request, and through a 'POST' request when the HTML Form is submitted in front/users/forgot_password.blade.php)
     Route::match(['get', 'post'], 'user/forgot-password', ['as' => 'forgot_password', 'uses' => 'UserController@forgotPassword']); // We used match() method to use get() to render the front/users/forgot_password.blade.php page, and post() when the HTML Form in the same page is submitted    // The POST request is from an AJAX request. Check front/js/custom.js

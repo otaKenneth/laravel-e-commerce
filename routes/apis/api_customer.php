@@ -3,9 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 Route::namespace('App\Http\Controllers\Front')->group(function() {
-    Route::get('/', ['as' => 'home', 'uses' => 'IndexController@index']);
-
     Route::post('user/login', 'UserController@userLogin');
+    Route::middleware('auth:api')->post('user/logout', 'UserController@userLogout');
 });
 
 Route::namespace('App\Http\Controllers\API')->group(function () {
@@ -18,8 +17,7 @@ Route::namespace('App\Http\Controllers\API')->group(function () {
     Route::prefix('products')->group(function () {
         // Product listing with filters (GET)
         Route::get('{type}/{any?}', 'V2_ProductsController@listing')
-        ->where('any', '.*')
-        ->name('listing');
+        ->where('any', '.*');
         
         Route::get('/related/{product}', 'V2_ProductsController@relatedProducts');
         Route::get('/reviews/{product}', 'V2_ProductsController@reviews');

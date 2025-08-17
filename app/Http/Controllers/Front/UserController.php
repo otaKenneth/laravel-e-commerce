@@ -167,15 +167,10 @@ class UserController extends Controller
     }
 
     // User logout (This route is accessed from Logout tab in the drop-down menu in the header (in front/layout/header.blade.php))    
-    public function userLogout() {
-        Auth::logout(); // Logging Out: https://laravel.com/docs/9.x/authentication#logging-out
-
-
-        // Emptying the Session to empty the Cart when the user logs out
-        Session::flush(); // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
-
-
-        return redirect('/');
+    public function userLogout(Request $request) {
+        $request->user()->token()->revoke(); // Revoke the current token
+        Session::flush();
+        return response()->json(['message' => 'Logged out successfully']);
     }
 
 
