@@ -106,78 +106,63 @@ class UserController extends Controller
         }
     }
 
-    // User Login (in front/users/login_register.blade.php) <form> submission using an AJAX request. Check front/js/custom.js    
     public function userLogin(Request $request) {
-        if ($request->ajax()) { // if the request is coming via an AJAX call
-            $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call)
+        $data = $request->all(); 
+
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'email'    => 'required|email|max:150|exists:users',
+            'password' => 'required|min:6'
+        ]);
 
 
-            // Validation    // Manually Creating Validators: https://laravel.com/docs/9.x/validation#manually-creating-validators    
-            $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-                // the 'name' HTML attribute of the request (the array key of the $request array) (ATTRIBUTE) => Validation Rules
-                'email'    => 'required|email|max:150|exists:users', // 'exists:users'    means it must already exist in the `users` table    // exists:table,column: https://laravel.com/docs/9.x/validation#rule-exists
-                'password' => 'required|min:6'
-            ]);
+        if ($validator->passes()) {
+            if (Auth::attempt([ 
+                'email'    => $data['email'],   
+                'password' => $data['password'] 
+            ])) {
+                $user = Auth::user();
+                if ($user->status == 0) {
+                    Auth::logout();
 
-
-            // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
-            // dd($validator->messages());
-            // echo '<pre>', var_dump($validator->messages()), '</pre>';
-            // exit;
-
-
-            if ($validator->passes()) { // if validation passes (is successful), log the user in (but check first if they're inactive), and update the user's Cart (update the user's `user_id` column in `carts` table)
-                // Log the user in
-                if (Auth::attempt([ // Here, we use the Laravel's default 'web' Authentication Guard, whose 'Provider' is the User.php model i.e. `users` table    // Manually Authenticating Users: https://laravel.com/docs/9.x/authentication#other-authentication-methods
-                    'email'    => $data['email'],   // $data['email']    comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                    'password' => $data['password'] // $data['password'] comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                ])) {
-                    // First, check if the user being authenticated/logged in is inactive/disabled/deactivated by an admin (`status` is zero 0 in `users` table), logout the user, then return them back with a message
-                    if (Auth::user()->status == 0) {
-                        Auth::logout(); // logout the user
-
-                        // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request
-                        return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                            'type'    => 'inactive',
-                            // 'message' => 'Your account is inactive. Please contact Admin'
-                            'message' => 'Your account is not activated! Please confirm your account (by clicking on the Activation Link in the Confirmation Mail) to activate your account.'
-                        ]);
-                    }
-
-
-                    // Update the user's Cart (the `user_id` column in `carts` table) with their `user_id` (because before login, user's orders in the Cart were stored only using the session (and `user_id` is zero 0) (check the cartAdd() method in Front/ProductsController.php))    
-                    if (!empty(Session::get('session_id'))) {
-                        $user_id    = Auth::user()->id;
-                        $session_id = Session::get('session_id');
-
-                        \App\Models\Cart::where('session_id', $session_id)->update(['user_id' => $user_id]);
-                    }
-
- 
-                    // redirect user to the Cart cart.blade.php page
-                    $redirectTo = url('/'); // Check that route in web.php
-
-                    // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request
-                    return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                        'type' => 'success',
-                        'url'  => $redirectTo // redirect user to the Cart cart.blade.php page
-                    ]);
-
-                } else { // if Validation passes / is okay but login credentials provided by user are incorrect, login fails, and send a generic 'Wrong Credentials!' message
-                    // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request
-                    return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                        'type'    => 'incorrect',
-                        'message' => 'Incorrect Email or Password. Please try again.'
+                    return response()->json([ 
+                        'type'    => 'inactive',
+                        'message' => 'Your account is not activated! Please confirm your account (by clicking on the Activation Link in the Confirmation Mail) to activate your account.'
                     ]);
                 }
 
-            } else { // if validation fails (is unsuccessful), send the Validation Error Messages array
-                // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request
-                return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                    'type'   => 'error',
-                    'errors' => $validator->messages() // we'll loop over the Validation Errors Messages array using jQuery to show them in the frontend (check front/js/custom.js)    // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
-                ]);
+                if (!empty(Session::get('session_id'))) {
+                    $user_id    = $user->id;
+                    $session_id = Session::get('session_id');
+
+                    \App\Models\Cart::where('session_id', $session_id)->update(['user_id' => $user_id]);
+                }
+
+                // Using Laravel Passport create Token
+                $tokenResult = $user->createToken($user->id);
+                $accessToken = $tokenResult->accessToken;
+                $redirectTo = config('frontend_url');
+
+                return response()->json([
+                    'type' => 'success',
+                    'data' => [
+                        'url'  => $redirectTo,
+                        'token' => $accessToken,
+                        'user' => $user
+                    ]
+                ], 200);
+
+            } else { 
+                return response()->json([
+                    'type'    => 'incorrect',
+                    'message' => 'Incorrect Email or Password. Please try again.'
+                ], 402);
             }
+
+        } else { 
+            return response()->json([ 
+                'type'   => 'error',
+                'errors' => $validator->messages()
+            ], 402);
         }
     }
 

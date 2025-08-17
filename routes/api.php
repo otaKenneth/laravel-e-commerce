@@ -89,38 +89,10 @@ Route::namespace('App\Http\Controllers\API')->group(function () { // Route Group
     Route::post('/paymongo/webhook', 'APIController@paymongoPaymentStatus');
 
     Route::post('/lalamove/webhook', 'APIController@lalamoveDeliveryStatus');
-
     
-    // API Endpoint:    GET http://
-    Route::get('index', 'V2_IndexController@index');
-    Route::get('product_image', 'V2_ProductsController@image');
-    Route::get('filters', 'V2_ProductsController@availableFilters');
-    Route::get('/product/{product}', 'V2_ProductsController@detail');
-    Route::get('/product_related/{product}', 'V2_ProductsController@relatedProducts');
-    Route::get('/product_reviews/{product}', 'V2_ProductsController@reviews');
-
-    Route::prefix('products')->group(function () {
-        // Product listing with filters (GET)
-        Route::get('{type}/{any?}', 'V2_ProductsController@listing')
-        ->where('any', '.*')
-        ->name('listing');
-
-        // // Product detail (GET)
-        // Route::get('detail/{id}', [V2_ProductsController::class, 'detail']);
-
-        // // Get product price for attribute changes (POST)
-        // Route::get('price', [V2_ProductsController::class, 'getProductPrice']);
-    });
-
-    // New Vendor Routes
-    Route::get('vendors', 'V2_VendorController@index');
-    Route::post('become_merchant', 'V2_VendorController@register');
-    Route::get('vendors/{id}', 'V2_VendorController@show');
-    Route::get('vendor/confirm/{email}', 'V2_VendorController@confirmVendor');
-    Route::post('forgot-password', 'AuthController@forgotPassword');
-
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
     });
-
 });
+
+require __DIR__ . "/apis/api_customer.php";
