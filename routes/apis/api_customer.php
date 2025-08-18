@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::post('user/login', 'UserController@userLogin');
-    Route::middleware('auth:api')->post('user/logout', 'UserController@userLogout');
+    Route::prefix('user')->middleware('auth:api')->group(function () {
+        Route::post('logout', 'UserController@userLogout');
+        Route::post('profile', 'UserController@userAccount');
+    });
 });
 
 Route::namespace('App\Http\Controllers\API')->group(function () {

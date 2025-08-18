@@ -286,13 +286,8 @@ class UserController extends Controller
 
     }
 
-
-
-    // Render User User Account page with 'GET' request (front/users/user_account.blade.php), or the HTML Form submission in the same page with 'POST' request using AJAX (to update user details). Check front/js/custom.js    
     public function userAccount(Request $request) {
-        if ($request->ajax()) { // if the 'POST' request is coming from an AJAX call (update user details)
-            $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call)
-
+        $data = $request->all();
 
             // Validation    // Manually Creating Validators: https://laravel.com/docs/9.x/validation#manually-creating-validators    
             $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
@@ -306,19 +301,9 @@ class UserController extends Controller
                 'mobile'  => 'required|numeric|digits:11',
                 'pincode' => 'required|min_digits:4|max_digits:6',
 
-            ] /*, [ // Customizing The Error Messages: https://laravel.com/docs/9.x/validation#manual-customizing-the-error-messages
-                // the 'name' HTML attribute of the request (the array key of the $request array) (ATTRIBUTE) => Custom Messages
-                'accept.required' => 'Please accept our Terms & Conditions'
-            ]*/ );
+            ]);
 
-
-            // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
-            // dd($validator->messages());
-            // echo '<pre>', var_dump($validator->messages()), '</pre>';
-            // exit;
-
-            if ($validator->passes()) { // if validation passes (is successful), register (INSERT) the new user into the database `users` table, and log the user in IMMEDIATELY and AUTOMATICALLY and DIRECTLY, and redirect them to the Cart cart.blade.php page
-                // Update user details in `users` table
+            if ($validator->passes()) {
                 $countries = \App\Models\Country::where('status', 1)->get()->toArray(); // get the countries which have status = 1 (to ignore the blacklisted countries, in case)
                 // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
                 $user = \App\Models\User::where('id', Auth::user()->id)->first();
@@ -333,30 +318,48 @@ class UserController extends Controller
                     'address' => $data['address'],
                 ]);
 
-                // Redirect user back with a success message
+                if (isset($data['address_as'])) {
+
+                    if ($data['address_as'] == "new") {
+                        $user->userDeliveryAddresses->create([
+                            'name' => $data['first_name'] . " " . $data['last_name'] . " - " . $data['city'] . ", " . $data['state'],
+                            'address' => $data['address'],
+                            'city'    => $data['city'],
+                            'state'   => $data['state'],
+                            'country' => $data['country'],
+                            'pincode' => $data['pincode'],
+                            'mobile'  => $data['mobile'],
+                            'lat' => null,
+                            'lng' => null
+                        ]);
+                    } else if ($data['address_as'] == "default") {
+                        $user->deliveryAddress->update([
+                            'name' => "Default",
+                            'address' => $data['address'],
+                            'city'    => $data['city'],
+                            'state'   => $data['state'],
+                            'country' => $data['country'],
+                            'pincode' => $data['pincode'],
+                            'mobile'  => $data['mobile'],
+                            'lat' => null,
+                            'lng' => null
+                        ]);
+                    }
+                }
+
                 // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request
                 return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                    'type'    => 'success',
-                    // 'url'     => $redirectTo, // redirect user to the Cart cart.blade.php page
-                    'message' => 'Your contact/billing details successfully updated!',
-                    'view' => (string) \Illuminate\Support\Facades\View::make('front.users.user_account')->with(compact('countries', 'user'))
-                ]);
+                    'success'    => true,
+                    'message' => 'Your contact/billing details successfully updated!'
+                ], 200);
 
             } else { // if validation fails (is unsuccessful), send the Validation Error Messages
                 // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request
                 return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                    'type'   => 'error',
+                    'success'   => false,
                     'errors' => $validator->messages() // we'll loop over the Validation Errors Messages array using jQuery to show them in the frontend (Check    $('#accountForm').submit();    in front/js/custom.js)    // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
-                ]);
+                ], 403);
             }
-
-        } else { // if it's a 'GET' request, render front/users/user_account.blade.php
-            // Fetch all of the world countries from the database table `countries`
-            $countries = \App\Models\Country::where('status', 1)->get()->toArray(); // get the countries which have status = 1 (to ignore the blacklisted countries, in case)
-            $user = \App\Models\User::find(Auth::user()->id);
-
-            return view('front.users.user_account')->with(compact(['countries', 'user']));
-        }
     }
 
 
