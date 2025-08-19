@@ -34,82 +34,68 @@ class AddressController extends Controller
 
     // Save Delivery Addresses via AJAX (save the delivery addresses of the authenticated/logged-in user in `delivery_addresses` database table when submitting the HTML Form) in front/products/delivery_addresses.blade.php (which is 'include'-ed in front/products/checkout.blade.php) via AJAX, check front/js/custom.js    
     public function saveDeliveryAddress(Request $request) {
-        if ($request->ajax()) { // if the request is coming via an AJAX call
-            // Validation    
-            // Manually Creating Validators: https://laravel.com/docs/9.x/validation#manually-creating-validators
-            $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-                'delivery_name'    => 'required|string|max:100',   // string: https://laravel.com/docs/9.x/validation#rule-string    // max:value: https://laravel.com/docs/9.x/validation#rule-max
-                'delivery_address' => 'required|string|max:100',   // string: https://laravel.com/docs/9.x/validation#rule-string    // max:value: https://laravel.com/docs/9.x/validation#rule-max
-                'delivery_city'    => 'required|string|max:100',   // string: https://laravel.com/docs/9.x/validation#rule-string    // max:value: https://laravel.com/docs/9.x/validation#rule-max
-                'delivery_state'   => 'required|string|max:100',   // string: https://laravel.com/docs/9.x/validation#rule-string    // max:value: https://laravel.com/docs/9.x/validation#rule-max
-                'delivery_country' => 'required|string|max:100',   // string: https://laravel.com/docs/9.x/validation#rule-string    // max:value: https://laravel.com/docs/9.x/validation#rule-max
-                'delivery_pincode' => 'required|min_digits:4|max_digits:6',         // digits:value: https://laravel.com/docs/9.x/validation#rule-digits
-                'delivery_mobile'  => 'required|numeric|digits:10', // digits:value: https://laravel.com/docs/9.x/validation#rule-digits
-                'shipping.lat'     => 'required',
-                'shipping.lng'    => 'required'
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'name'    => 'required|string|max:100',   
+            'address' => 'required|string|max:100',   
+            'city'    => 'required|string|max:100',   
+            'state'   => 'required|string|max:100',   
+            'country' => 'required|string|max:100',   
+            'pincode' => 'required|min_digits:4|max_digits:6',         
+            'mobile'  => 'required|numeric|digits:10', 
+            'lat'     => 'required',
+            'lng'    => 'required'
+        ]);
+
+        if ($validator->passes()) {
+            $data = $request->all();
+
+            $address = array();
+            $address['user_id'] = Auth::user()->id;
+            $address['name']    = $data['name'];
+            $address['address'] = $data['address'];
+            $address['city']    = $data['city'];
+            $address['state']   = $data['state'];
+            $address['country'] = $data['country'];
+            $address['pincode'] = $data['pincode'];
+            $address['lat'] = floatval($data['lat']);
+            $address['lng'] = floatval($data['lng']);
+            $address['mobile']  = $data['mobile-dialing-code'].$data['mobile'];
+
+            if (!empty($data['delivery_id'])) { 
+                \App\Models\DeliveryAddress::where('id', $data['id'])->update($address);
+            } else { 
+                $user = User::find(Auth::user()->id);
+                $user_addresses = \App\Models\DeliveryAddress::where('user_id', Auth::user()->id)->count();
+                \App\Models\DeliveryAddress::create($address);
+                
+                if ($user_addresses == 0) {
+                    $user->address = $address['address'];
+                    $user->city = $address['city'];
+                    $user->state = $address['state'];
+                    $user->country = $address['country'];
+                    $user->pincode = $address['pincode'];
+
+                    $user->update();
+                } else if (is_null($user->pincode) || is_null($user->country) || is_null($user->state) || is_null($user->city) || is_null($user->address)) {
+                    $user->address = $address['address'];
+                    $user->city = $address['city'];
+                    $user->state = $address['state'];
+                    $user->country = $address['country'];
+                    $user->pincode = $address['pincode'];
+
+                    $user->update();
+                }
+            }
+
+            return response()->json([
+                'success' => true
             ]);
 
-            if ($validator->passes()) { // if the user passes validation, add a new (INSERT) or edit (UPDATE) the delivery address
-                $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call)
-    
-    
-                $address = array();
-                // We add the `delivery_addresses` table column names to the array in order to be able to UPDATE (Edit) or INSERT INTO (Add) the `delivery_addresses` table using the $address variable:
-                $address['user_id'] = Auth::user()->id; // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
-                $address['name']    = $data['delivery_name'];
-                $address['address'] = $data['delivery_address'];
-                $address['city']    = $data['delivery_city'];
-                $address['state']   = $data['delivery_state'];
-                $address['country'] = $data['delivery_country'];
-                $address['pincode'] = $data['delivery_pincode'];
-                $address['lat'] = floatval($data['shipping']['lat']);
-                $address['lng'] = floatval($data['shipping']['lng']);
-                $address['mobile']  = $data['mobile-dialing-code'].$data['delivery_mobile'];
-    
-    
-                // EDIT delivery address (UPDATE the `delivery_addresses` database table)
-                if (!empty($data['delivery_id'])) { // if there's a delivery address id submitted from the HTML Form via AJAX, this means it's Edit Delivery Address (not Add a new delivery address) i.e.  (UPDATE the `delivery_addresses` database table)    // $data['delivery_id'] comes from the 'data' object inside the $.ajax() method. Check front/js/custom.js
-                    // UPDATE the `delivery_addresses` database table
-                    \App\Models\DeliveryAddress::where('id', $data['delivery_id'])->update($address); // $data['delivery_id'] comes from the 'data' object inside the $.ajax() method. Check front/js/custom.js
-    
-                // ADD a new delivery address (INSERT INTO the `delivery_addresses` database table)
-                } else { // if there's no delivery address id submitted from the HTML Form via AJAX, this means it's Add a new Delivery Address (not Edit delivery address) i.e. (INSERT INTO the `delivery_addresses` database table)    // $data['delivery_id'] comes from the 'data' object inside the $.ajax() method. Check front/js/custom.js                        
-                    // INSERT INTO the `delivery_addresses` database table
-                    $user = User::find(Auth::user()->id);
-                    $user_addresses = \App\Models\DeliveryAddress::where('user_id', Auth::user()->id)->count();
-                    \App\Models\DeliveryAddress::create($address); // Check the DeliveryAddress.php model for Mass Assignment: https://laravel.com/docs/10.x/eloquent#mass-assignment    // Check 5:56 in 
-                    
-                    if ($user_addresses == 0) {
-                        $user->address = $address['address'];
-                        $user->city = $address['city'];
-                        $user->state = $address['state'];
-                        $user->country = $address['country'];
-                        $user->pincode = $address['pincode'];
-
-                        $user->update();
-                    } else if (is_null($user->pincode) || is_null($user->country) || is_null($user->state) || is_null($user->city) || is_null($user->address)) {
-                        $user->address = $address['address'];
-                        $user->city = $address['city'];
-                        $user->state = $address['state'];
-                        $user->country = $address['country'];
-                        $user->pincode = $address['pincode'];
-
-                        $user->update();
-                    }
-                }
-
-                return response()->json([
-                    'success' => true
-                ]);
-
-            } else { // if the user fails validation, return an error message
-                // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
-                // dd($validator->messages());
-                return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                    'type'   => 'error',
-                    'errors' => $validator->messages() // we'll loop over the Validation Errors Messages array using jQuery to show them in the frontend (Check    $(document).on('submit', '#addressAddEditForm')    in front/js/custom.js)    // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
-                ]);
-            }
+        } else { // if the user fails validation, return an error message
+            return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
+                'type'   => 'error',
+                'errors' => $validator->messages() // we'll loop over the Validation Errors Messages array using jQuery to show them in the frontend (Check    $(document).on('submit', '#addressAddEditForm')    in front/js/custom.js)    // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
+            ]);
         }
     }
 

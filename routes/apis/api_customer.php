@@ -7,6 +7,8 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::prefix('user')->middleware('auth:api')->group(function () {
         Route::post('logout', 'UserController@userLogout');
         Route::post('profile', 'UserController@userAccount');
+        Route::get('delivery-addresses', 'UserController@showDeliveryAddresses');
+        Route::post('delivery-addresses', 'AddressController@saveDeliveryAddress');
     });
 });
 

@@ -430,14 +430,10 @@ class UserController extends Controller
     }
 
     public function showDeliveryAddresses() {
-        $country_model = new \App\Models\Country;
-        $delivery_addresses_model = new \App\Models\DeliveryAddress;
-        $user_id = Auth::user()->id;
-
-        $delivery_addresses = $delivery_addresses_model->where('user_id', $user_id)->get()->toArray();
-        $countries = $country_model->get()->toArray();
+        $delivery_addresses = Auth::user()->userDeliveryAddresses;
         // dd($delivery_addresses);
-        return view('front.users.delivery_addresses', compact('delivery_addresses', 'countries'));
+        // return view('front.users.delivery_addresses', compact('delivery_addresses', 'countries'));
+        return response()->json($delivery_addresses, 200);
     }
 
 }
