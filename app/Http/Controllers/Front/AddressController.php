@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\DeliveryAddress;
 
 
 class AddressController extends Controller
@@ -114,7 +114,8 @@ class AddressController extends Controller
             }
 
             return response()->json([
-                'success' => true
+                'success' => true,
+                'data' => $address
             ]);
 
         } else { // if the user fails validation, return an error message
@@ -126,29 +127,23 @@ class AddressController extends Controller
     }
 
     // Remove Delivery Addresse via AJAX (Page refresh and fill in the <input> fields with the authenticated/logged-in user Delivery Addresses details from the `delivery_addresses` database table when clicking on the Remove button) in front/products/delivery_addresses.blade.php (which is 'include'-ed in front/products/checkout.blade.php) via AJAX, check front/js/custom.js    
-    public function removeDeliveryAddress(Request $request) {
-        if ($request->ajax()) { // if the request is coming via an AJAX call
-            $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call)
-            // dd($data);
+    public function removeDeliveryAddress(Request $request, DeliveryAddress $delivery_address) {
+        try {
+            $delivery_address_id = $delivery_address->id;
+            $delivery_address->delete();
 
-
-            // DELETE the delivery address from the `delivery_addresses` database table
-            \App\Models\DeliveryAddress::where('id', $data['addressid'])->delete(); // $data['addressid'] comes from the 'data' object inside the $.ajax() method. Check front/js/custom.js
-            // exit;
-
-
-            // Note: You must pass in to view the SAME variables ($deliveryAddresses and $countries) that were passed in to it in checkout() method in Front/ProductsController.php
-            $deliveryAddresses = \App\Models\DeliveryAddress::deliveryAddresses(); // Get all the delivery addresses of the currently authenticated/logged-in user   
-
-            // Fetch all of the world countries from the database table `countries`
-            $countries = \App\Models\Country::where('status', 1)->get()->toArray(); // get the countries which have status = 1 (to ignore the blacklisted countries, in case)
-            // dd($countries);
-
-
-            return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                // Note: You must pass in to view the SAME variables ($deliveryAddresses and $countries) that were passed in to it in checkout() method in Front/ProductsController.php
-                'view' => (string) \Illuminate\Support\Facades\View::make('front.products.delivery_addresses')->with(compact('deliveryAddresses', 'countries')) // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-            ]);
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'id' => $delivery_address_id
+                ],
+                'message' => "Successfully deleted a delivery address."
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => true,
+                'message' => "Deleting delivery address unsuccessful."
+            ], 400);
         }
     }
 }
