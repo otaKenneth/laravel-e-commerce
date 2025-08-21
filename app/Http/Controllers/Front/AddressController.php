@@ -115,7 +115,8 @@ class AddressController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $address
+                'data' => $address,
+                'message' => "New delivery address is saved."
             ]);
 
         } else { // if the user fails validation, return an error message
