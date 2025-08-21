@@ -41,15 +41,41 @@ class AddressController extends Controller
             'state'   => 'required|string|max:100',   
             'country' => 'required|string|max:100',   
             'pincode' => 'required|min_digits:4|max_digits:6',         
-            'mobile'  => 'required|numeric|digits:10', 
-            'lat'     => 'required',
-            'lng'    => 'required'
+            'mobile'  => [
+                'required',
+                'numeric',
+                function($attribute, $value, $fail) {
+                    if (strlen($value) > 11) {
+                        $fail('Invalid mobile number format.');
+                    } else if (strlen($value) < 9) {
+                        $fail('Invalid mobile number format.');
+                    } else if (strlen($value) == 11) {
+                        if (substr($value, 0, 1) !== '0') {
+                            $fail('Invalid mobile number format.');
+                        }
+                    } else if (strlen($value) == 10) {
+                        if (substr($value, 0, 1) !== '9') {
+                            $fail('Invalid mobile number format.');
+                        }
+                    }
+                }
+            ],
+            'lat' => 'required|numeric|between:-90,90',
+            'lng' => 'required|numeric|between:-180,180',
         ]);
 
         if ($validator->passes()) {
             $data = $request->all();
 
             $address = array();
+
+            $mobile = $data['mobile'];
+            // Accept 10 digits (no leading 0) or 11 digits (leading 0)
+            if (preg_match('/^0\d{10}$/', $data['mobile'])) {
+                // 11 digits, starts with 0, remove leading 0
+                $mobile = substr($mobile, 1);
+            }
+
             $address['user_id'] = Auth::user()->id;
             $address['name']    = $data['name'];
             $address['address'] = $data['address'];
@@ -59,7 +85,7 @@ class AddressController extends Controller
             $address['pincode'] = $data['pincode'];
             $address['lat'] = floatval($data['lat']);
             $address['lng'] = floatval($data['lng']);
-            $address['mobile']  = $data['mobile-dialing-code'].$data['mobile'];
+            $address['mobile']  = "+63".$mobile;
 
             if (!empty($data['delivery_id'])) { 
                 \App\Models\DeliveryAddress::where('id', $data['id'])->update($address);
@@ -95,7 +121,7 @@ class AddressController extends Controller
             return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
                 'type'   => 'error',
                 'errors' => $validator->messages() // we'll loop over the Validation Errors Messages array using jQuery to show them in the frontend (Check    $(document).on('submit', '#addressAddEditForm')    in front/js/custom.js)    // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
-            ]);
+            ], 405);
         }
     }
 
