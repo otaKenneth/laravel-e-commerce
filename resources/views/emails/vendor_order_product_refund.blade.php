@@ -153,7 +153,7 @@
                             <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_name'] }} - {{ $order['product_size'] }} - {{ $order['product_color'] }}</td>
                             <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_code'] }}</td>
                             <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_qty'] }}</td>
-                            <td style="font-size: 12px; padding: 10px 20px;">{{ $order['product_price'] }}</td>
+                            <td style="font-size: 12px; padding: 10px 20px;">PHP{{  number_format($order['product_price'],2) ?? 0.00 }}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -162,19 +162,19 @@
                             <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="border-left: 1px solid #1f1f22;">Shipping Charges:</td>
-                            <td style="border-right: 1px solid #1f1f22;">PHP - 231.00</td>
+                            <td style="border-right: 1px solid #1f1f22;">PHP {{ number_format($orderDetails['shipping_charges'], 2) ?? 0.00}}</td>
                         </tr>
                         <tr>
                             <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="border-left: 1px solid #1f1f22;">Coupon Discount:</td>
-                            <td style="border-right: 1px solid #1f1f22;">PHP - 0</td>
+                            <td style="border-right: 1px solid #1f1f22;">PHP {{ number_format($orderDetails['coupon_amount'], 2) ?? 0.00 }}</td>
                         </tr>
                         <tr style="background: #1f1f22; color: white;">
                             <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="font-size: 12px; padding: 10px 20px;"></td>
                             <td style="font-size: 12px; padding: 10px 20px; border-left: 1px solid #1f1f22; background: #1f1f22; color: white">Grand Total:</td>
-                            <td style="font-size: 12px; padding: 10px 20px; border-right: 1px solid #1f1f22; background: #1f1f22; color: white">PHP - 42,231.32</td>
+                            <td style="font-size: 12px; padding: 10px 20px; border-right: 1px solid #1f1f22; background: #1f1f22; color: white">PHP {{ number_format($orderDetails['grand_total'],2) ?? 0.00}}</td>
                         </tr>
                     </tfoot>
 
