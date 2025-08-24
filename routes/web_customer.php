@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\ProductsController;
 use Illuminate\Support\Facades\Route;
 
 // Second: FRONT section routes:
-Route::namespace('App\Http\Controllers\Front')->group(function() {
+Route::namespace('App\Http\Controllers\Front')->group(function () {
     Route::get('/', ['as' => 'home', 'uses' => 'IndexController@index']);
 
     Route::get('/getKSContainerContent', 'IndexController@getKSContainerContent');
@@ -29,7 +29,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::get('vendor/confirm/{code}', 'VendorController@confirmVendor'); // {code} is the base64 encoded vendor e-mail with which they have registered which is a Route Parameters/URL Paramters: https://laravel.com/docs/9.x/routing#required-parameters    // this route is requested (accessed/opened) from inside the mail sent to vendor (vendor_confirmation.blade.php)
 
     Route::get('vendor/email-confirmed', 'VendorController@vendorEmailConfirmed')->name('vendor.email_confirmed');
-    
+
     // Render Single Product Detail Page in front/products/detail.blade.php
     Route::get('/product/{id}', ['as' => 'product_detail.show', 'uses' => 'ProductsController@detail']);
 
@@ -39,17 +39,17 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::prefix('cart')->group(function () {
         // Render Cart page (front/products/cart.blade.php)    // this route is accessed from the <a> HTML tag inside the flash message inside cartAdd() method in Front/ProductsController.php (inside front/products/detail.blade.php)
         Route::get('', 'ProductsController@cart')->name('front.user.cart');
-        
+
         // Add to Cart <form> submission in front/products/detail.blade.php
         Route::post('add', 'ProductsController@cartAdd');
-    
+
         // Update Cart Item Quantity AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
         Route::post('update', 'ProductsController@cartUpdate');
-    
+
         // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
         Route::post('delete', 'ProductsController@cartDelete');
     });
-    
+
     Route::post('wishlist/add', 'ProductsController@wishlistAdd');
 
     // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
@@ -69,7 +69,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::get('careers', 'IndexController@careersPage')->name('front.user.careers');
     Route::get('faq', 'IndexController@faqPage')->name('front.user.faq');
     Route::get('shipping-and-returns', 'IndexController@shippingAndReturns')->name('front.user.shipping-and-returns');
-    
+
 
 
     //EMAILS ROUTE FOR TESTING
@@ -90,7 +90,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     // Route::get('email-customer-order-cancelled-end', 'IndexController@emailCustomerOrderCancelledEnd');
     //Route::get('chat-notif', 'IndexController@emailChatNotif');
     Route::get('session-expired', 'IndexController@sessionExpired');
-    
+
     // Render User Login/Register page (front/users/login_register.blade.php)
     Route::get('user/login-register', ['as' => 'login', 'uses' => 'UserController@loginRegister']); // 'as' => 'login'    is Giving this route a name 'login' route in order for the 'auth' middleware ('auth' middleware is the Authenticate.php) to redirect to the right page
 
@@ -121,11 +121,12 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     // Add a Newsletter Subscriber email HTML Form Submission in front/layout/footer.blade.php when clicking on the Submit button (using an AJAX Request/Call)
     Route::post('add-subscriber-email', 'NewsletterController@addSubscriber');
 
-    // Protecting the routes of user (user must be authenticated/logged in) (to prevent access to these links while being unauthenticated/not being logged in (logged out))
-    Route::group(['middleware' => ['auth']], function() {
-        // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission via AJAX in front/products/cart_items.blade.php, check front/js/custom.js
-        Route::post('/apply-coupon', 'ProductsController@applyCoupon'); // Important Note: We added this route here as a protected route inside the 'auth' middleware group because ONLY logged in/authenticated users are allowed to redeem Coupons!
+    // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission via AJAX in front/products/cart_items.blade.php, check front/js/custom.js
+    Route::post('/apply-coupon', 'ProductsController@applyCoupon'); // Important Note: We added this route here as a protected route inside the 'auth' middleware group because ONLY logged in/authenticated users are allowed to redeem Coupons!
 
+
+    // Protecting the routes of user (user must be authenticated/logged in) (to prevent access to these links while being unauthenticated/not being logged in (logged out))
+    Route::group(['middleware' => ['auth']], function () {
         // Route::post('/stack-coupon', 'ProductsController@stackCoupon'); // STACKING COUPONS TEST ROUTE
 
         // Checkout page (using match() method for the 'GET' request for rendering the front/products/checkout.blade.php page or the 'POST' request for the HTML Form submission in the same page (for submitting the user's Delivery Address and Payment Method))
@@ -154,7 +155,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
             // User Account Update Password HTML Form submission via AJAX. Check front/js/custom.js
             Route::post('update-password', 'UserController@userUpdatePassword');
-            
+
             Route::get('delivery-addresses', 'UserController@showDeliveryAddresses')->name('user.delivery_address_list.show');
 
             Route::get('security', 'UserController@showSecurity')->name('front.user.security');
@@ -165,13 +166,13 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
 
                 // Refund an item
                 Route::post('{order}/refund', 'OrderController@refundOrder');
-                
+
                 Route::post('{order}/update/{ordersProduct}', 'OrderController@updateOrderStatus');
             });
 
             Route::get('wishlist', 'WishlistController@wishlist')->name('front.user.wishlist');
             Route::delete('wishlist/{item}', 'WishlistController@wishlistItemDelete')->name('front.user.wishlists');
-            
+
             Route::get('chats', 'ChatsController@index')->name('user.chats.show');
         });
 
@@ -201,5 +202,4 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
         // Make an iyzipay payment (redirect the user to iyzico payment gateway with the order details)
         // Route::get('iyzipay/pay', 'IyzipayController@pay'); 
     });
-
 });
