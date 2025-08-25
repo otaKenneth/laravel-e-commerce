@@ -7,6 +7,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::prefix('user')->middleware('auth:api')->group(function () {
         Route::post('logout', 'UserController@userLogout');
         Route::post('profile', 'UserController@userAccount');
+        Route::patch('update-password', 'UserController@userUpdatePassword');
         Route::get('delivery-addresses', 'UserController@showDeliveryAddresses');
         Route::post('delivery-addresses', 'AddressController@saveDeliveryAddress');
         Route::delete('delivery-addresses/{delivery_address}', 'AddressController@removeDeliveryAddress');

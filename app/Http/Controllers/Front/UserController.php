@@ -363,62 +363,40 @@ class UserController extends Controller
 
     // User Account Update Password HTML Form submission via AJAX. Check front/js/custom.js    
     public function userUpdatePassword(Request $request) {
-        if ($request->ajax()) { // if the 'POST' request is coming from an AJAX call (update user details)
-            $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call)
+        $data = $request->all();
 
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'current_password'  => 'required',
+            'new_password'     => 'required|min:6',
+            'confirm_password' => 'required|min:6|same:new_password'
+        ]);
 
-            // Validation    // Manually Creating Validators: https://laravel.com/docs/9.x/validation#manually-creating-validators    
-            $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-                // the 'name' HTML attribute of the request (the array key of the $request array) (ATTRIBUTE) => Validation Rules
-                'current_password'  => 'required',
-                'new_password'     => 'required|min:6',
-                'confirm_password' => 'required|min:6|same:new_password' // same:field: https://laravel.com/docs/9.x/validation#rule-same
+        if ($validator->passes()) {
+            $current_password = $data['current_password'];
+            $checkPassword    = \App\Models\User::where('id', Auth::user()->id)->first();
 
-            ] /*, [ // Customizing The Error Messages: https://laravel.com/docs/9.x/validation#manual-customizing-the-error-messages
-                // the 'name' HTML attribute of the request (the array key of the $request array) (ATTRIBUTE) => Custom Messages
-                'accept.required' => 'Please accept our Terms & Conditions'
-            ]*/ );
+            if (Hash::check($current_password, $checkPassword->password)) {
+                $user = \App\Models\User::find(Auth::user()->id);
+                $user->password = bcrypt($data['new_password']); // $data['new_password']    comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
+                $user->save();
 
-
-            // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
-            // dd($validator->messages());
-            // echo '<pre>', var_dump($validator->messages()), '</pre>';
-            // exit;
-
-            if ($validator->passes()) { // if validation passes (is successful), update the user's current password
-                $current_password = $data['current_password']; // $data['current_password']    comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                $checkPassword    = \App\Models\User::where('id', Auth::user()->id)->first();
-
-                if (Hash::check($current_password, $checkPassword->password)) { // if the entered current password is correct, update the current password    // Confirming The Password: https://laravel.com/docs/9.x/authentication#confirming-the-password
-                    // Update the user's current password to the new password
-                    $user = \App\Models\User::find(Auth::user()->id);
-                    $user->password = bcrypt($data['new_password']); // $data['new_password']    comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                    $user->save();
-
-                    // Redirect user back with a success message
-                    // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request
-                    return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                        'type'    => 'success',
-                        'message' => 'Account password successfully updated!'
-                    ]);
-
-                } else { // if the entered current password is incorrect/wrong, redirect with an error message
-                    // Redirect user back with an error message
-                    // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request
-                    return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                        'type'    => 'incorrect',
-                        'message' => 'Your current password is incorrect!'
-                    ]);
-                }
-
-            } else { // if validation fails (is unsuccessful), send the Validation Error Messages
-                // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request
                 return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                    'type'   => 'error',
-                    'errors' => $validator->messages() // we'll loop over the Validation Errors Messages array using jQuery to show them in the frontend (Check    $('#accountForm').submit();    in front/js/custom.js)    // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
+                    'success'    => true,
+                    'message' => 'Account password successfully updated!'
                 ]);
-            }
 
+            } else {
+                return response()->json([
+                    'success'    => false,
+                    'message' => 'Your current password is incorrect!'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'success'   => 'error',
+                'message' => "You've inputed an invalid value. Check for errors.",
+                'errors' => $validator->messages()
+            ], 400);
         }
     }
 
