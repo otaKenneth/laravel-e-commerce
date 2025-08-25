@@ -37,13 +37,6 @@ class UserController extends Controller
                 'accept.required' => 'Please accept our Terms & Conditions'
             ]);
 
-
-            // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
-            // dd($validator->messages());
-            // echo '<pre>', var_dump($validator->messages()), '</pre>';
-            // exit;
-
-
             if ($validator->passes()) { // if validation passes (is successful), register (INSERT) the new user into the database `users` table, and log the user in IMMEDIATELY and AUTOMATICALLY and DIRECTLY, and redirect them to the Cart cart.blade.php page
                 // Register the new user
                 $user = new \App\Models\User;
@@ -289,11 +282,13 @@ class UserController extends Controller
     public function userAccount(Request $request) {
         $data = $request->all();
 
+            $user_id = $request->user()->id;
             // Validation    // Manually Creating Validators: https://laravel.com/docs/9.x/validation#manually-creating-validators    
             $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
                 // the 'name' HTML attribute of the request (the array key of the $request array) (ATTRIBUTE) => Validation Rules
                 'first_name'    => 'required|string|max:100',
                 'last_name'    => 'required|string|max:100',
+                'email'   => "required|email|max:150|unique:users,email,{$user_id}",
                 'city'    => 'required|string|max:100',
                 'state'   => 'required|string|max:100',
                 'address' => 'required|string|max:100',
@@ -310,6 +305,7 @@ class UserController extends Controller
                 $user->update([
                     'first_name'    => $data['first_name'],
                     'last_name'    => $data['last_name'],
+                    'email'  => $data['email'],
                     'mobile'  => $data['mobile'],
                     'city'    => $data['city'],
                     'state'   => $data['state'],
@@ -357,6 +353,7 @@ class UserController extends Controller
                 // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request
                 return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
                     'success'   => false,
+                    'message' => "You've inputed an invalid value. Check for errors.",
                     'errors' => $validator->messages() // we'll loop over the Validation Errors Messages array using jQuery to show them in the frontend (Check    $('#accountForm').submit();    in front/js/custom.js)    // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
                 ], 403);
             }
