@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace('App\Http\Controllers\Front')->group(function() {
     Route::post('user/login', 'UserController@userLogin');
+    Route::post('forgot-password', 'UserController@forgotPassword');
     Route::prefix('user')->middleware('auth:api')->group(function () {
         Route::post('logout', 'UserController@userLogout');
         Route::post('profile', 'UserController@userAccount');
@@ -42,5 +43,4 @@ Route::namespace('App\Http\Controllers\API')->group(function () {
     Route::post('become_merchant', 'V2_VendorController@register');
     Route::get('vendors/{id}', 'V2_VendorController@show');
     Route::get('vendor/confirm/{email}', 'V2_VendorController@confirmVendor');
-    Route::post('forgot-password', 'AuthController@forgotPassword');
 });

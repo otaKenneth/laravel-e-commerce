@@ -148,14 +148,14 @@ class UserController extends Controller
                 return response()->json([
                     'type'    => 'incorrect',
                     'message' => 'Incorrect Email or Password. Please try again.'
-                ], 402);
+                ], 400);
             }
 
         } else { 
             return response()->json([ 
                 'type'   => 'error',
                 'errors' => $validator->messages()
-            ], 402);
+            ], 500);
         }
     }
 
@@ -213,68 +213,50 @@ class UserController extends Controller
 
 
     // User Forgot Password Functionality (this route is accessed from the <a> tag in front/users/login_register.blade.php through a 'GET' request, and through a 'POST' request when the HTML Form is submitted in front/users/forgot_password.blade.php))    
-    public function forgotPassword(Request $request) { // We used match() method to use get() to render the front/users/forgot_password.blade.php page, and post() when the HTML Form in the same page is submitted    // The POST request is from an AJAX request. Check front/js/custom.js
-        if ($request->ajax()) { // if the 'POST' request is coming from an AJAX call (if the Forgot Password HTML Form is submitted (in front/users/forgot_password.blade.php))
-            $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call)
-            // dd($data);
+    public function forgotPassword(Request $request) {
+        $data = $request->all(); 
+        // dd($data);
 
+        // Validation
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'email'    => 'required|email|max:150|exists:users',
+        ], [
+            'email.exists' => 'Email does not exist'
+        ]);        
+        
+        if ($validator->passes()) { 
+            $new_password = \Illuminate\Support\Str::random(16);
 
-            // Validation    // Manually Creating Validators: https://laravel.com/docs/9.x/validation#manually-creating-validators    
-            $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-                'email'    => 'required|email|max:150|exists:users', // 'exists:users'    means it must already exist in the `users` table    // exists:table,column: https://laravel.com/docs/9.x/validation#rule-exists
-
-            ], [ // Customizing The Error Messages: https://laravel.com/docs/9.x/validation#manual-customizing-the-error-messages
-                // the 'name' HTML attribute of the request (the array key of the $request array) (ATTRIBUTE) => Custom Messages
-                // 'accept.required' => 'Please accept our Terms & Conditions'
-                'email.exists' => 'Email does not exist'
+            // Generate a new password
+            \App\Models\User::where('email', $data['email'])->update([
+                'password' => bcrypt($new_password) 
             ]);
 
+            // Get user details
+            $userDetails = \App\Models\User::where('email', $data['email'])->first()->toArray();
 
+            $email = $data['email'];
 
-            if ($validator->passes()) { // if validation passes (is successful), generate a new password for the user
-                $new_password = \Illuminate\Support\Str::random(16);
+            $messageData = [
+                'name'     => $userDetails['first_name'] . " " . $userDetails['last_name'],
+                'email'    => $email,
+                'password' => $new_password
+            ];
+            \Illuminate\Support\Facades\Mail::send('emails.user_forgot_password', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.user_forgot_password' is the resources/views/emails/user_forgot_password.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that the user_forgot_password.blade.php file will use    // https://www.php.net/manual/en/functions.anonymous.php
+                $message->to($email)->subject('New Password - Kapiton');
+            });
 
-                // Generate a new password
-                // Change the current password immediately as the user forgot it, update it to a new random password, untill the user updates it by themselves
-                \App\Models\User::where('email', $data['email'])->update([
-                    'password' => bcrypt($new_password) // storing the HASH-ed password (not the original password) in the database    // bcrypt(): https://laravel.com/docs/9.x/helpers#method-bcrypt
-                ]);
+            // Redirect user with a success message
+            return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
+                'type'    => 'success',
+                'message' => 'New Password sent to your registered email.'
+            ], 200);
 
-                // Get user details
-                $userDetails = \App\Models\User::where('email', $data['email'])->first()->toArray();
-
-                // Send an email to the user to get the new password (reset their password)    // HELO / Mailtrap / MailHog: https://laravel.com/docs/9.x/mail#mailtrap    
-                $email = $data['email']; // the user's email that they entered while submitting the registration form
-
-                // The email message data/variables that will be passed in to the email view
-                $messageData = [
-                    'name'     => $userDetails['first_name'] . " " . $userDetails['last_name'], // the user's name that they entered while submitting the registration form
-                    'email'    => $email, // the user's email that they entered while submitting the registration form
-                    'password' => $new_password // the user's email that they entered while submitting the registration form
-                    // 'code'  => base64_encode($data['email']) // We base64 code the user's $email and send it as a Route Parameter from user_confirmation.blade.php to the 'user/confirm/{code}' route in web.php, then it gets base64 decoded again in confirmUser() method in Front/UserController.php    // we will use the opposite: base64_decode() in the confirmUser() method (encode X decode)
-                ];
-                \Illuminate\Support\Facades\Mail::send('emails.user_forgot_password', $messageData, function ($message) use ($email) { // Sending Mail: https://laravel.com/docs/9.x/mail#sending-mail    // 'emails.user_forgot_password' is the resources/views/emails/user_forgot_password.blade.php file inside the 'resources/views/emails' folder that will be sent as an email    // We pass in all the variables that the user_forgot_password.blade.php file will use    // https://www.php.net/manual/en/functions.anonymous.php
-                    $message->to($email)->subject('New Password - Kapiton');
-                });
-
-                // Redirect user with a success message
-                // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request. Check    $('#forgotForm').submit();    in front/js/custom.js
-                return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                    'type'    => 'success',
-                    'message' => 'New Password sent to your registered email.'
-                ]);
-
-            } else { // if validation fails (is unsuccessful), send the Validation Error Messages
-                // Here, we return a JSON response because the request is ORIGINALLY submitting an HTML <form> data using an AJAX request
-                return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                    'type'   => 'error',
-                    'errors' => $validator->messages() // we'll loop over the Validation Errors Messages array using jQuery to show them in the frontend (check front/js/custom.js)    // Working With Error Messages: https://laravel.com/docs/9.x/validation#working-with-error-messages    
-                ]);
-            }
-
-
-        } else { // if the 'GET' request is coming from the <a> tag in front/users/login_register.blade.php, render the front/users/forgot_password.blade.php page
-            return view('front.users.forgot_password');
+        } else { // if validation fails (is unsuccessful), send the Validation Error Messages
+            return response()->json([ 
+                'type'   => 'error',
+                'errors' => $validator->messages()
+            ], 400);
         }
 
     }
