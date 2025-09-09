@@ -13,6 +13,20 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
         Route::post('delivery-addresses', 'AddressController@saveDeliveryAddress');
         Route::delete('delivery-addresses/{delivery_address}', 'AddressController@removeDeliveryAddress');
     });
+
+    Route::prefix('cart')->group(function () {
+        // Render Cart page (front/products/cart.blade.php)    // this route is accessed from the <a> HTML tag inside the flash message inside cartAdd() method in Front/ProductsController.php (inside front/products/detail.blade.php)
+        Route::get('', 'ProductsController@cart');
+        
+        // Add to Cart <form> submission in front/products/detail.blade.php
+        Route::post('add', 'ProductsController@cartAdd');
+    
+        // Update Cart Item Quantity AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
+        Route::post('update', 'ProductsController@cartUpdate');
+    
+        // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
+        Route::post('delete', 'ProductsController@cartDelete');
+    });
 });
 
 Route::namespace('App\Http\Controllers\API')->group(function () {
