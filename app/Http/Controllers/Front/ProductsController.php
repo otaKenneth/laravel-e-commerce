@@ -567,16 +567,7 @@ class ProductsController extends Controller
             ], 400);
         }
 
-
-        // Note: If the user is not authenticated/logged in (guest), we'll use their `session_id` to enable users to Add to Cart (in `carts` table) WITHOUT LOGIN, then after that, once the user logins/gets authenticated, we'll use their `user_id` (NOT their #session_id) in `carts` table    // When user logins, their `user_id` gets updated (check userLogin() method in UserController.php)
-        // More explanation: We'll use Laravel's default Authentication Guard 'web' Guard (check config/auth.php)
-        // Generate a $session_id if it doesn't exist:
-        // Generate a session
-        $session_id = Session::get('session_id'); // if the $session_id already exists
-        if (empty($session_id)) { // if the session is empty (user is not logged in), create a random session id (for the 'Guest' user)    // https://laravel.com/docs/9.x/authentication#ecosystem-overview    // Determining If An Item Exists In The Session: https://laravel.com/docs/9.x/session#determining-if-an-item-exists-in-the-session
-            $session_id = Session::getId(); // Get the current session ID    // https://laravel.com/api/9.x/Illuminate/Contracts/Session/Session.html
-            Session::put('session_id', $session_id);  // Store the current $session_id in the Session of the user    // Storing Data: https://laravel.com/docs/9.x/session#storing-data
-        }
+        $session_id = $data['guest_token'];
 
         try {
             // Get $user_id and $countProducts in two cases. Check if the same product `product_id` with the same `size` already exists (was ordered by the same user depending on `user_id` or `session_id`) in Cart `carts` table in TWO cases: firstly, the user is authenticated/logged in, and secondly, the user is NOT logged in i.e. guest
@@ -612,7 +603,7 @@ class ProductsController extends Controller
                     'product_id' => $data['product_id'],
                     'color'       => $data['color'],
                     'size'       => $data['size']
-                ])->increment('quantity', $data['quantity']); // Add the new added quantity (    $data['quantity']    ) to the already existing `quantity` in the `carts` table    // Update Statements: Increment & Decrement: https://laravel.com/docs/9.x/queries#increment-and-decrement
+                ])->increment('quantity'); // Add the new added quantity (    $data['quantity']    ) to the already existing `quantity` in the `carts` table    // Update Statements: Increment & Decrement: https://laravel.com/docs/9.x/queries#increment-and-decrement
             } else { // if that `product_id` with that `size` was never ordered by that user `session_id` or `user_id` (i.e. that product with that size for that user doesn't exist in the `carts` table), INSERT it into the `carts` table for the first time
                 // INSERT the ordered product `product_id`, the user's session ID `session_id`, `size` and `quantity` in the `carts` table
                 $item = new \App\Models\Cart; // the `carts` table
@@ -627,7 +618,7 @@ class ProductsController extends Controller
                 $item->save();
             }
     
-            $getCartItems = \App\Models\Cart::getCartItems();
+            $getCartItems = \App\Models\Cart::getCartItems($session_id);
     
             return response()->json([
                 'success' => true,
@@ -643,14 +634,15 @@ class ProductsController extends Controller
     }
 
     // Render Cart page (front/products/cart.blade.php)
-    public function cart()
+    public function cart(Request $request)
     {
         // Clear any existing coupon session
         Session::forget('couponAmount');
         Session::forget('couponCode');
 
+        $session_id = $request->get('guest_token');
         // Get the Cart Items of a cerain user (using their `user_id` if they're authenticated/logged in or their `session_id` if they're not authenticated/not logged in (guest))
-        $getCartItems = \App\Models\Cart::getCartItems();
+        $getCartItems = \App\Models\Cart::getCartItems($session_id);
 
         // Static SEO (HTML meta tags): Check the HTML <meta> tags and <title> tag in front/layout/layout.blade.php
         $meta_title       = 'Shopping Cart - Kapiton';
@@ -666,92 +658,56 @@ class ProductsController extends Controller
     // Update Cart Item Quantity AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
     public function cartUpdate(Request $request)
     {
-        if ($request->ajax()) { // if the request is coming via an AJAX call
-            $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call)
+        $data = $request->all();
 
+        $request->validate([
+            'guest_token' => "required",
+            'id'         => "required|exists:carts,id",
+            'product_id' => "required|exists:products,id",
+            'action'     => "required|in:increment,decrement,update",
+            'stock'      => "required|integer|min:0"
+        ]);
 
-            // Correcting an issue with Coupon Codes when adding an item to the Cart which already has items in it (added before)
-            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart
-            Session::forget('couponAmount'); // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
-            Session::forget('couponCode');   // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
+        $cartDetails = \App\Models\Cart::find($data['id']);
+        $session_id = $data['guest_token'];
+        $action = $data['action'];
+        $message = '';
 
-
-
-            // Apply some conditions (and showing them in the view!) before Update-ing the Cart Item Quantity (making sure that the desired quantity is not more than (doesn't exceed) the available `stock` in `products_attributes` table, and that the desired product `size` is not disabled/inactive (`status` is not zero 0) in `products_attributes` table)
-            // Get user's Cart details
-            $cartDetails = \App\Models\Cart::find($data['cartid']); // $data['cartid'] comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-
-            // The 1st condition: Make sure that the desired quantity is not more than (doesn't exceed) the available `stock` in `products_attributes` table
-            // Get available product `stock` from `products_attributes` table
-            $availableStock = \App\Models\ProductsAttribute::select('stock')->where([
-                'product_id' => $cartDetails['product_id'],
-                'size'       => $cartDetails['size']
-            ])->first()->toArray();
-
-            if ($data['qty'] > $availableStock['stock']) { // if the user's desired quantity exceeds the available `stack` in `products_attributes` table    // $data['cartid'] comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                // Get the Cart Items (after UPDATE-ing the Cart Item Quantity) of a cerain user (using their `user_id` if they're authenticated/logged in or their `session_id` if they're not authenticated/not logged in (guest))
-                $getCartItems = \App\Models\Cart::getCartItems();
-
-                return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                    'status'     => false,
-                    'message'    => 'Product Stock is not available',
-                    // We'll use that array key 'view' as a JavaScript 'response' property to render the view (    $('#appendCartItems').html(resp.view);    ). Check front/js/custom.js
-                    'view'       => (string) \Illuminate\Support\Facades\View::make('front.products.cart_items')->with(compact('getCartItems')), // View Responses: https://laravel.com/docs/9.x/responses#view-responses
-
-                    // We added this view later (Mini Cart Widget) (separate file)
-                    'headerview' => (string) \Illuminate\Support\Facades\View::make('front.layout.header_cart_items')->with(compact('getCartItems')) // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-                ]);
+        if (empty($cartDetails)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cart item not found.'
+            ], 404);
+        } else {            
+            if ($action == "increment") {
+                $newQuantity = $cartDetails->quantity + 1;
+            } elseif ($action == "decrement") {
+                $newQuantity = $cartDetails->quantity - 1;
+            } elseif ($action == "update") {
+                $newQuantity = $data['quantity'];
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid action.'
+                ], 400);
             }
 
-            // The 2nd condition: Make sure that the desired product `size` is not disabled/inactive (`status` is not zero 0) in `products_attributes` table)
-            // Get product `status` from `products_attributes` table
-            $availableSize =  \App\Models\ProductsAttribute::where([
-                'product_id' => $cartDetails['product_id'],
-                'size'       => $cartDetails['size'],
-                'status'     => 1 // making sure that product size is active/enabled
-            ])->count();
-
-            if ($availableSize == 0) { // if the desired product's `status` in `products_attributes` table is zero 0 (inactive/disabled)
-                // Get the Cart Items (after UPDATE-ing the Cart Item Quantity) of a cerain user (using their `user_id` if they're authenticated/logged in or their `session_id` if they're not authenticated/not logged in (guest))
-                $getCartItems = \App\Models\Cart::getCartItems();
-
-
-                return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                    'status'  => false,
-                    'message' => 'Product Size is not available. Please remove this Product and choose another one!', // that size's `status` is zero 0 (inactive/disabled)
-                    // We'll use that array key 'view' as a JavaScript 'response' property to render the view (    $('#appendCartItems').html(resp.view);    ). Check front/js/custom.js
-                    'view'    => (string) \Illuminate\Support\Facades\View::make('front.products.cart_items')->with(compact('getCartItems')), // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-                    'headerview' => (string) \Illuminate\Support\Facades\View::make('front.layout.header_cart_items')->with(compact('getCartItems')) // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-                ]);
+            if ($newQuantity == 0) {
+                $cartDetails->delete();
+                $message = 'Cart item removed.';
+            } else {
+                $cartDetails->update(['quantity' => $newQuantity]);
             }
 
+            $getCartItems = \App\Models\Cart::getCartItems($session_id);
 
-            // Update the `quantity` in `carts` table (after passing the last conditions and checks)
-            \App\Models\Cart::where('id', $data['cartid'])->update([ // $data['cartid'] comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-                'quantity' => $data['qty'] // $data['qty'] comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-            ]);
-
-
-            // Get the Cart Items (after UPDATE-ing the Cart Item Quantity) of a cerain user (using their `user_id` if they're authenticated/logged in or their `session_id` if they're not authenticated/not logged in (guest))
-            $getCartItems = \App\Models\Cart::getCartItems();
-            $totalCartItems = totalCartItems(); // totalCartItems() function is in our custom Helpers/Helper.php file that we have registered in 'composer.json' file    // We created the CSS class 'totalCartItems' in front/layout/header.blade.php to use it in front/js/custom.js to update the total cart items via AJAX, because in pages that we originally use AJAX to update the cart items (such as when we delete a cart item in http://127.0.0.1:8000/cart using AJAX), the number doesn't change in the header automatically because AJAX is already used and no page reload/refresh has occurred
-
-
-
-            // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart
-            Session::forget('couponAmount'); // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
-            Session::forget('couponCode');   // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
-
-
-
-            return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                'status'         => true,
-                'totalCartItems' => $totalCartItems, // totalCartItems() function is in our custom Helpers/Helper.php file that we have registered in 'composer.json' file    // We created the CSS class 'totalCartItems' in front/layout/header.blade.php to use it in front/js/custom.js to update the total cart items via AJAX, because in pages that we originally use AJAX to update the cart items (such as when we delete a cart item in http://127.0.0.1:8000/cart using AJAX), the number doesn't change in the header automatically because AJAX is already used and no page reload/refresh has occurred
-                // We'll use that array key 'view' as a JavaScript 'response' property to render the view (    $('#appendCartItems').html(resp.view);    ). Check front/js/custom.js
-                'view'           => (string) \Illuminate\Support\Facades\View::make('front.products.cart_items')->with(compact('getCartItems')), // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-                'headerview' => (string) \Illuminate\Support\Facades\View::make('front.layout.header_cart_items')->with(compact('getCartItems')) // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-            ]);
+            return response()->json([
+                'success' => true,
+                'message' => $message ?: 'Cart item updated.',
+                'data'    => $getCartItems
+            ], 200);
         }
+
     }
 
     // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js

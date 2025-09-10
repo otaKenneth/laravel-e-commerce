@@ -218,6 +218,7 @@ class Product extends Model
     {
         return Product::with('vendor')
             ->select(['id', 'product_name', 'product_price', 'product_image', 'vendor_id', 'section_id', 'category_id', 'product_discount'])
+            ->selectRaw('product_price - (product_price * product_discount / 100) AS discounted_price') // Calculate discounted price directly in the query
             ->where('status', 1)
             ->whereHas('vendor', function ($query) {
                 $query->where('status', 1);
