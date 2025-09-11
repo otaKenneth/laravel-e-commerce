@@ -529,97 +529,80 @@ class ProductsController extends Controller
             $data['quantity'] = 1;
         }
 
+        $prod_attribute = ProductsAttribute::where('product_id', $data['product_id']);
+        // Check if the selected product `product_id` with that selected `size` have available `stock` in `products_attributes` table
         if (isset($data['variation'])) {
-            if (isset($data['color']) && isset($data['size'])) {
-                $prod_attribute = ProductsAttribute::where('product_id', $data['product_id'])
-                    ->where('color', '=', $data['color'])
-                    ->where('size', '=', $data['size'])
-                    ->where('price', '>', '0')->first();
-            } else {
-                $prod_attribute = ProductsAttribute::where('product_id', $data['product_id'])
-                    ->where('price', '>', '0')->first();
+            if (isset($data['color'])) {
+                $prod_attribute->where('color', '=', $data['color']);
             }
-            $getProductStock = $prod_attribute->stock;
-
-            $data['color'] = $prod_attribute->color;
-            $data['size'] = $prod_attribute->size;
-        } else {
-            // Check if the selected product `product_id` with that selected `size` have available `stock` in `products_attributes` table
-            $prod_attribute = ProductsAttribute::where('product_id', $data['product_id'])
-                ->where('stock', '>', '0')
-                ->where('price', '>', '0')->first();
-            if (empty($prod_attribute)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => "{$data['product_name']} doesn't have stock."
-                ], 400);
+            if (isset($data['size'])) {
+                $prod_attribute->where('size', '=', $data['size']);
             }
-            $getProductStock = $prod_attribute->stock;
-
-            $data['color'] = $prod_attribute->color;
-            $data['size'] = $prod_attribute->size;
+        }
+        $prod_attribute = $prod_attribute->where('price', '>', '0')->first();
+        if (empty($prod_attribute)) {
+            return response()->json([
+                'success' => false,
+                'message' => "{$data['product_name']} doesn't have stock."
+            ], 400);
         }
 
+        $getProductStock = $prod_attribute->stock;
         if ($getProductStock < $data['quantity']) { // if the `stock` available (in `products_attributes` table) is less than the ordered quantity by user (the quantity that the user desires)
             return response()->json([
                 'success' => false,
-                'message' => "Item doesn't have stock."
+                'message' => "{$data['product_name']} doesn't have stock."
             ], 400);
         }
+
+        $data['color'] = $prod_attribute->color;
+        $data['size'] = $prod_attribute->size;
 
         $session_id = $data['guest_token'];
 
         try {
-            // Get $user_id and $countProducts in two cases. Check if the same product `product_id` with the same `size` already exists (was ordered by the same user depending on `user_id` or `session_id`) in Cart `carts` table in TWO cases: firstly, the user is authenticated/logged in, and secondly, the user is NOT logged in i.e. guest
-            // To prevent repetition of the ordered Cart products `product_id` with the same sizes `size` for a certain user (`session_id` or `user_id` depending on whether the user is authenticated/logged in or not) in the `carts` table
-            if (Auth::guard('api')->check()) { // Here we're using the default 'web' Authentication Guard    // if the user is authenticated/logged in (using the default Laravel Authentication Guard 'web' Guard (check config/auth.php file) whose 'Provider' is the User.php Model i.e. `users` table)    // Determining If The Current User Is Authenticated: https://laravel.com/docs/9.x/authentication#determining-if-the-current-user-is-authenticated
-                $user_id = Auth::guard('api')->user()->id; // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
-    
-                // Check if that authenticated/logged in user has already THE SAME product `product_id` with THE SAME `size` (in `carts` table) in the Cart i.e. the `carts` table
-                $countProducts = \App\Models\Cart::where([
-                    'user_id'    => $user_id, // THAT EXACT authenticated/logged in user (using their `user_id` because they're authenticated/logged in)
+            $user_id = 0;
+            $countProducts = \App\Models\Cart::where([
+                'product_id' => $data['product_id'],
+                'color'      => $data['color'],
+                'size'       => $data['size']
+            ]);
+            // Check if the user is logged in (authenticated) or not (guest)
+            if (Auth::guard('api')->check()) {
+                $user_id = Auth::guard('api')->user()->id;
+                $countProducts->where('user_id', $user_id);
+            } else {
+                $countProducts->where('session_id', $session_id);
+            }
+
+            if ($countProducts->count() > 0) {
+                $cartItem = \App\Models\Cart::where([
+                    'session_id' => $session_id,
+                    'user_id'    => $user_id,
                     'product_id' => $data['product_id'],
                     'color'      => $data['color'],
                     'size'       => $data['size']
-                ])->count();
-            } else { // if the user is NOT logged in (guest)
-                // Check if that guest or NOT logged in user has already THE SAME products `product_id` with THE SAME `size` (in `carts` table) in the Cart i.e. the `carts` table    // When user logins, their `user_id` gets updated (check userLogin() method in UserController.php)
-                $user_id = 0; // is the same as    $user_id = null;    // When user logins, their `user_id` gets updated (check userLogin() method in UserController.php)    // this is because that the use is NOT authenticated / NOT logged in i.e. guest
-                $countProducts = \App\Models\Cart::where([ // We get the count (number) of that specific product `product_id` with that specific `size` to prevent repetition in the `carts` table
-                    'session_id' => $session_id, // THAT EXACT NON-authenticated/NOT logged or Guest user (using their `session_id` because they're NOT authenticated/NOT logged in or Guest)
-                    'product_id' => $data['product_id'],
-                    'color'       => $data['color'],
-                    'size'       => $data['size']
-                ])->count();
-            }
-    
-    
-    
-            // To prevent repetition of the ordered products `product_id` with the same sizes `size` for a certain user (`session_id` or `user_id` depending on whether the user is authenticated/logged in or not) in the `carts` table:
-            if ($countProducts > 0) { // if that specific user (`session_id` or `user_id` i.e. depending on the user is authenticated/logged or not (guest)) ALREADY ordered that specific product `product_id` with that same exact `size`, we're going to just UPDATE the `quantity` in the `carts` table to prevent repetition of the ordered products inside the table (and won't create a new record)    // In other words, if the same product with the same size ALREADY EXISTS (ordered with the SAME user) in the `carts` table
-                \App\Models\Cart::where([
-                    'session_id' => $session_id, // THAT EXACT NON-authenticated/NOT logged or Guest user (using their `session_id` because they're NOT authenticated/NOT logged in or Guest)
-                    'user_id'    => $user_id ?? 0, // if the user is authenticated/logged in, take its $user_id. If not, make it zero 0    // When user logins, their `user_id` gets updated (check userLogin() method in UserController.php)
-                    'product_id' => $data['product_id'],
-                    'color'       => $data['color'],
-                    'size'       => $data['size']
-                ])->increment('quantity'); // Add the new added quantity (    $data['quantity']    ) to the already existing `quantity` in the `carts` table    // Update Statements: Increment & Decrement: https://laravel.com/docs/9.x/queries#increment-and-decrement
-            } else { // if that `product_id` with that `size` was never ordered by that user `session_id` or `user_id` (i.e. that product with that size for that user doesn't exist in the `carts` table), INSERT it into the `carts` table for the first time
-                // INSERT the ordered product `product_id`, the user's session ID `session_id`, `size` and `quantity` in the `carts` table
-                $item = new \App\Models\Cart; // the `carts` table
-    
-                $item->session_id = $session_id; // $session_id will be stored whether the user is authenticated/logged in or NOT
-                $item->user_id    = $user_id; // depending on the last if statement (whether user is authenticated/logged in or NOT (guest))    // $user_id will be always zero 0 if the user is NOT authenticated/logged in    // When user logins, their `user_id` gets updated (check userLogin() method in UserController.php)
+                ]);
+
+                if ($data['quantity'] > 1) {
+                    $cartItem_quantity = $cartItem->first()->quantity + $data['quantity'];
+                    $cartItem->update(['quantity' => $cartItem_quantity]);
+                } else {
+                    $cartItem->increment('quantity');
+                }
+            } else {
+                $item = new \App\Models\Cart;
+                $item->session_id = $session_id;
+                $item->user_id    = $user_id;
                 $item->product_id = $data['product_id'];
                 $item->color      = $data['color'];
                 $item->size       = $data['size'];
                 $item->quantity   = $data['quantity'];
-    
                 $item->save();
             }
-    
+
             $getCartItems = \App\Models\Cart::getCartItems($session_id);
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Product has been added in Cart!',
