@@ -390,7 +390,10 @@ class UserController extends Controller
         $delivery_addresses = Auth::user()->userDeliveryAddresses;
         // dd($delivery_addresses);
         // return view('front.users.delivery_addresses', compact('delivery_addresses', 'countries'));
-        return response()->json($delivery_addresses, 200);
+        return response()->json([
+            'success' => true,
+            'data' => $delivery_addresses
+        ], 200);
     }
 
 }

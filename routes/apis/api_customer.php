@@ -11,7 +11,7 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
         Route::patch('update-password', 'UserController@userUpdatePassword');
         Route::get('delivery-addresses', 'UserController@showDeliveryAddresses');
         Route::post('delivery-addresses', 'AddressController@saveDeliveryAddress');
-        Route::delete('delivery-addresses/{delivery_address}', 'AddressController@removeDeliveryAddress');
+        Route::delete('delivery-addresses/{delivery_address}', 'AddressController@removeDeliveryAddress');        
     });
 
     Route::prefix('cart')->group(function () {
@@ -26,6 +26,10 @@ Route::namespace('App\Http\Controllers\Front')->group(function() {
     
         // Delete a Cart Item AJAX call in front/products/cart_items.blade.php. Check front/js/custom.js
         Route::post('delete', 'ProductsController@cartDelete');
+
+        
+        // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission via AJAX in front/products/cart_items.blade.php, check front/js/custom.js
+        Route::post('apply-coupon', 'ProductsController@applyCoupon')->middleware("auth:api"); // Important Note: We added this route here as a protected route inside the 'auth' middleware group because ONLY logged in/authenticated users are allowed to redeem Coupons!
     });
 });
 

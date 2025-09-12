@@ -801,16 +801,12 @@ class ProductsController extends Controller
         // Check the validity of the Coupon Code
         $couponCount = \App\Models\Coupon::where('coupon_code', $couponCode)->count(); // $data['code'] comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
         if ($couponCount == 0) { // if the submitted coupon is wrong, send error message
-            $message = 'The coupon is invalid!';
-            $success = false;
-            return ['message' => $message, 'couponDetails' => $couponDetails, 'success' => $success];
+            throw new \Exception('The coupon is invalid!');
         }
         
         // Check if the submitted coupon code is active/inactive (enabled/disabled/activated/deactivated)
         if ($couponDetails->status == 0) {
-            $message = 'This coupon is currently inactive.';
-            $success = false;
-            return ['message' => $message, 'couponDetails' => $couponDetails, 'success' => $success];
+            throw new \Exception('This coupon is currently inactive.');
         }
         
         // Check if the submitted coupon code is expired
@@ -818,59 +814,63 @@ class ProductsController extends Controller
         $current_date = date('Y-m-d'); // this date format is understandable by MySQL
         
         if ($expiry_date < $current_date) {
-            $message = 'This coupon has expired and can no longer be used.';
-            $success = false;
-            return ['message' => $message, 'couponDetails' => $couponDetails, 'success' => $success];
+            $couponDetails->update(['status' => 0]); // deactivate the coupon if it has expired
+            throw new \Exception('This coupon has expired and can no longer be used.');
         }
-        
-        // Managing coupon types in `coupons` table: 'Single Time' or 'Multiple Times'
-        if ($couponDetails->coupon_type == 'Single Time') { // if the `coupon_type` in `coupons` table is 'Single Time'
-            // Check in the `orders` table if the currently authenticated/logged-in user really used this Coupon Code with their order
-            $couponCount = \App\Models\Order::where([
-                'coupon_code' => $couponCode,
-                'user_id'     => Auth::user()->id // Retrieving The Authenticated User: https://laravel.com/docs/9.x/authentication#retrieving-the-authenticated-user
-                ])->count();
-                
-            if ($couponCount >= 1) { // if this 'Single Time' coupon code has been used/redeemed more than one single time by this user (this authenticated/logged-in user) (i.e. meaning that if that coupon code is already existing in the `orders` table and has been used/redeemed by this authenticated/logged-in user)
-                $message = 'You’ve already used this coupon code.';
-                $success = false;
-                return ['message' => $message, 'couponDetails' => $couponDetails, 'success' => $success];
+
+        if (!empty($couponDetails->users)) {
+            $usersArr = explode(',', $couponDetails->users); // convert the comma-separated string to an array
+            if (!in_array(Auth::guard('api')->user()->id, $usersArr)) {
+                throw new \Exception('This coupon is not applicable to you.');
             }
         }
-        
+
+        $valid_coupon_count = 0;
         $catArr = explode(',', $couponDetails->categories);
         foreach ($cartItems as $key => $item) {
-            if (!in_array($item['product']['category_id'], $catArr)) { // if the category of one of the products in the Cart doesn't belong to the Coupon's categories (the categories of the coupon selected by 'vendor' or 'admin' in the Admin Panel for the coupon)
-                $message = 'This coupon isn’t applicable to your order.';
-                $success = false;
-                return ['message' => $message, 'couponDetails' => $couponDetails, 'success' => $success];
-            }
-        }
-        
-        if ($couponDetails->vendor_id > 0) { // Check if submitted coupon code belongs to a 'vendor' (becasue a vendor' coupon is available ONLY for that vendor's products (not all products), whereas admin's coupons are available for all products)
-            // Get all the products ids of that very vendor
-            $productIds = \App\Models\Product::select('id')->where('vendor_id', $couponDetails->vendor_id)->pluck('id')->toArray();
-            
-            foreach ($cartItems as $item) {
-                if (!in_array($item['product']['id'], $productIds)) { // if the user id of one of the products in the Cart doesn't belong to the products ids of that vendor (to check if the submitted coupon code pertains to that specific/very vendor or not)
-                    $message = 'COUPON ERROR: Coupon is unavailable for this product';
-                    $success = false;
-                    return ['message' => $message, 'couponDetails' => $couponDetails, 'success' => $success];
+            // if the category of one of the products in the Cart doesn't belong to the Coupon's categories (the categories of the coupon selected by 'vendor' or 'admin' in the Admin Panel for the coupon)
+            if (in_array($item['product']['category_id'], $catArr)) {
+                $isVendorProduct = true;
+                if ($couponDetails->vendor_id > 0) {
+                    $isVendorProduct = \App\Models\Product::where('id', $item['product']['id'])
+                        ->where('vendor_id', $couponDetails->vendor_id)
+                        ->exists();
+                }
+
+                if ($isVendorProduct) {
+                    $valid_coupon_count++;
+                    $cartItems[$key]['is_valid_for_coupon'] = true;
                 }
             }
         }
+
+        if ($valid_coupon_count == 0) {
+            throw new \Exception('This coupon is not applicable to any of the products in your cart.');
+        }
         
         // if all checks passed coupon is valid
-        return ['message' => $message, 'couponDetails' => $couponDetails, 'success' => $success];
+        return ['message' => $message, 'couponDetails' => $couponDetails, 'cartItems' => $cartItems, 'success' => $success];
     }
 
     private function getGrandTotalWithCoupon($getCartItems, $couponDetails){
         $total_amount = 0;
         $couponAmount = 0;
+        $total_amount_with_coupon_discount = 0;
 
         foreach ($getCartItems as $item) {
-            $attrPrice = Product::getDiscountAttributePrice($item['product_id'], $item['color'], $item['size']);
-            $total_amount += $attrPrice['final_price'] * $item['quantity'];
+            $price = $item['product']['product_price'];
+            if ($item['product']['product_discount'] > 0) {
+                $price = $item['product']['discounted_price'] * $item['quantity'];
+            }
+
+            if (isset($item['is_valid_for_coupon'])) {
+                if ($item['is_valid_for_coupon']) {
+                    $t_price = $price;
+                    $total_amount_with_coupon_discount += $t_price;
+                }
+            }
+
+            $total_amount += $price;
         }
 
         // Calculate discount from coupon
@@ -878,16 +878,16 @@ class ProductsController extends Controller
             if ($couponDetails->amount_type === 'Fixed') {
                 $couponAmount = $couponDetails->amount;
             } else {
-                $couponAmount = $total_amount * ($couponDetails->amount / 100);
+                $couponAmount = $total_amount_with_coupon_discount * ($couponDetails->amount / 100);
             }
         } else {
             // Default fallback in case couponDetails is null or malformed
             $couponAmount = 0;
         }
-
+        
         $grand_total = $total_amount - $couponAmount;
 
-        return [$grand_total, $couponAmount];
+        return [$grand_total, $couponAmount, $total_amount_with_coupon_discount];
     }
 
 
@@ -895,62 +895,30 @@ class ProductsController extends Controller
     // Coupon Code redemption (Apply coupon) / Coupon Code HTML Form submission via AJAX in front/products/cart_items.blade.php, check front/js/custom.js
     public function applyCoupon(Request $request)
     {
-        if ($request->ajax()) { // if the request is coming via an AJAX call
-            $data = $request->all(); // Getting the name/value pairs array that are sent from the AJAX request (AJAX call) (through the 'data' object)
+        $data = $request->all();
+        $getCartItems = \App\Models\Cart::getCartItems($data['guest_token']);
+        $totalCartItems = totalCartItems();
 
-            $getCartItems = \App\Models\Cart::getCartItems();
-            $totalCartItems = totalCartItems(); // totalCartItems() function is in our custom Helpers/Helper.php file that we have registered in 'composer.json' file    // We created the CSS class 'totalCartItems' in front/layout/header.blade.php to use it in front/js/custom.js to update the total cart items via AJAX, because in pages that we originally use AJAX to update the cart items (such as when we delete a cart item in http://127.0.0.1:8000/cart using AJAX), the number doesn't change in the header automatically because AJAX is already used and no page reload/refresh has occurred
-                         
-            // if the submitted coupon is valid, check some conditions (do some validation)
-            // SUBMITTED COUPON CODE VALIDATION:
+        try {
+            // Validate coupon
             $couponValidity = $this->checkCouponValidity($data['code'], $getCartItems);
-            
-            // If there's an error message with the submitted coupon code, send this response to the AJAX call
-            if ($couponValidity['success'] == false) { // if the submitted coupon code is invalid) {
+            [$grand_total, $couponAmount, $total_amount_with_coupon_discount] = $this->getGrandTotalWithCoupon($couponValidity['cartItems'], $couponValidity['couponDetails']);
 
-                $prevValidCode = Session::get('couponCode', 0);
-                $prevCouponValidity = $this->checkCouponValidity($prevValidCode, $getCartItems);
-                [$grand_total, $couponAmount] = $this->getGrandTotalWithCoupon($getCartItems, $prevCouponValidity['couponDetails']);
-
-                return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                    'status'         => false,
-                    'totalCartItems' => $totalCartItems, // totalCartItems() function is in our custom Helpers/Helper.php file that we have registered in 'composer.json' file    // We created the CSS class 'totalCartItems' in front/layout/header.blade.php to use it in front/js/custom.js to update the total cart items via AJAX, because in pages that we originally use AJAX to update the cart items (such as when we delete a cart item in http://127.0.0.1:8000/cart using AJAX), the number doesn't change in the header automatically because AJAX is already used and no page reload/refresh has occurred
-                    'couponAmount'   => $couponAmount,
-                    'grand_total'    => $grand_total,
-                    'message'        => $couponValidity['message'] ,
-                    'couponCode'       => $prevValidCode,
-                    // We'll use that array key 'view' as a JavaScript 'response' property to render the view (    $('#appendCartItems').html(resp.view);    ). Check front/js/custom.js
-                    'view'           => (string) \Illuminate\Support\Facades\View::make('front.products.cart_items')->with(compact('getCartItems')), // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-                    
-                    'headerview'     => (string) \Illuminate\Support\Facades\View::make('front.layout.header_cart_items')->with(compact('getCartItems')) // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-                ]);
-            } else { // if the submitted coupon code is correct and passes the previous coupon code validation and passes all the previous if conditions (free of errors)
-                
-                // remove only if the coupon code is valid so previous coupons that are valid wont be removed if the current coupon is invalid
-                // We need to remove/empty (forget) the 'couponAmount' and 'couponCode' Session Variables (reset the whole process of Applying the Coupon) whenever a user applies a new coupon, or updates Cart items (changes items quantity for example) or deletes items from the Cart or even Adds new items in the Cart
-                Session::forget('couponAmount'); // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
-                Session::forget('couponCode');   // Deleting Data: https://laravel.com/docs/9.x/session#deleting-data
-
-                [$grand_total, $couponAmount] = $this->getGrandTotalWithCoupon($getCartItems, $couponValidity['couponDetails']);
-
-                // Assign the Coupon Code and $couponAmount to Session Variables
-                Session::put('couponAmount', $couponAmount);
-                Session::put('couponCode', $data['code']); // $data['code'] comes from the 'data' object sent from inside the $.ajax() method in front/js/custom.js file
-
-
-                return response()->json([ // JSON Responses: https://laravel.com/docs/9.x/responses#json-responses
-                    'status'         => true,
-                    'totalCartItems' => $totalCartItems, // totalCartItems() function is in our custom Helpers/Helper.php file that we have registered in 'composer.json' file    // We created the CSS class 'totalCartItems' in front/layout/header.blade.php to use it in front/js/custom.js to update the total cart items via AJAX, because in pages that we originally use AJAX to update the cart items (such as when we delete a cart item in http://127.0.0.1:8000/cart using AJAX), the number doesn't change in the header automatically because AJAX is already used and no page reload/refresh has occurred
-                    'couponAmount'   => $couponAmount,
-                    'grand_total'    => $grand_total,
-                    'message'        => $couponValidity['message'],
-                    'couponCode'       => $data['code'],
-                    // We'll use that array key 'view' as a JavaScript 'response' property to render the view (    $('#appendCartItems').html(resp.view);    ). Check front/js/custom.js
-                    'view'           => (string) \Illuminate\Support\Facades\View::make('front.products.cart_items')->with(compact('getCartItems')), // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-                    'headerview'     => (string) \Illuminate\Support\Facades\View::make('front.layout.header_cart_items')->with(compact('getCartItems')) // View Responses: https://laravel.com/docs/9.x/responses#view-responses    // Creating & Rendering Views: https://laravel.com/docs/9.x/views#creating-and-rendering-views    // Passing Data To Views: https://laravel.com/docs/9.x/views#passing-data-to-views
-                ]);
-            }
-            
+            return response()->json([
+                'success'         => true,
+                'totalCartItems' => $totalCartItems,
+                'couponAmount'   => $couponAmount,
+                'total_amount_with_coupon_discount' => $total_amount_with_coupon_discount,
+                'grand_total'    => $grand_total,
+                'message'        => $couponValidity['message'],
+                'couponCode'     => $data['code'],
+                'data'           => $couponValidity['cartItems']
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success'        => false,
+                'message'        => $e->getMessage()
+            ], 400);
         }
     }
 

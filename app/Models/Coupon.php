@@ -9,7 +9,9 @@ class Coupon extends Model
 {
     use HasFactory;
 
-
+    protected $fillable = [
+        'status'
+    ];
 
     
     public static function couponDetails($coupon_code) {
